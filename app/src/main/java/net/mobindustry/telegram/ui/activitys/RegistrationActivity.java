@@ -1,9 +1,11 @@
-package net.mobindustry.telegram;
+package net.mobindustry.telegram.ui.activitys;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+
+import net.mobindustry.telegram.R;
 
 public class RegistrationActivity extends Activity{
 
