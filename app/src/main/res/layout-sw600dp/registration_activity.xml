@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
+    <android.support.v7.widget.CardView
         android:layout_width="@dimen/width_registration_fragment"
         android:layout_height="@dimen/height_registration_fragment"
         android:layout_gravity="center"
-        tools:background="@android:color/holo_green_dark"
+        card_view:cardElevation="8sp">
 
-        ></FrameLayout>
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@android:color/holo_green_dark"
+        >
+    </FrameLayout>
+    </android.support.v7.widget.CardView>
 
 </FrameLayout>
