@@ -4,7 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import net.mobindustry.telegram.R;
 
-public class ChatActivity extends ActionBarActivity {
+public class ChatActivity extends AppCompatActivity {
 
     private String[] mScreenTitles;
     private DrawerLayout mDrawerLayout;
@@ -38,10 +38,8 @@ public class ChatActivity extends ActionBarActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item);
-        // Set the adapter for the list view
         mDrawerList.setAdapter(adapter);
         adapter.addAll(mScreenTitles);
-        // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
