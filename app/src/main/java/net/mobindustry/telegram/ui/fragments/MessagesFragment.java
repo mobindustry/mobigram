@@ -2,12 +2,15 @@ package net.mobindustry.telegram.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.TypedValue;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
+
+import net.mobindustry.telegram.R;
+
+import org.w3c.dom.Text;
 
 public class MessagesFragment extends Fragment {
 
@@ -27,23 +30,24 @@ public class MessagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        if (container == null) {
-            return null;
-        }
 
-        String[] arr = new String[20];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = ""+i;
-        }
+        View view = inflater.inflate(R.layout.message_fragment, container, false);
 
-        ScrollView scroller = new ScrollView(getActivity());
-        TextView text = new TextView(getActivity());
-        int padding = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                4, getActivity().getResources().getDisplayMetrics());
-        text.setPadding(padding, padding, padding, padding);
-        scroller.addView(text);
-        text.setText(arr[getShownIndex()]);
-        return scroller;
+        String[] str = new String[20];
+        for (int i = 0; i < str.length; i++) {
+            str[i] = "" + i + i + i + i;
+        }
+        TextView textView = (TextView) view.findViewById(R.id.fragmentTextView);
+        textView.setText(str[getShownIndex()]);
+        return view;
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentTollbar);
+        toolbar.setTitle(R.string.your_phone);
+
     }
 }

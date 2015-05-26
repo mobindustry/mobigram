@@ -38,8 +38,8 @@ public class ChatActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.fragment_toolbar);
-        toolbar.setLogo(R.drawable.ic_check);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
+        setSupportActionBar(toolbar);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item);

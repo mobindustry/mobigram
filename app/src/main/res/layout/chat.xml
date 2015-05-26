@@ -5,39 +5,43 @@
     android:layout_height="match_parent">
     <!-- The main content view -->
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragment_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/background_action_bar"
-        />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
         android:orientation="horizontal">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.6">
+            android:layout_weight="0.6"
+            android:orientation="vertical">
 
-            <fragment
-                android:id="@+id/titles"
-                class="net.mobindustry.telegram.ui.fragments.ContactListFragment"
+            <include
+                android:id="@+id/contacts_toolbar"
+                layout="@layout/toolbar" />
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="end|bottom"
-                android:layout_margin="15dp"
-                android:background="@drawable/message_icon_bg"
-                android:padding="7dp"
-                android:src="@drawable/floating_pencil" />
-        </FrameLayout>
+                <fragment
+                    android:id="@+id/titles"
+                    class="net.mobindustry.telegram.ui.fragments.ContactListFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="end|bottom"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/message_icon_bg"
+                    android:padding="7dp"
+                    android:src="@drawable/floating_pencil" />
+
+            </FrameLayout>
+
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/details"

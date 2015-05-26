@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="#fff"
     >
-    <fragment class="net.mobindustry."
+
+    <fragment class="net.mobindustry.telegram.ui.fragments.MessagesFragment"
         android:id="@+id/titles"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
