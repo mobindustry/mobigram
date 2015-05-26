@@ -24,5 +24,6 @@ public class RegistrationMainFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setLogo(R.drawable.ic_check);
+        toolbar.setTitle(R.string.your_phone);
     }
 }
