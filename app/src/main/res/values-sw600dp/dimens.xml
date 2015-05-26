@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="width_registration_fragment">400dp</dimen>
+    <dimen name="height_registration_fragment">600dp</dimen>
+</resources>

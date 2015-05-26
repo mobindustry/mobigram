@@ -6,8 +6,8 @@
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
-        android:layout_width="400dp"
-        android:layout_height="600dp"
+        android:layout_width="@dimen/width_registration_fragment"
+        android:layout_height="@dimen/height_registration_fragment"
         android:layout_gravity="center"
         tools:background="@android:color/holo_green_dark"
 
