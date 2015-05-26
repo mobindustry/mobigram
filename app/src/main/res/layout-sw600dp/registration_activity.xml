@@ -9,6 +9,7 @@
         android:layout_width="300"
         android:layout_height="300"
         android:id="@+id/fragmentContainer"
+        android:layout_gravity="center"
         >
 
     </FrameLayout>
