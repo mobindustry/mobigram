@@ -1,5 +1,14 @@
 <resources>
     <string name="app_name">NeTelegram</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+
+    <string-array name="screen_array">
+        <item>Screen 1</item>
+        <item>Screen 2</item>
+        <item>Screen 3</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
 </resources>

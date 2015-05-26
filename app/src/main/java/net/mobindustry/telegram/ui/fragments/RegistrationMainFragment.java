@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 
 import net.mobindustry.telegram.R;
 
-public class RegistrationMainFragment extends Fragment{
+public class RegistrationMainFragment extends Fragment {
 
-//    @Nullable
-//    @Override
- //   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-  //      inflater.inflate();
+ //   @Nullable
+  //  @Override
+   // public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    //    inflater.inflate();
    // }
 }

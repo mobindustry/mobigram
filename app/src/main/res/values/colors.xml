@@ -2,4 +2,6 @@
 <resources>
 
     <color name="splash_background">#000</color>
+
+    <item name="blue" type="color">#FF33B5E5</item>
 </resources>

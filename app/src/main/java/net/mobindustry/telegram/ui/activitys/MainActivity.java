@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.romainpiel.titanic.library.Titanic;
 import com.romainpiel.titanic.library.TitanicTextView;
@@ -14,8 +12,9 @@ import net.mobindustry.telegram.R;
 
 import java.util.concurrent.TimeUnit;
 
-
 public class MainActivity extends Activity {
+
+    private SplashStart splashStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,16 +24,28 @@ public class MainActivity extends Activity {
         Titanic titanic = new Titanic();
         titanic.start(tv);
 
-        SplashStart splashStart = new SplashStart();
+        splashStart = new SplashStart();
         splashStart.execute();
 
     }
+
+    public static void showActivityAnimation(Activity activity) {
+        activity.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_in_left);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (splashStart != null && !splashStart.isCancelled()) {
+            splashStart.cancel(false);
+        }
+    }
+
 
     private class SplashStart extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
-
 
             try {
                 TimeUnit.SECONDS.sleep(5);
@@ -48,8 +59,9 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
             startActivity(intent);
+            showActivityAnimation(MainActivity.this);
             finish();
         }
     }
