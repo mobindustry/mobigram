@@ -3,12 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <include
-        layout="@layout/toolbar_registration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    android:orientation="vertical"
+    android:background="#fff">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,9 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_10dp"
             android:hint="@string/text_choose_country"
-            android:textColorHint="@color/text_info"
-            android:inputType="textMultiLine"
-            android:background="@drawable/line_for_edittext"/>
+            android:theme="@style/styleEditText"
+            />
 
     </LinearLayout>
 
@@ -35,14 +30,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_10dp"
-            android:layout_weight="1.5" />
+            android:layout_weight="1.5"
+            android:theme="@style/styleEditText"/>
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/margin_10dp"
             android:layout_marginTop="@dimen/margin_10dp"
-            android:layout_weight="5" />
+            android:layout_weight="5"
+            android:theme="@style/styleEditText"/>
 
     </LinearLayout>
 

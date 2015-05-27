@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
     </style>
 
@@ -10,4 +10,11 @@
     </style>
 
 
+    <style name="styleEditText" parent="android:Theme.Holo">
+        <item name="android:background">#fff</item>
+        <item name="android:textColor">#000</item>
+        <item name="android:textColorHint">@color/text_info</item>
+    </style>
+
 </resources>
+

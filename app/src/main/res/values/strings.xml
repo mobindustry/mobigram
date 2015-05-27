@@ -11,6 +11,7 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="your_phone">Your phone</string>
+    <string name="choose_country">Choose country</string>
 
 
     <string name="hello_world">Hello world!</string>

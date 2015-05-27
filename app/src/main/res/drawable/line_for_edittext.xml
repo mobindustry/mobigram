@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <shape xmlns:android="http://schemas.android.com/apk/res/android"
-        android:shape="rectangle" >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-        <solid android:color="#00000000" />
+    <!-- main color -->
+    <item android:bottom="1.5dp"
+        android:left="1.5dp"
+        android:right="1.5dp">
+        <shape >
+            <solid android:color="#fff" />
+        </shape>
+    </item>
 
-        <stroke
-            android:width="dp"
-            android:color="#BEBEBE" />
-    </shape>
-
-</selector>
+    <!-- draw another block to cut-off the left and right bars -->
+    <item android:bottom="15.0dp">
+        <shape >
+            <solid android:color="@color/background_action_bar" />
+        </shape>
+    </item>
+</layer-list>
