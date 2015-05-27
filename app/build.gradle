@@ -20,10 +20,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:cardview-v7:21.0.3'
     compile 'com.android.support:appcompat-v7:22.1.1'
-    compile "com.android.support:support-v4:22.1.1"
+    compile 'com.android.support:support-v4:22.1.1'
     compile project(':libtd')
+    compile project(':HeaderListView')
     compile project(':Titanic')
 }

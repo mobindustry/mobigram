@@ -2,6 +2,8 @@
 <resources>
 
     <color name="splash_background">#000</color>
-
+    <color name="text_info">#BEBEBE</color>
+    <color name="background_action_bar">#5b95c2</color>
+    <color name="background_activity">#fff</color>
     <item name="blue" type="color">#FF33B5E5</item>
 </resources>

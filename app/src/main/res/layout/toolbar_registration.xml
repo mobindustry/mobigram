@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar_registration"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/background_action_bar"
+    >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_margin="@dimen/margin_10dp"
+            android:src="@drawable/ic_check"/>
+
+    </android.support.v7.widget.Toolbar>
