@@ -1,4 +1,4 @@
-package net.mobindustry.telegram.ui.activitys;
+package net.mobindustry.telegram.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;

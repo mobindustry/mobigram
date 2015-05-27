@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.activitys.MessagesActivity;
+import net.mobindustry.telegram.ui.activity.MessagesActivity;
 import net.mobindustry.telegram.ui.adapters.ContactsListAdapter;
 import net.mobindustry.telegram.ui.model.Contact;
 

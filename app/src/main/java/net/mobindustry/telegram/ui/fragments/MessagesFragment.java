@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 
-import org.w3c.dom.Text;
-
 public class MessagesFragment extends Fragment {
 
     public static MessagesFragment newInstance(int index) {

@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/customAppTheme">
         <activity
-            android:name=".ui.activitys.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,9 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activitys.ChatActivity"/>
-        <activity android:name=".ui.activitys.MessagesActivity"/>
-        <activity android:name=".ui.activitys.RegistrationActivity"/>
+        <activity android:name=".ui.activity.ChatActivity"/>
+        <activity android:name=".ui.activity.MessagesActivity"/>
+        <activity android:name=".ui.activity.RegistrationActivity"/>
     </application>
 
 </manifest>
