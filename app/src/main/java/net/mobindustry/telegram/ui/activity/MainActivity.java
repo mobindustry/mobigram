@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
         protected Void doInBackground(Void... voids) {
 
             try {
-                TimeUnit.SECONDS.sleep(5);
+                TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

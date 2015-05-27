@@ -6,7 +6,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 
@@ -31,12 +30,6 @@ public class MessagesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.message_fragment, container, false);
 
-        String[] str = new String[20];
-        for (int i = 0; i < str.length; i++) {
-            str[i] = "" + i + i + i + i;
-        }
-        TextView textView = (TextView) view.findViewById(R.id.fragmentTextView);
-        textView.setText(str[getShownIndex()]);
         return view;
 
     }
