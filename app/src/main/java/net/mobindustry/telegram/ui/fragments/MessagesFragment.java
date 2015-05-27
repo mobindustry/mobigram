@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import net.mobindustry.telegram.R;
 
@@ -38,15 +39,20 @@ public class MessagesFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentTollbar);
-        toolbar.setTitle("Message");
-        toolbar.setNavigationIcon(R.drawable.ic_close_white);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
+        if (toolbar!=null) {
+            toolbar.setTitle("Message");
+            toolbar.setNavigationIcon(R.drawable.ic_close_white);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getFragmentManager().beginTransaction().detach(MessagesFragment.this).commit();
+                    //TODO detach fragment;
+                }
+            });
+        }
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO detach fragment;
-            }
-        });
+
+
     }
 }

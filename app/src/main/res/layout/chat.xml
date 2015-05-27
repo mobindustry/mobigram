@@ -8,13 +8,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="#EEE">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.55"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <include
                 android:id="@+id/contacts_toolbar"
@@ -47,11 +49,18 @@
             android:id="@+id/details"
             android:layout_width="0px"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#ffb7b4b4" />
+            android:layout_weight="1">
 
+            <net.mobindustry.telegram.utils.AspectRatioImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:src="@drawable/background_hd" />
 
+        </FrameLayout>
     </LinearLayout>
+
+
     <!-- The navigation drawer -->
     <ListView
         android:id="@+id/left_drawer"

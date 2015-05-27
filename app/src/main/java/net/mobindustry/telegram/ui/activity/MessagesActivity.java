@@ -2,12 +2,11 @@ package net.mobindustry.telegram.ui.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 
-import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 
-public class MessagesActivity extends FragmentActivity {
+public class MessagesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

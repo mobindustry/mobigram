@@ -4,6 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -44,7 +50,7 @@ public class ContactListFragment extends ListFragment {
 
         if (mDualPane) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            showDetails(mCurCheckPosition);
+           // showDetails(mCurCheckPosition);
         }
     }
 
@@ -83,4 +89,6 @@ public class ContactListFragment extends ListFragment {
             startActivity(intent);
         }
     }
+
+
 }

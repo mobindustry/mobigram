@@ -1,66 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/messageFragmentTollbar"
-        layout="@layout/toolbar"
-        />
-
-    <FrameLayout
+    <net.mobindustry.telegram.utils.AspectRatioImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffcf7b"
-        >
+        android:adjustViewBounds="true"
+        android:src="@drawable/background_hd" />
 
-        <ListView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/messageFragmentToolbar"
+            layout="@layout/toolbar" />
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            />
+            android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="#fff"
-            android:layout_gravity="bottom"
-            >
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_smiles"
-                android:layout_weight="1"
-                android:padding="5dp"
-                />
-
-            <EditText
-                android:layout_width="0dp"
+            <ListView
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="10"
-                android:hint="Message"
-                android:textColor="#000"
-                android:textColorHint="#aaa"
-                android:layout_gravity="center_vertical"
-                />
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:padding="10dp"
-                android:background="@drawable/mic_button_states"
-                />
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_attach"
-                android:layout_weight="1"
-                android:padding="5dp"
-                />
-        </LinearLayout>
-    </FrameLayout>
+                android:divider="@null" />
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#fff"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_smiles" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="10"
+                    android:hint="Message"
+                    android:textColor="#000"
+                    android:textColorHint="#aaa" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/mic_button_states"
+                    android:padding="10dp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_attach" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

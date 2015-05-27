@@ -2,10 +2,11 @@ package net.mobindustry.telegram.ui.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import net.mobindustry.telegram.R;
 
@@ -49,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
         adapter.addAll(mScreenTitles);
 
         LayoutInflater inflater = getLayoutInflater();
-        ViewGroup header = (ViewGroup)inflater.inflate(R.layout.navigation_drawer_header, mDrawerList, false);
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.navigation_drawer_header, mDrawerList, false);
         mDrawerList.addHeaderView(header, null, false);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -116,8 +116,22 @@ public class ChatActivity extends AppCompatActivity {
         // Handle action buttons
         switch (item.getItemId()) {
             case R.id.action_search:
-                // Show toast about click.
-                Toast.makeText(this, R.string.action_search, Toast.LENGTH_SHORT).show();
+                SearchView sv = new SearchView(getSupportActionBar().getThemedContext());
+                MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+                MenuItemCompat.setActionView(item, sv);
+                sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        System.out.println("search query submit");
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        System.out.println("tap");
+                        return false;
+                    }
+                });
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
