@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.mobindustry.telegram.R;
 
@@ -45,6 +44,7 @@ public class MessagesFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentTollbar);
         toolbar.setTitle("Message");
         toolbar.setNavigationIcon(R.drawable.ic_close_white);
