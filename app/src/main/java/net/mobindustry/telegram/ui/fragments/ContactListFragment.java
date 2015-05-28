@@ -4,14 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.melnykov.fab.FloatingActionButton;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.MessagesActivity;
@@ -30,12 +27,25 @@ public class ContactListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedState) {
         super.onActivityCreated(savedState);
 
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.attachToListView(getListView());
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Open New Message Fragment", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         ContactsListAdapter adapter = new ContactsListAdapter(getActivity());
         setListAdapter(adapter);
 
+        String[] firstNames = new String[]{"sam", "Tommi", "Frontier", "Fedor", "Lex", "Pet", "Max", "sam", "Tommi", "Frontier", "Fedor", "Lex", "Pet", "Max", "sam", "Tommi", "Frontier", "Fedor", "Lex", "Pet", "Max"};
+        String[] lastNames = new String[]{"Max", "sam", "Tommi", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet"};
+
         List<Contact> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new Contact("first " + i, "last " + i, "bla bla bla bla bla message " + i));
+        for (int i = 0; i < firstNames.length; i++) {
+            list.add(new Contact(firstNames[i], lastNames[i], "bla bla bla bla bla message " + i));
         }
 
         adapter.addAll(list);
@@ -50,7 +60,7 @@ public class ContactListFragment extends ListFragment {
 
         if (mDualPane) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-           // showDetails(mCurCheckPosition);
+            //showDetails(mCurCheckPosition);
         }
     }
 
@@ -89,6 +99,4 @@ public class ContactListFragment extends ListFragment {
             startActivity(intent);
         }
     }
-
-
 }

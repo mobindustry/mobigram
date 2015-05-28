@@ -16,7 +16,7 @@
 
         <include
             android:id="@+id/messageFragmentToolbar"
-            layout="@layout/toolbar" />
+            layout="@layout/message_toolbar" />
 
         <FrameLayout
             android:layout_width="match_parent"

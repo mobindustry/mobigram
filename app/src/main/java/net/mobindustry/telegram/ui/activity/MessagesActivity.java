@@ -3,7 +3,10 @@ package net.mobindustry.telegram.ui.activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
 
+import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 
 public class MessagesActivity extends AppCompatActivity {

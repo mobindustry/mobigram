@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 
 import net.mobindustry.telegram.R;
 
@@ -52,7 +53,6 @@ public class ChatActivity extends AppCompatActivity {
         drawerList.setAdapter(adapter);
         adapter.addAll(screenTitles);
 
-
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -86,6 +86,8 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -107,19 +109,19 @@ public class ChatActivity extends AppCompatActivity {
         }
         switch (item.getItemId()) {
             case R.id.action_search:
-                SearchView sv = new SearchView(getSupportActionBar().getThemedContext());
+                final SearchView sv = new SearchView(getSupportActionBar().getThemedContext());
                 MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
                 MenuItemCompat.setActionView(item, sv);
                 sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
-                        System.out.println("search query submit");
+                        System.out.println("search query submit " + query);
                         return false;
                     }
 
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        System.out.println("tap");
+                        System.out.println("tap " + newText);
                         return false;
                     }
                 });
@@ -140,6 +142,8 @@ public class ChatActivity extends AppCompatActivity {
      * Swaps fragments in the main content view
      */
     private void selectItem(int position) {
+
+        //TODO open fragments
         // Update the main content by replacing fragments
         // Fragment fragment = null;
         switch (position) {
@@ -180,6 +184,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
+     *
      * When using the ActionBarDrawerToggle, you must call it during
      * onPostCreate() and onConfigurationChanged()...
      */
@@ -195,4 +200,5 @@ public class ChatActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
+
 }

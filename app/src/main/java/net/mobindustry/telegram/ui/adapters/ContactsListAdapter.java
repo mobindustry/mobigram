@@ -1,6 +1,8 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,19 +26,6 @@ public class ContactsListAdapter extends ArrayAdapter<Contact> {
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.contact_item, parent, false);
-
-            TextView icon = (TextView) convertView.findViewById(R.id.message_icon_text);
-            TextView firstLastName = (TextView) convertView.findViewById(R.id.firstLastName);
-            TextView lastMessage = (TextView) convertView.findViewById(R.id.lastMessage);
-
-            char[] iconText = new char[2];
-            getItem(position).getFirstName().getChars(0, 1, iconText, 0);
-            getItem(position).getLastName().getChars(0, 1, iconText, 1);
-            String iconTextResult = "" + iconText[0] + iconText[1];
-
-            icon.setText(iconTextResult.toUpperCase());
-            firstLastName.setText(getItem(position).getFirstName() + " " + getItem(position).getLastName());
-            lastMessage.setText(getItem(position).getLastMessage());
         }
 
         Contact item = getItem(position);
@@ -48,6 +37,13 @@ public class ContactsListAdapter extends ArrayAdapter<Contact> {
         item.getFirstName().getChars(0, 1, iconText, 0);
         item.getLastName().getChars(0, 1, iconText, 1);
         String iconTextResult = "" + iconText[0] + iconText[1];
+
+        ShapeDrawable circle = new ShapeDrawable(new OvalShape());
+        circle.setIntrinsicHeight(60);
+        circle.setIntrinsicWidth(60);
+        circle.getPaint().setColor(item.getColor());
+
+        icon.setBackground(circle);
 
         icon.setText(iconTextResult.toUpperCase());
         firstLastName.setText(item.getFirstName() + " " + getItem(position).getLastName());
