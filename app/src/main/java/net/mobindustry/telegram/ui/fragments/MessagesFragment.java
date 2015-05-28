@@ -47,6 +47,7 @@ public class MessagesFragment extends Fragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
             toolbar.setTitle("Message");
+            toolbar.inflateMenu(R.menu.message_menu);
 
             if (getResources().getConfiguration().orientation
                     == Configuration.ORIENTATION_PORTRAIT) {
