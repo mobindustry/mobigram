@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.model.NeTelegramMessage;
 import net.mobindustry.telegram.utils.Const;
+
+import java.io.Serializable;
 
 public class MessageAdapter extends ArrayAdapter<NeTelegramMessage>{
 
@@ -53,7 +56,6 @@ public class MessageAdapter extends ArrayAdapter<NeTelegramMessage>{
         }
 
         NeTelegramMessage item = getItem(position);
-
         switch (getItemViewType(position)) {
             case Const.IN_MESSAGE:
                 TextView inMessage = (TextView) convertView.findViewById(R.id.in_msg);
@@ -63,7 +65,7 @@ public class MessageAdapter extends ArrayAdapter<NeTelegramMessage>{
                 inTime.setText(item.getDate().toString());
                 break;
             case Const.IN_CONTENT_MESSAGE:
-                FrameLayout inContent = (FrameLayout) convertView.findViewById(R.id.in_content);
+                //FrameLayout inContent = (FrameLayout) convertView.findViewById(R.id.in_content);
                 TextView inContentTime = (TextView) convertView.findViewById(R.id.in_content_msg_time);
 
                 //inContent.addView();
@@ -77,7 +79,7 @@ public class MessageAdapter extends ArrayAdapter<NeTelegramMessage>{
                 outTime.setText(item.getDate().toString());
                 break;
             case Const.OUT_CONTENT_MESSAGE:
-                FrameLayout outContent = (FrameLayout) convertView.findViewById(R.id.out_content);
+                //FrameLayout outContent = (FrameLayout) convertView.findViewById(R.id.out_content);
                 TextView outContentTime = (TextView) convertView.findViewById(R.id.out_content_msg_time);
 
                 //outContent.addView();

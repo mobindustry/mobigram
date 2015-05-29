@@ -2,6 +2,8 @@ package net.mobindustry.telegram.ui.model;
 
 import android.graphics.Color;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Contact {
@@ -10,13 +12,15 @@ public class Contact {
     private String lastName;
     private String lastMessage;
     private int color;
+    private List<NeTelegramMessage> list;
 
     private Random rand = new Random();
 
-    public Contact(String firstName, String lastName, String lastMessage) {
+    public Contact(String firstName, String lastName) {
+        listInit();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.lastMessage = lastMessage;
+        this.lastMessage = list.get(list.size()-1).getMessage();
         this.color = colorInit();
     }
 
@@ -39,5 +43,16 @@ public class Contact {
     private int colorInit() {
         return Color.rgb(rand.nextInt(255),
                 rand.nextInt(255), rand.nextInt(255));
+    }
+
+    public List<NeTelegramMessage> getList() {
+        return list;
+    }
+
+    private void listInit(){
+        list = new ArrayList<>();
+        for (int i = 0; i < rand.nextInt(50)+1; i++) {
+            list.add(new NeTelegramMessage(rand.nextInt(4), "message" + i + " blablabla" + i + "jkfas jasfh kjha skjlhsafk"));
+        }
     }
 }

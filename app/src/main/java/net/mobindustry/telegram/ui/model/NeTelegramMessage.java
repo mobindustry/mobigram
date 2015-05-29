@@ -1,18 +1,21 @@
 package net.mobindustry.telegram.ui.model;
 
+import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class NeTelegramMessage {
+public class NeTelegramMessage implements Serializable {
 
     private int type;
     private String message;
-    private Date date;
+    private Date date = new Date();
+    private Calendar calendar = GregorianCalendar.getInstance();
 
     public NeTelegramMessage(int type, String message) {
         this.type = type;
         this.message = message;
-        date.setTime(GregorianCalendar.getInstance().getTimeInMillis());
+        date.setTime(calendar.getTimeInMillis());
     }
 
     public int getType() {
@@ -25,5 +28,15 @@ public class NeTelegramMessage {
 
     public Date getDate() {
         return date;
+    }
+
+    @Override
+    public String toString() {
+        return "NeTelegramMessage{" +
+                "type=" + type +
+                ", message='" + message + '\'' +
+                ", date=" + date +
+                ", calendar=" + calendar +
+                '}';
     }
 }

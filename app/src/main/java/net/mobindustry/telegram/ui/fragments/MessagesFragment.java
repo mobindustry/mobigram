@@ -4,16 +4,25 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.adapters.MessageAdapter;
+import net.mobindustry.telegram.ui.model.NeTelegramMessage;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class MessagesFragment extends Fragment {
 
-    private ImageView menuButton;
+    private MessageAdapter adapter;
+    private static List<NeTelegramMessage> messageList = new ArrayList<>();
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -24,6 +33,11 @@ public class MessagesFragment extends Fragment {
         return f;
     }
 
+
+    public void setList(List<NeTelegramMessage> messageList1){
+        messageList.clear();
+        messageList.addAll(messageList1);
+    }
     public int getShownIndex() {
         return getArguments().getInt("index", 0);
     }
@@ -37,12 +51,22 @@ public class MessagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.message_fragment, container, false);
+
+        ListView messageListView = (ListView) view.findViewById(R.id.messageListView);
+        adapter = new MessageAdapter(getActivity());
+
+        messageListView.setAdapter(adapter);
+
+        adapter.addAll(messageList);
+
         return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
@@ -69,6 +93,4 @@ public class MessagesFragment extends Fragment {
             }
         }
     }
-
-
 }

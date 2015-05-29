@@ -15,6 +15,7 @@ import net.mobindustry.telegram.ui.activity.MessagesActivity;
 import net.mobindustry.telegram.ui.adapters.ContactsListAdapter;
 import net.mobindustry.telegram.ui.model.Contact;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class ContactListFragment extends ListFragment {
 
     boolean mDualPane;
     int mCurCheckPosition = 0;
+    private List<Contact> list;
 
     @Override
     public void onActivityCreated(Bundle savedState) {
@@ -41,11 +43,11 @@ public class ContactListFragment extends ListFragment {
         setListAdapter(adapter);
 
         String[] firstNames = new String[]{"sam", "Tommi", "Frontier", "Fedor", "Lex", "Pet", "Max", "sam", "Tommi", "Frontier", "Fedor", "Lex", "Pet", "Max", "sam", "Tommi", "Frontier", "Fedor", "Lex", "Pet", "Max"};
-        String[] lastNames = new String[]{"Max", "sam", "Tommi", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet"};
+        String[] lastNames = new String[]{"Max", "sam", "Tommi", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor"};
 
-        List<Contact> list = new ArrayList<>();
+        list = new ArrayList<>();
         for (int i = 0; i < firstNames.length; i++) {
-            list.add(new Contact(firstNames[i], lastNames[i], "bla bla bla bla bla message " + i));
+            list.add(new Contact(firstNames[i], lastNames[i]));
         }
 
         adapter.addAll(list);
@@ -84,18 +86,22 @@ public class ContactListFragment extends ListFragment {
                     getFragmentManager().findFragmentById(R.id.details);
             if (details == null || details.getShownIndex() != index) {
                 details = MessagesFragment.newInstance(index);
+                details.setList(list.get(mCurCheckPosition).getList());
+
                 FragmentTransaction ft
                         = getFragmentManager().beginTransaction();
                 ft.replace(R.id.details, details);
                 ft.setTransition(
                         FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
-            }
 
+
+            }
         } else {
             Intent intent = new Intent();
             intent.setClass(getActivity(), MessagesActivity.class);
             intent.putExtra("index", index);
+            intent.putExtra("messages", (Serializable) list.get(index).getList());
             startActivity(intent);
         }
     }
