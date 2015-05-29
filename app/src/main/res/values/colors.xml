@@ -6,4 +6,7 @@
     <color name="background_action_bar">#5b95c2</color>
     <color name="background_activity">#fff</color>
     <item name="blue" type="color">#FF33B5E5</item>
+    <color name="background_row_country_list">#fff</color>
+    <color name="text_country_list">#000</color>
+    <color name="background_countries_list">#fff0f0f0</color>
 </resources>

@@ -31,6 +31,9 @@ public class RegistrationMainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        Toolbar toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.your_phone);
+
         fragmentTransaction = getFragmentManager().beginTransaction();
 
 

@@ -4,4 +4,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="padding_1">dp</dimen>
+    <dimen name="padding_2">5dp</dimen>
+    <dimen name="text_country_list_header_row">18sp</dimen>
+    <dimen name="padding_3">15dp</dimen>
+    <dimen name="text_row">16sp</dimen>
 </resources>

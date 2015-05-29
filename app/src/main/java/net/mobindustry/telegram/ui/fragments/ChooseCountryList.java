@@ -1,31 +1,44 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.applidium.headerlistview.HeaderListView;
-import com.applidium.headerlistview.SectionAdapter;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.adapters.ListAdapter;
+import net.mobindustry.telegram.ui.adapters.CountriesListAdapter;
+import net.mobindustry.telegram.utils.ListCountryObject;
 
-public class ChooseCountryList extends Fragment {
-    HeaderListView list;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.io.Writer;
+
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+
+public class ChooseCountryList extends Fragment implements Serializable {
+    StickyListHeadersListView list;
+    private CountriesListAdapter countriesListAdapter;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choose_country_fragment, container, false);
-        list = (HeaderListView) view.findViewById(R.id.countriesList);
-
-
+        list = (StickyListHeadersListView) view.findViewById(R.id.countriesList);
         return view;
     }
 
@@ -33,75 +46,108 @@ public class ChooseCountryList extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        list.setAdapter(new SectionAdapter() {
-            @Override
-            public int numberOfSections() {
-                return 4;
-            }
 
-            @Override
-            public int numberOfRows(int section) {
-                return 35;
-            }
-
-            @Override
-            public View getRowView(int section, int row, View convertView, ViewGroup parent) {
-                if (convertView == null) {
-                    convertView = (TextView) getActivity().getLayoutInflater().inflate(getResources().getLayout(android.R.layout.simple_list_item_1), null);
-                }
-                ((TextView) convertView).setText("     Section " + section + " Row " + row);
-                return convertView;
-            }
-
-            @Override
-            public int getSectionHeaderViewTypeCount() {
-                return 2;
-            }
-
-            @Override
-            public int getSectionHeaderItemViewType(int section) {
-                return section;
-            }
-            @Override
-            public boolean hasSectionHeaderView(int section) {
-                return true;
-            }
+        Toolbar toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.choose_country);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setClickable(true);
 
 
-            @Override
-            public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
-
-                if (convertView == null) {
-                    if (getSectionHeaderItemViewType(section) == 0) {
-                        convertView = (TextView) getActivity().getLayoutInflater().inflate(getResources().getLayout(android.R.layout.simple_list_item_1), null);
-                    } else {
-                        convertView = getActivity().getLayoutInflater().inflate(getResources().getLayout(android.R.layout.simple_list_item_2), null);
-                    }
-                }
-
-                if (getSectionHeaderItemViewType(section) == 0) {
-                    ((TextView) convertView).setText(String.valueOf(section));
-                } else {
-                    ((TextView) convertView.findViewById(android.R.id.text1)).setText(String.valueOf(section));
-                }
-                convertView.setBackgroundColor(getResources().getColor(R.color.background_action_bar));
 
 
-                return convertView;
-            }
-
-            @Override
-            public Object getRowItem(int section, int row) {
-                return null;
-            }
-        });
 
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.choose_country);
+
+        //Take file countries.txt from assets folder and parse it to String extFileFromAssets.
+        String textFileFromAssets = null;
+
+        InputStream is = null;
+        try {
+            is = getResources().getAssets().open("countries.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            textFileFromAssets = convertStreamToString(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        ListCountryObject countries = new ListCountryObject(textFileFromAssets);
+        for (int i = 0; i < countries.getListCountries().size(); i++) {
+            Log.e("log", " " + countries.getListCountries().get(i).getCountryCode()
+                    + " " + countries.getListCountries().get(i).getCountryStringCode()
+                    + " " + countries.getListCountries().get(i).getCountryName()
+                    + " " + countries.getListCountries().get(i).getInitialLetter());
+
+        }
+        //Log.e("log", " " + countries.getListHeaderPositions().toString());
+        Log.e("log", " " + countries.getRowsQuantity());
+        countriesListAdapter = new CountriesListAdapter(getActivity(), countries);
+        list.setAdapter(countriesListAdapter);
+
+
+        //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.choose_country);
         //((AppCompatActivity)getActivity()).getSupportActionBar().setLogo(R.drawable.ic_back);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+       // ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
 
 
+    }
+
+    public static String convertStreamToString(InputStream is)
+            throws IOException {
+        Writer writer = new StringWriter();
+
+        char[] buffer = new char[2048];
+        try {
+            Reader reader = new BufferedReader(new InputStreamReader(is,
+                    "UTF-8"));
+            int n;
+            while ((n = reader.read(buffer)) != -1) {
+                writer.write(buffer, 0, n);
+            }
+        } finally {
+            is.close();
+        }
+        String text = writer.toString();
+        return text;
+    }
+
+    /*public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.search_for_tool_bar, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        }
+        return super.onCreateOptionsMenu(menu);
+    }*/
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater=getActivity().getMenuInflater();
+        inflater.inflate(R.menu.search_for_tool_bar, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        }
     }
 }
