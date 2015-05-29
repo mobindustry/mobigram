@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.romainpiel.titanic.library.Titanic;
 import com.romainpiel.titanic.library.TitanicTextView;
@@ -50,7 +51,7 @@ public class MainActivity extends Activity {
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.i("MainActivityTag", "SplashStart task interrupted");
             }
             return null;
         }
