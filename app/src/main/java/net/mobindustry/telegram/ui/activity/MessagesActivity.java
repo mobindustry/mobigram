@@ -8,6 +8,8 @@ import android.widget.ImageView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
+import net.mobindustry.telegram.ui.model.Contact;
+import net.mobindustry.telegram.ui.model.NeTelegramMessage;
 
 public class MessagesActivity extends AppCompatActivity {
     @Override
@@ -25,6 +27,8 @@ public class MessagesActivity extends AppCompatActivity {
             details.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction().add(
                     android.R.id.content, details).commit();
+            details.setList(((Contact)getIntent().getSerializableExtra("contact")).getList());
+            details.setDataForToolbar((Contact)getIntent().getSerializableExtra("contact"));
         }
     }
 }

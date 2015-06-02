@@ -2,8 +2,7 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="@dimen/toolbar_height"
     android:background="@color/background_action_bar">
-
 
 </android.support.v7.widget.Toolbar>

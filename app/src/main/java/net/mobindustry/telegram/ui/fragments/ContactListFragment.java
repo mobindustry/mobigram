@@ -96,6 +96,7 @@ public class ContactListFragment extends ListFragment {
             if (details == null || details.getShownIndex() != index) {
                 details = MessagesFragment.newInstance(index);
                 details.setList(list.get(mCurCheckPosition).getList());
+                details.setDataForToolbar(list.get(mCurCheckPosition));
 
                 FragmentTransaction ft
                         = getFragmentManager().beginTransaction();
@@ -103,14 +104,12 @@ public class ContactListFragment extends ListFragment {
                 ft.setTransition(
                         FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
-
-
             }
         } else {
             Intent intent = new Intent();
             intent.setClass(getActivity(), MessagesActivity.class);
             intent.putExtra("index", index);
-            intent.putExtra("messages", (Serializable) list.get(index).getList());
+            intent.putExtra("contact", list.get(index));
             startActivity(intent);
         }
     }

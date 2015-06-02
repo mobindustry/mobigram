@@ -1,6 +1,8 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.content.res.Configuration;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -10,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
+import net.mobindustry.telegram.ui.model.Contact;
 import net.mobindustry.telegram.ui.model.NeTelegramMessage;
 
 import java.util.ArrayList;
@@ -24,6 +28,11 @@ public class MessagesFragment extends Fragment {
     private MessageAdapter adapter;
     private static List<NeTelegramMessage> messageList = new ArrayList<>();
 
+    private String initials;
+    private String firstLastName;
+    private String lastSeen;
+    private int color;
+
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
         Bundle args = new Bundle();
@@ -33,18 +42,20 @@ public class MessagesFragment extends Fragment {
         return f;
     }
 
-
     public void setList(List<NeTelegramMessage> messageList1){
         messageList.clear();
         messageList.addAll(messageList1);
     }
-    public int getShownIndex() {
-        return getArguments().getInt("index", 0);
+
+    public void setDataForToolbar(Contact contact) {
+        initials = contact.getInitials();
+        firstLastName = contact.getFirstName() + " " + contact.getLastName();
+        lastSeen = "bla bla bla";
+        color = contact.getColor();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public int getShownIndex() {
+        return getArguments().getInt("index", 0);
     }
 
     @Override
@@ -54,9 +65,7 @@ public class MessagesFragment extends Fragment {
 
         ListView messageListView = (ListView) view.findViewById(R.id.messageListView);
         adapter = new MessageAdapter(getActivity());
-
         messageListView.setAdapter(adapter);
-
         adapter.addAll(messageList);
 
         return view;
@@ -66,11 +75,17 @@ public class MessagesFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
-            toolbar.setTitle("Message");
+
+            TextView icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
+            TextView name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
+            TextView lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
+            name.setText(firstLastName);
+            lastSeenText.setText(lastSeen);
+            icon.setText(initials);
+            icon.setBackground(getBackground());
+
             toolbar.inflateMenu(R.menu.message_menu);
 
             if (getResources().getConfiguration().orientation
@@ -92,5 +107,14 @@ public class MessagesFragment extends Fragment {
                 });
             }
         }
+    }
+
+    public ShapeDrawable getBackground() {
+        ShapeDrawable circle = new ShapeDrawable(new OvalShape());
+        circle.setIntrinsicHeight(60);
+        circle.setIntrinsicWidth(60);
+        circle.getPaint().setColor(color);
+
+        return circle;
     }
 }

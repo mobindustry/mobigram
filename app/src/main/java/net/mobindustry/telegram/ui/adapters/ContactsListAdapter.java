@@ -33,19 +33,13 @@ public class ContactsListAdapter extends ArrayAdapter<Contact> {
         TextView firstLastName = (TextView) convertView.findViewById(R.id.firstLastName);
         TextView lastMessage = (TextView) convertView.findViewById(R.id.lastMessage);
 
-        char[] iconText = new char[2];
-        item.getFirstName().getChars(0, 1, iconText, 0);
-        item.getLastName().getChars(0, 1, iconText, 1);
-        String iconTextResult = "" + iconText[0] + iconText[1];
-
         ShapeDrawable circle = new ShapeDrawable(new OvalShape());
         circle.setIntrinsicHeight(60);
         circle.setIntrinsicWidth(60);
         circle.getPaint().setColor(item.getColor());
 
         icon.setBackground(circle);
-
-        icon.setText(iconTextResult.toUpperCase());
+        icon.setText(item.getInitials());
         firstLastName.setText(item.getFirstName() + " " + getItem(position).getLastName());
         lastMessage.setText(item.getLastMessage());
 

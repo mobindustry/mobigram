@@ -16,7 +16,7 @@
 
         <include
             android:id="@+id/messageFragmentToolbar"
-            layout="@layout/toolbar" />
+            layout="@layout/toolbar_messages" />
 
         <LinearLayout
             android:orientation="vertical"
