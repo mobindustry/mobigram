@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import net.mobindustry.telegram.R;
 
@@ -86,8 +87,6 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -147,14 +146,9 @@ public class ChatActivity extends AppCompatActivity {
         // Update the main content by replacing fragments
         // Fragment fragment = null;
         switch (position) {
-            case 0:
-                // fragment = new ScreenOne();
-                break;
             case 1:
-                //   fragment = new ScreenTwo();
-                break;
-            case 2:
-                //   fragment = new ScreenThree();
+                // fragment = new ScreenOne();
+                Toast.makeText(ChatActivity.this, "Log Out", Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;
