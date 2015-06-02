@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -16,9 +17,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.CountriesListAdapter;
+import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
 import java.io.BufferedReader;
@@ -33,8 +37,10 @@ import java.io.Writer;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ChooseCountryList extends Fragment implements Serializable {
-    StickyListHeadersListView list;
+    private StickyListHeadersListView list;
     private CountriesListAdapter countriesListAdapter;
+    private FragmentTransaction fragmentTransaction;
+    private RegistrationMainFragment registrationMainFragment;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,7 +58,6 @@ public class ChooseCountryList extends Fragment implements Serializable {
         toolbar.setTitle(R.string.choose_country);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setClickable(true);
-        toolbar.inflateMenu(R.menu.search_for_tool_bar);
 
 
         //Take file countries.txt from assets folder and parse it to String extFileFromAssets.
@@ -72,20 +77,21 @@ public class ChooseCountryList extends Fragment implements Serializable {
 
 
         ListCountryObject countries = new ListCountryObject(textFileFromAssets);
-        for (int i = 0; i < countries.getListCountries().size(); i++) {
-            Log.e("log", " " + countries.getListCountries().get(i).getCountryCode()
-                    + " " + countries.getListCountries().get(i).getCountryStringCode()
-                    + " " + countries.getListCountries().get(i).getCountryName()
-                    + " " + countries.getListCountries().get(i).getInitialLetter());
-
-        }
-        //Log.e("log", " " + countries.getListHeaderPositions().toString());
-        Log.e("log", " " + countries.getRowsQuantity());
         countriesListAdapter = new CountriesListAdapter(getActivity(), countries);
         list.setAdapter(countriesListAdapter);
 
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                fragmentTransaction = getFragmentManager().beginTransaction();
 
-
+                registrationMainFragment = new RegistrationMainFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Const.COUNTRY_WITH_CODE,);
+                fragmentTransaction.replace(R.id.fragmentContainer, registrationMainFragment);
+                fragmentTransaction.commit();
+            }
+        });
     }
 
     public static String convertStreamToString(InputStream is)
@@ -105,46 +111,6 @@ public class ChooseCountryList extends Fragment implements Serializable {
         }
         String text = writer.toString();
         return text;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.search_for_tool_bar, menu);
-    }
-
-
-    @Override
-    public void setHasOptionsMenu(boolean hasMenu) {
-        super.setHasOptionsMenu(hasMenu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                SearchView sv = new SearchView(getActivity());
-                MenuItemCompat.setShowAsAction(item,
-                        MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW |
-                                MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-                MenuItemCompat.setActionView(item, sv);
-                sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        System.out.println(query);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        System.out.println(newText);
-                        return false;
-                    }
-                });
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
 
