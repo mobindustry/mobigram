@@ -39,7 +39,7 @@ public class MessagesFragment extends Fragment {
         return f;
     }
 
-    public void setList(List<NeTelegramMessage> messageList1){
+    public void setList(List<NeTelegramMessage> messageList1) {
         messageList.clear();
         messageList.addAll(messageList1);
     }
@@ -78,6 +78,7 @@ public class MessagesFragment extends Fragment {
             TextView icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
             TextView name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
             TextView lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
+
             name.setText(firstLastName);
             lastSeenText.setText(lastSeen);
             icon.setText(initials);

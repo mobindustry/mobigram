@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
         protected Void doInBackground(Void... voids) {
 
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(1); //TODO set time 5 second;
             } catch (InterruptedException e) {
                 Log.i("MainActivityTag", "SplashStart task interrupted");
             }
@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            Intent intent = new Intent(MainActivity.this, ChatActivity .class);
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
             startActivity(intent);
             showActivityAnimation(MainActivity.this);
             finish();

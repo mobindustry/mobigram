@@ -17,14 +17,13 @@ import net.mobindustry.telegram.ui.activity.MessagesActivity;
 import net.mobindustry.telegram.ui.adapters.ContactsListAdapter;
 import net.mobindustry.telegram.ui.model.Contact;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactListFragment extends ListFragment {
 
-    boolean mDualPane;
-    int mCurCheckPosition = 0;
+    boolean dualPane;
+    int currentCheckPosition = 0;
     private List<Contact> list;
 
     @Override
@@ -58,27 +57,26 @@ public class ContactListFragment extends ListFragment {
             list.add(new Contact(firstNames[i], lastNames[i]));
         }
 
-
         adapter.addAll(list);
 
         View detailsFrame = getActivity().findViewById(R.id.details);
-        mDualPane = detailsFrame != null
+        dualPane = detailsFrame != null
                 && detailsFrame.getVisibility() == View.VISIBLE;
 
         if (savedState != null) {
-            mCurCheckPosition = savedState.getInt("curChoice", 0);
+            currentCheckPosition = savedState.getInt("curChoice", 0);
         }
 
-        if (mDualPane) {
+        if (dualPane) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            //showDetails(mCurCheckPosition);
+            //showDetails(currentCheckPosition);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("curChoice", mCurCheckPosition);
+        outState.putInt("curChoice", currentCheckPosition);
     }
 
     @Override
@@ -87,16 +85,16 @@ public class ContactListFragment extends ListFragment {
     }
 
     void showDetails(int index) {
-        mCurCheckPosition = index;
+        currentCheckPosition = index;
 
-        if (mDualPane) {
+        if (dualPane) {
             getListView().setItemChecked(index, true);
             MessagesFragment details = (MessagesFragment)
                     getFragmentManager().findFragmentById(R.id.details);
             if (details == null || details.getShownIndex() != index) {
                 details = MessagesFragment.newInstance(index);
-                details.setList(list.get(mCurCheckPosition).getList());
-                details.setDataForToolbar(list.get(mCurCheckPosition));
+                details.setList(list.get(currentCheckPosition).getList());
+                details.setDataForToolbar(list.get(currentCheckPosition));
 
                 FragmentTransaction ft
                         = getFragmentManager().beginTransaction();

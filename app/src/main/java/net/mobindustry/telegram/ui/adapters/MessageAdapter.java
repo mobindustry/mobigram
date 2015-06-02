@@ -1,21 +1,17 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.model.NeTelegramMessage;
 import net.mobindustry.telegram.utils.Const;
 
-import java.io.Serializable;
-
-public class MessageAdapter extends ArrayAdapter<NeTelegramMessage>{
+public class MessageAdapter extends ArrayAdapter<NeTelegramMessage> {
 
     private final LayoutInflater inflater;
     private int typeCount = 4;
@@ -38,7 +34,7 @@ public class MessageAdapter extends ArrayAdapter<NeTelegramMessage>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if(convertView == null) {
+        if (convertView == null) {
             switch (getItemViewType(position)) {
                 case Const.IN_MESSAGE:
                     convertView = inflater.inflate(R.layout.in_message, parent, false);
