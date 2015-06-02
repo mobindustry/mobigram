@@ -15,12 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
+import net.mobindustry.telegram.ui.model.NavigationItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -49,10 +52,12 @@ public class ChatActivity extends AppCompatActivity {
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.navigation_drawer_header, drawerList, false);
         drawerList.addHeaderView(header, null, false);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item);
+        List<NavigationItem> drawerItemsList = new ArrayList<>();
+        drawerItemsList.add(new NavigationItem("Log Out", R.drawable.ic_logout));
+
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(ChatActivity.this);
         drawerList.setAdapter(adapter);
-        adapter.addAll(screenTitles);
+        adapter.addAll(drawerItemsList);
 
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -142,33 +147,15 @@ public class ChatActivity extends AppCompatActivity {
      */
     private void selectItem(int position) {
 
-        //TODO open fragments
-        // Update the main content by replacing fragments
-        // Fragment fragment = null;
         switch (position) {
             case 1:
-                // fragment = new ScreenOne();
                 Toast.makeText(ChatActivity.this, "Log Out", Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;
         }
 
-        // Insert the fragment by replacing any existing fragment
-    /*    if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, fragment).commit();
 
-            // Highlight the selected item, update the title, and close the drawer
-            drawerList.setItemChecked(position, true);
-            setTitle(screenTitles[position]);
-            drawerLayout.closeDrawer(drawerList);
-        } else {
-            // Error
-            Log.e(this.getClass().getName(), "Error. Fragment is not created");
-        }
-        */
     }
 
     @Override

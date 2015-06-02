@@ -1,24 +1,14 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.CountriesListAdapter;
@@ -87,7 +77,7 @@ public class ChooseCountryList extends Fragment implements Serializable {
 
                 registrationMainFragment = new RegistrationMainFragment();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Const.COUNTRY_WITH_CODE,);
+               //bundle.putSerializable(Const.COUNTRY_WITH_CODE,);
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationMainFragment);
                 fragmentTransaction.commit();
             }
@@ -112,6 +102,4 @@ public class ChooseCountryList extends Fragment implements Serializable {
         String text = writer.toString();
         return text;
     }
-
-
 }
