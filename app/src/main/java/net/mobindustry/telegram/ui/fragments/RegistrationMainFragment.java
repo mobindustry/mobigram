@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.internal.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +39,9 @@ public class RegistrationMainFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        chooseCountryList = new ChooseCountryList();
+
+        //Set country object from ChooseCountryFragment
 
         RegistrationActivity activity = (RegistrationActivity) getActivity();
         CountryObject countryObject = activity.getCountryObject();
@@ -45,8 +50,9 @@ public class RegistrationMainFragment extends Fragment {
         code = (EditText) getActivity().findViewById(R.id.code);
         phone = (EditText) getActivity().findViewById(R.id.phone);
 
-        if (countryObject != null) {
+        //Check country object from ChooseCountryFragment
 
+        if (countryObject != null) {
             Log.e("log", "Name " + countryObject.getCountryName());
             chooseCountry.setText(countryObject.getCountryName());
             code.setText(countryObject.getCountryCode());
@@ -56,17 +62,37 @@ public class RegistrationMainFragment extends Fragment {
             public void onClick(View v) {
                 fragmentTransaction.replace(R.id.fragmentContainer, chooseCountryList);
                 fragmentTransaction.commit();
+                fragmentTransaction = getFragmentManager().beginTransaction();
             }
         });
 
+        //Create toolbar
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.your_phone);
 
-        fragmentTransaction = getFragmentManager().beginTransaction();
+        // If the user fills country code manually
+
+        code.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
-        chooseCountryList = new ChooseCountryList();
+
+
 
 
     }
