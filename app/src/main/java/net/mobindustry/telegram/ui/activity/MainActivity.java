@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
     }
 
     public static void showActivityAnimation(Activity activity) {
-        activity.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_in_left);
+        activity.overridePendingTransition(R.anim.anim_scale, R.anim.anim_scale);
     }
 
     @Override

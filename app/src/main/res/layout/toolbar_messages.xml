@@ -5,26 +5,25 @@
 
     <TextView
         android:id="@+id/toolbar_text_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="5dp"
+        android:layout_width="@dimen/toolbar_icon_size"
+        android:layout_height="@dimen/toolbar_icon_size"
+        android:layout_margin="@dimen/margin_5dp"
         android:gravity="center"
         android:textColor="#fff"
-        android:textSize="23sp" />
+        android:textSize="@dimen/toolbar_icon_text_size" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="3dp"
-        >
+        android:layout_marginLeft="@dimen/margin_3dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/toolbar_text_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#fff"
-            android:textSize="18sp"
+            android:textSize="@dimen/toolbar_name_text_size"
             android:textStyle="bold" />
 
         <TextView
@@ -33,8 +32,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="#fff"
-            android:textSize="16sp" />
+            android:textSize="@dimen/toolbar_last_seen_text_size" />
 
     </LinearLayout>
-
 </android.support.v7.widget.Toolbar>

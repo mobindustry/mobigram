@@ -14,9 +14,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top|left"
-            android:maxWidth="350dp"
+            android:maxWidth="@dimen/message_max_width"
             android:textColor="#000"
-            android:textSize="18sp" />
+            android:textSize="@dimen/message_text_size" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -28,10 +28,9 @@
                 android:id="@+id/in_msg_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="3dp"
+                android:paddingLeft="@dimen/padding_3dp"
                 android:textColor="#aaa"
-                android:textSize="15sp" />
+                android:textSize="@dimen/message_time_text_size" />
         </LinearLayout>
-
     </LinearLayout>
 </FrameLayout>

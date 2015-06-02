@@ -2,5 +2,8 @@
 <resources>
     <dimen name="width_registration_fragment">400dp</dimen>
     <dimen name="height_registration_fragment">600dp</dimen>
+
     <dimen name="toolbar_height">64dp</dimen>
+
+    <dimen name="splash_screen_text_size">50sp</dimen>
 </resources>

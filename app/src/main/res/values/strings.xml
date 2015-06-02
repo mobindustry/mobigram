@@ -2,15 +2,10 @@
     <string name="app_name">NeTelegram</string>
     <string name="action_search">Search</string>
 
-    <string-array name="screen_array">
-        <item>LogOut</item>
-    </string-array>
-
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="your_phone">Your phone</string>
     <string name="choose_country">Choose country</string>
-
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
