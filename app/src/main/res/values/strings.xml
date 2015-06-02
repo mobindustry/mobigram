@@ -3,9 +3,7 @@
     <string name="action_search">Search</string>
 
     <string-array name="screen_array">
-        <item>Screen 1</item>
-        <item>Screen 2</item>
-        <item>Screen 3</item>
+        <item>LogOut</item>
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>
@@ -20,5 +18,8 @@
     <string name="test_text_country_code">+1264</string>
     <string name="test_text_phone_number">934567784</string>
     <string name="text_user_info">We will send an SMS with a confirmation code to your number</string>
+    <string name="clear_history_menu">Clear history</string>
+    <string name="delete_chat_menu">Delete chat</string>
+    <string name="mute_notification_menu">Mute notification</string>
 
 </resources>
