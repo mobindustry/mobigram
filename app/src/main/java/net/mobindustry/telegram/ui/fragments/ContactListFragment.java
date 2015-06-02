@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +26,12 @@ public class ContactListFragment extends ListFragment {
     boolean mDualPane;
     int mCurCheckPosition = 0;
     private List<Contact> list;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.contact_list_fragment, null);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedState) {
@@ -49,6 +57,7 @@ public class ContactListFragment extends ListFragment {
         for (int i = 0; i < firstNames.length; i++) {
             list.add(new Contact(firstNames[i], lastNames[i]));
         }
+
 
         adapter.addAll(list);
 

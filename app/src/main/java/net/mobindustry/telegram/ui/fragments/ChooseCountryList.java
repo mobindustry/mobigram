@@ -67,7 +67,7 @@ public class ChooseCountryList extends Fragment implements Serializable {
         }
 
 
-        ListCountryObject countries = new ListCountryObject(textFileFromAssets);
+        final ListCountryObject countries = new ListCountryObject(textFileFromAssets);
         countriesListAdapter = new CountriesListAdapter(getActivity(), countries);
         list.setAdapter(countriesListAdapter);
 

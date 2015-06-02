@@ -18,14 +18,16 @@
             android:id="@+id/messageFragmentToolbar"
             layout="@layout/toolbar" />
 
-        <FrameLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ListView
                 android:id="@+id/messageListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:divider="@null"
                 android:stackFromBottom="true"
                 android:transcriptMode="alwaysScroll"
@@ -36,18 +38,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="#fff"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:padding="5dp"
+                    android:layout_gravity="bottom"
                     android:src="@drawable/ic_smiles" />
 
                 <EditText
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="10"
                     android:hint="Message"
@@ -58,16 +62,10 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:background="@drawable/mic_button_states"
-                    android:padding="10dp" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
                     android:padding="5dp"
+                    android:layout_gravity="bottom"
                     android:src="@drawable/ic_attach" />
             </LinearLayout>
-        </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

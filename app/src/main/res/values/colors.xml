@@ -9,4 +9,7 @@
     <color name="background_row_country_list">#fff</color>
     <color name="text_country_list">#000</color>
     <color name="background_countries_list">#fff0f0f0</color>
+    <color name="selected_contact">#ffd8d8d8</color>
+    <color name="pressed_contact">#ff74c8ff</color>
+
 </resources>
