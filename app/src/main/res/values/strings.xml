@@ -21,5 +21,6 @@
     <string name="clear_history_menu">Clear history</string>
     <string name="delete_chat_menu">Delete chat</string>
     <string name="mute_notification_menu">Mute notification</string>
+    <string name="logout_navigation_item">Log Out</string>
 
 </resources>

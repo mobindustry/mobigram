@@ -27,7 +27,6 @@ import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private String[] screenTitles;
     private DrawerLayout drawerLayout;
     private ListView drawerList;
 
@@ -40,20 +39,19 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
 
-        title = drawerTitle = getTitle();
-        screenTitles = getResources().getStringArray(R.array.screen_array);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerList = (ListView) findViewById(R.id.left_drawer);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
         setSupportActionBar(toolbar);
+
+        title = drawerTitle = getTitle();
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerList = (ListView) findViewById(R.id.left_drawer);
 
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.navigation_drawer_header, drawerList, false);
         drawerList.addHeaderView(header, null, false);
 
         List<NavigationItem> drawerItemsList = new ArrayList<>();
-        drawerItemsList.add(new NavigationItem("Log Out", R.drawable.ic_logout));
+        drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
 
         NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(ChatActivity.this);
         drawerList.setAdapter(adapter);
@@ -64,24 +62,17 @@ public class ChatActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        drawerToggle = new ActionBarDrawerToggle(
-                this, /* host Activity */
-                drawerLayout, /* DrawerLayout object */
-                toolbar, /* nav drawer icon to replace 'Up' caret */
-                R.string.drawer_open, /* "open drawer" description */
-                R.string.drawer_close /* "close drawer" description */
-        ) {
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+                toolbar, R.string.drawer_open, R.string.drawer_close) {
 
-            /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 getSupportActionBar().setTitle(title);
-                supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                supportInvalidateOptionsMenu();
             }
 
-            /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 getSupportActionBar().setTitle(drawerTitle);
-                supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                supportInvalidateOptionsMenu();
             }
         };
 
@@ -116,7 +107,7 @@ public class ChatActivity extends AppCompatActivity {
                 final SearchView sv = new SearchView(getSupportActionBar().getThemedContext());
                 MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
                 MenuItemCompat.setActionView(item, sv);
-                sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() { //TODO search
                     @Override
                     public boolean onQueryTextSubmit(String query) {
                         System.out.println("search query submit " + query);
@@ -142,20 +133,15 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Swaps fragments in the main content view
-     */
     private void selectItem(int position) {
 
         switch (position) {
             case 1:
-                Toast.makeText(ChatActivity.this, "Log Out", Toast.LENGTH_LONG).show();
+                Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;
         }
-
-
     }
 
     @Override
@@ -163,12 +149,6 @@ public class ChatActivity extends AppCompatActivity {
         this.title = title;
         getSupportActionBar().setTitle(this.title);
     }
-
-    /**
-     *
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
