@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -47,15 +48,11 @@ public class ChooseCountryList extends Fragment implements Serializable {
         super.onActivityCreated(savedInstanceState);
 
 
-        Toolbar toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.choose_country);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setClickable(true);
-
-
-
-
-
+        toolbar.inflateMenu(R.menu.search_for_tool_bar);
 
 
         //Take file countries.txt from assets folder and parse it to String extFileFromAssets.
@@ -88,11 +85,6 @@ public class ChooseCountryList extends Fragment implements Serializable {
         list.setAdapter(countriesListAdapter);
 
 
-        //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.choose_country);
-        //((AppCompatActivity)getActivity()).getSupportActionBar().setLogo(R.drawable.ic_back);
-       // ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-
 
     }
 
@@ -115,39 +107,45 @@ public class ChooseCountryList extends Fragment implements Serializable {
         return text;
     }
 
-    /*public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getActivity().getMenuInflater();
-        menuInflater.inflate(R.menu.search_for_tool_bar, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-
-        SearchView searchView = null;
-        if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-        }
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-        }
-        return super.onCreateOptionsMenu(menu);
-    }*/
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater=getActivity().getMenuInflater();
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_for_tool_bar, menu);
+    }
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+    @Override
+    public void setHasOptionsMenu(boolean hasMenu) {
+        super.setHasOptionsMenu(hasMenu);
+    }
 
-        SearchView searchView = null;
-        if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-        }
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                SearchView sv = new SearchView(getActivity());
+                MenuItemCompat.setShowAsAction(item,
+                        MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW |
+                                MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+                MenuItemCompat.setActionView(item, sv);
+                sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        System.out.println(query);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        System.out.println(newText);
+                        return false;
+                    }
+                });
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
+
+
 }
