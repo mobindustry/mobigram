@@ -7,16 +7,23 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.internal.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.activity.RegistrationActivity;
+import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.CountryObject;
 
 public class RegistrationMainFragment extends Fragment {
 
-    private EditText chooseCountry;
+    private TextView chooseCountry;
+    private EditText code;
+    private EditText phone;
     private ChooseCountryList chooseCountryList;
     private FragmentTransaction fragmentTransaction;
 
@@ -31,15 +38,19 @@ public class RegistrationMainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Toolbar toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.your_phone);
+        RegistrationActivity activity = (RegistrationActivity) getActivity();
+        CountryObject countryObject = activity.getCountryObject();
 
-        fragmentTransaction = getFragmentManager().beginTransaction();
+        chooseCountry = (TextView) getActivity().findViewById(R.id.chooseCountry);
+        code = (EditText) getActivity().findViewById(R.id.code);
+        phone = (EditText) getActivity().findViewById(R.id.phone);
 
+        if (countryObject != null) {
 
-        chooseCountryList = new ChooseCountryList();
-        chooseCountry = (EditText) getActivity().findViewById(R.id.chooseCountry);
-
+            Log.e("log", "Name " + countryObject.getCountryName());
+            chooseCountry.setText(countryObject.getCountryName());
+            code.setText(countryObject.getCountryCode());
+        }
         chooseCountry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,6 +58,15 @@ public class RegistrationMainFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+
+
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.your_phone);
+
+        fragmentTransaction = getFragmentManager().beginTransaction();
+
+
+        chooseCountryList = new ChooseCountryList();
 
 
     }

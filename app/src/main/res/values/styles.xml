@@ -2,14 +2,9 @@
 
     <style name="customAppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:editTextStyle">@style/Widget.AppCompat.Light.ActionBar.TabBar</item>
     </style>
 
 
-    <style name="styleEditText" parent="android:Widget.Holo.Light">
-        <item name="android:textColor">@color/text_country_list</item>
-        <item name="android:textColorHint">@color/text_info</item>
-    </style>
 
 </resources>
 

@@ -16,23 +16,32 @@ import android.widget.EditText;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
+import net.mobindustry.telegram.utils.CountryObject;
 
-public class RegistrationActivity extends AppCompatActivity{
+public class RegistrationActivity extends AppCompatActivity {
 
     private Fragment registrationUserPhone;
     private FragmentTransaction fragmentTransaction;
+    private CountryObject countryObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
 
-        registrationUserPhone=new RegistrationMainFragment();
+        registrationUserPhone = new RegistrationMainFragment();
 
-        fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragmentContainer, registrationUserPhone);
         fragmentTransaction.commit();
 
     }
 
+    public CountryObject getCountryObject() {
+        return countryObject;
+    }
+
+    public void setCountryObject(CountryObject countryObject) {
+        this.countryObject = countryObject;
+    }
 }

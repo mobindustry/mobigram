@@ -1,7 +1,5 @@
 package net.mobindustry.telegram.utils;
 
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,8 +76,6 @@ public class ListCountryObject implements Serializable {
         listHeaderPositions.add(0);
         for (int i = 0; i < listCountries.size() - 1; i++) {
             if (!listCountries.get(i).getInitialLetter().equals(listCountries.get(i + 1).getInitialLetter())) {
-                Log.e(" log ", " first " + listCountries.get(i).getInitialLetter());
-                Log.e(" log ", " second " + listCountries.get(i + 1).getInitialLetter());
                 listHeaderPositions.add(i + 1);
             }
         }

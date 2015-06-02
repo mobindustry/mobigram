@@ -15,12 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <TextView
             android:id="@+id/chooseCountry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_10dp"
             android:hint="@string/text_choose_country"
+            android:textColor="#000"
+            android:textSize="18sp"
             />
 
     </LinearLayout>
@@ -35,6 +37,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_10dp"
             android:layout_weight="1.5"
+            android:id="@+id/code"
+            android:textColor="#000"
+            android:singleLine="true"
             />
 
         <EditText
@@ -43,6 +48,9 @@
             android:layout_marginRight="@dimen/margin_10dp"
             android:layout_marginTop="@dimen/margin_10dp"
             android:layout_weight="5"
+            android:id="@+id/phone"
+            android:textColor="#000"
+            android:singleLine="true"
             />
 
     </LinearLayout>

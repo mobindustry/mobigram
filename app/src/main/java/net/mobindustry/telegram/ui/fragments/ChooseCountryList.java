@@ -9,12 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
+import android.widget.TextView;
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.ui.adapters.CountriesListAdapter;
 import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.CountryObject;
 import net.mobindustry.telegram.utils.ListCountryObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -76,8 +77,13 @@ public class ChooseCountryList extends Fragment implements Serializable {
                 fragmentTransaction = getFragmentManager().beginTransaction();
 
                 registrationMainFragment = new RegistrationMainFragment();
-                Bundle bundle = new Bundle();
-               //bundle.putSerializable(Const.COUNTRY_WITH_CODE,);
+
+                CountryObject countryObject=countries.getListCountries().get(position);
+                if (getActivity()instanceof RegistrationActivity){
+                    RegistrationActivity activity=(RegistrationActivity)getActivity();
+                    activity.setCountryObject(countryObject);
+                }
+
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationMainFragment);
                 fragmentTransaction.commit();
             }
@@ -102,4 +108,6 @@ public class ChooseCountryList extends Fragment implements Serializable {
         String text = writer.toString();
         return text;
     }
+
+
 }
