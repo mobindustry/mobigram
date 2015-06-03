@@ -189,7 +189,12 @@ public class RegistrationMainFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 phoneList.add(String.valueOf(s));
                 phoneNum = phoneList.get(phoneList.size() - 1);
-                String lettersCode = countryObject.getCountryStringCode();
+                String lettersCode="";
+                if (countryObject != null) {
+                    lettersCode = countryObject.getCountryStringCode();
+                } else {
+                    lettersCode=code.getText().toString();
+                }
                 String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
 
                 phone.removeTextChangedListener(this);

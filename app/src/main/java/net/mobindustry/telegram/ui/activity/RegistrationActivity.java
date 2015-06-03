@@ -70,6 +70,15 @@ public class RegistrationActivity extends AppCompatActivity {
                     if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
 
                     }
+                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
+
+                    }
+                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
+
+                    }
+                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
+
+                    }
                 }
                 if (object instanceof TdApi.AuthStateWaitSetPhoneNumber) {
                     registrationUserPhone = new RegistrationMainFragment();
