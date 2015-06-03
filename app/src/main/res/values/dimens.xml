@@ -36,6 +36,6 @@
     <dimen name="message_text_size">18sp</dimen>
     <dimen name="message_max_width">250dp</dimen>
 
-    <dimen name="splash_screen_text_size">70sp</dimen>
+    <dimen name="splash_screen_text_size">50sp</dimen>
 
 </resources>
