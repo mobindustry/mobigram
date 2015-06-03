@@ -91,7 +91,7 @@ public class RegistrationActivity extends AppCompatActivity {
         };
 
         TG.setUpdatesHandler(handler);
-        TG.setDir(getExternalFilesDir("").getAbsolutePath());
+        TG.setDir(this.getFilesDir().getPath());
 
         client = TG.getClientInstance();
         client.send(new TdApi.AuthGetState(), handler);

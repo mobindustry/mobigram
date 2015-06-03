@@ -9,20 +9,18 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.romainpiel.titanic.library.Titanic;
 import com.romainpiel.titanic.library.TitanicTextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.messenger.TestConnect;
-import net.mobindustry.telegram.ui.fragments.ContactListFragment;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends Activity {
@@ -53,8 +51,7 @@ public class MainActivity extends Activity {
                 }
             }
         };
-
-        TG.setDir(getExternalFilesDir("").getAbsolutePath());
+        TG.setDir(this.getFilesDir().getPath());
         TG.setUpdatesHandler(resultHandler);
 
         client = TG.getClientInstance();

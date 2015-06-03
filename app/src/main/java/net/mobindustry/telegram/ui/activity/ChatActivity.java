@@ -72,6 +72,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         };
 
+        TG.setDir(this.getFilesDir().getPath());
         TG.setUpdatesHandler(resultHandler);
 
         client.send(new TdApi.GetContacts(), resultHandler);
