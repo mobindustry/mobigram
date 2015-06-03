@@ -1,6 +1,8 @@
 package net.mobindustry.telegram.ui.activity;
 
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -53,5 +55,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public void setListCountryObject(ListCountryObject listCountryObject) {
         this.listCountryObject = listCountryObject;
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 }

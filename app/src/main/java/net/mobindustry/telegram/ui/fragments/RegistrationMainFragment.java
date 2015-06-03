@@ -1,6 +1,10 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,14 +14,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.utils.CountryObject;
 import net.mobindustry.telegram.utils.ListCountryObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,12 +37,21 @@ import java.util.List;
 
 public class RegistrationMainFragment extends Fragment {
 
+
+    private String phoneNumberForServer = "";
     private TextView chooseCountry;
     private EditText code;
     private EditText phone;
     private ChooseCountryList chooseCountryList;
     private FragmentTransaction fragmentTransaction;
     private ListCountryObject countries;
+    private RegistrationActivity activity;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkWiFi();
+    }
 
     @Nullable
     @Override
@@ -48,6 +64,7 @@ public class RegistrationMainFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         //Take file countries.txt from assets folder and parse it to String extFileFromAssets.
         String textFileFromAssets = null;
 
@@ -63,7 +80,7 @@ public class RegistrationMainFragment extends Fragment {
             e.printStackTrace();
         }
         countries = new ListCountryObject(textFileFromAssets);
-        RegistrationActivity activity = (RegistrationActivity) getActivity();
+        activity = (RegistrationActivity) getActivity();
         activity.setListCountryObject(countries);
 
 
@@ -95,6 +112,32 @@ public class RegistrationMainFragment extends Fragment {
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.your_phone);
+        toolbar.inflateMenu(R.menu.ok);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                String lettersCode = code.getText().toString();
+                String number = phone.getText().toString().replaceAll("\\s", "");
+                phoneNumberForServer = lettersCode + number;
+                if (PhoneNumberUtils.isGlobalPhoneNumber(phoneNumberForServer)) {
+                    Log.e("Log", "NUMBER " + phoneNumberForServer);
+
+                } else {
+                    //Log.e("Log", "NUMBER " + phoneNumberForServer);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Phone number is incorrect");
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                return false;
+            }
+        });
 
 
         // If the user fills country code manually
@@ -134,7 +177,8 @@ public class RegistrationMainFragment extends Fragment {
         final List<String> phoneList = new ArrayList<>();
 
         final TextWatcher watcher = new TextWatcher() {
-            private int beforeCursorPosition = 0;
+            String phoneNum = "";
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -142,25 +186,24 @@ public class RegistrationMainFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //Todo
-                beforeCursorPosition = count+1;
-                phoneList.add(String.valueOf(s));
 
-                String phoneNum = phoneList.get(phoneList.size() - 1);
-                if (countryObject != null) {
-                    String lettersCode = countryObject.getCountryStringCode();
-                    String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
-                    Log.e("Log", " COUNTRY CODE " + lettersCode);
-                    Log.e("Log", " NUMBER " + formattedNumber);
-
-                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                phoneList.add(String.valueOf(s));
+                phoneNum = phoneList.get(phoneList.size() - 1);
+                String lettersCode = countryObject.getCountryStringCode();
+                String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
+
                 phone.removeTextChangedListener(this);
-                phone.setText(s);
-                phone.setSelection(beforeCursorPosition);//todo
+                if (formattedNumber == null) {
+                    phone.setText(phoneNum);
+                    phone.setSelection(phoneNum.length());
+                } else {
+                    phone.setText(formattedNumber);
+                    phone.setSelection(formattedNumber.length());
+                }
                 phone.addTextChangedListener(this);
             }
         };
@@ -189,4 +232,21 @@ public class RegistrationMainFragment extends Fragment {
         return text;
     }
 
+    public void checkWiFi() {
+        if (activity.isOnline() == false) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle("Internet is not enable");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
 }
+
+

@@ -17,5 +17,6 @@
     <string name="delete_chat_menu">Delete chat</string>
     <string name="mute_notification_menu">Mute notification</string>
     <string name="logout_navigation_item">Log Out</string>
+    <string name="action_ok">action_ok</string>
 
 </resources>

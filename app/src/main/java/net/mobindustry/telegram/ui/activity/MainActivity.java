@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            Intent intent = new Intent(MainActivity.this, TestConnect.class);
+            Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
             startActivity(intent);
             showActivityAnimation(MainActivity.this);
             finish();
