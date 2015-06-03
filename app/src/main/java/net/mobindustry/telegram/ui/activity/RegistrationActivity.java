@@ -66,6 +66,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     TdApi.Error error = (TdApi.Error) object;
                     if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
 
+                        //todo
                     }
                     if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
 

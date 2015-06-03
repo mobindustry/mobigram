@@ -50,6 +50,7 @@ public class RegistrationMainFragment extends Fragment {
     private FragmentTransaction fragmentTransaction;
     private ListCountryObject countries;
     private RegistrationActivity activity;
+    private CountryObject countryObject;
 
 
     @Nullable
@@ -85,7 +86,7 @@ public class RegistrationMainFragment extends Fragment {
 
         //Set country object from ChooseCountryFragment
 
-        final CountryObject countryObject = activity.getCountryObject();
+        countryObject = activity.getCountryObject();
 
         chooseCountry = (TextView) getActivity().findViewById(R.id.chooseCountry);
         code = (EditText) getActivity().findViewById(R.id.code);
@@ -103,6 +104,7 @@ public class RegistrationMainFragment extends Fragment {
             public void onClick(View v) {
                 fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentContainer, chooseCountryList);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -170,10 +172,12 @@ public class RegistrationMainFragment extends Fragment {
 
         // The user enters the phone number
 
-        final List<String> phoneList = new ArrayList<>();
+
 
         final TextWatcher watcher = new TextWatcher() {
+            List<String> phoneList = new ArrayList<>();
             String phoneNum = "";
+            String lettersCode="";
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -189,11 +193,16 @@ public class RegistrationMainFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 phoneList.add(String.valueOf(s));
                 phoneNum = phoneList.get(phoneList.size() - 1);
-                String lettersCode="";
                 if (countryObject != null) {
                     lettersCode = countryObject.getCountryStringCode();
                 } else {
-                    lettersCode=code.getText().toString();
+                    for (int i = 0; i < countries.getListCountries().size(); i++) {
+                        if (countries.getListCountries().get(i).getCountryCode().equals(code.getText().toString())){
+                            activity.setCountryObject(countries.getListCountries().get(i));
+                            countryObject=activity.getCountryObject();
+                        }
+                    }
+                    lettersCode=countryObject.getCountryStringCode();
                 }
                 String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
 
@@ -232,6 +241,8 @@ public class RegistrationMainFragment extends Fragment {
         String text = writer.toString();
         return text;
     }
+
+
 }
 
 
