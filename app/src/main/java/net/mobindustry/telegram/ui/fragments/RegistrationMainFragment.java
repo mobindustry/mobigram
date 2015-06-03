@@ -25,6 +25,10 @@ import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.utils.CountryObject;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
+import org.drinkless.td.libcore.telegram.Client;
+import org.drinkless.td.libcore.telegram.TG;
+import org.drinkless.td.libcore.telegram.TdApi;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,11 +51,6 @@ public class RegistrationMainFragment extends Fragment {
     private ListCountryObject countries;
     private RegistrationActivity activity;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        checkWiFi();
-    }
 
     @Nullable
     @Override
@@ -120,10 +119,8 @@ public class RegistrationMainFragment extends Fragment {
                 String number = phone.getText().toString().replaceAll("\\s", "");
                 phoneNumberForServer = lettersCode + number;
                 if (PhoneNumberUtils.isGlobalPhoneNumber(phoneNumberForServer)) {
-                    Log.e("Log", "NUMBER " + phoneNumberForServer);
-
+                    activity.setPhoneForServer(phoneNumberForServer);
                 } else {
-                    //Log.e("Log", "NUMBER " + phoneNumberForServer);
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Phone number is incorrect");
                     builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -138,7 +135,6 @@ public class RegistrationMainFragment extends Fragment {
                 return false;
             }
         });
-
 
         // If the user fills country code manually
 
@@ -230,22 +226,6 @@ public class RegistrationMainFragment extends Fragment {
         }
         String text = writer.toString();
         return text;
-    }
-
-    public void checkWiFi() {
-        if (activity.isOnline() == false) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setTitle("Internet is not enable");
-            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
     }
 }
 
