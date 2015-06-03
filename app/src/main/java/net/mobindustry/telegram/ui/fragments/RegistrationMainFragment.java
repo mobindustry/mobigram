@@ -200,9 +200,9 @@ public class RegistrationMainFragment extends Fragment {
                         if (countries.getListCountries().get(i).getCountryCode().equals(code.getText().toString())){
                             activity.setCountryObject(countries.getListCountries().get(i));
                             countryObject=activity.getCountryObject();
+                            lettersCode=countryObject.getCountryStringCode();
                         }
                     }
-                    lettersCode=countryObject.getCountryStringCode();
                 }
                 String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
 
