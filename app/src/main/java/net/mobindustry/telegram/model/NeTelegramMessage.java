@@ -1,4 +1,4 @@
-package net.mobindustry.telegram.ui.model;
+package net.mobindustry.telegram.model;
 
 import java.io.Serializable;
 import java.util.Calendar;

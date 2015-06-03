@@ -10,6 +10,7 @@ import com.romainpiel.titanic.library.Titanic;
 import com.romainpiel.titanic.library.TitanicTextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.messenger.TestConnect;
 
 import java.util.concurrent.TimeUnit;
 
@@ -60,7 +61,7 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            Intent intent = new Intent(MainActivity.this, TestConnect.class);
             startActivity(intent);
             showActivityAnimation(MainActivity.this);
             finish();

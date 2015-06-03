@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
-import net.mobindustry.telegram.ui.model.Contact;
+import net.mobindustry.telegram.model.Contact;
 
 public class MessagesActivity extends AppCompatActivity {
     @Override

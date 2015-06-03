@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.model.NeTelegramMessage;
+import net.mobindustry.telegram.model.NeTelegramMessage;
 import net.mobindustry.telegram.utils.Const;
 
 public class MessageAdapter extends ArrayAdapter<NeTelegramMessage> {

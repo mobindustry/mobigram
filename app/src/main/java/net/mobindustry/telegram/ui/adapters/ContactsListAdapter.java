@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.model.Contact;
+import net.mobindustry.telegram.model.Contact;
 
 public class ContactsListAdapter extends ArrayAdapter<Contact> {
 

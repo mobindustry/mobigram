@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
-import net.mobindustry.telegram.ui.model.NavigationItem;
+import net.mobindustry.telegram.model.NavigationItem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
-import net.mobindustry.telegram.ui.model.Contact;
-import net.mobindustry.telegram.ui.model.NeTelegramMessage;
+import net.mobindustry.telegram.model.Contact;
+import net.mobindustry.telegram.model.NeTelegramMessage;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.model.NavigationItem;
+import net.mobindustry.telegram.model.NavigationItem;
 
 public class NavigationDrawerAdapter extends ArrayAdapter<NavigationItem> {
 

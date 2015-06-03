@@ -15,7 +15,7 @@ import com.melnykov.fab.FloatingActionButton;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.MessagesActivity;
 import net.mobindustry.telegram.ui.adapters.ContactsListAdapter;
-import net.mobindustry.telegram.ui.model.Contact;
+import net.mobindustry.telegram.model.Contact;
 
 import java.util.ArrayList;
 import java.util.List;
