@@ -47,7 +47,7 @@ public class MessagesFragment extends Fragment {
     public void setDataForToolbar(Contact contact) {
         initials = contact.getInitials();
         firstLastName = contact.getFirstName() + " " + contact.getLastName();
-        lastSeen = "bla bla bla";
+        lastSeen = "bla bla bla"; //TODO set it properly;
         color = contact.getColor();
     }
 
