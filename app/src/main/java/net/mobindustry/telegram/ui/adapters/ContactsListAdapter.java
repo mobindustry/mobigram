@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.view.LayoutInflater;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.Contact;
 
-public class ContactsListAdapter extends ArrayAdapter<Contact> {
+import org.drinkless.td.libcore.telegram.TdApi;
+
+public class ContactsListAdapter extends ArrayAdapter<TdApi.User> {
 
     private final LayoutInflater inflater;
 
@@ -28,7 +31,7 @@ public class ContactsListAdapter extends ArrayAdapter<Contact> {
             convertView = inflater.inflate(R.layout.contact_item, parent, false);
         }
 
-        Contact item = getItem(position);
+        TdApi.User item = getItem(position);
         TextView icon = (TextView) convertView.findViewById(R.id.message_icon_text);
         TextView firstLastName = (TextView) convertView.findViewById(R.id.firstLastName);
         TextView lastMessage = (TextView) convertView.findViewById(R.id.lastMessage);
@@ -36,12 +39,12 @@ public class ContactsListAdapter extends ArrayAdapter<Contact> {
         ShapeDrawable circle = new ShapeDrawable(new OvalShape());
         circle.setIntrinsicHeight(60);
         circle.setIntrinsicWidth(60);
-        circle.getPaint().setColor(item.getColor());
+        circle.getPaint().setColor(Color.CYAN);
 
         icon.setBackground(circle);
-        icon.setText(item.getInitials());
-        firstLastName.setText(item.getFirstName() + " " + getItem(position).getLastName());
-        lastMessage.setText(item.getLastMessage());
+        icon.setText("AA");
+        firstLastName.setText(item.firstName + " " + getItem(position).lastName);
+        //lastMessage.setText(item.getLastMessage());
 
         return convertView;
     }

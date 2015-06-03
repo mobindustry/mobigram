@@ -17,19 +17,26 @@ import net.mobindustry.telegram.ui.activity.MessagesActivity;
 import net.mobindustry.telegram.ui.adapters.ContactsListAdapter;
 import net.mobindustry.telegram.model.Contact;
 
+import org.drinkless.td.libcore.telegram.TdApi;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ContactListFragment extends ListFragment {
 
     boolean dualPane;
     int currentCheckPosition = 0;
-    private List<Contact> list;
+    private List<TdApi.User> list = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.contact_list_fragment, null);
+    }
+
+    public void setContactsList(TdApi.Contacts contacts) {
+        list.addAll(Arrays.asList(contacts.users));
     }
 
     @Override
@@ -48,14 +55,6 @@ public class ContactListFragment extends ListFragment {
 
         ContactsListAdapter adapter = new ContactsListAdapter(getActivity());
         setListAdapter(adapter);
-
-        String[] firstNames = new String[]{"sam", "Tommi", "Frontier", "Fedor", "Lex", "Pet", "Max", "sam", "Tommi", "Frontier", "Fedor", "Lex", "Pet", "Max", "sam", "Tommi", "Frontier", "Fedor", "Lex", "Pet", "Max"};
-        String[] lastNames = new String[]{"Max", "sam", "Tommi", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor", "Lex", "Pet", "frontier", "Fedor"};
-
-        list = new ArrayList<>();
-        for (int i = 0; i < firstNames.length; i++) {
-            list.add(new Contact(firstNames[i], lastNames[i]));
-        }
 
         adapter.addAll(list);
 
@@ -93,8 +92,8 @@ public class ContactListFragment extends ListFragment {
                     getFragmentManager().findFragmentById(R.id.details);
             if (details == null || details.getShownIndex() != index) {
                 details = MessagesFragment.newInstance(index);
-                details.setList(list.get(currentCheckPosition).getList());
-                details.setDataForToolbar(list.get(currentCheckPosition));
+                //details.setList(list.get(currentCheckPosition).getList());
+                //details.setDataForToolbar(list.get(currentCheckPosition));
 
                 FragmentTransaction ft
                         = getFragmentManager().beginTransaction();
@@ -107,7 +106,7 @@ public class ContactListFragment extends ListFragment {
             Intent intent = new Intent();
             intent.setClass(getActivity(), MessagesActivity.class);
             intent.putExtra("index", index);
-            intent.putExtra("contact", list.get(index));
+            //intent.putExtra("contact", list.get(index));
             startActivity(intent);
         }
     }

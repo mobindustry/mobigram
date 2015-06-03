@@ -2,6 +2,7 @@ package net.mobindustry.telegram.ui.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,6 +22,11 @@ import android.widget.Toast;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.model.NavigationItem;
+import net.mobindustry.telegram.ui.fragments.ContactListFragment;
+
+import org.drinkless.td.libcore.telegram.Client;
+import org.drinkless.td.libcore.telegram.TG;
+import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +40,43 @@ public class ChatActivity extends AppCompatActivity {
     private CharSequence drawerTitle;
     private CharSequence title;
 
+    private Client client;
+    private Client.ResultHandler resultHandler;
+
+    private TdApi.Contacts contacts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
+
+        client = TG.getClientInstance();
+        resultHandler = new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+
+                if (object instanceof TdApi.Contacts) {
+                    contacts = (TdApi.Contacts) object;
+                    FragmentManager fm = getSupportFragmentManager();
+                    ContactListFragment contactListFragment = (ContactListFragment)fm.findFragmentById(R.id.titles);
+                    contactListFragment.setContactsList(contacts);
+                }
+
+                if (object instanceof TdApi.Chats)  {
+                    System.out.println(object.toString());
+                }
+
+                if (object instanceof TdApi.Chat)  {
+                    System.out.println("Chat " + object.toString());
+                }
+
+            }
+        };
+
+        TG.setUpdatesHandler(resultHandler);
+
+        client.send(new TdApi.GetContacts(), resultHandler);
+        client.send(new TdApi.GetChats(), resultHandler);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
         setSupportActionBar(toolbar);

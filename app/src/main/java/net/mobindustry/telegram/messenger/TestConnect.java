@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.messenger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.activity.ChatActivity;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
@@ -20,7 +22,10 @@ public class TestConnect extends AppCompatActivity implements Client.ResultHandl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_layout);
-        init();
+
+        TG.setUpdatesHandler(this);
+        TG.setDir(getExternalFilesDir("").getAbsolutePath());
+
         client = TG.getClientInstance();
         client.send(new TdApi.AuthGetState(), this);
 
@@ -33,16 +38,10 @@ public class TestConnect extends AppCompatActivity implements Client.ResultHandl
         });
     }
 
-    private void init() {
-        TG.setUpdatesHandler(new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                Log.i("asdfasdf", "object: " + object);
-            }
-        });
-
-        TG.setDir(getExternalFilesDir("").getAbsolutePath());
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        TG.stopClient();
     }
 
     private void setName() {
@@ -53,8 +52,11 @@ public class TestConnect extends AppCompatActivity implements Client.ResultHandl
         client.send(new TdApi.AuthSetCode("96394"), this);
     }
 
-    private void getContacts() {
-        client.send(new TdApi.GetContacts(), this);
+    private void chatStart() {
+
+        Intent intent = new Intent(TestConnect.this, ChatActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void setPhoneNumber() {
@@ -80,7 +82,7 @@ public class TestConnect extends AppCompatActivity implements Client.ResultHandl
         }
 
         if (object instanceof TdApi.AuthStateOk) {
-            getContacts();
+            chatStart();
         }
     }
 }
