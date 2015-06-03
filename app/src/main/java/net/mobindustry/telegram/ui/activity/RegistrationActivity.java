@@ -17,12 +17,14 @@ import android.widget.EditText;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.utils.CountryObject;
+import net.mobindustry.telegram.utils.ListCountryObject;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private Fragment registrationUserPhone;
     private FragmentTransaction fragmentTransaction;
     private CountryObject countryObject;
+    private ListCountryObject listCountryObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,5 +45,13 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public void setCountryObject(CountryObject countryObject) {
         this.countryObject = countryObject;
+    }
+
+    public ListCountryObject getListCountryObject() {
+        return listCountryObject;
+    }
+
+    public void setListCountryObject(ListCountryObject listCountryObject) {
+        this.listCountryObject = listCountryObject;
     }
 }

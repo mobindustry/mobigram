@@ -24,6 +24,7 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
@@ -32,6 +33,7 @@ public class ChooseCountryList extends Fragment implements Serializable {
     private CountriesListAdapter countriesListAdapter;
     private FragmentTransaction fragmentTransaction;
     private RegistrationMainFragment registrationMainFragment;
+    private ListCountryObject countries;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class ChooseCountryList extends Fragment implements Serializable {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        RegistrationActivity activity=(RegistrationActivity)getActivity();
+        countries=activity.getListCountryObject();
 
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -51,23 +55,6 @@ public class ChooseCountryList extends Fragment implements Serializable {
         toolbar.setClickable(true);
 
 
-        //Take file countries.txt from assets folder and parse it to String extFileFromAssets.
-        String textFileFromAssets = null;
-
-        InputStream is = null;
-        try {
-            is = getResources().getAssets().open("countries.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            textFileFromAssets = convertStreamToString(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        final ListCountryObject countries = new ListCountryObject(textFileFromAssets);
         countriesListAdapter = new CountriesListAdapter(getActivity(), countries);
         list.setAdapter(countriesListAdapter);
 
@@ -88,25 +75,6 @@ public class ChooseCountryList extends Fragment implements Serializable {
                 fragmentTransaction.commit();
             }
         });
-    }
-
-    public static String convertStreamToString(InputStream is)
-            throws IOException {
-        Writer writer = new StringWriter();
-
-        char[] buffer = new char[2048];
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(is,
-                    "UTF-8"));
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
-            }
-        } finally {
-            is.close();
-        }
-        String text = writer.toString();
-        return text;
     }
 
 
