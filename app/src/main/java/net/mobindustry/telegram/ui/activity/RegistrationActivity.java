@@ -37,8 +37,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public void setCodeFromServer(String codeFromServer) {
         this.codeFromServer = codeFromServer;
-        //client.send(new TdApi.AuthSetCode(getCodeFromServer()), handler);
-
+        if (!codeFromServer.isEmpty()) {
+            client.send(new TdApi.AuthSetCode(codeFromServer), handler);
+        }
     }
 
     public void setPhoneForServer(String phoneForServer) {
@@ -49,7 +50,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public void setFirstLastName(String firstName, String lastName) {
-        if (firstName.isEmpty()) {
+        if (!firstName.isEmpty()) {
             client.send(new TdApi.AuthSetName(firstName, lastName), handler);
         }
     }
@@ -63,10 +64,11 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onResult(TdApi.TLObject object) {
 
-
+                Log.e("Log", "OBJECT " + object);
 
                 if (object instanceof TdApi.Error) {
                     TdApi.Error error = (TdApi.Error) object;
+
 
                     if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
                         //todo
@@ -98,7 +100,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
                 if (object instanceof TdApi.AuthStateWaitSetCode) {
-                    Log.e("Log", "AFTER PHONE IN" + object);
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     receiverCodeFragment = new ReceiverCodeFragment();
                     fragmentTransaction.replace(R.id.fragmentContainer, receiverCodeFragment);
