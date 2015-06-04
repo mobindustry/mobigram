@@ -191,7 +191,6 @@ public class RegistrationMainFragment extends Fragment {
                             lettersCode=countryObject.getCountryStringCode();
                         }
                     }
-                    lettersCode=countryObject.getCountryStringCode();
                 }
                 String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
 

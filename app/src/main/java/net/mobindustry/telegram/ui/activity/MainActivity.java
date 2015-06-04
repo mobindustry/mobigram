@@ -55,6 +55,8 @@ public class MainActivity extends Activity {
         TG.setUpdatesHandler(resultHandler);
 
         client = TG.getClientInstance();
+
+        start();
     }
 
     public void start() {
@@ -139,12 +141,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        start();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        TG.stopClient();
     }
 }
