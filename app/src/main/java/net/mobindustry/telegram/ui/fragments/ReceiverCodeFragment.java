@@ -1,9 +1,11 @@
 package net.mobindustry.telegram.ui.fragments;
 
+
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +24,9 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
     private EditText codeFromUser;
     private RegistrationActivity activity;
     private TextView countDownTimer;
+    private TextView textForUser;
+    private TextView wrongNumber;
+
 
     @Nullable
     @Override
@@ -36,8 +41,23 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
 
         activity=(RegistrationActivity)getActivity();
 
-        codeFromUser=(EditText)getView().findViewById(R.id.code_from_user);
-        countDownTimer=(TextView)getView().findViewById(R.id.countdown_timer);
+        codeFromUser=(EditText)getActivity().findViewById(R.id.code_from_user);
+        countDownTimer=(TextView)getActivity().findViewById(R.id.countdown_timer);
+        textForUser=(TextView)getActivity().findViewById(R.id.text_with_user_phone);
+        wrongNumber=(TextView)getActivity().findViewById(R.id.wrong_number);
+
+        wrongNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                Fragment registrationUserPhone = new RegistrationMainFragment();
+                fragmentTransaction.replace(R.id.fragmentContainer, registrationUserPhone);
+                activity.getSupportFragmentManager().popBackStack();
+                fragmentTransaction.commit();
+            }
+        });
+
+        textForUser.setText("We send on SMS with an activation code to your phone "+activity.getPhoneForServer());
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.your_code);
@@ -51,55 +71,22 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
             }
         });
 
-        new CountDownTimer(120000,1000) {
+        new CountDownTimer(120000, 1000) { // adjust the milli seconds here
 
             public void onTick(long millisUntilFinished) {
-                //getDurationBreakdown(millisUntilFinished);
-
-
-                countDownTimer.setText("We will call to you after: " + millisUntilFinished / 1000);
+                countDownTimer.setText("We send an SMS with an activation code to your phone " + String.format("%d min %d sec",
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
             }
-
             public void onFinish() {
-                countDownTimer.setText("Calling you!");
-
+                countDownTimer.setText("Calling you");
             }
         }.start();
 
 
-
-
-
-
-
     }
-    public static String getDurationBreakdown(long millis)
-    {
-        if(millis < 0)
-        {
-            throw new IllegalArgumentException("Duration must be greater than zero!");
-        }
 
-        long days = TimeUnit.MILLISECONDS.toDays(millis);
-        millis -= TimeUnit.DAYS.toMillis(days);
-        long hours = TimeUnit.MILLISECONDS.toHours(millis);
-        millis -= TimeUnit.HOURS.toMillis(hours);
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-        millis -= TimeUnit.MINUTES.toMillis(minutes);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
-
-        StringBuilder sb = new StringBuilder(64);
-        sb.append(days);
-        sb.append(" Days ");
-        sb.append(hours);
-        sb.append(" Hours ");
-        sb.append(minutes);
-        sb.append(" Minutes ");
-        sb.append(seconds);
-        sb.append(" Seconds");
-
-        return(sb.toString());
-    }
 
 
 }

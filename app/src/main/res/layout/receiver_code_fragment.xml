@@ -14,10 +14,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="We send on SMS with an activation code to your phone"
+        tools:text="We send on SMS with an activation code to your phone"
         android:textSize="16sp"
         android:textColor="#000"
-        android:layout_margin="20dp"/>
+        android:layout_margin="20dp"
+        android:id="@+id/text_with_user_phone"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,8 +45,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|bottom"
             android:text="Wrong number?"
-            android:textColor="#00f"
+            android:textColor="@color/background_action_bar"
             android:layout_margin="20dp"
+            android:id="@+id/wrong_number"
             />
 
     </FrameLayout>

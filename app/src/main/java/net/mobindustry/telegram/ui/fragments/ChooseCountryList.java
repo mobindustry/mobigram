@@ -36,6 +36,7 @@ public class ChooseCountryList extends Fragment implements Serializable {
     private ListCountryObject countries;
 
 
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choose_country_fragment, container, false);
         list = (StickyListHeadersListView) view.findViewById(R.id.countriesList);
@@ -72,6 +73,7 @@ public class ChooseCountryList extends Fragment implements Serializable {
                 }
 
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationMainFragment);
+                getActivity().getSupportFragmentManager().popBackStack();
                 fragmentTransaction.commit();
             }
         });

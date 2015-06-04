@@ -34,6 +34,13 @@ public class RegistrationActivity extends AppCompatActivity {
     private String phoneForServer = "";
     private String codeFromServer = "";
 
+    public String getPhoneForServer() {
+        return phoneForServer;
+    }
+
+    public String getCodeFromServer() {
+        return codeFromServer;
+    }
 
     public void setCodeFromServer(String codeFromServer) {
         this.codeFromServer = codeFromServer;
@@ -94,7 +101,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
                 if (object instanceof TdApi.AuthStateWaitSetPhoneNumber) {
                     registrationUserPhone = new RegistrationMainFragment();
-                    fragmentTransaction.add(R.id.fragmentContainer, registrationUserPhone);
+                    fragmentTransaction.replace(R.id.fragmentContainer, registrationUserPhone);
                     fragmentTransaction.commit();
                 }
 
@@ -103,6 +110,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     receiverCodeFragment = new ReceiverCodeFragment();
                     fragmentTransaction.replace(R.id.fragmentContainer, receiverCodeFragment);
+                    fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
                 if (object instanceof TdApi.AuthStateWaitSetName) {
@@ -140,9 +148,4 @@ public class RegistrationActivity extends AppCompatActivity {
         this.listCountryObject = listCountryObject;
     }
 
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnectedOrConnecting();
-    }
 }

@@ -51,6 +51,24 @@ public class RegistrationMainFragment extends Fragment {
     private ListCountryObject countries;
     private RegistrationActivity activity;
     private CountryObject countryObject;
+    //private String localCountry="";
+    //private String localCode="";
+    //private String localPhone="";
+
+   /* @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.e("LOG","onDestroy ");
+        localCountry=chooseCountry.getText().toString();
+        localCode=code.getText().toString();
+        localPhone=phone.getText().toString();
+    }*/
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
 
     @Nullable
@@ -64,6 +82,17 @@ public class RegistrationMainFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setRetainInstance(true);
+
+        /*if (!localCountry.isEmpty()){
+            chooseCountry.setText(localCountry);
+        }
+        if (!localCode.isEmpty()){
+            code.setText(localCode);
+        }
+        if (!localPhone.isEmpty()){
+            code.setText(localPhone);
+        }*/
 
         //Take file countries.txt from assets folder and parse it to String extFileFromAssets.
         String textFileFromAssets = null;
@@ -120,7 +149,7 @@ public class RegistrationMainFragment extends Fragment {
                 String lettersCode = code.getText().toString();
                 String number = phone.getText().toString().replaceAll("\\s", "");
                 phoneNumberForServer = lettersCode + number;
-                Log.e("Log", "PHONE "+phoneNumberForServer);
+                Log.e("Log", "PHONE " + phoneNumberForServer);
                 activity.setPhoneForServer(phoneNumberForServer);
                 return true;
             }
