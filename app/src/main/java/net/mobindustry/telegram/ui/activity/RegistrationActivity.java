@@ -87,7 +87,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     fragmentTransaction.add(R.id.fragmentContainer, registrationUserPhone);
                     fragmentTransaction.commit();
                 }
-                if (object instanceof TdApi.AuthSetCode) {
+                if (object instanceof TdApi.AuthStateWaitSetCode) {
+                    Log.e("Log", "AFTER PHONE IN" + object);
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     receiverCodeFragment = new ReceiverCodeFragment();
                     fragmentTransaction.replace(R.id.fragmentContainer, receiverCodeFragment);
                     fragmentTransaction.commit();

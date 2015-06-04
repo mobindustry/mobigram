@@ -25,7 +25,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.reseiver_code_fragment, container, false);
+        View view = inflater.inflate(R.layout.receiver_code_fragment, container, false);
         return view;
     }
 
