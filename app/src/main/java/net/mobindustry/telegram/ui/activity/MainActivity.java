@@ -141,4 +141,10 @@ public class MainActivity extends Activity {
         super.onResume();
         start();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        TG.stopClient();
+    }
 }

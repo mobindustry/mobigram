@@ -110,6 +110,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     fragmentTransaction.replace(R.id.fragmentContainer, yourNameFragment);
                     fragmentTransaction.commit();
                 }
+
             }
         };
 
