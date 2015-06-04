@@ -50,14 +50,15 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
             }
         });
 
-        new CountDownTimer(20000, 1000) {
+        new CountDownTimer(200000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                countDownTimer.setText("seconds remaining: " + millisUntilFinished / 1000);
+                countDownTimer.setText("We will call to you after: " + millisUntilFinished / 1000);
             }
 
             public void onFinish() {
-                countDownTimer.setText("done!");
+                countDownTimer.setText("Calling you!");
+
             }
         }.start();
 

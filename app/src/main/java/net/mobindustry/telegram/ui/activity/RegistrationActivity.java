@@ -63,7 +63,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onResult(TdApi.TLObject object) {
 
-                Log.e("Log", "AFTER PHONE " + object);
+
 
                 if (object instanceof TdApi.Error) {
                     TdApi.Error error = (TdApi.Error) object;
@@ -78,6 +78,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     }
                     if ((error.code == 400 && error.text.equals("PHONE_CODE_EXPIRED:"))) {
+                        Log.e("Log", "EXPIRED " + object);
 
                     }
                     if ((error.code == 400 && error.text.equals("PHONE_NUMBER_OCCUPIED:"))) {
@@ -94,6 +95,8 @@ public class RegistrationActivity extends AppCompatActivity {
                     fragmentTransaction.add(R.id.fragmentContainer, registrationUserPhone);
                     fragmentTransaction.commit();
                 }
+
+
                 if (object instanceof TdApi.AuthStateWaitSetCode) {
                     Log.e("Log", "AFTER PHONE IN" + object);
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
