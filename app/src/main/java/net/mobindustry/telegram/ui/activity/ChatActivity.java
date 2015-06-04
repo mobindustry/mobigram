@@ -78,7 +78,6 @@ public class ChatActivity extends AppCompatActivity {
         client.send(new TdApi.GetContacts(), resultHandler);
         client.send(new TdApi.GetChats(), resultHandler);
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
         setSupportActionBar(toolbar);
 
