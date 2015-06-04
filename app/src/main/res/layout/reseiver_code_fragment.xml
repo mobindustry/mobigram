@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff">
+
+    <include
+        layout="@layout/toolbar_registration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="We send on SMS with an activation code to your phone"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:layout_margin="20dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:background="#284"
+        android:layout_margin="20dp"
+        android:id="@+id/code_from_user"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="We will call you after 2:00"
+        android:textColor="#000"
+        android:layout_margin="20dp"
+        android:id="@+id/countdown_timer"
+        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|bottom"
+            android:text="Wrong number?"
+            android:textColor="#00f"
+            android:layout_margin="20dp"
+            />
+
+    </FrameLayout>
+
+
+</LinearLayout>

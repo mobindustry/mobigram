@@ -6,19 +6,13 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.EditText;
+import android.util.Log;
 
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
-import net.mobindustry.telegram.ui.fragments.ReseiverCodeFragment;
+import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.utils.CountryObject;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
@@ -29,7 +23,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 public class RegistrationActivity extends AppCompatActivity {
 
     private Fragment registrationUserPhone;
-    private Fragment reseiverCodeFragment;
+    private Fragment receiverCodeFragment;
     private FragmentTransaction fragmentTransaction;
     private CountryObject countryObject;
     private ListCountryObject listCountryObject;
@@ -38,20 +32,19 @@ public class RegistrationActivity extends AppCompatActivity {
     private String phoneForServer = "";
     private String codeFromServer = "";
 
-    public String getCodeFromServer() {
-        return codeFromServer;
-    }
 
     public void setCodeFromServer(String codeFromServer) {
         this.codeFromServer = codeFromServer;
+        //client.send(new TdApi.AuthSetCode(getCodeFromServer()), handler);
+
     }
 
-    public String getPhoneForServer() {
-        return phoneForServer;
-    }
 
     public void setPhoneForServer(String phoneForServer) {
         this.phoneForServer = phoneForServer;
+        if (!phoneForServer.isEmpty()) {
+            client.send(new TdApi.AuthSetPhoneNumber(phoneForServer), handler);
+        }
     }
 
     @Override
@@ -62,40 +55,42 @@ public class RegistrationActivity extends AppCompatActivity {
         handler = new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
+
+                Log.e("Log", "AFTER PHONE " + object);
+
                 if (object instanceof TdApi.Error) {
                     TdApi.Error error = (TdApi.Error) object;
-                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
 
+                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
                         //todo
                     }
-                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
+                    if ((error.code == 400 && error.text.equals("PHONE_CODE_HASH_EMPTY:"))) {
 
                     }
-                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
+                    if ((error.code == 400 && error.text.equals("PHONE_CODE_EMPTY:"))) {
 
                     }
-                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
+                    if ((error.code == 400 && error.text.equals("PHONE_CODE_EXPIRED:"))) {
 
                     }
-                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
+                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_OCCUPIED:"))) {
 
                     }
+                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_UNOCCUPIED:"))) {
+
+                    }
+
+
                 }
                 if (object instanceof TdApi.AuthStateWaitSetPhoneNumber) {
                     registrationUserPhone = new RegistrationMainFragment();
                     fragmentTransaction.add(R.id.fragmentContainer, registrationUserPhone);
                     fragmentTransaction.commit();
-                    if (!getPhoneForServer().isEmpty()) {
-                        client.send(new TdApi.AuthSetPhoneNumber(getPhoneForServer()), handler);
-                    }
                 }
                 if (object instanceof TdApi.AuthSetCode) {
-                    reseiverCodeFragment = new ReseiverCodeFragment();
-                    fragmentTransaction.replace(R.id.fragmentContainer, reseiverCodeFragment);
+                    receiverCodeFragment = new ReceiverCodeFragment();
+                    fragmentTransaction.replace(R.id.fragmentContainer, receiverCodeFragment);
                     fragmentTransaction.commit();
-                    if (!getCodeFromServer().isEmpty()) {
-                        client.send(new TdApi.AuthSetCode(getCodeFromServer()), handler);
-                    }
                 }
             }
         };

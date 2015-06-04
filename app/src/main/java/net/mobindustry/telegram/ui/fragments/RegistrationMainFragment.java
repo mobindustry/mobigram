@@ -120,21 +120,9 @@ public class RegistrationMainFragment extends Fragment {
                 String lettersCode = code.getText().toString();
                 String number = phone.getText().toString().replaceAll("\\s", "");
                 phoneNumberForServer = lettersCode + number;
-                if (PhoneNumberUtils.isGlobalPhoneNumber(phoneNumberForServer)) {
-                    activity.setPhoneForServer(phoneNumberForServer);
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("Phone number is incorrect");
-                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
-                return false;
+                Log.e("Log", "PHONE "+phoneNumberForServer);
+                activity.setPhoneForServer(phoneNumberForServer);
+                return true;
             }
         });
 
