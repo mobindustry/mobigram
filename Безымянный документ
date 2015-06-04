@@ -1,0 +1,74 @@
+package net.mobindustry.netelegram;
+ 
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+ 
+import org.drinkless.td.libcore.telegram.Client;
+import org.drinkless.td.libcore.telegram.TG;
+import org.drinkless.td.libcore.telegram.TdApi;
+ 
+ 
+public class MainActivity extends ActionBarActivity implements Client.ResultHandler {
+ 
+    private Client client;
+ 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        init();
+        client = TG.getClientInstance();
+        client.send(new TdApi.AuthGetState(), this);
+    }
+ 
+    private void init() {
+        TG.setUpdatesHandler(new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                Log.i("asdfasdf", "object: " + object);
+            }
+        });
+ 
+        TG.setDir(getExternalFilesDir("").getAbsolutePath());
+ 
+    }
+ 
+    private void setName() {
+        client.send(new TdApi.AuthSetName("Andrey", "Kadatsky"), this);
+    }
+ 
+    private void setCode() {
+        client.send(new TdApi.AuthSetCode("69738"), this);
+    }
+ 
+    private void getContacts() {
+        client.send(new TdApi.GetContacts(), this);
+    }
+ 
+    private void setPhoneNumber() {
+        client.send(new TdApi.AuthSetPhoneNumber("+380676095148"), this);
+    }
+ 
+    @Override
+    public void onResult(TdApi.TLObject object) {
+ 
+        if (object instanceof TdApi.AuthStateWaitSetPhoneNumber) {
+            setPhoneNumber();
+        }
+ 
+ 
+        if (object instanceof TdApi.AuthStateWaitSetName) {
+            setName();
+        }
+ 
+        if (object instanceof TdApi.AuthStateWaitSetCode) {
+            setCode();
+        }
+ 
+        if (object instanceof TdApi.AuthStateOk) {
+            getContacts();
+        }
+ 
+    }
+}
