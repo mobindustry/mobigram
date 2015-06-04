@@ -19,5 +19,10 @@
     <string name="mute_notification_menu">Mute notification</string>
     <string name="logout_navigation_item">Log Out</string>
     <string name="action_ok">action_ok</string>
+    <string name="set_first_last_name">Set your first and last name</string>
+    <string name="first_name_hint">First name (required)</string>
+    <string name="last_name_hint">Last name (optional)</string>
+    <string name="cancel_registration">Cancel registration</string>
+    <string name="your_name_fragment_title">Your name</string>
 
 </resources>

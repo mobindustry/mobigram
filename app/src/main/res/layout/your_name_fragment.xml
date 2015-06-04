@@ -1,53 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/toolbar"
-        android:id="@+id/yorNameToolbar"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:layout_width="0dp"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/yor_name_toolbar"
+            layout="@layout/toolbar" />
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_10dp"
-            android:layout_weight="1.5"
-            android:id="@+id/code"
-            android:textColor="#000"
-            android:singleLine="true"
-            android:text="+"
-            android:inputType="phone"
-            android:background="#889f415e"
-            />
+            android:text="@string/set_first_last_name"
+            android:textColor="#ffa5a5a5" />
 
         <EditText
-            android:layout_width="0dp"
+            android:id="@+id/first_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_10dp"
-            android:layout_marginTop="@dimen/margin_10dp"
-            android:layout_weight="5"
-            android:id="@+id/phone"
-            android:textColor="#000"
-            android:singleLine="true"
+            android:layout_margin="@dimen/margin_10dp"
             android:background="#889f415e"
-            android:inputType="phone"
-            />
+            android:hint="@string/first_name_hint"
+            android:singleLine="true"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_10dp"
+            android:background="#889f415e"
+            android:hint="@string/last_name_hint"
+            android:singleLine="true"
+            android:textColor="#000" />
 
     </LinearLayout>
 
     <TextView
+        android:id="@+id/cancel_registration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:layout_margin="@dimen/margin_10dp"
-        android:text="@string/text_user_info"
-        android:textColor="@color/text_info" />
+        android:text="@string/cancel_registration"
+        android:textColor="#ff214697" />
 
-
-</LinearLayout>
+</FrameLayout>
