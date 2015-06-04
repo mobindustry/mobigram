@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,19 +56,23 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onResult(TdApi.TLObject object) {
 
+                Log.i("LOG", "Chat result: " + object.toString());
+
                 if (object instanceof TdApi.Contacts) {
                     contacts = (TdApi.Contacts) object;
                     FragmentManager fm = getSupportFragmentManager();
                     ContactListFragment contactListFragment = (ContactListFragment)fm.findFragmentById(R.id.titles);
                     contactListFragment.setContactsList(contacts);
                 }
-
-                if (object instanceof TdApi.Chats)  {
-                    System.out.println(object.toString());
+                if (object instanceof TdApi.Chats) {
+                    TdApi.Chats chats = (TdApi.Chats) object;
+                    System.out.println("chats " + chats.chats.length);
                 }
+                if(object instanceof TdApi.Messages) {
 
-                if (object instanceof TdApi.Chat)  {
-                    System.out.println("Chat " + object.toString());
+                    TdApi.Messages messages = (TdApi.Messages) object;
+                    System.out.println(messages.messages[0].toString());
+
                 }
             }
         };
@@ -76,7 +81,9 @@ public class ChatActivity extends AppCompatActivity {
         TG.setUpdatesHandler(resultHandler);
 
         client.send(new TdApi.GetContacts(), resultHandler);
-        client.send(new TdApi.GetChats(), resultHandler);
+        client.send(new TdApi.GetChats(0, 100), resultHandler);
+        client.send(new TdApi.GetChatHistory(104975345, 59276609, 1, 10), resultHandler);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
         setSupportActionBar(toolbar);
