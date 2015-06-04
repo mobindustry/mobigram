@@ -16,6 +16,7 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 
 import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
 
 public class ReceiverCodeFragment extends Fragment implements Serializable {
     private EditText codeFromUser;
@@ -50,9 +51,11 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
             }
         });
 
-        new CountDownTimer(200000, 1000) {
+        new CountDownTimer(120000, 1000) {
 
             public void onTick(long millisUntilFinished) {
+                //getDurationBreakdown(millisUntilFinished);
+
                 countDownTimer.setText("We will call to you after: " + millisUntilFinished / 1000);
             }
 
@@ -68,6 +71,33 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
 
 
 
+    }
+    public static String getDurationBreakdown(long millis)
+    {
+        if(millis < 0)
+        {
+            throw new IllegalArgumentException("Duration must be greater than zero!");
+        }
+
+        long days = TimeUnit.MILLISECONDS.toDays(millis);
+        millis -= TimeUnit.DAYS.toMillis(days);
+        long hours = TimeUnit.MILLISECONDS.toHours(millis);
+        millis -= TimeUnit.HOURS.toMillis(hours);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+        millis -= TimeUnit.MINUTES.toMillis(minutes);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+
+        StringBuilder sb = new StringBuilder(64);
+        sb.append(days);
+        sb.append(" Days ");
+        sb.append(hours);
+        sb.append(" Hours ");
+        sb.append(minutes);
+        sb.append(" Minutes ");
+        sb.append(seconds);
+        sb.append(" Seconds");
+
+        return(sb.toString());
     }
 
 
