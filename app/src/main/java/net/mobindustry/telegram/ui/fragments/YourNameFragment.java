@@ -12,12 +12,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 
 public class YourNameFragment extends Fragment {
 
     private EditText firstName;
     private EditText lastName;
     private TextView cancel;
+    private RegistrationActivity activity;
 
     @Nullable
     @Override
@@ -35,13 +37,15 @@ public class YourNameFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        activity = (RegistrationActivity) getActivity();
+
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.yor_name_toolbar);
         toolbar.inflateMenu(R.menu.ok);
         toolbar.setTitle(getActivity().getString(R.string.your_name_fragment_title));
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                getActivity().setFirstLastName(firstName.getText().toString().trim(), lastName.getText().toString().trim());
+                activity.setFirstLastName(firstName.getText().toString().trim(), lastName.getText().toString().trim());
                 return true;
             }
         });

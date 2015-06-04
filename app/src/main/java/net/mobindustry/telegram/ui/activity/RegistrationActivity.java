@@ -13,6 +13,7 @@ import android.util.Log;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
+import net.mobindustry.telegram.ui.fragments.YourNameFragment;
 import net.mobindustry.telegram.utils.CountryObject;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
@@ -24,6 +25,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private Fragment registrationUserPhone;
     private Fragment receiverCodeFragment;
+    private Fragment yourNameFragment;
     private FragmentTransaction fragmentTransaction;
     private CountryObject countryObject;
     private ListCountryObject listCountryObject;
@@ -39,11 +41,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-
     public void setPhoneForServer(String phoneForServer) {
         this.phoneForServer = phoneForServer;
         if (!phoneForServer.isEmpty()) {
             client.send(new TdApi.AuthSetPhoneNumber(phoneForServer), handler);
+        }
+    }
+
+    public void setFirstLastName(String firstName, String lastName) {
+        if (firstName.isEmpty()) {
+            client.send(new TdApi.AuthSetName(firstName, lastName), handler);
         }
     }
 
@@ -92,6 +99,12 @@ public class RegistrationActivity extends AppCompatActivity {
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     receiverCodeFragment = new ReceiverCodeFragment();
                     fragmentTransaction.replace(R.id.fragmentContainer, receiverCodeFragment);
+                    fragmentTransaction.commit();
+                }
+                if (object instanceof TdApi.AuthStateWaitSetName) {
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    yourNameFragment = new YourNameFragment();
+                    fragmentTransaction.replace(R.id.fragmentContainer, yourNameFragment);
                     fragmentTransaction.commit();
                 }
             }
