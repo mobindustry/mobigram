@@ -46,15 +46,14 @@ public class ContactsListAdapter extends ArrayAdapter<TdApi.Chat> {
         TdApi.MessageText text = null;
         TdApi.Message message = item.topMessage;
         TdApi.MessageContent content = message.message;
-        long timeMls = (long) message.date;
-        Date date = new Date(timeMls*1000);
-        System.out.println(date.toString());
 
-        if(content instanceof TdApi.MessageText){
+        long timeMls = (long) message.date;
+        Date date = new Date(timeMls * 1000);
+
+        if (content instanceof TdApi.MessageText) {
             text = (TdApi.MessageText) content;
         }
-
-        if(info instanceof TdApi.PrivateChatInfo) {
+        if (info instanceof TdApi.PrivateChatInfo) {
             privateChatInfo = (TdApi.PrivateChatInfo) info;
         }
         TdApi.User user = privateChatInfo.user;
@@ -69,7 +68,6 @@ public class ContactsListAdapter extends ArrayAdapter<TdApi.Chat> {
         }
 
         lastMessage.setText(text.text);
-
         time.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
 
         return convertView;
@@ -83,11 +81,11 @@ public class ContactsListAdapter extends ArrayAdapter<TdApi.Chat> {
         return circle;
     }
 
-    public String getInitials (String firstName, String lastName) {
-        if(firstName.isEmpty()) {
+    public String getInitials(String firstName, String lastName) {
+        if (firstName.isEmpty()) {
             return ":)";
         }
-        if(lastName.isEmpty()) {
+        if (lastName.isEmpty()) {
             char[] iconText = new char[2];
             firstName.getChars(0, 1, iconText, 0);
             firstName.getChars(1, 2, iconText, 1);

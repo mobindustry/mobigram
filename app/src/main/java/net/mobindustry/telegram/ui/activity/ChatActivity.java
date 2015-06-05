@@ -48,8 +48,8 @@ public class ChatActivity extends AppCompatActivity {
     private TdApi.Contacts contacts;
     private TdApi.Chats chats;
 
-    private String userFirstLastName = "firstLastName";
-    private String userPhone = "phone";
+    private String userFirstLastName = "firstLastName error"; //temporary entry
+    private String userPhone = "phone error"; //temporary entry
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onResult(TdApi.TLObject object) {
 
-                Log.i("LOG", "Chat result: " + object.toString());
+                Log.i("LOG", "Chat result: " + object.getClass());
 
                 if (object instanceof TdApi.Contacts) {
                     contacts = (TdApi.Contacts) object;
@@ -73,20 +73,17 @@ public class ChatActivity extends AppCompatActivity {
                     chats = (TdApi.Chats) object;
                     Log.i("LOG", "Chats array size: " + chats.chats.length);
                     FragmentManager fm = getSupportFragmentManager();
-                    ContactListFragment contactListFragment = (ContactListFragment)fm.findFragmentById(R.id.titles);
+                    ContactListFragment contactListFragment = (ContactListFragment) fm.findFragmentById(R.id.titles);
                     contactListFragment.setChatsList(chats);
                 }
             }
         };
-
 
         TG.setDir(this.getFilesDir().getPath());
         TG.setUpdatesHandler(resultHandler);
 
         client.send(new TdApi.GetContacts(), resultHandler);
         client.send(new TdApi.GetChats(0, 100), resultHandler);
-        client.send(new TdApi.GetMe(), resultHandler);
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
         setSupportActionBar(toolbar);
@@ -103,8 +100,6 @@ public class ChatActivity extends AppCompatActivity {
         phoneView.setText(userPhone);
 
         drawerList.addHeaderView(header, null, false);
-
-
 
         List<NavigationItem> drawerItemsList = new ArrayList<>();
         drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
