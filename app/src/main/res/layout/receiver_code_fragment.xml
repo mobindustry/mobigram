@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#fff">
+    android:background="@color/background_activity">
 
     <include
         layout="@layout/toolbar_registration"
@@ -14,25 +14,23 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="We send on SMS with an activation code to your phone"
-        android:textSize="16sp"
-        android:textColor="#000"
-        android:layout_margin="20dp"
+        tools:text="@string/we_send_phone_number_test"
+        android:textSize="@dimen/info_text"
+        android:textColor="@color/text_color"
+        android:layout_margin="@dimen/margin_20dp"
         android:id="@+id/text_with_user_phone"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:background="#284"
-        android:layout_margin="20dp"
+        android:textSize="@dimen/text_user"
+        android:layout_margin="@dimen/margin_20dp"
         android:id="@+id/code_from_user"
         android:inputType="phone"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000"
-        tools:text="We will call to your after 2:00"
-        android:layout_margin="20dp"
+        tools:text="@string/we_call_you_test"
+        android:layout_margin="@dimen/margin_20dp"
         android:id="@+id/countdown_timer"
         />
     <FrameLayout
@@ -46,7 +44,7 @@
             android:layout_gravity="left|bottom"
             android:text="Wrong number?"
             android:textColor="@color/background_action_bar"
-            android:layout_margin="20dp"
+            android:layout_margin="@dimen/margin_20dp"
             android:id="@+id/wrong_number"
             />
 

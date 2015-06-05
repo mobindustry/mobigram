@@ -24,5 +24,7 @@
     <string name="last_name_hint">Last name (optional)</string>
     <string name="cancel_registration">Cancel registration</string>
     <string name="your_name_fragment_title">Your name</string>
+    <string name="we_send_phone_number_test">We send on SMS with an activation code to your phone</string>
+    <string name="we_call_you_test">We will call to your after 2:00</string>
 
 </resources>

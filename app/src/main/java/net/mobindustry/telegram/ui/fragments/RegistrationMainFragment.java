@@ -1,10 +1,7 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,16 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.utils.CountryObject;
 import net.mobindustry.telegram.utils.ListCountryObject;
-
-import org.drinkless.td.libcore.telegram.Client;
-import org.drinkless.td.libcore.telegram.TG;
-import org.drinkless.td.libcore.telegram.TdApi;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,18 +42,6 @@ public class RegistrationMainFragment extends Fragment {
     private ListCountryObject countries;
     private RegistrationActivity activity;
     private CountryObject countryObject;
-    //private String localCountry="";
-    //private String localCode="";
-    //private String localPhone="";
-
-   /* @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.e("LOG","onDestroy ");
-        localCountry=chooseCountry.getText().toString();
-        localCode=code.getText().toString();
-        localPhone=phone.getText().toString();
-    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,16 +62,6 @@ public class RegistrationMainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setRetainInstance(true);
-
-        /*if (!localCountry.isEmpty()){
-            chooseCountry.setText(localCountry);
-        }
-        if (!localCode.isEmpty()){
-            code.setText(localCode);
-        }
-        if (!localPhone.isEmpty()){
-            code.setText(localPhone);
-        }*/
 
         //Take file countries.txt from assets folder and parse it to String extFileFromAssets.
         String textFileFromAssets = null;
@@ -143,6 +112,7 @@ public class RegistrationMainFragment extends Fragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.your_phone);
         toolbar.inflateMenu(R.menu.ok);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

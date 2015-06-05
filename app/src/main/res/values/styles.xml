@@ -1,9 +1,10 @@
 <resources>
 
-    <style name="customAppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="customAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="colorAccent">@color/background_action_bar</item>
     </style>
+    
 
 </resources>
 

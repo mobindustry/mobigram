@@ -1,13 +1,18 @@
 package net.mobindustry.telegram.ui.activity;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import net.mobindustry.telegram.R;
@@ -77,26 +82,206 @@ public class RegistrationActivity extends AppCompatActivity {
                     TdApi.Error error = (TdApi.Error) object;
 
 
-                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_INVALID:"))) {
-                        //todo
-                    }
-                    if ((error.code == 400 && error.text.equals("PHONE_CODE_HASH_EMPTY:"))) {
-
-                    }
-                    if ((error.code == 400 && error.text.equals("PHONE_CODE_EMPTY:"))) {
-
-                    }
-                    if ((error.code == 400 && error.text.equals("PHONE_CODE_EXPIRED:"))) {
-                        Log.e("Log", "EXPIRED " + object);
-
-                    }
-                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_OCCUPIED:"))) {
-
-                    }
-                    if ((error.code == 400 && error.text.equals("PHONE_NUMBER_UNOCCUPIED:"))) {
-
+                    if ((error.code == 400 && error.text.contains("PHONE_NUMBER_INVALID"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The phone number is invalid");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
                     }
 
+                    if ((error.code == 400 && error.text.contains("PHONE_CODE_HASH_EMPTY"))) {
+                        Log.e("Log", "PHONE_CODE_HASH_EMPTY " + object);
+                    }
+
+                    if ((error.code == 400 && error.text.contains("PHONE_CODE_EMPTY"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The phone code is empty");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+
+                    if ((error.code == 400 && error.text.contains("PHONE_CODE_EXPIRED"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The confirmation code has expired");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+
+                    if ((error.code == 400 && error.text.contains("PHONE_NUMBER_OCCUPIED"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The phone number is already in use");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+
+                    if ((error.code == 400 && error.text.contains("PHONE_NUMBER_UNOCCUPIED"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The phone number is not yet being used");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+
+                    if ((error.code == 400 && error.text.contains("FIRSTNAME_INVALID"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The first name is invalid");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                    if ((error.code == 400 && error.text.contains("LASTNAME_INVALID"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The last name is invalid");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                    if ((error.code == 400 && error.text.contains("AUTH_KEY_UNREGISTERED"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The key is not registered in the system");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                    if ((error.code == 401 && error.text.contains("AUTH_KEY_INVALID"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The key is invalid");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+
+                    if ((error.code == 401 && error.text.contains("AUTH_KEY_INVALID"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The key is invalid");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+
+                    if ((error.code == 401 && error.text.contains("USER_DEACTIVATED"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The user has been deleted/deactivated");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+
+                    if ((error.code == 401 && error.text.contains("SESSION_REVOKED"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The authorization has been invalidated \n because of the user terminating all sessions");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+
+                    if ((error.code == 401 && error.text.contains("SESSION_EXPIRED"))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                        builder.setTitle("The authorization has expired");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                    
+                    if ((error.code == 420 && error.text.contains("FLOOD_WAIT"))) {
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        receiverCodeFragment = new ReceiverCodeFragment();
+                        fragmentTransaction.replace(R.id.fragmentContainer, receiverCodeFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        Toast.makeText(getApplicationContext(), "The code has been sent to your " +
+                                "phone wait little bit please ", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if ((error.code == 401 && error.text.contains("ACTIVE_USER_REQUIRED"))) {
+                        Log.e("Log", "ACTIVE_USER_REQUIRED " + object);
+                    }
+
+                    if ((error.code == 401 && error.text.contains("ACTIVE_USER_REQUIRED"))) {
+                        Log.e("Log", "AUTH_KEY_PERM_EMPTY " + object);
+                    }
 
                 }
                 if (object instanceof TdApi.AuthStateWaitSetPhoneNumber) {
@@ -118,6 +303,12 @@ public class RegistrationActivity extends AppCompatActivity {
                     yourNameFragment = new YourNameFragment();
                     fragmentTransaction.replace(R.id.fragmentContainer, yourNameFragment);
                     fragmentTransaction.commit();
+                }
+
+                if (object instanceof TdApi.AuthStateOk) {
+                    Intent intent = new Intent(RegistrationActivity.this, ChatActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
 
             }

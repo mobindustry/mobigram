@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@color/background_activity"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,29 +17,26 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10dp"
-            android:text="@string/set_first_last_name"
-            android:textColor="#ffa5a5a5" />
+            android:layout_margin="@dimen/margin_20dp"
+            android:text="@string/set_first_last_name" />
 
         <EditText
             android:id="@+id/first_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_10dp"
-            android:background="#889f415e"
             android:hint="@string/first_name_hint"
             android:singleLine="true"
-            android:textColor="#000" />
+            android:textColor="@color/text_color" />
 
         <EditText
             android:id="@+id/last_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_10dp"
-            android:background="#889f415e"
             android:hint="@string/last_name_hint"
             android:singleLine="true"
-            android:textColor="#000" />
+            android:textColor="@color/text_color" />
 
     </LinearLayout>
 
@@ -48,8 +45,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_margin="@dimen/margin_10dp"
+        android:layout_margin="@dimen/margin_20dp"
         android:text="@string/cancel_registration"
-        android:textColor="#ff214697" />
+        android:textColor="@color/background_action_bar" />
 
 </FrameLayout>

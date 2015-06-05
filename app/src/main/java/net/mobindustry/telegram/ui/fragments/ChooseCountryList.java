@@ -52,8 +52,19 @@ public class ChooseCountryList extends Fragment implements Serializable {
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.choose_country);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setClickable(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentTransaction = getFragmentManager().beginTransaction();
+                registrationMainFragment = new RegistrationMainFragment();
+                fragmentTransaction.replace(R.id.fragmentContainer, registrationMainFragment);
+                getActivity().getSupportFragmentManager().popBackStack();
+                fragmentTransaction.commit();
+            }
+        });
 
 
         countriesListAdapter = new CountriesListAdapter(getActivity(), countries);

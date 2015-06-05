@@ -61,6 +61,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.your_code);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
         toolbar.inflateMenu(R.menu.ok);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -74,7 +75,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
         new CountDownTimer(120000, 1000) { // adjust the milli seconds here
 
             public void onTick(long millisUntilFinished) {
-                countDownTimer.setText("We send an SMS with an activation code to your phone " + String.format("%d min %d sec",
+                countDownTimer.setText("We will call you " + String.format("%d min %d sec",
                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
