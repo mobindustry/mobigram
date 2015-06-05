@@ -48,8 +48,8 @@ public class ChatActivity extends AppCompatActivity {
     private TdApi.Contacts contacts;
     private TdApi.Chats chats;
 
-    private String userFirstLastName = "firstLastName error"; //temporary entry
-    private String userPhone = "phone error"; //temporary entry
+    private String userFirstLastName;
+    private String userPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,6 +189,7 @@ public class ChatActivity extends AppCompatActivity {
         switch (position) {
             case 1:
                 Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
+                finish();
                 break;
             default:
                 break;

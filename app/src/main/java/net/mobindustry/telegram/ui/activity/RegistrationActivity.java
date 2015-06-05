@@ -39,6 +39,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private String phoneForServer = "";
     private String codeFromServer = "";
 
+    private String userFirstLastName;
+    private String userPhone;
+
     public String getPhoneForServer() {
         return phoneForServer;
     }
@@ -307,8 +310,18 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 if (object instanceof TdApi.AuthStateOk) {
                     Intent intent = new Intent(RegistrationActivity.this, ChatActivity.class);
+                    intent.putExtra("firstLastName", userFirstLastName);
+                    intent.putExtra("userPhone", userPhone);
                     startActivity(intent);
                     finish();
+                }
+                if (object instanceof TdApi.UpdateUserName) {
+                    TdApi.UpdateUserName updateUserName = (TdApi.UpdateUserName) object;
+                    userFirstLastName = updateUserName.firstName + " " + updateUserName.lastName;
+                }
+                if (object instanceof TdApi.UpdateUserPhoneNumber) {
+                    TdApi.UpdateUserPhoneNumber updateUserPhoneNumber = (TdApi.UpdateUserPhoneNumber) object;
+                    userPhone = updateUserPhoneNumber.phoneNumber;
                 }
 
             }
