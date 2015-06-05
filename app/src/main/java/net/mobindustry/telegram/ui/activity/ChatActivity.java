@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import net.mobindustry.telegram.R;
@@ -45,11 +46,18 @@ public class ChatActivity extends AppCompatActivity {
     private Client.ResultHandler resultHandler;
 
     private TdApi.Contacts contacts;
+    private TdApi.Chats chats;
+
+    private String userFirstLastName = "firstLastName";
+    private String userPhone = "phone";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
+
+        userFirstLastName = getIntent().getStringExtra("firstLastName");
+        userPhone = getIntent().getStringExtra("userPhone");
 
         client = TG.getClientInstance();
         resultHandler = new Client.ResultHandler() {
@@ -60,29 +68,24 @@ public class ChatActivity extends AppCompatActivity {
 
                 if (object instanceof TdApi.Contacts) {
                     contacts = (TdApi.Contacts) object;
-                    FragmentManager fm = getSupportFragmentManager();
-                    ContactListFragment contactListFragment = (ContactListFragment)fm.findFragmentById(R.id.titles);
-                    contactListFragment.setContactsList(contacts);
                 }
                 if (object instanceof TdApi.Chats) {
-                    TdApi.Chats chats = (TdApi.Chats) object;
-                    System.out.println("chats " + chats.chats.length);
-                }
-                if(object instanceof TdApi.Messages) {
-
-                    TdApi.Messages messages = (TdApi.Messages) object;
-                    System.out.println(messages.messages[0].toString());
-
+                    chats = (TdApi.Chats) object;
+                    Log.i("LOG", "Chats array size: " + chats.chats.length);
+                    FragmentManager fm = getSupportFragmentManager();
+                    ContactListFragment contactListFragment = (ContactListFragment)fm.findFragmentById(R.id.titles);
+                    contactListFragment.setChatsList(chats);
                 }
             }
         };
+
 
         TG.setDir(this.getFilesDir().getPath());
         TG.setUpdatesHandler(resultHandler);
 
         client.send(new TdApi.GetContacts(), resultHandler);
         client.send(new TdApi.GetChats(0, 100), resultHandler);
-        client.send(new TdApi.GetChatHistory(104975345, 59276609, 1, 10), resultHandler);
+        client.send(new TdApi.GetMe(), resultHandler);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
@@ -94,7 +97,14 @@ public class ChatActivity extends AppCompatActivity {
 
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.navigation_drawer_header, drawerList, false);
+        TextView firstLastNameView = (TextView) header.findViewById(R.id.drawer_header_first_last_name);
+        TextView phoneView = (TextView) header.findViewById(R.id.drawer_header_phone);
+        firstLastNameView.setText(userFirstLastName);
+        phoneView.setText(userPhone);
+
         drawerList.addHeaderView(header, null, false);
+
+
 
         List<NavigationItem> drawerItemsList = new ArrayList<>();
         drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));

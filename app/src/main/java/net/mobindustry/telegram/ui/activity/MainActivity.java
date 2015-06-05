@@ -31,6 +31,9 @@ public class MainActivity extends Activity {
     private Client.ResultHandler resultHandler;
     private boolean stateWaitCode = true;
 
+    private String userFirstLastName;
+    private String userPhone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,15 @@ public class MainActivity extends Activity {
 
                 if (object instanceof TdApi.AuthStateWaitSetPhoneNumber) {
                     stateWaitCode = true;
+                }
+
+                if (object instanceof TdApi.UpdateUserName) {
+                    TdApi.UpdateUserName updateUserName = (TdApi.UpdateUserName) object;
+                    userFirstLastName = updateUserName.firstName + " " + updateUserName.lastName;
+                }
+                if (object instanceof TdApi.UpdateUserPhoneNumber) {
+                    TdApi.UpdateUserPhoneNumber updateUserPhoneNumber = (TdApi.UpdateUserPhoneNumber) object;
+                    userPhone = updateUserPhoneNumber.phoneNumber;
                 }
             }
         };
@@ -109,6 +121,8 @@ public class MainActivity extends Activity {
                 finish();
             } else {
                 Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                intent.putExtra("firstLastName", userFirstLastName);
+                intent.putExtra("userPhone", userPhone);
                 startActivity(intent);
                 showActivityAnimation(MainActivity.this);
                 finish();

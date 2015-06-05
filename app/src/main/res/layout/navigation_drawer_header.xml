@@ -25,16 +25,16 @@
         android:layout_margin="10dp">
 
         <TextView
+            android:id="@+id/drawer_header_first_last_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Alexander Tsymbal"
             android:textSize="22sp"
             android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/drawer_header_phone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="+380 (99) 04 888 06"
             android:textSize="15sp" />
 
 

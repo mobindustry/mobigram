@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_margin="@dimen/margin_10dp"
-        android:textColor="#000" />
+        android:textColor="#ff6e6e6e"
+        android:textSize="12sp"/>
 
 </FrameLayout>

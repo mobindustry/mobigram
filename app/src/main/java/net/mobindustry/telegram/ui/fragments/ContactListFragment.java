@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class ContactListFragment extends ListFragment {
 
     boolean dualPane;
     int currentCheckPosition = 0;
-    private List<TdApi.User> list = new ArrayList<>();
+    private List<TdApi.Chat> list = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,8 +36,9 @@ public class ContactListFragment extends ListFragment {
         return inflater.inflate(R.layout.contact_list_fragment, null);
     }
 
-    public void setContactsList(TdApi.Contacts contacts) {
-        list.addAll(Arrays.asList(contacts.users));
+    public void setChatsList(TdApi.Chats chats) {
+        list.addAll(Arrays.asList(chats.chats));
+        Log.i("LOG", "contactsFragment setList");
     }
 
     @Override
@@ -56,6 +58,7 @@ public class ContactListFragment extends ListFragment {
         ContactsListAdapter adapter = new ContactsListAdapter(getActivity());
         setListAdapter(adapter);
 
+        Log.i("LOG", "adapter.addAll");
         adapter.addAll(list);
 
         View detailsFrame = getActivity().findViewById(R.id.details);
