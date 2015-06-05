@@ -65,8 +65,11 @@ public class ChatActivity extends AppCompatActivity {
             public void onResult(TdApi.TLObject object) {
 
                 Log.i("LOG", "Chat result: " + object.getClass());
+                if (!(object instanceof TdApi.Contacts) && !(object instanceof TdApi.Chats)) {
+                    Log.i("LOG", "Chat result: " + object.toString());
+                }
 
-                if (object instanceof TdApi.Contacts) {
+                if (object instanceof TdApi.Contacts) { //temporary
                     contacts = (TdApi.Contacts) object;
                 }
                 if (object instanceof TdApi.Chats) {
@@ -83,7 +86,7 @@ public class ChatActivity extends AppCompatActivity {
         TG.setUpdatesHandler(resultHandler);
 
         client.send(new TdApi.GetContacts(), resultHandler);
-        client.send(new TdApi.GetChats(0, 100), resultHandler);
+        client.send(new TdApi.GetChats(0, 200), resultHandler);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
         setSupportActionBar(toolbar);

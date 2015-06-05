@@ -39,11 +39,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        Log.e("LOG", "##### Start program #####");
+
         resultHandler = new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
-
-                Log.i("Log", "Result " + object);
 
                 if (object instanceof TdApi.AuthStateOk) {
                     stateWaitCode = false;
