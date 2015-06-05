@@ -8,7 +8,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,6 +18,9 @@ import android.widget.Toast;
 
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.fragments.DialogPhoneCodeEmpty;
+import net.mobindustry.telegram.ui.fragments.DialogPhoneCodeExpired;
+import net.mobindustry.telegram.ui.fragments.DialogPhoneNumberInvalid;
 import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.ui.fragments.YourNameFragment;
@@ -71,7 +76,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -86,17 +91,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
                     if ((error.code == 400 && error.text.contains("PHONE_NUMBER_INVALID"))) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
-                        builder.setTitle("The phone number is invalid");
-                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                                dialog.cancel();
-                            }
-                        });
-                        AlertDialog alert = builder.create();
-                        alert.show();
+                        DialogPhoneNumberInvalid dialogPhoneNumberInvalid = new DialogPhoneNumberInvalid();
+                        FragmentManager fm = getSupportFragmentManager();
+                        dialogPhoneNumberInvalid.show(fm, "PHONE_NUMBER_INVALID");
                     }
 
                     if ((error.code == 400 && error.text.contains("PHONE_CODE_HASH_EMPTY"))) {
@@ -104,31 +101,15 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
 
                     if ((error.code == 400 && error.text.contains("PHONE_CODE_EMPTY"))) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
-                        builder.setTitle("The phone code is empty");
-                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                                dialog.cancel();
-                            }
-                        });
-                        AlertDialog alert = builder.create();
-                        alert.show();
+                        DialogPhoneCodeEmpty phoneCodeEmpty=new DialogPhoneCodeEmpty();
+                        FragmentManager fm = getSupportFragmentManager();
+                        phoneCodeEmpty.show(fm, "PHONE_CODE_EMPTY");
                     }
 
                     if ((error.code == 400 && error.text.contains("PHONE_CODE_EXPIRED"))) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
-                        builder.setTitle("The confirmation code has expired");
-                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                                dialog.cancel();
-                            }
-                        });
-                        AlertDialog alert = builder.create();
-                        alert.show();
+                        DialogPhoneCodeExpired phoneCodeExpired=new DialogPhoneCodeExpired();
+                        FragmentManager fm = getSupportFragmentManager();
+                        phoneCodeExpired.show(fm, "PHONE_CODE_EXPIRED");
                     }
 
                     if ((error.code == 400 && error.text.contains("PHONE_NUMBER_OCCUPIED"))) {
@@ -267,7 +248,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         AlertDialog alert = builder.create();
                         alert.show();
                     }
-                    
+
                     if ((error.code == 420 && error.text.contains("FLOOD_WAIT"))) {
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         receiverCodeFragment = new ReceiverCodeFragment();
