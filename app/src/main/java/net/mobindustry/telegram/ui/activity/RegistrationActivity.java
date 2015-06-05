@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.fragments.DialogAuthKeyInvalid;
+import net.mobindustry.telegram.ui.fragments.DialogFloodWait;
 import net.mobindustry.telegram.ui.fragments.DialogPhoneCodeEmpty;
 import net.mobindustry.telegram.ui.fragments.DialogPhoneCodeExpired;
 import net.mobindustry.telegram.ui.fragments.DialogPhoneNumberInvalid;
@@ -180,17 +182,9 @@ public class RegistrationActivity extends AppCompatActivity {
                         alert.show();
                     }
                     if ((error.code == 401 && error.text.contains("AUTH_KEY_INVALID"))) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
-                        builder.setTitle("The key is invalid");
-                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                                dialog.cancel();
-                            }
-                        });
-                        AlertDialog alert = builder.create();
-                        alert.show();
+                        DialogAuthKeyInvalid dialogAuthKeyInvalid = new DialogAuthKeyInvalid();
+                        FragmentManager fm = getSupportFragmentManager();
+                        dialogAuthKeyInvalid.show(fm, "AUTH_KEY_INVALID");
                     }
 
                     if ((error.code == 401 && error.text.contains("AUTH_KEY_INVALID"))) {
@@ -255,8 +249,9 @@ public class RegistrationActivity extends AppCompatActivity {
                         fragmentTransaction.replace(R.id.fragmentContainer, receiverCodeFragment);
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
-                        Toast.makeText(getApplicationContext(), "The code has been sent to your " +
-                                "phone wait little bit please ", Toast.LENGTH_SHORT).show();
+                        DialogFloodWait dialogFloodWait=new DialogFloodWait();
+                        FragmentManager fm = getSupportFragmentManager();
+                        dialogFloodWait.show(fm, "FLOOD_WAIT");
                     }
 
                     if ((error.code == 401 && error.text.contains("ACTIVE_USER_REQUIRED"))) {
