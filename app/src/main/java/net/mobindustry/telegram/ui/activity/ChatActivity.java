@@ -24,7 +24,8 @@ import android.widget.Toast;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.model.NavigationItem;
-import net.mobindustry.telegram.ui.fragments.ContactListFragment;
+import net.mobindustry.telegram.ui.fragments.ChatListFragment;
+import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
@@ -33,7 +34,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements ClientReqest {
 
     private DrawerLayout drawerLayout;
     private ListView drawerList;
@@ -45,9 +46,77 @@ public class ChatActivity extends AppCompatActivity {
     private Client client;
     private Client.ResultHandler resultHandler;
 
+    private TdApi.User userMe;
     private TdApi.Chats chats;
+    private FragmentManager fm;
 
-    private TdApi.User user;
+    @Override
+    public void getMe() {
+        client.send(new TdApi.GetMe(), new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                if (object instanceof TdApi.User) {
+                    userMe = (TdApi.User) object;
+
+                    LayoutInflater inflater = getLayoutInflater();
+                    ViewGroup header = (ViewGroup) inflater.inflate(R.layout.navigation_drawer_header, drawerList, false);
+                    TextView firstLastNameView = (TextView) header.findViewById(R.id.drawer_header_first_last_name);
+                    TextView phoneView = (TextView) header.findViewById(R.id.drawer_header_phone);
+                    firstLastNameView.setText(userMe.firstName + " " + userMe.lastName);
+                    phoneView.setText(userMe.phoneNumber);
+
+                    drawerList.addHeaderView(header, null, false);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getUser(long id) {
+        client.send(new TdApi.GetUser((int) id), new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                System.out.println("User object " + object.toString());
+                if (object instanceof TdApi.User) {
+                    getMessageFragment().setUser((TdApi.User) object);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getChats(int offset, int limit) {
+        client.send(new TdApi.GetChats(offset, limit), new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                if (object instanceof TdApi.Chats) {
+                    chats = (TdApi.Chats) object;
+                    Log.i("LOG", "Get chats " + chats.toString());
+
+                    fm = getSupportFragmentManager();
+                    ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
+                    chatListFragment.setChatsList(chats);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getChatHistory(final long id, final int messageId, final int offset, final int limit) {
+        client.send(new TdApi.GetChatHistory(id, messageId, offset, limit), new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                if (object instanceof TdApi.Messages) {
+                    getMessageFragment().setChatHistory((TdApi.Messages) object);
+                }
+            }
+        });
+    }
+
+    public MessagesFragment getMessageFragment() {
+        fm = getSupportFragmentManager();
+        return (MessagesFragment) fm.findFragmentById(R.id.messages);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,34 +124,19 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.chat);
 
         client = TG.getClientInstance();
+
         resultHandler = new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
 
-                Log.i("LOG", "Chat result: " + object.getClass());
-                if (!(object instanceof TdApi.Contacts) && !(object instanceof TdApi.Chats)) {
-                    Log.i("LOG", "Chat result: " + object.toString());
-                }
-
-                if (object instanceof TdApi.Chats) {
-                    chats = (TdApi.Chats) object;
-                    Log.i("LOG", "Chats array size: " + chats.chats.length);
-
-                    FragmentManager fm = getSupportFragmentManager();
-                    ContactListFragment contactListFragment = (ContactListFragment) fm.findFragmentById(R.id.titles);
-                    contactListFragment.setChatsList(chats);
-                }
-                if(object instanceof TdApi.User) {
-                    user = (TdApi.User) object;
-                }
+                Log.i("LOG", "Updates result : " + object);
             }
         };
 
         TG.setDir(this.getFilesDir().getPath());
         TG.setUpdatesHandler(resultHandler);
 
-        client.send(new TdApi.GetMe(), resultHandler);
-        client.send(new TdApi.GetChats(0, 200), resultHandler);
+        getChats(0, 200);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
         setSupportActionBar(toolbar);
@@ -91,14 +145,7 @@ public class ChatActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
-        LayoutInflater inflater = getLayoutInflater();
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.navigation_drawer_header, drawerList, false);
-        TextView firstLastNameView = (TextView) header.findViewById(R.id.drawer_header_first_last_name);
-        TextView phoneView = (TextView) header.findViewById(R.id.drawer_header_phone);
-        firstLastNameView.setText(user.firstName + " " + user.lastName);
-        phoneView.setText(user.phoneNumber);
-
-        drawerList.addHeaderView(header, null, false);
+        getMe(); //Get info for NavigationDrawer Header
 
         List<NavigationItem> drawerItemsList = new ArrayList<>();
         drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
@@ -132,7 +179,7 @@ public class ChatActivity extends AppCompatActivity {
             selectItem(0);
         }
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -175,6 +222,7 @@ public class ChatActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override

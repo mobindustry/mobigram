@@ -26,7 +26,7 @@
 
                 <fragment
                     android:id="@+id/titles"
-                    class="net.mobindustry.telegram.ui.fragments.ContactListFragment"
+                    class="net.mobindustry.telegram.ui.fragments.ChatListFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 

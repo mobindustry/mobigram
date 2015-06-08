@@ -18,11 +18,11 @@ import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.Date;
 
-public class ContactsListAdapter extends ArrayAdapter<TdApi.Chat> {
+public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> { //TODO adapter TdApi.Chat
 
     private final LayoutInflater inflater;
 
-    public ContactsListAdapter(Context context) {
+    public ChatListAdapter(Context context) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
     }
@@ -59,7 +59,7 @@ public class ContactsListAdapter extends ArrayAdapter<TdApi.Chat> {
         TdApi.User user = privateChatInfo.user;
 
         icon.setBackground(getShapeDrawable());
-        icon.setText(getInitials(user.firstName, user.lastName));
+        icon.setText(Utils.getInitials(user.firstName, user.lastName));
 
         if (user.lastName.isEmpty()) {
             firstLastName.setText(user.firstName);
@@ -77,24 +77,7 @@ public class ContactsListAdapter extends ArrayAdapter<TdApi.Chat> {
         ShapeDrawable circle = new ShapeDrawable(new OvalShape());
         circle.setIntrinsicHeight(60);
         circle.setIntrinsicWidth(60);
-        circle.getPaint().setColor(Color.DKGRAY);
+        circle.getPaint().setColor(Color.DKGRAY); //TODO set color
         return circle;
-    }
-
-    public String getInitials(String firstName, String lastName) {
-        if (firstName.isEmpty()) {
-            return ":)";
-        }
-        if (lastName.isEmpty()) {
-            char[] iconText = new char[2];
-            firstName.getChars(0, 1, iconText, 0);
-            firstName.getChars(1, 2, iconText, 1);
-            return ("" + iconText[0] + iconText[1]).toUpperCase();
-        } else {
-            char[] iconText = new char[2];
-            firstName.getChars(0, 1, iconText, 0);
-            lastName.getChars(0, 1, iconText, 1);
-            return ("" + iconText[0] + iconText[1]).toUpperCase();
-        }
     }
 }

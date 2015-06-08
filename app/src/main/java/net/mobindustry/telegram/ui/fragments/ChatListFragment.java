@@ -14,9 +14,9 @@ import android.widget.Toast;
 import com.melnykov.fab.FloatingActionButton;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.MessagesActivity;
-import net.mobindustry.telegram.ui.adapters.ContactsListAdapter;
-import net.mobindustry.telegram.model.Contact;
+import net.mobindustry.telegram.ui.adapters.ChatListAdapter;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -24,11 +24,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ContactListFragment extends ListFragment {
+public class ChatListFragment extends ListFragment {
 
     boolean dualPane;
     int currentCheckPosition = 0;
     private List<TdApi.Chat> list = new ArrayList<>();
+    private ChatListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +40,7 @@ public class ContactListFragment extends ListFragment {
     public void setChatsList(TdApi.Chats chats) {
         list.addAll(Arrays.asList(chats.chats));
         Log.i("LOG", "contactsFragment setList");
+        adapter.addAll(list);
     }
 
     @Override
@@ -55,13 +57,10 @@ public class ContactListFragment extends ListFragment {
             }
         });
 
-        ContactsListAdapter adapter = new ContactsListAdapter(getActivity());
+        adapter = new ChatListAdapter(getActivity());
         setListAdapter(adapter);
 
-        Log.i("LOG", "adapter.addAll");
-        adapter.addAll(list);
-
-        View detailsFrame = getActivity().findViewById(R.id.details);
+        View detailsFrame = getActivity().findViewById(R.id.messages);
         dualPane = detailsFrame != null
                 && detailsFrame.getVisibility() == View.VISIBLE;
 
@@ -73,6 +72,13 @@ public class ContactListFragment extends ListFragment {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             //showDetails(currentCheckPosition);
         }
+    }
+
+    public TdApi.Chat getChat() {
+        return list.get(currentCheckPosition);
+    }
+    public int getMessageIndex() {
+        return list.get(currentCheckPosition).topMessage.id;
     }
 
     @Override
@@ -91,17 +97,14 @@ public class ContactListFragment extends ListFragment {
 
         if (dualPane) {
             getListView().setItemChecked(index, true);
-            MessagesFragment details = (MessagesFragment)
-                    getFragmentManager().findFragmentById(R.id.details);
-            if (details == null || details.getShownIndex() != index) {
-                details = MessagesFragment.newInstance(index);
-
-                //details.setList(list.get(currentCheckPosition).getList());
-                //details.setDataForToolbar(list.get(currentCheckPosition));
+            MessagesFragment messagesFragment = (MessagesFragment)
+                    getFragmentManager().findFragmentById(R.id.messages);
+            if (messagesFragment == null || messagesFragment.getShownIndex() != index) {
+                messagesFragment = MessagesFragment.newInstance(index);
 
                 FragmentTransaction ft
                         = getFragmentManager().beginTransaction();
-                ft.replace(R.id.details, details);
+                ft.replace(R.id.messages, messagesFragment);
                 ft.setTransition(
                         FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
