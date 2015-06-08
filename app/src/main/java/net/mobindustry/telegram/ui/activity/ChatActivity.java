@@ -45,19 +45,14 @@ public class ChatActivity extends AppCompatActivity {
     private Client client;
     private Client.ResultHandler resultHandler;
 
-    private TdApi.Contacts contacts;
     private TdApi.Chats chats;
 
-    private String userFirstLastName;
-    private String userPhone;
+    private TdApi.User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
-
-        userFirstLastName = getIntent().getStringExtra("firstLastName");
-        userPhone = getIntent().getStringExtra("userPhone");
 
         client = TG.getClientInstance();
         resultHandler = new Client.ResultHandler() {
@@ -69,15 +64,16 @@ public class ChatActivity extends AppCompatActivity {
                     Log.i("LOG", "Chat result: " + object.toString());
                 }
 
-                if (object instanceof TdApi.Contacts) { //temporary
-                    contacts = (TdApi.Contacts) object;
-                }
                 if (object instanceof TdApi.Chats) {
                     chats = (TdApi.Chats) object;
                     Log.i("LOG", "Chats array size: " + chats.chats.length);
+
                     FragmentManager fm = getSupportFragmentManager();
                     ContactListFragment contactListFragment = (ContactListFragment) fm.findFragmentById(R.id.titles);
                     contactListFragment.setChatsList(chats);
+                }
+                if(object instanceof TdApi.User) {
+                    user = (TdApi.User) object;
                 }
             }
         };
@@ -85,7 +81,7 @@ public class ChatActivity extends AppCompatActivity {
         TG.setDir(this.getFilesDir().getPath());
         TG.setUpdatesHandler(resultHandler);
 
-        client.send(new TdApi.GetContacts(), resultHandler);
+        client.send(new TdApi.GetMe(), resultHandler);
         client.send(new TdApi.GetChats(0, 200), resultHandler);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
@@ -99,8 +95,8 @@ public class ChatActivity extends AppCompatActivity {
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.navigation_drawer_header, drawerList, false);
         TextView firstLastNameView = (TextView) header.findViewById(R.id.drawer_header_first_last_name);
         TextView phoneView = (TextView) header.findViewById(R.id.drawer_header_phone);
-        firstLastNameView.setText(userFirstLastName);
-        phoneView.setText(userPhone);
+        firstLastNameView.setText(user.firstName + " " + user.lastName);
+        phoneView.setText(user.phoneNumber);
 
         drawerList.addHeaderView(header, null, false);
 

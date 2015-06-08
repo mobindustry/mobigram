@@ -26,8 +26,8 @@ public class MessagesActivity extends AppCompatActivity {
 
             Contact contact = (Contact)getIntent().getSerializableExtra("contact");
 
-            details.setList(contact.getList());
-            details.setDataForToolbar(contact);
+//            details.setList(contact.getList());
+          //  details.setDataForToolbar(contact);
         }
     }
 }
