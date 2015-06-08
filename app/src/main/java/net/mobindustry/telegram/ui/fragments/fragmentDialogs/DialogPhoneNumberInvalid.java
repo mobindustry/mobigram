@@ -1,4 +1,4 @@
-package net.mobindustry.telegram.ui.fragments;
+package net.mobindustry.telegram.ui.fragments.fragmentDialogs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-public class DialogPhoneCodeEmpty extends DialogFragment {
+import net.mobindustry.telegram.R;
+
+public class DialogPhoneNumberInvalid extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
                 .setTitle("Error")
-                .setMessage("The phone code is empty")
+                .setMessage("The phone number is invalid")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();

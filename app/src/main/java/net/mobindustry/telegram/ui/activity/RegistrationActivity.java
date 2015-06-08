@@ -1,38 +1,30 @@
 package net.mobindustry.telegram.ui.activity;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.fragments.DialogAuthKeyInvalid;
-import net.mobindustry.telegram.ui.fragments.DialogAuthKeyUnregistered;
-import net.mobindustry.telegram.ui.fragments.DialogFirstNameInvalid;
-import net.mobindustry.telegram.ui.fragments.DialogFloodWait;
-import net.mobindustry.telegram.ui.fragments.DialogLastNameInvalid;
-import net.mobindustry.telegram.ui.fragments.DialogPhoneCodeEmpty;
-import net.mobindustry.telegram.ui.fragments.DialogPhoneCodeExpired;
-import net.mobindustry.telegram.ui.fragments.DialogPhoneCodeInvalid;
-import net.mobindustry.telegram.ui.fragments.DialogPhoneNumberInvalid;
-import net.mobindustry.telegram.ui.fragments.DialogPhoneNumberOccupied;
-import net.mobindustry.telegram.ui.fragments.DialogPhoneNumberUnoccupied;
-import net.mobindustry.telegram.ui.fragments.DialogSessionExpired;
-import net.mobindustry.telegram.ui.fragments.DialogSessionRevoked;
-import net.mobindustry.telegram.ui.fragments.DialogUserDeactivated;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyInvalid;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyUnregistered;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogFirstNameInvalid;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogFloodWait;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogLastNameInvalid;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneCodeEmpty;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneCodeExpired;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneCodeInvalid;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneNumberInvalid;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneNumberOccupied;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneNumberUnoccupied;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogSessionExpired;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogSessionRevoked;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogUserDeactivated;
 import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.ui.fragments.YourNameFragment;
