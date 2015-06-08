@@ -34,6 +34,8 @@ public class MainActivity extends Activity {
     private String userPhone;
     private TitanicTextView tv;
     private Titanic titanic;
+    private TextView textCheckInternet;
+    private BroadcastReceiver receiver;
 
 
     @Override
