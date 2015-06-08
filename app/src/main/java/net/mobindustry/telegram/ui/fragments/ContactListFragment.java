@@ -95,6 +95,7 @@ public class ContactListFragment extends ListFragment {
                     getFragmentManager().findFragmentById(R.id.details);
             if (details == null || details.getShownIndex() != index) {
                 details = MessagesFragment.newInstance(index);
+
                 //details.setList(list.get(currentCheckPosition).getList());
                 //details.setDataForToolbar(list.get(currentCheckPosition));
 

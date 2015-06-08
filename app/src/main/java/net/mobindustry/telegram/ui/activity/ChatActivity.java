@@ -132,7 +132,7 @@ public class ChatActivity extends AppCompatActivity {
             selectItem(0);
         }
     }
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
