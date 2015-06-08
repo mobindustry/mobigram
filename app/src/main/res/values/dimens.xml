@@ -40,5 +40,7 @@
     <dimen name="info_text">16sp</dimen>
     <dimen name="margin_20dp">20dp</dimen>
     <dimen name="text_user">18sp</dimen>
+    <dimen name="width_land_sw600">450dp</dimen>
+    <dimen name="height_land_sw600">500dp</dimen>
 
 </resources>

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
     <include
         layout="@layout/toolbar_registration"
@@ -25,8 +26,9 @@
             android:textColor="#000"
             android:textSize="18sp"
             android:background="@drawable/tab_selector"
-
             />
+
+
 
     </FrameLayout>
 

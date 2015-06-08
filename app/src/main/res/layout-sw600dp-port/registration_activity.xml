@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
-        android:layout_width="@dimen/width_land_sw600"
-        android:layout_height="@dimen/height_land_sw600"
+        android:layout_width="@dimen/width_registration_fragment"
+        android:layout_height="@dimen/height_registration_fragment"
         android:layout_gravity="center"
         card_view:cardElevation="8sp">
 

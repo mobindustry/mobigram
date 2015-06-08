@@ -27,6 +27,7 @@
         android:id="@+id/code_from_user"
         android:inputType="phone"/>
     <TextView
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@string/we_call_you_test"

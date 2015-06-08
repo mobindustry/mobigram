@@ -12,4 +12,14 @@
         android:textColor="#212121"
         android:textSize="@dimen/splash_screen_text_size" />
 
+    <TextView
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check your internet connection"
+        android:textColor="#ffa5a5a5"
+        android:layout_gravity="center|bottom"
+        android:layout_margin="@dimen/margin_20dp"
+        android:id="@+id/text_check_internet"/>
+
 </FrameLayout>

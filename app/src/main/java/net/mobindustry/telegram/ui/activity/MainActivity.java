@@ -1,27 +1,26 @@
 package net.mobindustry.telegram.ui.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
-
+import android.view.View;
+import android.widget.TextView;
 import com.romainpiel.titanic.library.Titanic;
 import com.romainpiel.titanic.library.TitanicTextView;
-
 import net.mobindustry.telegram.R;
-
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
-
-import java.io.File;
 import java.util.concurrent.TimeUnit;
+
 
 public class MainActivity extends Activity {
 
@@ -31,10 +30,19 @@ public class MainActivity extends Activity {
     private Client.ResultHandler resultHandler;
     private boolean stateWaitCode = true;
 
+    private String userFirstLastName;
+    private String userPhone;
+    private TitanicTextView tv;
+    private Titanic titanic;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+
+        textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
         Log.e("LOG", "##### Start program #####");
 
@@ -70,8 +78,32 @@ public class MainActivity extends Activity {
             splashStart = new SplashStart();
             splashStart.execute();
         } else {
-            checkWiFi();
+            tv = (TitanicTextView) findViewById(R.id.titanic_tv);
+            titanic = new Titanic();
+            titanic.start(tv);
+            textCheckInternet.setVisibility(View.VISIBLE);
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    final String action = intent.getAction();
+                    if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
+                        if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false)) {
+                            textCheckInternet.setVisibility(View.GONE);
+                            client.send(new TdApi.AuthGetState(), resultHandler);
+                            splashStart = new SplashStart();
+                            splashStart.execute();
+                            stopReceive();
+                        }
+                    }
+                }
+            };
+            registerReceiver(receiver, new IntentFilter(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION));
+
         }
+    }
+
+    public void stopReceive() {
+        unregisterReceiver(receiver);
     }
 
     public static void showActivityAnimation(Activity activity) {
@@ -122,29 +154,16 @@ public class MainActivity extends Activity {
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
-    public void checkWiFi() {
-        if (!this.isOnline()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Internet is not enable");
-            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }
+
