@@ -52,13 +52,17 @@
                     android:id="@+id/smiles"/>
 
                 <EditText
+                    android:id="@+id/message_edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="10"
                     android:hint="Message"
                     android:textColor="#000"
-                    android:textColorHint="#aaa" />
+                    android:textColorHint="#aaa"
+                    android:imeOptions="flagNoExtractUi"
+                    android:maxLines="4"
+                    />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -66,7 +70,7 @@
                     android:layout_weight="1"
                     android:padding="5dp"
                     android:layout_gravity="bottom"
-                    android:src="@drawable/ic_attach"
+                    android:src="@drawable/ic_send_attach_levels"
                     android:id="@+id/attach"/>
             </LinearLayout>
         </LinearLayout>

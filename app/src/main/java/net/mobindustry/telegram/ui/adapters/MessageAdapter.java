@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,31 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
 
         TdApi.Message item = getItem(position);
+
+        if (item.message instanceof TdApi.MessagePhoto) {
+            Log.i("Message", "Photo " + item.message);
+        }
+        if (item.message instanceof TdApi.MessageAudio) {
+            Log.i("Message", "Audio " + item.message);
+        }
+        if (item.message instanceof TdApi.MessageContact) {
+            Log.i("Message", "Contact " + item.message);
+        }
+        if (item.message instanceof TdApi.MessageDocument) {
+            Log.i("Message", "Document " + item.message);
+        }
+        if (item.message instanceof TdApi.MessageGeoPoint) {
+            Log.i("Message", "GeoPoint " + item.message);
+        }
+        if (item.message instanceof TdApi.MessageSticker) {
+            Log.i("Message", "Sticker " + item.message);
+        }
+        if (item.message instanceof TdApi.MessageVideo) {
+            Log.i("Message", "Video " + item.message);
+        }
+        if (item.message instanceof TdApi.MessageUnsupported) {
+            Log.i("Message", "Unsupported " + item.message);
+        }
 
         long timeInMls = item.date;
         Date date = new Date(timeInMls * 1000);

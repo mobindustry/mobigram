@@ -1,8 +1,13 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.LevelListDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
@@ -12,11 +17,13 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -26,6 +33,7 @@ import android.widget.Toast;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
+import net.mobindustry.telegram.ui.adapters.TextWatcherAdapter;
 import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -41,6 +49,11 @@ import java.util.List;
 
 public class MessagesFragment extends Fragment implements Serializable {
 
+    public static final int LEVEL_SEND = 0;
+    public static final int LEVEL_ATTACH = 1;
+    private static final long SCALE_UP_DURATION = 80;
+    private static final long SCALE_DOWN_DURATION = 80;
+
     private MessageAdapter adapter;
     private static List<TdApi.Message> messageList = new ArrayList<>();
 
@@ -52,10 +65,10 @@ public class MessagesFragment extends Fragment implements Serializable {
     private TextView name;
     private TextView lastSeenText;
 
+    private AnimatorSet currentAnimation;
+
     private TdApi.User user;
     private TdApi.Chat chat;
-    private ChatActivity activity;
-
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -70,15 +83,18 @@ public class MessagesFragment extends Fragment implements Serializable {
         return getArguments().getInt("index", 0);
     }
 
-    public void setChatHistory(TdApi.Messages messages) {
+    public void setChatHistory(final TdApi.Messages messages) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                adapter.clear();
+                adapter.addAll(Utils.reverseMessages(messages.messages));
+            }
+        });
 
-        adapter.addAll(Utils.reverseMessages(messages.messages));
     }
-
 
     public void setUser(TdApi.User user) {
         this.user = user;
-
         Log.e("Log", "User " + user.toString());
     }
 
@@ -99,12 +115,26 @@ public class MessagesFragment extends Fragment implements Serializable {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ChatActivity activity = (ChatActivity) getActivity();
+        final ChatActivity activity = (ChatActivity) getActivity();
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
 
+            final EditText input = (EditText) getActivity().findViewById(R.id.message_edit_text);
+            input.addTextChangedListener(new TextWatcherAdapter() {
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s.length() == 0) {
+                        animateLevel(LEVEL_ATTACH);
+                    } else {
+                        animateLevel(LEVEL_SEND);
+                    }
+                }
+            });
+
             attach = (ImageView) getActivity().findViewById(R.id.attach);
+            attach.setImageLevel(LEVEL_ATTACH);
+
             smiles = (ImageView) getActivity().findViewById(R.id.smiles);
             icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
             name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
@@ -113,13 +143,20 @@ public class MessagesFragment extends Fragment implements Serializable {
             attach.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new Handler().postDelayed(new Runnable() {
+                    String text = input.getText().toString();
+                    if (text.length() == 0) {
+                        new Handler().postDelayed(new Runnable() {
 
-                        public void run() {
-                            showPopupMenu(attach);
-                        }
+                            public void run() {
+                                showPopupMenu(attach);
+                            }
 
-                    }, 100L);
+                        }, 100L);
+                    } else {
+                        activity.sendMessage(chat.id, input.getText().toString());
+                        input.setText("");
+                        activity.getChatHistory(chat.id, chat.topMessage.id, -1, 30);
+                    }
                 }
             });
 
@@ -156,6 +193,36 @@ public class MessagesFragment extends Fragment implements Serializable {
                 });
             }
         }
+    }
+
+    private void animateLevel(final int level) {
+        LevelListDrawable drawable = (LevelListDrawable) attach.getDrawable();
+        if (drawable.getLevel() == level){
+            return;
+        }
+        if (currentAnimation != null){
+            currentAnimation.cancel();
+        }
+
+        AnimatorSet scaleDown = new AnimatorSet()
+                .setDuration(SCALE_DOWN_DURATION);
+        scaleDown.playTogether(
+                ObjectAnimator.ofFloat(attach, View.SCALE_X, 1f, 0.1f),
+                ObjectAnimator.ofFloat(attach, View.SCALE_Y, 1f, 0.1f));
+        scaleDown.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                attach.setImageLevel(level);
+            }
+        });
+        AnimatorSet scaleUp = new AnimatorSet()
+                .setDuration(SCALE_UP_DURATION);
+        scaleUp.playTogether(
+                ObjectAnimator.ofFloat(attach, View.SCALE_X, 0.1f, 1f),
+                ObjectAnimator.ofFloat(attach, View.SCALE_Y, 0.1f, 1f));
+        currentAnimation = new AnimatorSet();
+        currentAnimation.playSequentially(scaleDown, scaleUp);
+        currentAnimation.start();
     }
 
     public ShapeDrawable getBackground() {

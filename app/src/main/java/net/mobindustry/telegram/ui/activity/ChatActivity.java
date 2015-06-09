@@ -112,6 +112,19 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         });
     }
 
+    @Override
+    public void sendMessage(long chatId, String message) {
+        client.send(new TdApi.SendMessage(chatId, new TdApi.InputMessageText(message)), new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                if (object instanceof TdApi.Messages) {
+                    getMessageFragment().setChatHistory((TdApi.Messages) object);
+                }
+            }
+        });
+    }
+
+
     public MessagesFragment getMessageFragment() {
         fm = getSupportFragmentManager();
         return (MessagesFragment) fm.findFragmentById(R.id.messages);
@@ -132,6 +145,10 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
             @Override
             public void onResult(TdApi.TLObject object) {
                 Log.i("LOG", "Updates result : " + object);
+                if(object instanceof TdApi.UpdateChatReadInbox || object instanceof TdApi.UpdateChatReadOutbox) {
+                    getChats(0, 200);
+                }
+
             }
         };
 

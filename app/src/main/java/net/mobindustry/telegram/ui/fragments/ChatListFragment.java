@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
@@ -14,9 +13,8 @@ import android.widget.Toast;
 import com.melnykov.fab.FloatingActionButton;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.activity.ChatActivity;
-import net.mobindustry.telegram.ui.activity.MessagesActivity;
 import net.mobindustry.telegram.ui.adapters.ChatListAdapter;
+import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -34,14 +32,20 @@ public class ChatListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        adapter = new ChatListAdapter(getActivity());
         return inflater.inflate(R.layout.contact_list_fragment, null);
     }
 
-    public void setChatsList(TdApi.Chats chats) {
-        list.addAll(Arrays.asList(chats.chats));
-        Log.i("LOG", "chatsFragment setList");
-        adapter.clear();
-        adapter.addAll(chats.chats);
+    public void setChatsList(final TdApi.Chats chats) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                list.addAll(Arrays.asList(chats.chats));
+                Log.i("LOG", "chatsFragment setList");
+                adapter.clear();
+                adapter.addAll(chats.chats);//TODO check this!!!
+            }
+        });
+
     }
 
     @Override
@@ -58,7 +62,7 @@ public class ChatListFragment extends ListFragment {
             }
         });
 
-        adapter = new ChatListAdapter(getActivity());
+
         setListAdapter(adapter);
 
         View detailsFrame = getActivity().findViewById(R.id.messages);
