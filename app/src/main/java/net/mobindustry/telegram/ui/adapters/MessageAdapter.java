@@ -10,8 +10,11 @@ import android.widget.TextView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.NeTelegramMessage;
 import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
+
+import java.util.Date;
 
 public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
@@ -70,6 +73,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
         TdApi.Message item = getItem(position);
 
+        long timeInMls = item.date;
+        Date date = new Date(timeInMls * 1000);
+
         switch (getItemViewType(position)) {
             case Const.IN_MESSAGE:
                 TextView inMessage = (TextView) convertView.findViewById(R.id.in_msg);
@@ -78,14 +84,14 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 TdApi.MessageText inText = (TdApi.MessageText) item.message;
 
                 inMessage.setText(inText.text);
-                inTime.setText(String.valueOf(item.date));
+                inTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
             case Const.IN_CONTENT_MESSAGE:
                 //FrameLayout inContent = (FrameLayout) convertView.findViewById(R.id.in_content);
                 TextView inContentTime = (TextView) convertView.findViewById(R.id.in_content_msg_time);
 
                 //inContent.addView();
-                inContentTime.setText(String.valueOf(item.date));
+                inContentTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
             case Const.OUT_MESSAGE:
                 TextView outMessage = (TextView) convertView.findViewById(R.id.out_msg);
@@ -94,14 +100,14 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 TdApi.MessageText outText = (TdApi.MessageText) item.message;
 
                 outMessage.setText(outText.text);
-                outTime.setText(String.valueOf(item.date));
+                outTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
             case Const.OUT_CONTENT_MESSAGE:
                 //FrameLayout outContent = (FrameLayout) convertView.findViewById(R.id.out_content);
                 TextView outContentTime = (TextView) convertView.findViewById(R.id.out_content_msg_time);
 
                 //outContent.addView();
-                outContentTime.setText(String.valueOf(item.date));
+                outContentTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
         }
         return convertView;

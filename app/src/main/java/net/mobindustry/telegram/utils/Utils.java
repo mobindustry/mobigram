@@ -11,10 +11,7 @@ import java.util.TimeZone;
 public class Utils {
 
     public static SimpleDateFormat getDateFormat(String type) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(type);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        dateFormat.setLenient(false);
-        return dateFormat;
+        return new SimpleDateFormat(type);
     }
 
     public static String getInitials(String firstName, String lastName) {

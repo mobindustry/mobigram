@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,13 +31,14 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.contact_item, parent, false);
+            convertView = inflater.inflate(R.layout.chat_item, parent, false);
         }
 
         TextView icon = (TextView) convertView.findViewById(R.id.message_icon_text);
         TextView firstLastName = (TextView) convertView.findViewById(R.id.firstLastName);
         TextView lastMessage = (TextView) convertView.findViewById(R.id.lastMessage);
         TextView time = (TextView) convertView.findViewById(R.id.contactItemTime);
+        TextView notify = (TextView) convertView.findViewById(R.id.chat_notification);
 
         TdApi.Chat item = getItem(position);
 
@@ -49,6 +49,8 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         long timeMls = (long) message.date;
         Date date = new Date(timeMls * 1000);
+
+
 
         if (message.message instanceof TdApi.MessageText) {
             text = (TdApi.MessageText) message.message;
@@ -62,22 +64,26 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         }
         TdApi.User user = privateChatInfo.user;
 
-        icon.setBackground(getShapeDrawable());
+        if (item.unreadCount != 0) {
+            notify.setText(String.valueOf(item.unreadCount));
+            notify.setBackground(getShapeDrawable(25, Color.YELLOW));
+        }
+
+        icon.setBackground(getShapeDrawable(60, Color.DKGRAY)); //TODO set color
         icon.setText(Utils.getInitials(user.firstName, user.lastName));
 
         firstLastName.setText(user.firstName + " " + user.lastName);
-
 
         time.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
 
         return convertView;
     }
 
-    private ShapeDrawable getShapeDrawable() {
+    private ShapeDrawable getShapeDrawable(int size, int color) {
         ShapeDrawable circle = new ShapeDrawable(new OvalShape());
-        circle.setIntrinsicHeight(60);
-        circle.setIntrinsicWidth(60);
-        circle.getPaint().setColor(Color.DKGRAY); //TODO set color
+        circle.setIntrinsicHeight(size);
+        circle.setIntrinsicWidth(size);
+        circle.getPaint().setColor(color);
         return circle;
     }
 }

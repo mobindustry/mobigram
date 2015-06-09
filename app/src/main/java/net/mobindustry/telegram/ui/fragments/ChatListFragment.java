@@ -39,7 +39,7 @@ public class ChatListFragment extends ListFragment {
 
     public void setChatsList(TdApi.Chats chats) {
         list.addAll(Arrays.asList(chats.chats));
-        Log.i("LOG", "contactsFragment setList");
+        Log.i("LOG", "chatsFragment setList");
         adapter.addAll(list);
     }
 
@@ -76,9 +76,6 @@ public class ChatListFragment extends ListFragment {
 
     public TdApi.Chat getChat() {
         return list.get(currentCheckPosition);
-    }
-    public int getMessageIndex() {
-        return list.get(currentCheckPosition).topMessage.id;
     }
 
     @Override
