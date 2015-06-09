@@ -40,7 +40,8 @@ public class ChatListFragment extends ListFragment {
     public void setChatsList(TdApi.Chats chats) {
         list.addAll(Arrays.asList(chats.chats));
         Log.i("LOG", "chatsFragment setList");
-        adapter.addAll(list);
+        adapter.clear();
+        adapter.addAll(chats.chats);
     }
 
     @Override
@@ -107,11 +108,20 @@ public class ChatListFragment extends ListFragment {
                 ft.commit();
             }
         } else {
-            Intent intent = new Intent();
-            intent.setClass(getActivity(), MessagesActivity.class);
-            intent.putExtra("index", index);
-            //intent.putExtra("contact", list.get(index));
-            startActivity(intent);
+            getListView().setItemChecked(index, true);
+            MessagesFragment messagesFragment = (MessagesFragment)
+                    getFragmentManager().findFragmentById(R.id.messages);
+            if (messagesFragment == null || messagesFragment.getShownIndex() != index) {
+                messagesFragment = MessagesFragment.newInstance(index);
+
+                FragmentTransaction ft
+                        = getFragmentManager().beginTransaction();
+                ft.replace(R.id.messages, messagesFragment);
+                ft.setTransition(
+                        FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commit();
+            }
         }
+
     }
 }

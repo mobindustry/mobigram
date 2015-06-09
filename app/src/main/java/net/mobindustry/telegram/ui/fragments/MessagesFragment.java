@@ -93,7 +93,7 @@ public class MessagesFragment extends Fragment {
             ChatListFragment fragment = (ChatListFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.titles);
             chat = fragment.getChat();
 
-            TdApi.PrivateChatInfo privateChatInfo= (TdApi.PrivateChatInfo) chat.type; //TODO verify;
+            TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) chat.type; //TODO verify;
             TdApi.User chatUser = privateChatInfo.user;
 //            TdApi.UserStatusOffline status = (TdApi.UserStatusOffline) chatUser.status;
 
@@ -111,7 +111,7 @@ public class MessagesFragment extends Fragment {
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        getActivity().onBackPressed();
+                        getFragmentManager().beginTransaction().remove(MessagesFragment.this).commit();
                     }
                 });
             } else {

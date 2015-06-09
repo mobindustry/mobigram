@@ -131,7 +131,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         resultHandler = new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
-
                 Log.i("LOG", "Updates result : " + object);
             }
         };
