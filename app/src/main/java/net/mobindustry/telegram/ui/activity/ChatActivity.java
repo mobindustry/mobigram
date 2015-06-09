@@ -92,7 +92,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                 if (object instanceof TdApi.Chats) {
                     chats = (TdApi.Chats) object;
                     Log.i("LOG", "Get chats " + chats.toString());
-
                     fm = getSupportFragmentManager();
                     ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
                     chatListFragment.setChatsList(chats);
@@ -116,6 +115,10 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     public MessagesFragment getMessageFragment() {
         fm = getSupportFragmentManager();
         return (MessagesFragment) fm.findFragmentById(R.id.messages);
+    }
+
+    public long getMyId() {
+        return userMe.id;
     }
 
     @Override

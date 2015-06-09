@@ -24,6 +24,7 @@ import net.mobindustry.telegram.utils.Utils;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MessagesFragment extends Fragment {
@@ -37,6 +38,8 @@ public class MessagesFragment extends Fragment {
 
     private TdApi.User user;
     private TdApi.Chat chat;
+    private ChatActivity activity;
+
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -52,15 +55,15 @@ public class MessagesFragment extends Fragment {
     }
 
     public void setChatHistory(TdApi.Messages messages) {
-        //adapter.addAll(messages);
+
+        adapter.addAll(Utils.reverseMessages(messages.messages));
     }
+
 
     public void setUser(TdApi.User user) {
         this.user = user;
 
         Log.e("Log", "User " + user.toString());
-
-
     }
 
     @Override
@@ -69,15 +72,16 @@ public class MessagesFragment extends Fragment {
         View view = inflater.inflate(R.layout.message_fragment, container, false);
 
         ListView messageListView = (ListView) view.findViewById(R.id.messageListView);
-        adapter = new MessageAdapter(getActivity());
+        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId());
         messageListView.setAdapter(adapter);
-
         return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        ChatActivity activity = (ChatActivity) getActivity();
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
@@ -86,20 +90,18 @@ public class MessagesFragment extends Fragment {
             name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
             lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
 
-            ChatActivity activity = (ChatActivity) getActivity();
-
             ChatListFragment fragment = (ChatListFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.titles);
             chat = fragment.getChat();
 
             TdApi.PrivateChatInfo privateChatInfo= (TdApi.PrivateChatInfo) chat.type; //TODO verify;
             TdApi.User chatUser = privateChatInfo.user;
-            TdApi.UserStatusOffline status = (TdApi.UserStatusOffline) chatUser.status;
+//            TdApi.UserStatusOffline status = (TdApi.UserStatusOffline) chatUser.status;
 
             name.setText(chatUser.firstName + " " + chatUser.lastName);
             lastSeenText.setText("lastSeen"); //TODO
             icon.setText(Utils.getInitials(chatUser.firstName, chatUser.lastName));
             icon.setBackground(getBackground());
-            activity.getChatHistory(chat.id, chat.topMessage.id, 0, 30);
+            activity.getChatHistory(chat.id, chat.topMessage.id, -1, 30);
 
             toolbar.inflateMenu(R.menu.message_menu);
 

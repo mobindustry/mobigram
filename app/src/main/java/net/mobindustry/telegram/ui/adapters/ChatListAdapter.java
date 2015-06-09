@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.Date;
 
-public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> { //TODO adapter TdApi.Chat
+public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
     private final LayoutInflater inflater;
 
@@ -45,14 +46,17 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> { //TODO adapter T
         TdApi.PrivateChatInfo privateChatInfo = null;
         TdApi.MessageText text = null;
         TdApi.Message message = item.topMessage;
-        TdApi.MessageContent content = message.message;
 
         long timeMls = (long) message.date;
         Date date = new Date(timeMls * 1000);
 
-        if (content instanceof TdApi.MessageText) {
-            text = (TdApi.MessageText) content;
+        if (message.message instanceof TdApi.MessageText) {
+            text = (TdApi.MessageText) message.message;
+            lastMessage.setText(text.text);
+        } else {
+            lastMessage.setText("\"Content\"");
         }
+
         if (info instanceof TdApi.PrivateChatInfo) {
             privateChatInfo = (TdApi.PrivateChatInfo) info;
         }
@@ -61,13 +65,9 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> { //TODO adapter T
         icon.setBackground(getShapeDrawable());
         icon.setText(Utils.getInitials(user.firstName, user.lastName));
 
-        if (user.lastName.isEmpty()) {
-            firstLastName.setText(user.firstName);
-        } else {
-            firstLastName.setText(user.firstName + " " + user.lastName);
-        }
+        firstLastName.setText(user.firstName + " " + user.lastName);
 
-        lastMessage.setText(text.text);
+
         time.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
 
         return convertView;
