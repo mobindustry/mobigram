@@ -1,12 +1,7 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -16,49 +11,32 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v7.internal.view.menu.MenuBuilder;
-import android.support.v7.internal.view.menu.MenuPopupHelper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.Gravity;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.adapters.AttachAdapter;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
-import net.mobindustry.telegram.model.Contact;
-import net.mobindustry.telegram.model.NeTelegramMessage;
 import net.mobindustry.telegram.utils.Utils;
+
+import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import org.drinkless.td.libcore.telegram.TdApi;
-
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Arrays;
 import java.util.List;
 
 public class MessagesFragment extends Fragment implements Serializable {
@@ -66,10 +44,6 @@ public class MessagesFragment extends Fragment implements Serializable {
     private MessageAdapter adapter;
     private static List<TdApi.Message> messageList = new ArrayList<>();
 
-    private String initials;
-    private String firstLastName;
-    private String lastSeen;
-    private int color;
     private ImageView attach;
     private ImageView smiles;
     private File tempTakePhotoFile;
@@ -132,9 +106,6 @@ public class MessagesFragment extends Fragment implements Serializable {
 
             attach = (ImageView) getActivity().findViewById(R.id.attach);
             smiles = (ImageView) getActivity().findViewById(R.id.smiles);
-            TextView icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
-            TextView name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
-            TextView lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
             icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
             name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
             lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
@@ -152,16 +123,11 @@ public class MessagesFragment extends Fragment implements Serializable {
                 }
             });
 
-
-            name.setText(firstLastName);
-            lastSeenText.setText(lastSeen);
-            icon.setText(initials);
             ChatListFragment fragment = (ChatListFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.titles);
             chat = fragment.getChat();
 
             TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) chat.type; //TODO verify;
             TdApi.User chatUser = privateChatInfo.user;
-//            TdApi.UserStatusOffline status = (TdApi.UserStatusOffline) chatUser.status;
 
             name.setText(chatUser.firstName + " " + chatUser.lastName);
             lastSeenText.setText("lastSeen"); //TODO
