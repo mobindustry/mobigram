@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/group">
 
     <net.mobindustry.telegram.utils.AspectRatioImageView
         android:layout_width="match_parent"
@@ -47,7 +48,8 @@
                     android:layout_weight="1"
                     android:padding="5dp"
                     android:layout_gravity="bottom"
-                    android:src="@drawable/ic_smiles" />
+                    android:src="@drawable/ic_smiles"
+                    android:id="@+id/smiles"/>
 
                 <EditText
                     android:layout_width="0dp"
@@ -64,7 +66,8 @@
                     android:layout_weight="1"
                     android:padding="5dp"
                     android:layout_gravity="bottom"
-                    android:src="@drawable/ic_attach" />
+                    android:src="@drawable/ic_attach"
+                    android:id="@+id/attach"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

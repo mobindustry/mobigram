@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/take_photo"
+        android:icon="@drawable/ic_attach_photo"
+        android:title="@string/text_take_photo" />
+
+    <item android:id="@+id/gallery"
+        android:icon="@drawable/ic_attach_gallery"
+        android:title="@string/text_gallery" />
+
+    <item android:id="@+id/video"
+        android:icon="@drawable/ic_attach_video"
+        android:title="@string/text_video" />
+
+    <item android:id="@+id/file"
+        android:icon="@drawable/ic_ab_doc"
+        android:title="@string/text_file" />
+
+    <item android:id="@+id/location"
+        android:icon="@drawable/ic_attach_location"
+        android:title="@string/text_location" />
+
+</menu>

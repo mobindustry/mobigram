@@ -26,5 +26,10 @@
     <string name="your_name_fragment_title">Your name</string>
     <string name="we_send_phone_number_test">We send on SMS with an activation code to your phone</string>
     <string name="we_call_you_test">We will call to your after 2:00</string>
+    <string name="text_take_photo">Take photo</string>
+    <string name="text_gallery">Gallery</string>
+    <string name="text_video">Video</string>
+    <string name="text_file">File</string>
+    <string name="text_location">Location</string>
 
 </resources>
