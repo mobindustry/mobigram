@@ -30,15 +30,21 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.soundcloud.android.crop.Crop;
+
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
+import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.ui.adapters.TextWatcherAdapter;
 import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -60,7 +66,6 @@ public class MessagesFragment extends Fragment implements Serializable {
     private ImageView attach;
     private ImageView smiles;
     private File tempTakePhotoFile;
-    public static final int REQUEST_CODE_TAKE_PHOTO = 101;
     private TextView icon;
     private TextView name;
     private TextView lastSeenText;
@@ -69,6 +74,8 @@ public class MessagesFragment extends Fragment implements Serializable {
 
     private TdApi.User user;
     private TdApi.Chat chat;
+    private ChatActivity activity;
+    private File file;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -115,7 +122,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final ChatActivity activity = (ChatActivity) getActivity();
+        activity = (ChatActivity) getActivity();
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
@@ -139,6 +146,7 @@ public class MessagesFragment extends Fragment implements Serializable {
             icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
             name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
             lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
+
 
             attach.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -267,18 +275,23 @@ public class MessagesFragment extends Fragment implements Serializable {
                                 Toast.makeText(getActivity(),
                                         "Take photo", Toast.LENGTH_LONG).show();
                                 makePhoto();
+                                break;
                             case R.id.gallery:
                                 Toast.makeText(getActivity(),
                                         "gallery", Toast.LENGTH_LONG).show();
+                                break;
                             case R.id.video:
                                 Toast.makeText(getActivity(),
                                         "video", Toast.LENGTH_LONG).show();
+                                break;
                             case R.id.file:
                                 Toast.makeText(getActivity(),
                                         "file", Toast.LENGTH_LONG).show();
+                                break;
                             case R.id.location:
                                 Toast.makeText(getActivity(),
                                         "location", Toast.LENGTH_LONG).show();
+                                break;
                         }
 
                         return true;
@@ -291,14 +304,17 @@ public class MessagesFragment extends Fragment implements Serializable {
 
     private void makePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         tempTakePhotoFile = getOutputMediaFile();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempTakePhotoFile));
-        startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
+        startActivityForResult(intent, Const.REQUEST_CODE_TAKE_PHOTO);
+        Log.e("LOG", "ACTIVITY " + activity);
+        Log.e("LOG", "FILE" + tempTakePhotoFile);
+
     }
 
     public static File getExternalStoragePublicPictureDir() {
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File path = Environment.getExternalStoragePublicDirectory("NeTelegram");
         return path;
     }
 
@@ -307,4 +323,25 @@ public class MessagesFragment extends Fragment implements Serializable {
         String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
         return new File(getExternalStoragePublicPictureDir(), fileName);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO) {
+
+            Uri external = Uri.fromFile(tempTakePhotoFile);
+            //String appDirectoryName = "NeTelegram";
+            //File imageRoot = new File(Environment.getExternalStoragePublicDirectory(
+                    //Environment.DIRECTORY_PICTURES), appDirectoryName);
+            //Uri in = Uri.fromFile(imageRoot);
+            Log.e("LOG", "FILE " + tempTakePhotoFile);
+            Log.e("LOG", "LINK PHOTO" + external);
+            Crop.of(external, external).asSquare().start(getActivity());
+            Crop.pickImage(getActivity());
+        }
+
+
+        }
+    }
+
 }

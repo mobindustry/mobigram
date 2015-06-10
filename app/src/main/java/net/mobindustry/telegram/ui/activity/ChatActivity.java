@@ -1,6 +1,8 @@
 package net.mobindustry.telegram.ui.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -21,16 +23,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.soundcloud.android.crop.Crop;
+
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
+import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +55,8 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     private TdApi.User userMe;
     private TdApi.Chats chats;
     private FragmentManager fm;
+
+
 
     @Override
     public void getMe() {
@@ -287,5 +295,8 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
+
+
+
 
 }
