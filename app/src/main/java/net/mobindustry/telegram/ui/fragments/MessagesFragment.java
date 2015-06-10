@@ -35,16 +35,13 @@ import com.soundcloud.android.crop.Crop;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
-import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.ui.adapters.TextWatcherAdapter;
+import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -205,10 +202,10 @@ public class MessagesFragment extends Fragment implements Serializable {
 
     private void animateLevel(final int level) {
         LevelListDrawable drawable = (LevelListDrawable) attach.getDrawable();
-        if (drawable.getLevel() == level){
+        if (drawable.getLevel() == level) {
             return;
         }
-        if (currentAnimation != null){
+        if (currentAnimation != null) {
             currentAnimation.cancel();
         }
 
@@ -332,16 +329,14 @@ public class MessagesFragment extends Fragment implements Serializable {
             Uri external = Uri.fromFile(tempTakePhotoFile);
             //String appDirectoryName = "NeTelegram";
             //File imageRoot = new File(Environment.getExternalStoragePublicDirectory(
-                    //Environment.DIRECTORY_PICTURES), appDirectoryName);
+            //Environment.DIRECTORY_PICTURES), appDirectoryName);
             //Uri in = Uri.fromFile(imageRoot);
             Log.e("LOG", "FILE " + tempTakePhotoFile);
             Log.e("LOG", "LINK PHOTO" + external);
             Crop.of(external, external).asSquare().start(getActivity());
             Crop.pickImage(getActivity());
         }
-
-
-        }
     }
-
 }
+
+
