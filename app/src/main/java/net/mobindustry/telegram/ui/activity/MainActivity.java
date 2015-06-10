@@ -100,7 +100,6 @@ public class MainActivity extends Activity {
                 }
             };
             registerReceiver(receiver, new IntentFilter(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION));
-
         }
     }
 
@@ -153,7 +152,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override

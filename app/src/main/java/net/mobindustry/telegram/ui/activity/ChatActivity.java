@@ -1,8 +1,7 @@
 package net.mobindustry.telegram.ui.activity;
 
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -23,20 +22,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.soundcloud.android.crop.Crop;
-
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.model.NavigationItem;
+import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
-import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +50,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     private TdApi.User userMe;
     private TdApi.Chats chats;
     private FragmentManager fm;
-
 
 
     @Override
@@ -125,8 +119,9 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         client.send(new TdApi.SendMessage(chatId, new TdApi.InputMessageText(message)), new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
-                if (object instanceof TdApi.Messages) {
-                    getMessageFragment().setChatHistory((TdApi.Messages) object);
+                Log.e("Log", "Result message " + object);
+                if (object instanceof TdApi.Message) {
+                    TdApi.Message resultMessage = (TdApi.Message) object;
                 }
             }
         });
@@ -153,7 +148,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
             public void onResult(TdApi.TLObject object) {
                 Log.i("LOG", "Updates result : " + object);
                 if (object instanceof TdApi.UpdateChatReadInbox || object instanceof TdApi.UpdateChatReadOutbox) {
-                    getChats(0, 200);
+
                 }
             }
         };
@@ -164,6 +159,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         getChats(0, 200);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
         title = drawerTitle = getTitle();
@@ -295,8 +291,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
-
-
 
 
 }

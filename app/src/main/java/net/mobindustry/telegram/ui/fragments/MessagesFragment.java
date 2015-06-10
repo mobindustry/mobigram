@@ -94,7 +94,6 @@ public class MessagesFragment extends Fragment implements Serializable {
                 adapter.addAll(Utils.reverseMessages(messages.messages));
             }
         });
-
     }
 
     public void setUser(TdApi.User user) {
@@ -110,8 +109,6 @@ public class MessagesFragment extends Fragment implements Serializable {
         ListView messageListView = (ListView) view.findViewById(R.id.messageListView);
         adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId());
         messageListView.setAdapter(adapter);
-        adapter.addAll(messageList);
-
         return view;
     }
 
@@ -160,7 +157,7 @@ public class MessagesFragment extends Fragment implements Serializable {
                     } else {
                         activity.sendMessage(chat.id, input.getText().toString());
                         input.setText("");
-                        activity.getChatHistory(chat.id, chat.topMessage.id, -1, 30);
+                        //TODO get last message;
                     }
                 }
             });
