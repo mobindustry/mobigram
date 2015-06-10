@@ -10,37 +10,49 @@
         android:background="#EEE"
         android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.6"
-                android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:orientation="vertical">
 
-                <include
-                    android:id="@+id/contacts_toolbar"
-                    layout="@layout/toolbar" />
+            <FrameLayout
+                android:id="@+id/messages"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <FrameLayout
-                    android:id="@+id/messages"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <fragment
-                        android:id="@+id/titles"
-                        class="net.mobindustry.telegram.ui.fragments.ChatListFragment"
+                    <include
+                        android:id="@+id/contacts_toolbar"
+                        layout="@layout/toolbar" />
+
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent">
 
-                    <com.melnykov.fab.FloatingActionButton
-                        android:id="@+id/fab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|right"
-                        android:layout_margin="16dp"
-                        android:src="@drawable/floating_pencil" />
-                </FrameLayout>
+                        <fragment
+                            android:id="@+id/titles"
+                            class="net.mobindustry.telegram.ui.fragments.ChatListFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
 
-            </LinearLayout>
+                        <com.melnykov.fab.FloatingActionButton
+                            android:id="@+id/fab"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|right"
+                            android:layout_margin="16dp"
+                            android:src="@drawable/floating_pencil" />
+                    </FrameLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <!-- The navigation drawer -->
