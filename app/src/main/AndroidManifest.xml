@@ -22,7 +22,6 @@
         </activity>
         <activity android:name=".messenger.TestConnect"/>
         <activity android:name=".ui.activity.ChatActivity" />
-        <activity android:name=".ui.activity.MessagesActivity" />
         <activity android:name=".ui.activity.RegistrationActivity"
             android:windowSoftInputMode="adjustUnspecified"
             android:configChanges="orientation|screenSize">
