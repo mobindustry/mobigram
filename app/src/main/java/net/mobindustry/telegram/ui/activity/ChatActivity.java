@@ -235,7 +235,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
 
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        System.out.println("tap " + newText);
                         if (!newText.isEmpty()) {
                             chatListFragment.setAdapterFilter(newText);
                         } else {
