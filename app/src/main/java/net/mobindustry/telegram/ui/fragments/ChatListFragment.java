@@ -76,6 +76,10 @@ public class ChatListFragment extends ListFragment {
         return chats.chats[currentCheckPosition];
     }
 
+    public void setAdapterFilter(String filter) {
+        adapter.getFilter().filter(filter);
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

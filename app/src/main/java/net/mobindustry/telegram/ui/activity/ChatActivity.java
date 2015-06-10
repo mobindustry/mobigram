@@ -144,7 +144,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
             @Override
             public void onResult(TdApi.TLObject object) {
                 Log.i("LOG", "Updates result : " + object);
-                if(object instanceof TdApi.UpdateChatReadInbox || object instanceof TdApi.UpdateChatReadOutbox) {
+                if (object instanceof TdApi.UpdateChatReadInbox || object instanceof TdApi.UpdateChatReadOutbox) {
                     getChats(0, 200);
                 }
             }
@@ -221,6 +221,11 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                 final SearchView sv = new SearchView(getSupportActionBar().getThemedContext());
                 MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
                 MenuItemCompat.setActionView(item, sv);
+
+                fm = getSupportFragmentManager();
+                final ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
+
+
                 sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() { //TODO search
                     @Override
                     public boolean onQueryTextSubmit(String query) {
@@ -231,6 +236,12 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                     @Override
                     public boolean onQueryTextChange(String newText) {
                         System.out.println("tap " + newText);
+                        if (!newText.isEmpty()) {
+                            chatListFragment.setAdapterFilter(newText);
+                        } else {
+                            chatListFragment.setAdapterFilter("");
+                        }
+
                         return false;
                     }
                 });

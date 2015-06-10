@@ -307,6 +307,4 @@ public class MessagesFragment extends Fragment implements Serializable {
         String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
         return new File(getExternalStoragePublicPictureDir(), fileName);
     }
-
-
 }
