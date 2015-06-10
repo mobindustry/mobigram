@@ -4,8 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.LevelListDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -42,6 +46,10 @@ import net.mobindustry.telegram.utils.Utils;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -49,6 +57,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MessagesFragment extends Fragment implements Serializable {
 
@@ -72,7 +81,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     private TdApi.User user;
     private TdApi.Chat chat;
     private ChatActivity activity;
-    private File file;
+
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -307,12 +316,14 @@ public class MessagesFragment extends Fragment implements Serializable {
 
     }
 
-    public static File getExternalStoragePublicPictureDir() {
+    public File getExternalStoragePublicPictureDir() {
         File path = Environment.getExternalStoragePublicDirectory("NeTelegram");
         return path;
     }
 
-    public static File getOutputMediaFile() {
+
+
+    public File getOutputMediaFile() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
         return new File(getExternalStoragePublicPictureDir(), fileName);
@@ -322,7 +333,10 @@ public class MessagesFragment extends Fragment implements Serializable {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO) {
-
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri contentUri = Uri.fromFile(tempTakePhotoFile);
+            mediaScanIntent.setData(contentUri);
+            getActivity().sendBroadcast(mediaScanIntent);
             Uri external = Uri.fromFile(tempTakePhotoFile);
             //String appDirectoryName = "NeTelegram";
             //File imageRoot = new File(Environment.getExternalStoragePublicDirectory(
