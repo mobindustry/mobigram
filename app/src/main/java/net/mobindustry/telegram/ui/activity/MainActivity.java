@@ -108,10 +108,6 @@ public class MainActivity extends Activity {
         unregisterReceiver(receiver);
     }
 
-    public static void showActivityAnimation(Activity activity) {
-        activity.overridePendingTransition(R.anim.anim_scale, R.anim.anim_scale);
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -139,12 +135,10 @@ public class MainActivity extends Activity {
             if (stateWaitCode) {
                 Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
                 startActivity(intent);
-                showActivityAnimation(MainActivity.this);
                 finish();
             } else {
                 Intent intent = new Intent(MainActivity.this, ChatActivity.class);
                 startActivity(intent);
-                showActivityAnimation(MainActivity.this);
                 finish();
             }
         }

@@ -124,14 +124,13 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         });
     }
 
+    public long getMyId() {
+        return userMe.id;
+    }
 
     public MessagesFragment getMessageFragment() {
         fm = getSupportFragmentManager();
         return (MessagesFragment) fm.findFragmentById(R.id.messages);
-    }
-
-    public long getMyId() {
-        return userMe.id;
     }
 
     @Override
@@ -148,7 +147,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                 if(object instanceof TdApi.UpdateChatReadInbox || object instanceof TdApi.UpdateChatReadOutbox) {
                     getChats(0, 200);
                 }
-
             }
         };
 
