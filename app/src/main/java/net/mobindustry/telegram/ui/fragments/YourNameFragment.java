@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
+import net.mobindustry.telegram.utils.InfoRegistration;
 
 public class YourNameFragment extends Fragment {
 
@@ -32,18 +33,18 @@ public class YourNameFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.your_name_fragment, container, false);
-
-
-
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        final InfoRegistration infoRegistration=InfoRegistration.getInstance();
         activity = (RegistrationActivity) getActivity();
         firstName = (EditText) activity.findViewById(R.id.first_name);
         lastName = (EditText) activity.findViewById(R.id.last_name);
+        firstName.setText(infoRegistration.getFirstName());
+        lastName.setText(infoRegistration.getLastName());
         cancel = (TextView) activity.findViewById(R.id.cancel_registration);
 
 
@@ -54,8 +55,11 @@ public class YourNameFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                activity.setFirstLastName(firstName.getText().toString().trim(), lastName.getText().toString().trim());
-                Log.e("Log", "SET NAME " + firstName.getText().toString());
+                infoRegistration.setFirstName(firstName.getText().toString().trim());
+                infoRegistration.setLastName(lastName.getText().toString().trim());
+                activity.setFirstLastName(infoRegistration.getFirstName(), infoRegistration.getLastName());
+                Log.e("Log", "SET NAME " + infoRegistration.getFirstName());
+                Log.e("Log", "SET NAME " + infoRegistration.getLastName());
                 return true;
             }
         });

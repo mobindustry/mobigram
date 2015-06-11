@@ -17,10 +17,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.utils.CountryObject;
+import net.mobindustry.telegram.utils.InfoRegistration;
 import net.mobindustry.telegram.utils.ListCountryObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +50,7 @@ public class RegistrationMainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         setRetainInstance(true);
     }
 
@@ -64,6 +67,7 @@ public class RegistrationMainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setRetainInstance(true);
+        final InfoRegistration infoRegistration = InfoRegistration.getInstance();
 
         //Take file countries.txt from assets folder and parse it to String extFileFromAssets.
         String textFileFromAssets = null;
@@ -92,12 +96,17 @@ public class RegistrationMainFragment extends Fragment {
         code = (EditText) getActivity().findViewById(R.id.code);
         phone = (EditText) getActivity().findViewById(R.id.phone);
 
+        phone.setText(infoRegistration.getPhone());
+        code.setText(infoRegistration.getCodeCountry());
+        code.setSelection(infoRegistration.getCodeCountry().length());
+
         //Check country object from ChooseCountryFragment
 
         if (countryObject != null) {
             Log.e("log", "Name " + countryObject.getCountryName());
             chooseCountry.setText(countryObject.getCountryName());
-            code.setText(countryObject.getCountryCode());
+            infoRegistration.setCodeCountry(countryObject.getCountryCode());
+            code.setText(infoRegistration.getCodeCountry());
         }
         chooseCountry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +130,7 @@ public class RegistrationMainFragment extends Fragment {
                 String lettersCode = code.getText().toString();
                 String number = phone.getText().toString().replaceAll("\\s", "");
                 phoneNumberForServer = lettersCode + number;
+                infoRegistration.setCodePlusPhone(infoRegistration.getCodeCountry() + " " + infoRegistration.getPhone());
                 Log.e("Log", "PHONE " + phoneNumberForServer);
                 activity.setPhoneForServer(phoneNumberForServer);
                 return true;
@@ -143,7 +153,8 @@ public class RegistrationMainFragment extends Fragment {
                 List<CountryObject> list = ((RegistrationActivity) getActivity()).getListCountryObject().getListCountries();
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).getCountryCode().equals(codeList.get(codeList.size() - 1))) {
-                        chooseCountry.setText(list.get(i).getCountryName());
+                        infoRegistration.setCountryName(list.get(i).getCountryName());
+                        chooseCountry.setText(infoRegistration.getCountryName());
                         codeList.clear();
                         break;
                     } else {
@@ -162,11 +173,10 @@ public class RegistrationMainFragment extends Fragment {
         // The user enters the phone number
 
 
-
         final TextWatcher watcher = new TextWatcher() {
             List<String> phoneList = new ArrayList<>();
             String phoneNum = "";
-            String lettersCode="";
+            String lettersCode = "";
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -186,10 +196,10 @@ public class RegistrationMainFragment extends Fragment {
                     lettersCode = countryObject.getCountryStringCode();
                 } else {
                     for (int i = 0; i < countries.getListCountries().size(); i++) {
-                        if (countries.getListCountries().get(i).getCountryCode().equals(code.getText().toString())){
+                        if (countries.getListCountries().get(i).getCountryCode().equals(code.getText().toString())) {
                             activity.setCountryObject(countries.getListCountries().get(i));
-                            countryObject=activity.getCountryObject();
-                            lettersCode=countryObject.getCountryStringCode();
+                            countryObject = activity.getCountryObject();
+                            lettersCode = countryObject.getCountryStringCode();
                         }
                     }
 
@@ -198,11 +208,13 @@ public class RegistrationMainFragment extends Fragment {
 
                 phone.removeTextChangedListener(this);
                 if (formattedNumber == null) {
-                    phone.setText(phoneNum);
-                    phone.setSelection(phoneNum.length());
+                    infoRegistration.setPhone(phoneNum);
+                    phone.setText(infoRegistration.getPhone());
+                    phone.setSelection(infoRegistration.getPhone().length());
                 } else {
-                    phone.setText(formattedNumber);
-                    phone.setSelection(formattedNumber.length());
+                    infoRegistration.setPhone(formattedNumber);
+                    phone.setText(infoRegistration.getPhone());
+                    phone.setSelection(infoRegistration.getPhone().length());
                 }
                 phone.addTextChangedListener(this);
             }
@@ -231,8 +243,6 @@ public class RegistrationMainFragment extends Fragment {
         String text = writer.toString();
         return text;
     }
-
-
 }
 
 

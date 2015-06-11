@@ -5,17 +5,21 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
+
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.ui.adapters.CountriesListAdapter;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.CountryObject;
+import net.mobindustry.telegram.utils.InfoRegistration;
 import net.mobindustry.telegram.utils.ListCountryObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +40,6 @@ public class ChooseCountryList extends Fragment implements Serializable {
     private ListCountryObject countries;
 
 
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choose_country_fragment, container, false);
         list = (StickyListHeadersListView) view.findViewById(R.id.countriesList);
@@ -46,8 +49,10 @@ public class ChooseCountryList extends Fragment implements Serializable {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        RegistrationActivity activity=(RegistrationActivity)getActivity();
-        countries=activity.getListCountryObject();
+        InfoRegistration infoRegistration = InfoRegistration.getInstance();
+        Log.e("LOG", "PHONE " + infoRegistration.getPhone());
+        RegistrationActivity activity = (RegistrationActivity) getActivity();
+        countries = activity.getListCountryObject();
 
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -77,9 +82,9 @@ public class ChooseCountryList extends Fragment implements Serializable {
 
                 registrationMainFragment = new RegistrationMainFragment();
 
-                CountryObject countryObject=countries.getListCountries().get(position);
-                if (getActivity()instanceof RegistrationActivity){
-                    RegistrationActivity activity=(RegistrationActivity)getActivity();
+                CountryObject countryObject = countries.getListCountries().get(position);
+                if (getActivity() instanceof RegistrationActivity) {
+                    RegistrationActivity activity = (RegistrationActivity) getActivity();
                     activity.setCountryObject(countryObject);
                 }
 

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
+import net.mobindustry.telegram.utils.InfoRegistration;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
@@ -38,13 +39,14 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        InfoRegistration infoRegistration=InfoRegistration.getInstance();
 
-        activity=(RegistrationActivity)getActivity();
+        activity = (RegistrationActivity) getActivity();
 
-        codeFromUser=(EditText)getActivity().findViewById(R.id.code_from_user);
-        countDownTimer=(TextView)getActivity().findViewById(R.id.countdown_timer);
-        textForUser=(TextView)getActivity().findViewById(R.id.text_with_user_phone);
-        wrongNumber=(TextView)getActivity().findViewById(R.id.wrong_number);
+        codeFromUser = (EditText) getActivity().findViewById(R.id.code_from_user);
+        countDownTimer = (TextView) getActivity().findViewById(R.id.countdown_timer);
+        textForUser = (TextView) getActivity().findViewById(R.id.text_with_user_phone);
+        wrongNumber = (TextView) getActivity().findViewById(R.id.wrong_number);
 
         wrongNumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +59,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
             }
         });
 
-        textForUser.setText("We send on SMS with an activation code to your phone "+activity.getPhoneForServer());
+        textForUser.setText("We send on SMS with an activation code to your phone " + infoRegistration.getCodePlusPhone());
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.your_code);
@@ -80,6 +82,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
             }
+
             public void onFinish() {
                 countDownTimer.setText("Calling you");
             }
@@ -87,7 +90,6 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
 
 
     }
-
 
 
 }
