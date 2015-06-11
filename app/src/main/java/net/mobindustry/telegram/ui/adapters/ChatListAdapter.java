@@ -50,8 +50,6 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         long timeMls = (long) message.date;
         Date date = new Date(timeMls * 1000);
 
-
-
         if (message.message instanceof TdApi.MessageText) {
             text = (TdApi.MessageText) message.message;
             lastMessage.setText(text.text);

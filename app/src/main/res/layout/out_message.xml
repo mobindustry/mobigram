@@ -12,7 +12,7 @@
 
         <TextView
             android:id="@+id/out_msg"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
             android:maxWidth="@dimen/message_max_width"
@@ -27,7 +27,7 @@
 
             <TextView
                 android:id="@+id/out_msg_time"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/padding_3dp"
                 android:textColor="#aaa"
