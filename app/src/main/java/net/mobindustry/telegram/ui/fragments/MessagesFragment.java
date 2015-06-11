@@ -4,10 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -22,6 +24,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -304,15 +307,33 @@ public class MessagesFragment extends Fragment implements Serializable {
 
     }
 
+    private void selectPhoto() {
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+            startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI), Const.REQUEST_CODE_SELECT_IMAGE);
+        } else {
+            startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), Const.REQUEST_CODE_SELECT_IMAGE);
+        }
+    }
+
     public File getExternalStoragePublicPictureDir() {
         File path = Environment.getExternalStoragePublicDirectory("NeTelegram");
         return path;
     }
 
+
+
     public File getOutputMediaFile() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
         return new File(getExternalStoragePublicPictureDir(), fileName);
+    }
+
+    public static String getPathFromURI(Uri contentUri, Activity activity) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = activity.managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
     @Override
@@ -324,14 +345,22 @@ public class MessagesFragment extends Fragment implements Serializable {
             mediaScanIntent.setData(contentUri);
             getActivity().sendBroadcast(mediaScanIntent);
             Uri external = Uri.fromFile(tempTakePhotoFile);
-            //String appDirectoryName = "NeTelegram";
-            //File imageRoot = new File(Environment.getExternalStoragePublicDirectory(
-            //Environment.DIRECTORY_PICTURES), appDirectoryName);
-            //Uri in = Uri.fromFile(imageRoot);
-            Log.e("LOG", "FILE " + tempTakePhotoFile);
-            Log.e("LOG", "LINK PHOTO" + external);
             Crop.of(external, external).asSquare().start(getActivity());
             Crop.pickImage(getActivity());
+        }
+
+        if (requestCode == Const.REQUEST_CODE_SELECT_IMAGE) {
+            try {
+                Uri uriImage = data.getData();
+                String path = getPathFromURI(uriImage, getActivity());
+                if (!TextUtils.isEmpty(path)) {
+                    //photoSelected(path);
+                } else {
+                    Toast.makeText(getActivity(), "File not found", Toast.LENGTH_LONG).show();
+                }
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), "File not found", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

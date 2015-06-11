@@ -8,6 +8,7 @@ public class Const {
     public final static int OUT_CONTENT_MESSAGE = 3;
     public final static String COUNTRY = "country";
     public static final int REQUEST_CODE_TAKE_PHOTO = 101;
+    public static final int REQUEST_CODE_SELECT_IMAGE = 102;
 
     public static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_PATTERN = "yyyy-MM-dd";
