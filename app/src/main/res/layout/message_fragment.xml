@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/group"
     android:layout_marginLeft="0.5dp"
+    android:background="#fff"
     >
 
     <net.mobindustry.telegram.utils.AspectRatioImageView

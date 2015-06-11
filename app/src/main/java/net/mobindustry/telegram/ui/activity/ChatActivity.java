@@ -57,18 +57,23 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
             public void onResult(TdApi.TLObject object) {
                 if (object instanceof TdApi.User) {
                     userMe = (TdApi.User) object;
-
-                    LayoutInflater inflater = getLayoutInflater();
-                    ViewGroup header = (ViewGroup) inflater.inflate(R.layout.navigation_drawer_header, drawerList, false);
-                    TextView firstLastNameView = (TextView) header.findViewById(R.id.drawer_header_first_last_name);
-                    TextView phoneView = (TextView) header.findViewById(R.id.drawer_header_phone);
-                    firstLastNameView.setText(userMe.firstName + " " + userMe.lastName);
-                    phoneView.setText(userMe.phoneNumber);
-
-                    drawerList.addHeaderView(header, null, false);
+                    setHeader(userMe);
                 }
             }
         });
+    }
+
+    public void setHeader(TdApi.User userMe) {
+
+        LayoutInflater inflater = getLayoutInflater();
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.navigation_drawer_header, drawerList, false);
+        TextView firstLastNameView = (TextView) header.findViewById(R.id.drawer_header_first_last_name);
+        TextView phoneView = (TextView) header.findViewById(R.id.drawer_header_phone);
+        firstLastNameView.setText(userMe.firstName + " " + userMe.lastName);
+        phoneView.setText(userMe.phoneNumber);
+
+        drawerList.addHeaderView(header, null, false);
+
     }
 
     @Override
@@ -178,7 +183,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
-        getMe(); //Get info for NavigationDrawer Header
+        getMe(); //Get user info for NavigationDrawer Header
 
         List<NavigationItem> drawerItemsList = new ArrayList<>();
         drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
