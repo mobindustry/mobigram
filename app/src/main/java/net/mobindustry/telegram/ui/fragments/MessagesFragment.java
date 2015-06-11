@@ -67,7 +67,6 @@ public class MessagesFragment extends Fragment implements Serializable {
     private static final long SCALE_DOWN_DURATION = 80;
 
     private MessageAdapter adapter;
-    private static List<TdApi.Message> messageList = new ArrayList<>();
 
     private ImageView attach;
     private ImageView smiles;
@@ -81,7 +80,6 @@ public class MessagesFragment extends Fragment implements Serializable {
     private TdApi.User user;
     private TdApi.Chat chat;
     private ChatActivity activity;
-
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -150,18 +148,15 @@ public class MessagesFragment extends Fragment implements Serializable {
             name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
             lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
 
-
             attach.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String text = input.getText().toString();
                     if (text.length() == 0) {
                         new Handler().postDelayed(new Runnable() {
-
                             public void run() {
                                 showPopupMenu(attach);
                             }
-
                         }, 100L);
                     } else {
                         activity.sendMessage(chat.id, input.getText().toString());
@@ -180,8 +175,8 @@ public class MessagesFragment extends Fragment implements Serializable {
             name.setText(chatUser.firstName + " " + chatUser.lastName);
             lastSeenText.setText("lastSeen"); //TODO
             icon.setText(Utils.getInitials(chatUser.firstName, chatUser.lastName));
-            icon.setBackground(getBackground());
-            activity.getChatHistory(chat.id, chat.topMessage.id, -1, 30);
+            icon.setBackground(Utils.getShapeDrawable(60, -chatUser.id));
+            activity.getChatHistory(chat.id, chat.topMessage.id, -1, 200);
 
             toolbar.inflateMenu(R.menu.message_menu);
 
@@ -236,15 +231,6 @@ public class MessagesFragment extends Fragment implements Serializable {
         currentAnimation.start();
     }
 
-    public ShapeDrawable getBackground() {
-        ShapeDrawable circle = new ShapeDrawable(new OvalShape());
-        circle.setIntrinsicHeight(60);
-        circle.setIntrinsicWidth(60);
-        circle.getPaint().setColor(Color.rgb(100, 100, 100));
-
-        return circle;
-    }
-
     private void showPopupMenu(View v) {
 
         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
@@ -296,7 +282,6 @@ public class MessagesFragment extends Fragment implements Serializable {
                                         "location", Toast.LENGTH_LONG).show();
                                 break;
                         }
-
                         return true;
                     }
                 });
@@ -320,8 +305,6 @@ public class MessagesFragment extends Fragment implements Serializable {
         File path = Environment.getExternalStoragePublicDirectory("NeTelegram");
         return path;
     }
-
-
 
     public File getOutputMediaFile() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");

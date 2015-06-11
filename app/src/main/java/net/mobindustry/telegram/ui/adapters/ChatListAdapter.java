@@ -66,10 +66,10 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         if (item.unreadCount != 0) {
             notify.setText(String.valueOf(item.unreadCount));
-            notify.setBackground(getShapeDrawable(25, Color.YELLOW));
+            notify.setBackground(Utils.getShapeDrawable(25, Color.YELLOW));
         }
 
-        icon.setBackground(getShapeDrawable(60, Color.DKGRAY)); //TODO set color
+        icon.setBackground(Utils.getShapeDrawable(60, -user.id)); //TODO set color
         icon.setText(Utils.getInitials(user.firstName, user.lastName));
 
         firstLastName.setText(user.firstName + " " + user.lastName);
@@ -79,11 +79,5 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         return convertView;
     }
 
-    private ShapeDrawable getShapeDrawable(int size, int color) {
-        ShapeDrawable circle = new ShapeDrawable(new OvalShape());
-        circle.setIntrinsicHeight(size);
-        circle.setIntrinsicWidth(size);
-        circle.getPaint().setColor(color);
-        return circle;
-    }
+
 }

@@ -51,7 +51,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     private TdApi.Chats chats;
     private FragmentManager fm;
 
-
     @Override
     public void getMe() {
         client.send(new TdApi.GetMe(), new Client.ResultHandler() {
@@ -121,7 +120,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
             public void onResult(TdApi.TLObject object) {
                 Log.e("Log", "Result message " + object);
                 if (object instanceof TdApi.Message) {
-                    TdApi.Message resultMessage = (TdApi.Message) object;
+
                 }
             }
         });
@@ -149,6 +148,18 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                 Log.i("LOG", "Updates result : " + object);
                 if (object instanceof TdApi.UpdateChatReadInbox || object instanceof TdApi.UpdateChatReadOutbox) {
 
+                }
+
+                if(object instanceof TdApi.UpdateMessageId) {
+                    TdApi.UpdateMessageId updateMessageId = (TdApi.UpdateMessageId) object;
+                    getChats(0, 200);
+                    getChatHistory(updateMessageId.chatId, updateMessageId.newId, -1, 50);
+                }
+
+                if(object instanceof TdApi.UpdateNewMessage) {
+                    TdApi.UpdateNewMessage updateMessageId = (TdApi.UpdateNewMessage) object;
+                    getChats(0, 200);
+                    getChatHistory(updateMessageId.message.chatId, updateMessageId.message.id, -1, 50);
                 }
             }
         };
@@ -230,7 +241,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                 final ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
 
 
-                sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() { //TODO search
+                sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
                         System.out.println("search query submit " + query);

@@ -1,14 +1,21 @@
 package net.mobindustry.telegram.utils;
 
+import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.TimeZone;
 
 public class Utils {
+
+    private static Random rand = new Random();
 
     public static SimpleDateFormat getDateFormat(String type) {
         return new SimpleDateFormat(type);
@@ -36,4 +43,13 @@ public class Utils {
         Collections.reverse(list);
         return (TdApi.Message[]) list.toArray();
     }
+
+    public static ShapeDrawable getShapeDrawable(int size, int color) {
+        ShapeDrawable circle = new ShapeDrawable(new OvalShape());
+        circle.setIntrinsicHeight(size);
+        circle.setIntrinsicWidth(size);
+        circle.getPaint().setColor(color);
+        return circle;
+    }
+
 }

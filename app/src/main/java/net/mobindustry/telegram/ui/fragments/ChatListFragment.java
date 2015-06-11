@@ -38,7 +38,7 @@ public class ChatListFragment extends ListFragment {
             public void run() {
                 Log.i("LOG", "chatsFragment setList");
                 adapter.clear();
-                adapter.addAll(chats.chats);//TODO check this!!!
+                adapter.addAll(chats.chats);//
             }
         });
     }
