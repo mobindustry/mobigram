@@ -90,6 +90,10 @@ public class MessagesFragment extends Fragment implements Serializable {
         return f;
     }
 
+    public long getShownChatId () {
+        return chat.id;
+    }
+
     public int getShownIndex() {
         return getArguments().getInt("index", 0);
     }
@@ -161,7 +165,6 @@ public class MessagesFragment extends Fragment implements Serializable {
                     } else {
                         activity.sendMessage(chat.id, input.getText().toString());
                         input.setText("");
-                        //TODO get last message;
                     }
                 }
             });

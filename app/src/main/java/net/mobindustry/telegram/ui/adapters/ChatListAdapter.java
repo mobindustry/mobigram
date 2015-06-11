@@ -64,7 +64,10 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         if (item.unreadCount != 0) {
             notify.setText(String.valueOf(item.unreadCount));
-            notify.setBackground(Utils.getShapeDrawable(25, Color.YELLOW));
+            notify.setBackground(Utils.getShapeDrawable(25, Color.rgb(255, 145, 0)));
+        } else  {
+            notify.setText("");
+            notify.setBackground(null);
         }
 
         icon.setBackground(Utils.getShapeDrawable(60, -user.id)); //TODO set color

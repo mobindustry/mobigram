@@ -25,6 +25,8 @@ public class ChatListFragment extends ListFragment {
 
     private TdApi.Chats chats;
 
+    private long clickedId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,6 +74,11 @@ public class ChatListFragment extends ListFragment {
     }
 
     public TdApi.Chat getChat() {
+        for (int i = 0; i < chats.chats.length; i++) {
+            if (chats.chats[i].id == clickedId) {
+                return chats.chats[i];
+           }
+        }
         return chats.chats[currentCheckPosition];
     }
 
@@ -87,6 +94,8 @@ public class ChatListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
+        TdApi.Chat selectedItem = adapter.getItem(pos);
+        clickedId = selectedItem.id;
         showMessages(pos);
     }
 
@@ -117,6 +126,7 @@ public class ChatListFragment extends ListFragment {
 
                 ft.replace(R.id.messages, messagesFragment);
                 ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+
                 ft.commit();
             }
         }

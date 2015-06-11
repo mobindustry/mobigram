@@ -27,6 +27,7 @@ import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
+import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
@@ -90,7 +91,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
             public void onResult(TdApi.TLObject object) {
                 if (object instanceof TdApi.Chats) {
                     chats = (TdApi.Chats) object;
-                    Log.i("LOG", "Get chats " + chats.toString());
                     fm = getSupportFragmentManager();
                     ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
                     chatListFragment.setChatsList(chats);
@@ -105,7 +105,9 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
             @Override
             public void onResult(TdApi.TLObject object) {
                 if (object instanceof TdApi.Messages) {
-                    getMessageFragment().setChatHistory((TdApi.Messages) object);
+                    if (getMessageFragment().getShownChatId() == id) {
+                        getMessageFragment().setChatHistory((TdApi.Messages) object);
+                    }
                 }
             }
         });
@@ -154,6 +156,11 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                     TdApi.UpdateNewMessage updateMessageId = (TdApi.UpdateNewMessage) object;
                     getChats(0, 200);
                     getChatHistory(updateMessageId.message.chatId, updateMessageId.message.id, -1, 50);
+                }
+
+                if (object instanceof TdApi.UpdateChatReadInbox ||
+                        object instanceof TdApi.UpdateChatReadOutbox) {
+                    getChats(0, 200);
                 }
             }
         };
