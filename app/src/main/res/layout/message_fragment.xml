@@ -2,7 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/group">
+    android:id="@+id/group"
+    android:layout_marginLeft="0.5dp"
+    >
 
     <net.mobindustry.telegram.utils.AspectRatioImageView
         android:layout_width="match_parent"
@@ -49,12 +51,15 @@
                     android:padding="5dp"
                     android:layout_gravity="bottom"
                     android:src="@drawable/ic_smiles"
-                    android:id="@+id/smiles"/>
+                    android:id="@+id/smiles"
+                    android:layout_marginBottom="2dp"
+                    />
 
                 <EditText
                     android:id="@+id/message_edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:minHeight="50dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="10"
                     android:hint="Message"
@@ -71,7 +76,9 @@
                     android:padding="5dp"
                     android:layout_gravity="bottom"
                     android:src="@drawable/ic_send_attach_levels"
-                    android:id="@+id/attach"/>
+                    android:id="@+id/attach"
+                    android:layout_marginBottom="2dp"
+                    />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

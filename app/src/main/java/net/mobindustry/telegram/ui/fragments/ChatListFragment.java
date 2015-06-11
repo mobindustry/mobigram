@@ -68,7 +68,6 @@ public class ChatListFragment extends ListFragment {
 
         if (dualPane) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            //showMessages(currentCheckPosition);
         }
     }
 

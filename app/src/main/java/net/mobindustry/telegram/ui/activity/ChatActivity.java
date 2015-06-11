@@ -40,16 +40,14 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     private DrawerLayout drawerLayout;
     private ListView drawerList;
 
+    private FragmentManager fm;
     private ActionBarDrawerToggle drawerToggle;
     private CharSequence drawerTitle;
     private CharSequence title;
 
     private Client client;
-    private Client.ResultHandler resultHandler;
-
     private TdApi.User userMe;
     private TdApi.Chats chats;
-    private FragmentManager fm;
 
     @Override
     public void getMe() {
@@ -142,21 +140,17 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
 
         client = TG.getClientInstance();
 
-        resultHandler = new Client.ResultHandler() {
+        Client.ResultHandler resultHandler = new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
                 Log.i("LOG", "Updates result : " + object);
-                if (object instanceof TdApi.UpdateChatReadInbox || object instanceof TdApi.UpdateChatReadOutbox) {
-
-                }
-
-                if(object instanceof TdApi.UpdateMessageId) {
+                if (object instanceof TdApi.UpdateMessageId) {
                     TdApi.UpdateMessageId updateMessageId = (TdApi.UpdateMessageId) object;
                     getChats(0, 200);
                     getChatHistory(updateMessageId.chatId, updateMessageId.newId, -1, 50);
                 }
 
-                if(object instanceof TdApi.UpdateNewMessage) {
+                if (object instanceof TdApi.UpdateNewMessage) {
                     TdApi.UpdateNewMessage updateMessageId = (TdApi.UpdateNewMessage) object;
                     getChats(0, 200);
                     getChatHistory(updateMessageId.message.chatId, updateMessageId.message.id, -1, 50);
@@ -240,7 +234,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                 fm = getSupportFragmentManager();
                 final ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
 
-
                 sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
@@ -264,7 +257,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -302,6 +294,4 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
-
-
 }
