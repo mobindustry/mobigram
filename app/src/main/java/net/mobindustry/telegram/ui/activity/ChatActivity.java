@@ -74,6 +74,12 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
 
         drawerList.addHeaderView(header, null, false);
 
+        List<NavigationItem> drawerItemsList = new ArrayList<>();
+        drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
+
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(ChatActivity.this);
+        drawerList.setAdapter(adapter);
+        adapter.addAll(drawerItemsList);
     }
 
     @Override
@@ -174,6 +180,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         TG.setUpdatesHandler(resultHandler);
 
         getChats(0, 200);
+        getMe(); //Get user info for NavigationDrawer Header
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -183,14 +190,8 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
-        getMe(); //Get user info for NavigationDrawer Header
 
-        List<NavigationItem> drawerItemsList = new ArrayList<>();
-        drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
 
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(ChatActivity.this);
-        drawerList.setAdapter(adapter);
-        adapter.addAll(drawerItemsList);
 
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
