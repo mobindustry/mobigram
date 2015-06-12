@@ -29,6 +29,7 @@ import net.mobindustry.telegram.ui.fragments.ChatListFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 import net.mobindustry.telegram.model.holder.ContactListHolder;
 import net.mobindustry.telegram.model.holder.UserMeHolder;
+import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
@@ -172,7 +173,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
 
         adapter = new NavigationDrawerAdapter(ChatActivity.this);
 
-        TG.setDir(this.getFilesDir().getPath());
+        TG.setDir(Const.PATH_TO_NETELEGRAM);
         TG.setUpdatesHandler(resultHandler);
 
         getChats(0, 200);

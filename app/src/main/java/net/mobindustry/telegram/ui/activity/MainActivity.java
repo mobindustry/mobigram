@@ -17,6 +17,7 @@ import com.romainpiel.titanic.library.Titanic;
 import com.romainpiel.titanic.library.TitanicTextView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.UserMeHolder;
+import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
@@ -69,7 +70,7 @@ public class MainActivity extends Activity {
                 }
             }
         };
-        TG.setDir(this.getFilesDir().getPath());
+        TG.setDir(Const.PATH_TO_NETELEGRAM);
         TG.setUpdatesHandler(resultHandler);
 
         client = TG.getClientInstance();

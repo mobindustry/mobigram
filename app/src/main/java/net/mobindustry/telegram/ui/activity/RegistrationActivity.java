@@ -28,6 +28,7 @@ import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogUserDeactivat
 import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.ui.fragments.YourNameFragment;
+import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.CountryObject;
 import net.mobindustry.telegram.model.holder.UserMeHolder;
 import net.mobindustry.telegram.utils.ListCountryObject;
@@ -103,50 +104,50 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
 
                     if ((error.code == 400 && error.text.contains("PHONE_CODE_EMPTY"))) {
-                        DialogPhoneCodeEmpty phoneCodeEmpty=new DialogPhoneCodeEmpty();
+                        DialogPhoneCodeEmpty phoneCodeEmpty = new DialogPhoneCodeEmpty();
                         FragmentManager fm = getSupportFragmentManager();
                         phoneCodeEmpty.show(fm, "PHONE_CODE_EMPTY");
                     }
 
                     if ((error.code == 400 && error.text.contains("PHONE_CODE_EXPIRED"))) {
-                        DialogPhoneCodeExpired phoneCodeExpired=new DialogPhoneCodeExpired();
+                        DialogPhoneCodeExpired phoneCodeExpired = new DialogPhoneCodeExpired();
                         FragmentManager fm = getSupportFragmentManager();
                         phoneCodeExpired.show(fm, "PHONE_CODE_EXPIRED");
                     }
 
                     if ((error.code == 400 && error.text.contains("PHONE_NUMBER_OCCUPIED"))) {
-                        DialogPhoneNumberOccupied phoneNumberOccupied=new DialogPhoneNumberOccupied();
+                        DialogPhoneNumberOccupied phoneNumberOccupied = new DialogPhoneNumberOccupied();
                         FragmentManager fm = getSupportFragmentManager();
                         phoneNumberOccupied.show(fm, "PHONE_NUMBER_OCCUPIED");
                     }
 
                     if ((error.code == 400 && error.text.contains("PHONE_NUMBER_UNOCCUPIED"))) {
-                        DialogPhoneNumberUnoccupied phoneNumberUnoccupied=new DialogPhoneNumberUnoccupied();
+                        DialogPhoneNumberUnoccupied phoneNumberUnoccupied = new DialogPhoneNumberUnoccupied();
                         FragmentManager fm = getSupportFragmentManager();
                         phoneNumberUnoccupied.show(fm, "PHONE_NUMBER_UNOCCUPIED");
                     }
 
                     if ((error.code == 400 && error.text.contains("FIRSTNAME_INVALID"))) {
-                        DialogFirstNameInvalid firstNameInvalid=new DialogFirstNameInvalid();
+                        DialogFirstNameInvalid firstNameInvalid = new DialogFirstNameInvalid();
                         FragmentManager fm = getSupportFragmentManager();
                         firstNameInvalid.show(fm, "FIRSTNAME_INVALID");
                     }
 
                     if ((error.code == 400 && error.text.contains("LASTNAME_INVALID"))) {
-                        DialogLastNameInvalid lastNameInvalid=new DialogLastNameInvalid();
+                        DialogLastNameInvalid lastNameInvalid = new DialogLastNameInvalid();
                         FragmentManager fm = getSupportFragmentManager();
                         lastNameInvalid.show(fm, "LASTNAME_INVALID");
                     }
 
                     if ((error.code == 400 && error.text.contains("PHONE_CODE_INVALID"))) {
-                        DialogPhoneCodeInvalid phoneCodeInvalid=new DialogPhoneCodeInvalid();
+                        DialogPhoneCodeInvalid phoneCodeInvalid = new DialogPhoneCodeInvalid();
                         FragmentManager fm = getSupportFragmentManager();
                         phoneCodeInvalid.show(fm, "PHONE_CODE_INVALID");
 
                     }
 
                     if ((error.code == 400 && error.text.contains("AUTH_KEY_UNREGISTERED"))) {
-                        DialogAuthKeyUnregistered authKeyUnregistered=new DialogAuthKeyUnregistered();
+                        DialogAuthKeyUnregistered authKeyUnregistered = new DialogAuthKeyUnregistered();
                         FragmentManager fm = getSupportFragmentManager();
                         authKeyUnregistered.show(fm, "AUTH_KEY_UNREGISTERED");
                     }
@@ -181,7 +182,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         fragmentTransaction.replace(R.id.fragmentContainer, receiverCodeFragment);
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
-                        DialogFloodWait dialogFloodWait=new DialogFloodWait();
+                        DialogFloodWait dialogFloodWait = new DialogFloodWait();
                         FragmentManager fm = getSupportFragmentManager();
                         dialogFloodWait.show(fm, "FLOOD_WAIT");
                     }
@@ -234,7 +235,7 @@ public class RegistrationActivity extends AppCompatActivity {
         };
 
         TG.setUpdatesHandler(handler);
-        TG.setDir(this.getFilesDir().getPath());
+        TG.setDir(Const.PATH_TO_NETELEGRAM);
 
         client = TG.getClientInstance();
         client.send(new TdApi.AuthGetState(), handler);
