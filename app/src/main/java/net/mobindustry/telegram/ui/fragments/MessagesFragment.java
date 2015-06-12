@@ -259,13 +259,9 @@ public class MessagesFragment extends Fragment implements Serializable {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.take_photo:
-                                Toast.makeText(getActivity(),
-                                        "Take photo", Toast.LENGTH_LONG).show();
                                 makePhoto();
                                 break;
                             case R.id.gallery:
-                                Toast.makeText(getActivity(),
-                                        "gallery", Toast.LENGTH_LONG).show();
                                 selectPhoto();
                                 break;
                             case R.id.video:
@@ -273,8 +269,6 @@ public class MessagesFragment extends Fragment implements Serializable {
                                         "video", Toast.LENGTH_LONG).show();
                                 break;
                             case R.id.file:
-                                Toast.makeText(getActivity(),
-                                        "file", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(getActivity(), TransparentActivity.class);
                                 intent.putExtra("choice", Const.FILE_CHOOSE_FRAGMENT);
                                 startActivityForResult(intent, 1);
