@@ -155,13 +155,13 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                 if (object instanceof TdApi.UpdateMessageId) {
                     TdApi.UpdateMessageId updateMessageId = (TdApi.UpdateMessageId) object;
                     getChats(0, 200);
-                    getChatHistory(updateMessageId.chatId, updateMessageId.newId, -1, 50);
+                    getChatHistory(updateMessageId.chatId, updateMessageId.newId, -1, 200);
                 }
 
                 if (object instanceof TdApi.UpdateNewMessage) {
                     TdApi.UpdateNewMessage updateMessageId = (TdApi.UpdateNewMessage) object;
                     getChats(0, 200);
-                    getChatHistory(updateMessageId.message.chatId, updateMessageId.message.id, -1, 50);
+                    getChatHistory(updateMessageId.message.chatId, updateMessageId.message.id, -1, 200);
                 }
 
                 //if (object instanceof TdApi.UpdateChatReadInbox ||

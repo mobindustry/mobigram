@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
@@ -74,6 +75,8 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
         TdApi.Message item = getItem(position);
 
+        FrameLayout layout = new FrameLayout(getContext());
+
         if (item.message instanceof TdApi.MessagePhoto) {
             Log.i("Message", "Photo " + item.message);
         }
@@ -88,6 +91,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
         if (item.message instanceof TdApi.MessageGeoPoint) {
             Log.i("Message", "GeoPoint " + item.message);
+            TextView geopoint = new TextView(getContext());
+            geopoint.setText(((TdApi.MessageGeoPoint) item.message).geoPoint.toString());
+                       layout.addView(geopoint);
         }
         if (item.message instanceof TdApi.MessageSticker) {
             Log.i("Message", "Sticker " + item.message);
@@ -113,10 +119,10 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 inTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
             case Const.IN_CONTENT_MESSAGE:
-                //FrameLayout inContent = (FrameLayout) convertView.findViewById(R.id.in_content);
+                FrameLayout inContent = (FrameLayout) convertView.findViewById(R.id.in_content);
                 TextView inContentTime = (TextView) convertView.findViewById(R.id.in_content_msg_time);
 
-                //inContent.addView();
+                inContent.addView(layout);
                 inContentTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
             case Const.OUT_MESSAGE:
@@ -129,10 +135,10 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 outTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
             case Const.OUT_CONTENT_MESSAGE:
-                //FrameLayout outContent = (FrameLayout) convertView.findViewById(R.id.out_content);
+                FrameLayout outContent = (FrameLayout) convertView.findViewById(R.id.out_content);
                 TextView outContentTime = (TextView) convertView.findViewById(R.id.out_content_msg_time);
 
-                //outContent.addView();
+                outContent.addView(layout);
                 outContentTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
         }
