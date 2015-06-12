@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.ui.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -34,7 +36,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegistrationMainFragment extends Fragment {
+public class  RegistrationMainFragment extends Fragment {
 
 
     private String phoneNumberForServer = "";
@@ -115,6 +117,8 @@ public class RegistrationMainFragment extends Fragment {
                 fragmentTransaction.replace(R.id.fragmentContainer, chooseCountryList);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(chooseCountry.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
 

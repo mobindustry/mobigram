@@ -31,5 +31,10 @@
     <string name="text_video">Video</string>
     <string name="text_file">File</string>
     <string name="text_location">Location</string>
+    <string name="text_internal_storage">Internal Storage</string>
+    <string name="text_root">/</string>
+    <string name="text_system_root">System Root</string>
+    <string name="text_ne_telegram">NeTelegram</string>
+    <string name="text_to_send_images_without_compression">To send images without compression</string>
 
 </resources>

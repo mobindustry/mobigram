@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -69,6 +70,8 @@ public class MessagesFragment extends Fragment implements Serializable {
     private TdApi.User user;
     private TdApi.Chat chat;
     private ChatActivity activity;
+    private ChooseFileFragment chooseFileFragment;
+    private FragmentTransaction fragmentTransaction;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -269,6 +272,11 @@ public class MessagesFragment extends Fragment implements Serializable {
                             case R.id.file:
                                 Toast.makeText(getActivity(),
                                         "file", Toast.LENGTH_LONG).show();
+                                fragmentTransaction = getFragmentManager().beginTransaction();
+                                chooseFileFragment=new ChooseFileFragment();
+                                //todo fragmentTransaction.replace(R.id., chooseFileFragment);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
                                 break;
                             case R.id.location:
                                 Toast.makeText(getActivity(),
@@ -304,7 +312,7 @@ public class MessagesFragment extends Fragment implements Serializable {
 
     public File getExternalStoragePublicPictureDir() {
         Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-
+        // Check if device has SD card I save photo on it, if no I save photo on internal memory
         if (isSDPresent) {
             String dir = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram";
             File path = new File(dir);
