@@ -29,6 +29,7 @@ import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.ui.fragments.YourNameFragment;
 import net.mobindustry.telegram.utils.CountryObject;
+import net.mobindustry.telegram.utils.HeaderInfoHolder;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
 import org.drinkless.td.libcore.telegram.Client;
@@ -216,6 +217,15 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
 
                 if (object instanceof TdApi.AuthStateOk) {
+
+                    client.send(new TdApi.GetMe(), new Client.ResultHandler() {
+                        @Override
+                        public void onResult(TdApi.TLObject object) {
+                            HeaderInfoHolder holder = HeaderInfoHolder.getInstance();
+                            holder.setUserMe((TdApi.User) object);
+                        }
+                    });
+
                     Intent intent = new Intent(RegistrationActivity.this, ChatActivity.class);
                     startActivity(intent);
                     finish();

@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.romainpiel.titanic.library.Titanic;
 import com.romainpiel.titanic.library.TitanicTextView;
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.utils.HeaderInfoHolder;
+
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -30,8 +32,6 @@ public class MainActivity extends Activity {
     private Client.ResultHandler resultHandler;
     private boolean stateWaitCode = true;
 
-    private String userFirstLastName;
-    private String userPhone;
     private TitanicTextView tv;
     private Titanic titanic;
     private TextView textCheckInternet;
@@ -54,6 +54,14 @@ public class MainActivity extends Activity {
 
                 if (object instanceof TdApi.AuthStateOk) {
                     stateWaitCode = false;
+
+                    client.send(new TdApi.GetMe(), new Client.ResultHandler() {
+                        @Override
+                        public void onResult(TdApi.TLObject object) {
+                            HeaderInfoHolder holder = HeaderInfoHolder.getInstance();
+                            holder.setUserMe((TdApi.User) object);
+                        }
+                    });
                 }
 
                 if (object instanceof TdApi.AuthStateWaitSetPhoneNumber) {
@@ -65,6 +73,7 @@ public class MainActivity extends Activity {
         TG.setUpdatesHandler(resultHandler);
 
         client = TG.getClientInstance();
+
 
         start();
     }
