@@ -64,6 +64,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     }
 
     public void setHeader(TdApi.User userMe) {
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(ChatActivity.this);
 
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.navigation_drawer_header, drawerList, false);
@@ -77,7 +78,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         List<NavigationItem> drawerItemsList = new ArrayList<>();
         drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
 
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(ChatActivity.this);
         drawerList.setAdapter(adapter);
         adapter.addAll(drawerItemsList);
     }

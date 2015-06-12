@@ -3,18 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_header"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="150dp"
     android:background="@color/background_action_bar"
     >
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:src="@drawable/user_icon_test"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         app:riv_corner_radius="1dp"
         app:riv_tile_mode="repeat"
         app:riv_oval="true"
-        android:layout_margin="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="50dp"
         />
 
     <LinearLayout
@@ -28,15 +30,17 @@
             android:id="@+id/drawer_header_first_last_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="22sp"
-            android:textStyle="bold"/>
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#fff"/>
 
         <TextView
             android:id="@+id/drawer_header_phone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="15sp" />
-
+            android:textSize="13sp"
+            android:textColor="#fff"
+            />
 
     </LinearLayout>
 

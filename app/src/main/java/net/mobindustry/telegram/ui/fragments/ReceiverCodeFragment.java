@@ -28,7 +28,6 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
     private TextView textForUser;
     private TextView wrongNumber;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,9 +86,5 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
                 countDownTimer.setText("Calling you");
             }
         }.start();
-
-
     }
-
-
 }
