@@ -42,5 +42,6 @@
     <dimen name="text_user">18sp</dimen>
     <dimen name="width_land_sw600">450dp</dimen>
     <dimen name="height_land_sw600">500dp</dimen>
+    <dimen name="margin_2dp">2dp</dimen>
 
 </resources>

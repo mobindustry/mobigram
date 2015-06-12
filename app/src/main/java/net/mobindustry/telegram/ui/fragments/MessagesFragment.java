@@ -35,6 +35,7 @@ import com.soundcloud.android.crop.Crop;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
+import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
 import net.mobindustry.telegram.ui.adapters.TextWatcherAdapter;
 import net.mobindustry.telegram.utils.Const;
@@ -70,8 +71,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     private TdApi.User user;
     private TdApi.Chat chat;
     private ChatActivity activity;
-    private ChooseFileFragment chooseFileFragment;
-    private FragmentTransaction fragmentTransaction;
+    private File neTelegramDirectory;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -120,6 +120,9 @@ public class MessagesFragment extends Fragment implements Serializable {
         super.onActivityCreated(savedInstanceState);
 
         activity = (ChatActivity) getActivity();
+        if (neTelegramDirectory == null) {
+            neTelegramDirectory = getExternalStoragePublicPictureDir();
+        }
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
@@ -272,11 +275,9 @@ public class MessagesFragment extends Fragment implements Serializable {
                             case R.id.file:
                                 Toast.makeText(getActivity(),
                                         "file", Toast.LENGTH_LONG).show();
-                                fragmentTransaction = getFragmentManager().beginTransaction();
-                                chooseFileFragment=new ChooseFileFragment();
-                                //todo fragmentTransaction.replace(R.id., chooseFileFragment);
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();
+                                Intent intent = new Intent(getActivity(), TransparentActivity.class);
+                                intent.putExtra("choice", Const.FILE_CHOOSE_FRAGMENT);
+                                startActivityForResult(intent, 1);
                                 break;
                             case R.id.location:
                                 Toast.makeText(getActivity(),
@@ -293,7 +294,6 @@ public class MessagesFragment extends Fragment implements Serializable {
 
     private void makePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         tempTakePhotoFile = getOutputMediaFile();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempTakePhotoFile));
         startActivityForResult(intent, Const.REQUEST_CODE_TAKE_PHOTO);
@@ -319,7 +319,9 @@ public class MessagesFragment extends Fragment implements Serializable {
             path.mkdirs();
             return path;
         } else {
-            File path = Environment.getExternalStoragePublicDirectory("NeTelegram");
+            String dir = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram";
+            File path = new File(dir);
+            path.mkdirs();
             return path;
         }
     }
@@ -328,7 +330,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     public File getOutputMediaFile() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
-        return new File(getExternalStoragePublicPictureDir(), fileName);
+        return new File(neTelegramDirectory, fileName);
     }
 
     public static String getPathFromURI(Uri contentUri, Activity activity) {

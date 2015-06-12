@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/background_activity">
 
     <include
         android:id="@+id/chooseFileToolbar"
@@ -18,19 +19,19 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10dp"
+            android:layout_margin="@dimen/margin_5dp"
             android:src="@drawable/ic_storage" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10dp"
+            android:layout_margin="@dimen/margin_5dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_5dp"
+                android:layout_margin="@dimen/margin_2dp"
                 android:text="@string/text_internal_storage"
                 android:textStyle="bold" />
 
@@ -38,7 +39,7 @@
                 android:id="@+id/text_info_about_internal_storage_memory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_5dp"
+                android:layout_margin="@dimen/margin_2dp"
                 tools:text="Free 3,3 GB of 10,5 GB" />
         </LinearLayout>
 
@@ -53,26 +54,26 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10dp"
+            android:layout_margin="@dimen/margin_5dp"
             android:src="@drawable/ic_directory" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10dp"
+            android:layout_margin="@dimen/margin_5dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_5dp"
+                android:layout_margin="@dimen/margin_2dp"
                 android:text="@string/text_root"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_5dp"
+                android:layout_margin="@dimen/margin_2dp"
                 android:text="@string/text_system_root" />
         </LinearLayout>
 
@@ -87,19 +88,19 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10dp"
+            android:layout_margin="@dimen/margin_5dp"
             android:src="@drawable/ic_directory" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10dp"
+            android:layout_margin="@dimen/margin_5dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_5dp"
+                android:layout_margin="@dimen/margin_2dp"
                 android:text="@string/text_ne_telegram"
                 android:textStyle="bold" />
 
@@ -107,7 +108,7 @@
                 android:id="@+id/path_to_ne_telegram_directory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_5dp"
+                android:layout_margin="@dimen/margin_2dp"
                 tools:text="/storage/sdcard0/NeTelegram" />
         </LinearLayout>
 
@@ -122,26 +123,26 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10dp"
+            android:layout_margin="@dimen/margin_5dp"
             android:src="@drawable/ic_storage_gallery" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10dp"
+            android:layout_margin="@dimen/margin_5dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_5dp"
+                android:layout_margin="@dimen/margin_2dp"
                 android:text="@string/text_gallery"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_5dp"
+                android:layout_margin="@dimen/margin_2dp"
                 android:text="@string/text_to_send_images_without_compression" />
         </LinearLayout>
 

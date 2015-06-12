@@ -6,12 +6,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.fragments.ChooseFileFragment;
 import net.mobindustry.telegram.ui.fragments.NewMessageFragment;
 import net.mobindustry.telegram.utils.Const;
 
 public class TransparentActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
+    private FragmentTransaction ft;
 
 
     @Override
@@ -26,6 +28,12 @@ public class TransparentActivity extends AppCompatActivity {
                 NewMessageFragment newMessageFragment = new NewMessageFragment();
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.replace(R.id.transparent_content, newMessageFragment);
+                ft.commit();
+                break;
+            case Const.FILE_CHOOSE_FRAGMENT:
+                ChooseFileFragment chooseFileFragment = new ChooseFileFragment();
+                ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.transparent_content, chooseFileFragment);
                 ft.commit();
                 break;
 
