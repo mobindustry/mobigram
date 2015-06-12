@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
-import net.mobindustry.telegram.utils.InfoRegistration;
+import net.mobindustry.telegram.model.holder.InfoRegistration;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;

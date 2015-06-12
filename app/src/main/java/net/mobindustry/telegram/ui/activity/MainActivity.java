@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.romainpiel.titanic.library.Titanic;
 import com.romainpiel.titanic.library.TitanicTextView;
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.utils.UserMeHolder;
+import net.mobindustry.telegram.model.holder.UserMeHolder;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;

@@ -29,7 +29,7 @@ import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.ui.fragments.YourNameFragment;
 import net.mobindustry.telegram.utils.CountryObject;
-import net.mobindustry.telegram.utils.UserMeHolder;
+import net.mobindustry.telegram.model.holder.UserMeHolder;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
 import org.drinkless.td.libcore.telegram.Client;

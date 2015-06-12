@@ -10,25 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.ui.adapters.CountriesListAdapter;
-import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.CountryObject;
-import net.mobindustry.telegram.utils.InfoRegistration;
+import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.Serializable;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 

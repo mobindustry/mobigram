@@ -27,8 +27,8 @@ import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
-import net.mobindustry.telegram.utils.ContactListHolder;
-import net.mobindustry.telegram.utils.UserMeHolder;
+import net.mobindustry.telegram.model.holder.ContactListHolder;
+import net.mobindustry.telegram.model.holder.UserMeHolder;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;

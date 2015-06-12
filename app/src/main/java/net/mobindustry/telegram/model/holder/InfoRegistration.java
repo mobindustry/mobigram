@@ -1,6 +1,4 @@
-package net.mobindustry.telegram.utils;
-
-import android.util.Log;
+package net.mobindustry.telegram.model.holder;
 
 public class InfoRegistration {
 

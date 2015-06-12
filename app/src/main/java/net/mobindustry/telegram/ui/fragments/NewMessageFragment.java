@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.adapters.ContactListAdapter;
-import net.mobindustry.telegram.utils.ContactListHolder;
+import net.mobindustry.telegram.model.holder.ContactListHolder;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
