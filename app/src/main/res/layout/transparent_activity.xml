@@ -9,15 +9,14 @@
         android:layout_width="@dimen/width_land_sw600"
         android:layout_height="@dimen/height_land_sw600"
         android:layout_gravity="center"
-        card_view:cardElevation="8sp"
-        >
+        card_view:cardElevation="8sp">
 
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:name="net.mobindustry.telegram.ui.fragments.NewMessageFragment"
-        />
+        <FrameLayout
+            android:id="@+id/transparent_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
 
     </android.support.v7.widget.CardView>
 

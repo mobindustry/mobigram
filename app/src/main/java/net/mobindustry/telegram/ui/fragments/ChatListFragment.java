@@ -9,14 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.activity.ChatActivity;
-import net.mobindustry.telegram.ui.activity.NewMessageTransparentActivity;
+import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.ChatListAdapter;
+import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -58,7 +57,8 @@ public class ChatListFragment extends ListFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NewMessageTransparentActivity.class);
+                Intent intent = new Intent(getActivity(), TransparentActivity.class);
+                intent.putExtra("choice", Const.NEW_MESSAGE_FRAGMENT);
                 startActivityForResult(intent, 1);
             }
         });

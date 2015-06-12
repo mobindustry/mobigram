@@ -14,6 +14,5 @@ public class Const {
     public static final String DATE_PATTERN = "yyyy-MM-dd";
     public static final String TIME_PATTERN = "HH:mm";
 
-
-
+    public static final int NEW_MESSAGE_FRAGMENT = 200;
 }
