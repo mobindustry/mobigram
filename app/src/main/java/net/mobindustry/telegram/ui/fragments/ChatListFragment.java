@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -59,7 +61,8 @@ public class ChatListFragment extends ListFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), TransparentActivity.class);
                 intent.putExtra("choice", Const.NEW_MESSAGE_FRAGMENT);
-                startActivityForResult(intent, 1);
+
+                startActivityForResult(intent, Const.REQUEST_CODE_NEW_MESSAGE);
             }
         });
         setListAdapter(adapter);
@@ -84,6 +87,15 @@ public class ChatListFragment extends ListFragment {
             }
         }
         return chats.chats[currentCheckPosition];
+    }
+
+    public int getChatPosition(long id) {
+        for (int i = 0; i < chats.chats.length; i++) {
+            if (chats.chats[i].id == id) {
+                return i;
+            }
+        }
+        return Const.CHAT_NOT_FOUND;
     }
 
     public void setAdapterFilter(String filter) {
@@ -119,5 +131,23 @@ public class ChatListFragment extends ListFragment {
 
             ft.commit();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Const.REQUEST_CODE_NEW_MESSAGE && resultCode == Activity.RESULT_OK) {
+            long resultId = data.getLongExtra("id", 0);
+            clickedId = resultId;
+            int position = getChatPosition(resultId);
+            if(position == Const.CHAT_NOT_FOUND) {
+                Toast.makeText(getActivity(), "You have no chat with this contact. " +
+                        "Open a new chat with a contact in the development mode.", Toast.LENGTH_LONG).show();
+                //((ChatActivity) getActivity()).newPrivateChat((int)resultId); //TODO Start new chat;
+            } else {
+                showMessages(position);
+            }
+        }
+
     }
 }

@@ -70,6 +70,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     private TdApi.User user;
     private TdApi.Chat chat;
     private ChatActivity activity;
+    private ChooseFileFragment chooseFileFragment;
     private FragmentTransaction fragmentTransaction;
 
     public static MessagesFragment newInstance(int index) {
@@ -272,7 +273,7 @@ public class MessagesFragment extends Fragment implements Serializable {
                                 Toast.makeText(getActivity(),
                                         "file", Toast.LENGTH_LONG).show();
                                 fragmentTransaction = getFragmentManager().beginTransaction();
-                                //chooseFileFragment=new ChooseFileFragment();
+                                chooseFileFragment=new ChooseFileFragment();
                                 //todo fragmentTransaction.replace(R.id., chooseFileFragment);
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();

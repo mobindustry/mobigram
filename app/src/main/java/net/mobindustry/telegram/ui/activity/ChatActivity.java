@@ -27,6 +27,7 @@ import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
+import net.mobindustry.telegram.utils.ContactListHolder;
 import net.mobindustry.telegram.utils.UserMeHolder;
 
 import org.drinkless.td.libcore.telegram.Client;
@@ -95,6 +96,29 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     }
 
     @Override
+    public void getContacts() {
+        client.send(new TdApi.GetContacts(), new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                if (object instanceof TdApi.Contacts) {
+                    ContactListHolder contactListHolder = ContactListHolder.getInstance();
+                    contactListHolder.setContacts((TdApi.Contacts) object);
+                }
+            }
+        });
+    }
+
+    public void newPrivateChat(int id) {
+        client.send(new TdApi.CreatePrivateChat(id), new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                Log.i("Log", "New private chat " + object);
+                //TODO Find a way to show new chat;
+            }
+        });
+    }
+
+    @Override
     public void sendMessage(long chatId, String message) {
         client.send(new TdApi.SendMessage(chatId, new TdApi.InputMessageText(message)), new Client.ResultHandler() {
             @Override
@@ -152,6 +176,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         TG.setUpdatesHandler(resultHandler);
 
         getChats(0, 200);
+        getContacts();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -247,7 +272,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                         } else {
                             chatListFragment.setAdapterFilter("");
                         }
-
                         return false;
                     }
                 });
