@@ -29,7 +29,7 @@ import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.ui.fragments.YourNameFragment;
 import net.mobindustry.telegram.utils.CountryObject;
-import net.mobindustry.telegram.utils.HeaderInfoHolder;
+import net.mobindustry.telegram.utils.UserMeHolder;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
 import org.drinkless.td.libcore.telegram.Client;
@@ -221,7 +221,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     client.send(new TdApi.GetMe(), new Client.ResultHandler() {
                         @Override
                         public void onResult(TdApi.TLObject object) {
-                            HeaderInfoHolder holder = HeaderInfoHolder.getInstance();
+                            UserMeHolder holder = UserMeHolder.getInstance();
                             holder.setUserMe((TdApi.User) object);
                         }
                     });

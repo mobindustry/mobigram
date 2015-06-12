@@ -27,8 +27,7 @@ import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
-import net.mobindustry.telegram.utils.HeaderInfoHolder;
-import net.mobindustry.telegram.utils.Utils;
+import net.mobindustry.telegram.utils.UserMeHolder;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
@@ -48,9 +47,10 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     private CharSequence title;
 
     private Client client;
-    private TdApi.User userMe;
     private TdApi.Chats chats;
     private NavigationDrawerAdapter adapter;
+
+    private UserMeHolder holder = UserMeHolder.getInstance();
 
     @Override
     public void getUser(long id) {
@@ -108,7 +108,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     }
 
     public long getMyId() {
-        return userMe.id;
+        return holder.getUserMe().id;
     }
 
     public MessagesFragment getMessageFragment() {
@@ -139,10 +139,10 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                     getChatHistory(updateMessageId.message.chatId, updateMessageId.message.id, -1, 50);
                 }
 
-                if (object instanceof TdApi.UpdateChatReadInbox ||
-                        object instanceof TdApi.UpdateChatReadOutbox) {
-                    getChats(0, 200);
-                }
+                //if (object instanceof TdApi.UpdateChatReadInbox ||
+                //        object instanceof TdApi.UpdateChatReadOutbox) {
+                //   getChats(0, 200);
+                //}
             }
         };
 
@@ -164,7 +164,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         List<NavigationItem> drawerItemsList = new ArrayList<>();
         drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
 
-        HeaderInfoHolder holder = HeaderInfoHolder.getInstance();
         setHeader(holder.getUserMe());
 
         adapter.addAll(drawerItemsList);
@@ -270,7 +269,13 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         switch (position) {
             case 1:
                 Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
-                finish();
+                client.send(new TdApi.AuthReset(), new Client.ResultHandler() {
+                    @Override
+                    public void onResult(TdApi.TLObject object) {
+                        finish();
+                    }
+                });
+
                 break;
             default:
                 break;

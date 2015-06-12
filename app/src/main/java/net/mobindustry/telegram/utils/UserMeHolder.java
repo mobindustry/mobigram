@@ -2,20 +2,20 @@ package net.mobindustry.telegram.utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
-public class HeaderInfoHolder {
+public class UserMeHolder {
 
-    private static HeaderInfoHolder instance;
+    private static UserMeHolder instance;
 
     private TdApi.User userMe;
 
-    public static synchronized HeaderInfoHolder getInstance() {
+    public static synchronized UserMeHolder getInstance() {
         if (instance == null) {
-            instance = new HeaderInfoHolder();
+            instance = new UserMeHolder();
         }
         return instance;
     }
 
-    private HeaderInfoHolder() {
+    private UserMeHolder() {
     }
 
     public TdApi.User getUserMe() {

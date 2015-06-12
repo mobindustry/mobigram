@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.romainpiel.titanic.library.Titanic;
 import com.romainpiel.titanic.library.TitanicTextView;
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.utils.HeaderInfoHolder;
+import net.mobindustry.telegram.utils.UserMeHolder;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
                     client.send(new TdApi.GetMe(), new Client.ResultHandler() {
                         @Override
                         public void onResult(TdApi.TLObject object) {
-                            HeaderInfoHolder holder = HeaderInfoHolder.getInstance();
+                            UserMeHolder holder = UserMeHolder.getInstance();
                             holder.setUserMe((TdApi.User) object);
                         }
                     });

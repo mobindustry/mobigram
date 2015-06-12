@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import com.melnykov.fab.FloatingActionButton;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.activity.ChatActivity;
+import net.mobindustry.telegram.ui.activity.NewMessageTransparentActivity;
 import net.mobindustry.telegram.ui.adapters.ChatListAdapter;
 
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -55,7 +58,8 @@ public class ChatListFragment extends ListFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Open New Message Fragment", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), NewMessageTransparentActivity.class);
+                startActivityForResult(intent, 1);
             }
         });
         setListAdapter(adapter);
@@ -77,7 +81,7 @@ public class ChatListFragment extends ListFragment {
         for (int i = 0; i < chats.chats.length; i++) {
             if (chats.chats[i].id == clickedId) {
                 return chats.chats[i];
-           }
+            }
         }
         return chats.chats[currentCheckPosition];
     }
@@ -104,31 +108,16 @@ public class ChatListFragment extends ListFragment {
 
         FragmentTransaction ft
                 = getFragmentManager().beginTransaction();
+        getListView().setItemChecked(index, true);
+        MessagesFragment messagesFragment = (MessagesFragment)
+                getFragmentManager().findFragmentById(R.id.messages);
+        if (messagesFragment == null || messagesFragment.getShownIndex() != index) {
+            messagesFragment = MessagesFragment.newInstance(index);
 
-        if (dualPane) {
-            getListView().setItemChecked(index, true);
-            MessagesFragment messagesFragment = (MessagesFragment)
-                    getFragmentManager().findFragmentById(R.id.messages);
-            if (messagesFragment == null || messagesFragment.getShownIndex() != index) {
-                messagesFragment = MessagesFragment.newInstance(index);
+            ft.replace(R.id.messages, messagesFragment);
+            ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
 
-                ft.replace(R.id.messages, messagesFragment);
-                ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-
-                ft.commit();
-            }
-        } else {
-            getListView().setItemChecked(index, true);
-            MessagesFragment messagesFragment = (MessagesFragment)
-                    getFragmentManager().findFragmentById(R.id.messages);
-            if (messagesFragment == null || messagesFragment.getShownIndex() != index) {
-                messagesFragment = MessagesFragment.newInstance(index);
-
-                ft.replace(R.id.messages, messagesFragment);
-                ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-
-                ft.commit();
-            }
+            ft.commit();
         }
     }
 }
