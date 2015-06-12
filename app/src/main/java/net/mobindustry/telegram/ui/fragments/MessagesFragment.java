@@ -93,7 +93,7 @@ public class MessagesFragment extends Fragment implements Serializable {
         return f;
     }
 
-    public long getShownChatId () {
+    public long getShownChatId() {
         return chat.id;
     }
 
@@ -274,6 +274,7 @@ public class MessagesFragment extends Fragment implements Serializable {
                             case R.id.gallery:
                                 Toast.makeText(getActivity(),
                                         "gallery", Toast.LENGTH_LONG).show();
+                                selectPhoto();
                                 break;
                             case R.id.video:
                                 Toast.makeText(getActivity(),
@@ -316,10 +317,18 @@ public class MessagesFragment extends Fragment implements Serializable {
     }
 
     public File getExternalStoragePublicPictureDir() {
-        File path = Environment.getExternalStoragePublicDirectory("NeTelegram");
-        return path;
-    }
+        Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
 
+        if (isSDPresent) {
+            String dir = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram";
+            File path = new File(dir);
+            path.mkdirs();
+            return path;
+        } else {
+            File path = Environment.getExternalStoragePublicDirectory("NeTelegram");
+            return path;
+        }
+    }
 
 
     public File getOutputMediaFile() {
