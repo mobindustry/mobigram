@@ -13,7 +13,9 @@ public class Const {
     public final static String COUNTRY = "country";
     public static final int REQUEST_CODE_TAKE_PHOTO = 101;
     public static final int REQUEST_CODE_SELECT_IMAGE = 102;
+
     public static final int REQUEST_CODE_NEW_MESSAGE = 110;
+    public static final int CROP_REQUEST_CODE = 111;
 
     public static final String PATH_TO_NETELEGRAM = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram";
 

@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -125,7 +126,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
             @Override
             public void onResult(TdApi.TLObject object) {
                 Log.e("Log", "Result downloading " + object);
-                if (object instanceof TdApi.Message) {
+                if (object instanceof TdApi.Ok) {
 
                 }
             }
@@ -349,5 +350,14 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Const.CROP_REQUEST_CODE) {
+            sendPhotoMessage(getMessageFragment().getShownChatId(), getMessageFragment().getPhotoPath());
+        }
     }
 }

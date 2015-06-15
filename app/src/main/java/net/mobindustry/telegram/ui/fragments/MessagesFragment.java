@@ -104,6 +104,10 @@ public class MessagesFragment extends Fragment implements Serializable {
         Log.e("Log", "User " + user.toString());
     }
 
+    public String getPhotoPath() {
+        return tempTakePhotoFile.getPath();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -338,6 +342,8 @@ public class MessagesFragment extends Fragment implements Serializable {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO) {
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             Uri contentUri = Uri.fromFile(tempTakePhotoFile);
@@ -345,8 +351,7 @@ public class MessagesFragment extends Fragment implements Serializable {
             getActivity().sendBroadcast(mediaScanIntent);
             Uri external = Uri.fromFile(tempTakePhotoFile);
             Crop.of(external, external).asSquare().start(getActivity());
-            Crop.pickImage(getActivity());
-            ((ChatActivity)getActivity()).sendPhotoMessage(getShownChatId(), tempTakePhotoFile.getAbsolutePath());
+            Crop.pickImage(getActivity(), Const.CROP_REQUEST_CODE);
         }
 
         if (requestCode == Const.REQUEST_CODE_SELECT_IMAGE) {
@@ -354,6 +359,7 @@ public class MessagesFragment extends Fragment implements Serializable {
                 Uri uriImage = data.getData();
                 String path = getPathFromURI(uriImage, getActivity());
                 if (!TextUtils.isEmpty(path)) {
+                    ((ChatActivity) getActivity()).sendPhotoMessage(getShownChatId(), path);
                     //photoSelected(path);
                 } else {
                     Toast.makeText(getActivity(), "File not found", Toast.LENGTH_LONG).show();
