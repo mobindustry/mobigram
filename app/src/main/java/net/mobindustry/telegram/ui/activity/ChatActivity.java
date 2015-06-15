@@ -320,7 +320,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         switch (position) {
             case 1:
                 Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
-                client.send(new TdApi.AuthReset(true), new Client.ResultHandler() {
+                client.send(new TdApi.AuthReset(), new Client.ResultHandler() {
                     @Override
                     public void onResult(TdApi.TLObject object) {
                         finish();
