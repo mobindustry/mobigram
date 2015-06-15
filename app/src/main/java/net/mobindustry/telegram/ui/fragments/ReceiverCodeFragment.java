@@ -7,10 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -38,7 +40,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        InfoRegistration infoRegistration=InfoRegistration.getInstance();
+        InfoRegistration infoRegistration = InfoRegistration.getInstance();
 
         activity = (RegistrationActivity) getActivity();
 
@@ -70,6 +72,17 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
             public boolean onMenuItemClick(MenuItem item) {
                 activity.setCodeFromServer(codeFromUser.getText().toString());
                 return true;
+            }
+        });
+
+        codeFromUser.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_DONE && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    activity.setCodeFromServer(codeFromUser.getText().toString());
+                    return true;
+                }
+                return false;
             }
         });
 

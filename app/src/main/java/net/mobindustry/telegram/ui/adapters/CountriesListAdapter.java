@@ -11,9 +11,6 @@ import net.mobindustry.telegram.utils.ListCountryObject;
 import java.io.Serializable;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-/**
- * Created by alytar on 28.05.15.
- */
 public class CountriesListAdapter extends BaseAdapter implements StickyListHeadersAdapter, Serializable {
 
     private Activity activity;

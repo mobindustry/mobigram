@@ -59,6 +59,7 @@
             android:textColor="#000"
             android:singleLine="true"
             android:inputType="phone"
+            android:imeOptions="actionDone"
             />
 
     </LinearLayout>

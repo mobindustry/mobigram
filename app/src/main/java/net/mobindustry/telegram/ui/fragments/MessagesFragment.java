@@ -267,8 +267,9 @@ public class MessagesFragment extends Fragment implements Serializable {
                                 startActivityForResult(intent, 1);
                                 break;
                             case R.id.location:
-                                Toast.makeText(getActivity(),
-                                        "location", Toast.LENGTH_LONG).show();
+                                Intent intentLoc = new Intent(getActivity(), TransparentActivity.class);
+                                intentLoc.putExtra("choice", Const.MAP_FRAGMENT);
+                                startActivityForResult(intentLoc, 1);
                                 break;
                         }
                         return true;

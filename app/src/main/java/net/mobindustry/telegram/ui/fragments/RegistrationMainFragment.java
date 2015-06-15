@@ -11,11 +11,13 @@ import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -234,9 +236,27 @@ public class RegistrationMainFragment extends Fragment {
         };
 
         phone.addTextChangedListener(watcher);
+        phone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_DONE &&
+                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
+                    String lettersCode = code.getText().toString();
+                    String number = phone.getText().toString().replaceAll("\\s", "");
+                    phoneNumberForServer = lettersCode + number;
+                    infoRegistration.setCodePlusPhone(infoRegistration.getCodeCountry() + " " + infoRegistration.getPhone());
+                    Log.e("Log", "PHONE " + phoneNumberForServer);
+                    activity.setPhoneForServer(phoneNumberForServer);
 
+                    return true;
+                }
+                return false;
+
+            }
+        });
     }
+
 
     public static String convertStreamToString(InputStream is)
             throws IOException {

@@ -25,7 +25,8 @@
         android:textSize="@dimen/text_user"
         android:layout_margin="@dimen/margin_20dp"
         android:id="@+id/code_from_user"
-        android:inputType="phone"/>
+        android:inputType="phone"
+        android:imeOptions="actionDone"/>
     <TextView
         android:visibility="gone"
         android:layout_width="wrap_content"
