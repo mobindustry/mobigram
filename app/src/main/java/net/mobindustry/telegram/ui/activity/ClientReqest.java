@@ -7,5 +7,9 @@ public interface ClientReqest {
     void getChatHistory(long id, int messageId, int offset, int limit);
     void getContacts();
 
+    void downloadFile(int fileId);
+
     void sendMessage(long chatId, String message);
+
+    void sendPhotoMessage(long chatId, String path);
 }

@@ -120,11 +120,37 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     }
 
     @Override
+    public void downloadFile(int fileId) {
+        client.send(new TdApi.DownloadFile(fileId), new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                Log.e("Log", "Result downloading " + object);
+                if (object instanceof TdApi.Message) {
+
+                }
+            }
+        });
+    }
+
+    @Override
     public void sendMessage(long chatId, String message) {
         client.send(new TdApi.SendMessage(chatId, new TdApi.InputMessageText(message)), new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
                 Log.e("Log", "Result message " + object);
+                if (object instanceof TdApi.Message) {
+
+                }
+            }
+        });
+    }
+
+    @Override
+    public void sendPhotoMessage(long chatId, String path) {
+        client.send(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                Log.e("Log", "Result photo message " + object);
                 if (object instanceof TdApi.Message) {
 
                 }
@@ -294,7 +320,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         switch (position) {
             case 1:
                 Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
-                client.send(new TdApi.AuthReset(), new Client.ResultHandler() {
+                client.send(new TdApi.AuthReset(true), new Client.ResultHandler() {
                     @Override
                     public void onResult(TdApi.TLObject object) {
                         finish();

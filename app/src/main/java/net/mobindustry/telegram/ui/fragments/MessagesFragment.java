@@ -346,6 +346,7 @@ public class MessagesFragment extends Fragment implements Serializable {
             Uri external = Uri.fromFile(tempTakePhotoFile);
             Crop.of(external, external).asSquare().start(getActivity());
             Crop.pickImage(getActivity());
+            ((ChatActivity)getActivity()).sendPhotoMessage(getShownChatId(), tempTakePhotoFile.getAbsolutePath());
         }
 
         if (requestCode == Const.REQUEST_CODE_SELECT_IMAGE) {
