@@ -11,6 +11,7 @@ public class MessagesFragmentHolder {
     private static MessagesFragmentHolder instance;
 
     private static File neTelegramDirectory;
+    private File tempPhotoFile;
 
     public static synchronized MessagesFragmentHolder getInstance() {
         if (instance == null) {
@@ -38,10 +39,18 @@ public class MessagesFragmentHolder {
         }
     }
 
-    public File getOutputMediaFile() {
+    private File getOutputMediaFile() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
         return new File(neTelegramDirectory, fileName);
     }
 
+    public File getTempPhotoFile() {
+        return tempPhotoFile;
+    }
+
+    public File getNewTempPhotoFile() {
+        tempPhotoFile = getOutputMediaFile();
+        return tempPhotoFile;
+    }
 }

@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -47,8 +46,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class MessagesFragment extends Fragment implements Serializable {
 
@@ -72,7 +69,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     private TdApi.Chat chat;
     private ChatActivity activity;
 
-    MessagesFragmentHolder holder = MessagesFragmentHolder.getInstance();
+    MessagesFragmentHolder holder;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -106,7 +103,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     }
 
     public String getPhotoPath() {
-        return tempTakePhotoFile.getPath();
+        return holder.getTempPhotoFile().getPath();
     }
 
     @Override
@@ -124,8 +121,8 @@ public class MessagesFragment extends Fragment implements Serializable {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        holder = MessagesFragmentHolder.getInstance();
         activity = (ChatActivity) getActivity();
-
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
@@ -286,12 +283,11 @@ public class MessagesFragment extends Fragment implements Serializable {
 
     private void makePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        tempTakePhotoFile = holder.getOutputMediaFile();
+        tempTakePhotoFile = holder.getNewTempPhotoFile();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempTakePhotoFile));
         startActivityForResult(intent, Const.REQUEST_CODE_TAKE_PHOTO);
         Log.e("LOG", "ACTIVITY " + activity);
         Log.e("LOG", "FILE" + tempTakePhotoFile);
-
     }
 
     private void selectPhoto() {
@@ -314,13 +310,12 @@ public class MessagesFragment extends Fragment implements Serializable {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO) {
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            Uri contentUri = Uri.fromFile(tempTakePhotoFile);
+            Uri contentUri = Uri.fromFile(holder.getTempPhotoFile());
             mediaScanIntent.setData(contentUri);
             getActivity().sendBroadcast(mediaScanIntent);
-            Uri external = Uri.fromFile(tempTakePhotoFile);
+            Uri external = Uri.fromFile(holder.getTempPhotoFile());
             Crop.of(external, external).asSquare().start(getActivity());
             Crop.pickImage(getActivity(), Const.CROP_REQUEST_CODE);
         }
@@ -331,7 +326,6 @@ public class MessagesFragment extends Fragment implements Serializable {
                 String path = getPathFromURI(uriImage, getActivity());
                 if (!TextUtils.isEmpty(path)) {
                     ((ChatActivity) getActivity()).sendPhotoMessage(getShownChatId(), path);
-                    //photoSelected(path);
                 } else {
                     Toast.makeText(getActivity(), "File not found", Toast.LENGTH_LONG).show();
                 }
