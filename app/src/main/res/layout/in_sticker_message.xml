@@ -6,11 +6,10 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:background="@drawable/msg_out_photo">
+        >
 
         <FrameLayout
-            android:id="@+id/out_content"
+            android:id="@+id/in_sticker"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </FrameLayout>
@@ -19,15 +18,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/out_content_msg_time"
+                android:id="@+id/in_sticker_msg_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/padding_3dp"
-                android:textColor="#ffd0d0d0"
-                android:textSize="@dimen/message_time_text_size" />
+                android:textColor="#FFD0D0D0"
+                android:textSize="@dimen/message_time_text_size"
+                android:background="#877c7c7c"/>
         </LinearLayout>
     </FrameLayout>
 </FrameLayout>

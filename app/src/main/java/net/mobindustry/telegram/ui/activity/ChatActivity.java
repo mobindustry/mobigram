@@ -123,7 +123,12 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
 
     @Override
     public void downloadFile(int fileId) {
-
+        client.send(new TdApi.DownloadFile(fileId), new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                Log.i("Log", "DownloadResult " + object);
+            }
+        });
     }
 
     @Override
@@ -137,9 +142,10 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                         public void onResult(TdApi.TLObject object) {
                             if (object instanceof TdApi.Messages) {
                                 PhotoDownloadHolder holder = PhotoDownloadHolder.getInstance();
-                                TdApi.MessagePhoto message = (TdApi.MessagePhoto) object;
+                                TdApi.Messages message = (TdApi.Messages) object;
+                                TdApi.MessagePhoto photo = (TdApi.MessagePhoto) message.messages[0].message;
                                 synchronized (holder.getSync()) {
-                                    holder.setPhoto(message.photo);
+                                    holder.setPhoto(photo.photo);
                                     holder.getSync().notify();
                                 }
                             }
@@ -183,14 +189,15 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                 if (object instanceof TdApi.Stickers) {
                     TdApi.Stickers stickers = (TdApi.Stickers) object;
                     for (int i = 0; i < stickers.stickers.length; i++) {
-                        TdApi.File file = stickers.stickers[i].sticker;
-
-
-
+                        if (stickers.stickers[i].sticker instanceof TdApi.FileEmpty) {
+                            TdApi.FileEmpty file = (TdApi.FileEmpty) stickers.stickers[i].sticker;
+                            downloadFile(file.id);
+                        }
                     }
-                }
 
+                }
             }
+
         });
     }
 

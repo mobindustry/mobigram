@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,7 @@ import java.util.Date;
 public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
     private final LayoutInflater inflater;
-    private int typeCount = 4;
+    private int typeCount = 6;
     private long myId;
 
     public MessageAdapter(Context context, long myId) {
@@ -40,12 +41,19 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             if (message.message instanceof TdApi.MessageText) {
                 return Const.OUT_MESSAGE;
             } else {
+                if (message.message instanceof TdApi.MessageSticker) {
+                    return Const.OUT_STICKER;
+                }
                 return Const.OUT_CONTENT_MESSAGE;
             }
+
         } else {
             if (message.message instanceof TdApi.MessageText) {
                 return Const.IN_MESSAGE;
             } else {
+                if (message.message instanceof TdApi.MessageSticker) {
+                    return Const.IN_STICKER;
+                }
                 return Const.IN_CONTENT_MESSAGE;
             }
         }
@@ -67,11 +75,17 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 case Const.IN_CONTENT_MESSAGE:
                     convertView = inflater.inflate(R.layout.in_content_message, parent, false);
                     break;
+                case Const.IN_STICKER:
+                    convertView = inflater.inflate(R.layout.in_sticker_message, parent, false);
+                    break;
                 case Const.OUT_MESSAGE:
                     convertView = inflater.inflate(R.layout.out_message, parent, false);
                     break;
                 case Const.OUT_CONTENT_MESSAGE:
                     convertView = inflater.inflate(R.layout.out_content_message, parent, false);
+                    break;
+                case Const.OUT_STICKER:
+                    convertView = inflater.inflate(R.layout.out_sticker_message, parent, false);
                     break;
             }
         }
@@ -86,20 +100,20 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             PhotoDownloadHolder holder = PhotoDownloadHolder.getInstance();
 
             ImageView photo = new ImageView(getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[1].width, messagePhoto.photo.photos[1].height);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[0].width, messagePhoto.photo.photos[0].height);
             photo.setLayoutParams(layoutParams);
 
             Log.i("Log", "Message photo " + messagePhoto.toString());
 
             for (int i = 0; i < messagePhoto.photo.photos.length; i++) {
                 if (messagePhoto.photo.photos[i].type.equals("m")) {
-                    if(messagePhoto.photo.photos[i].photo instanceof TdApi.FileEmpty) {
+                    if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileEmpty) {
                         TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
                         holder.setLoadFileId(file.id);
                         holder.setMessageId(item.id);
                         ImageLoaderHelper.displayImage("custom://path", photo);
                     }
-                    if(messagePhoto.photo.photos[i].photo instanceof TdApi.FileLocal) {
+                    if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileLocal) {
                         TdApi.FileLocal file = (TdApi.FileLocal) messagePhoto.photo.photos[i].photo;
                         ImageLoaderHelper.displayImage("file://" + file.path, photo);
                     }
@@ -137,11 +151,18 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(geopoint);
         }
         if (item.message instanceof TdApi.MessageSticker) {
-            Log.i("Message", "Sticker " + item.message);
-            TextView stiker = new TextView(getContext());
-            stiker.setText("Sticker");
+            TdApi.Sticker sticker = ((TdApi.MessageSticker) item.message).sticker;
 
-            layout.addView(stiker);
+            ImageView stickerImage = new ImageView(getContext());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(150, 200);
+            stickerImage.setLayoutParams(layoutParams);
+
+            if (sticker.sticker instanceof TdApi.FileLocal) {
+                TdApi.FileLocal file = (TdApi.FileLocal) sticker.sticker;
+                stickerImage.setImageURI(Uri.parse(file.path));
+            }
+
+            layout.addView(stickerImage);
         }
         if (item.message instanceof TdApi.MessageVideo) {
             Log.i("Message", "Video " + item.message);
@@ -180,6 +201,15 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 inContent.addView(layout);
                 inContentTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
+            case Const.IN_STICKER:
+                FrameLayout inSticker = (FrameLayout) convertView.findViewById(R.id.in_sticker);
+                inSticker.removeAllViews();
+
+                TextView inStickerTime = (TextView) convertView.findViewById(R.id.in_sticker_msg_time);
+
+                inSticker.addView(layout);
+                inStickerTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
+                break;
             case Const.OUT_MESSAGE:
                 TextView outMessage = (TextView) convertView.findViewById(R.id.out_msg);
                 TextView outTime = (TextView) convertView.findViewById(R.id.out_msg_time);
@@ -197,6 +227,15 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
                 outContent.addView(layout);
                 outContentTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
+                break;
+            case Const.OUT_STICKER:
+                FrameLayout outSticker = (FrameLayout) convertView.findViewById(R.id.out_sticker);
+                outSticker.removeAllViews();
+
+                TextView outStickerTime = (TextView) convertView.findViewById(R.id.out_sticker_msg_time);
+
+                outSticker.addView(layout);
+                outStickerTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
         }
         return convertView;
