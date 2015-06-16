@@ -1,7 +1,6 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,7 +97,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                         TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
                         holder.setLoadFileId(file.id);
                         holder.setMessageId(item.id);
-                        ImageLoaderHelper.displayImage("", photo);
+                        ImageLoaderHelper.displayImage("custom://path", photo);
                     }
                     if(messagePhoto.photo.photos[i].photo instanceof TdApi.FileLocal) {
                         TdApi.FileLocal file = (TdApi.FileLocal) messagePhoto.photo.photos[i].photo;

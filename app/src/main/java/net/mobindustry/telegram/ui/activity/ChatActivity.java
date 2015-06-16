@@ -127,7 +127,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     }
 
     @Override
-    public void downloadFile(int fileId, final int messageId) {
+    public void downloadFile(final int fileId, final int messageId) {
         client.send(new TdApi.DownloadFile(fileId), new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
@@ -138,8 +138,10 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
                             if (object instanceof TdApi.Messages) {
                                 PhotoDownloadHolder holder = PhotoDownloadHolder.getInstance();
                                 TdApi.MessagePhoto message = (TdApi.MessagePhoto) object;
-                                holder.setPhoto(message.photo);
-                                holder.notify();
+                                synchronized (holder.getSync()) {
+                                    holder.setPhoto(message.photo);
+                                    holder.getSync().notify();
+                                }
                             }
                         }
                     });
@@ -206,6 +208,8 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
+
+        PhotoDownloadHolder.getInstance().setActivity(this);
 
         client = TG.getClientInstance();
 
