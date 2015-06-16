@@ -174,6 +174,25 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         });
     }
 
+    public void getStickers() {
+        client.send(new TdApi.GetStickers(), new Client.ResultHandler() {
+            @Override
+            public void onResult(TdApi.TLObject object) {
+                if (object instanceof TdApi.Stickers) {
+                    TdApi.Stickers stickers = (TdApi.Stickers) object;
+                    for (int i = 0; i < stickers.stickers.length; i++) {
+                        TdApi.File file = stickers.stickers[i].sticker;
+
+
+
+                    }
+                }
+
+            }
+        });
+    }
+
+
     public long getMyId() {
         return holder.getUserMe().id;
     }
@@ -220,6 +239,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
 
         getChats(0, 200);
         getContacts();
+        getStickers();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
