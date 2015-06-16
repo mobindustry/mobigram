@@ -9,6 +9,8 @@ public interface ClientReqest {
 
     void downloadFile(int fileId);
 
+    void downloadFile(int fileId, int messageId);
+
     void sendMessage(long chatId, String message);
 
     void sendPhotoMessage(long chatId, String path);

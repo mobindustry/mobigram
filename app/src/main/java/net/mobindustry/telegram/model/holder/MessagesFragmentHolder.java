@@ -2,6 +2,8 @@ package net.mobindustry.telegram.model.holder;
 
 import android.os.Environment;
 
+import net.mobindustry.telegram.utils.Const;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,7 +42,7 @@ public class MessagesFragmentHolder {
     }
 
     private File getOutputMediaFile() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Const.DATE_TIME_PHOTO_PATTERN);
         String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
         return new File(neTelegramDirectory, fileName);
     }

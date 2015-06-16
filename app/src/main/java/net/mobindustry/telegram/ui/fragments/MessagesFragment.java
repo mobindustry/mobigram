@@ -69,7 +69,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     private TdApi.Chat chat;
     private ChatActivity activity;
 
-    MessagesFragmentHolder holder;
+    MessagesFragmentHolder fileHolder;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -102,10 +102,6 @@ public class MessagesFragment extends Fragment implements Serializable {
         Log.e("Log", "User " + user.toString());
     }
 
-    public String getPhotoPath() {
-        return holder.getTempPhotoFile().getPath();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -121,7 +117,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        holder = MessagesFragmentHolder.getInstance();
+        fileHolder = MessagesFragmentHolder.getInstance();
         activity = (ChatActivity) getActivity();
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
@@ -283,7 +279,7 @@ public class MessagesFragment extends Fragment implements Serializable {
 
     private void makePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        tempTakePhotoFile = holder.getNewTempPhotoFile();
+        tempTakePhotoFile = fileHolder.getNewTempPhotoFile();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempTakePhotoFile));
         startActivityForResult(intent, Const.REQUEST_CODE_TAKE_PHOTO);
         Log.e("LOG", "ACTIVITY " + activity);
@@ -306,16 +302,21 @@ public class MessagesFragment extends Fragment implements Serializable {
         return cursor.getString(column_index);
     }
 
+
+    public String getPhotoPath() {
+        return fileHolder.getTempPhotoFile().getPath();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO) {
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            Uri contentUri = Uri.fromFile(holder.getTempPhotoFile());
+            Uri contentUri = Uri.fromFile(fileHolder.getTempPhotoFile());
             mediaScanIntent.setData(contentUri);
             getActivity().sendBroadcast(mediaScanIntent);
-            Uri external = Uri.fromFile(holder.getTempPhotoFile());
+            Uri external = Uri.fromFile(fileHolder.getTempPhotoFile());
             Crop.of(external, external).asSquare().start(getActivity());
             Crop.pickImage(getActivity(), Const.CROP_REQUEST_CODE);
         }

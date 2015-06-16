@@ -13,7 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.activity.ChatActivity;
+import net.mobindustry.telegram.model.holder.PhotoDownloadHolder;
+import net.mobindustry.telegram.model.view.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.Utils;
 
@@ -83,41 +84,30 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         if (item.message instanceof TdApi.MessagePhoto) {
 
             TdApi.MessagePhoto messagePhoto = (TdApi.MessagePhoto) item.message;
+            PhotoDownloadHolder holder = PhotoDownloadHolder.getInstance();
 
-            int height = 100;
-            int width = 100;
+            ImageView photo = new ImageView(getContext());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[1].width, messagePhoto.photo.photos[1].height);
+            photo.setLayoutParams(layoutParams);
+
+            Log.i("Log", "Message photo " + messagePhoto.toString());
 
             for (int i = 0; i < messagePhoto.photo.photos.length; i++) {
                 if (messagePhoto.photo.photos[i].type.equals("m")) {
-
-                    height = messagePhoto.photo.photos[i].height;
-                    width = messagePhoto.photo.photos[i].width;
-
-                    if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileEmpty) {
+                    if(messagePhoto.photo.photos[i].photo instanceof TdApi.FileEmpty) {
                         TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
-                        ((ChatActivity) getContext()).downloadFile(file.id);
+                        holder.setLoadFileId(file.id);
+                        holder.setMessageId(item.id);
+                        ImageLoaderHelper.displayImage("", photo);
                     }
-                }
-            }
-
-            Log.i("Log", "Message foto " + messagePhoto.toString());
-
-            for (int i = 0; i < messagePhoto.photo.photos.length; i++) {
-                if (messagePhoto.photo.photos[i].type.equals("m")) {
-                    if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileLocal) {
+                    if(messagePhoto.photo.photos[i].photo instanceof TdApi.FileLocal) {
                         TdApi.FileLocal file = (TdApi.FileLocal) messagePhoto.photo.photos[i].photo;
-
-                        Log.i("Message", "Photo " + item.message);
-
-                        ImageView photo = new ImageView(getContext());
-                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
-                        photo.setLayoutParams(layoutParams);
-                        photo.setImageURI(Uri.parse(file.path));
-                        photo.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                        layout.addView(photo);
+                        ImageLoaderHelper.displayImage("file://" + file.path, photo);
                     }
                 }
             }
+
+            layout.addView(photo);
         }
         if (item.message instanceof TdApi.MessageAudio) {
             Log.i("Message", "Audio " + item.message);

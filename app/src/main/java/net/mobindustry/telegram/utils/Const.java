@@ -19,7 +19,7 @@ public class Const {
 
     public static final String PATH_TO_NETELEGRAM = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram";
 
-
+    public static final String DATE_TIME_PHOTO_PATTERN = "yyyyMMdd_HHmmss";
     public static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_PATTERN = "yyyy-MM-dd";
     public static final String TIME_PATTERN = "HH:mm";

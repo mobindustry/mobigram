@@ -1,0 +1,33 @@
+int height = 100;
+            int width = 100;
+
+            for (int i = 0; i < messagePhoto.photo.photos.length; i++) {
+                if (messagePhoto.photo.photos[i].type.equals("m")) {
+
+                    height = messagePhoto.photo.photos[i].height;
+                    width = messagePhoto.photo.photos[i].width;
+
+                    if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileEmpty) {
+                        TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
+                        ((ChatActivity) getContext()).downloadFile(file.id);
+                    }
+                }
+            }
+
+            Log.i("Log", "Message foto " + messagePhoto.toString());
+
+            for (int i = 0; i < messagePhoto.photo.photos.length; i++) {
+                if (messagePhoto.photo.photos[i].type.equals("m")) {
+                    if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileLocal) {
+                        TdApi.FileLocal file = (TdApi.FileLocal) messagePhoto.photo.photos[i].photo;
+
+                        Log.i("Message", "Photo " + item.message);
+
+
+                        photo.setLayoutParams(layoutParams);
+                        photo.setImageURI(Uri.parse(file.path));
+                        photo.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                        layout.addView(photo);
+                    }
+                }
+            }

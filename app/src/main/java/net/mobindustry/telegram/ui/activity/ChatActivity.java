@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.NavigationItem;
+import net.mobindustry.telegram.model.holder.PhotoDownloadHolder;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
@@ -115,19 +116,33 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
             @Override
             public void onResult(TdApi.TLObject object) {
                 Log.i("Log", "New private chat " + object);
-                //TODO Find a way to show new chat;
+
             }
         });
     }
 
     @Override
     public void downloadFile(int fileId) {
+
+    }
+
+    @Override
+    public void downloadFile(int fileId, final int messageId) {
         client.send(new TdApi.DownloadFile(fileId), new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
-                Log.e("Log", "Result downloading " + object);
                 if (object instanceof TdApi.Ok) {
-
+                    client.send(new TdApi.GetChatHistory(getMessageFragment().getShownChatId(), messageId, -1, 1), new Client.ResultHandler() {
+                        @Override
+                        public void onResult(TdApi.TLObject object) {
+                            if (object instanceof TdApi.Messages) {
+                                PhotoDownloadHolder holder = PhotoDownloadHolder.getInstance();
+                                TdApi.MessagePhoto message = (TdApi.MessagePhoto) object;
+                                holder.setPhoto(message.photo);
+                                holder.notify();
+                            }
+                        }
+                    });
                 }
             }
         });
