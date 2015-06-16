@@ -166,10 +166,16 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
         if (item.message instanceof TdApi.MessageVideo) {
             Log.i("Message", "Video " + item.message);
-            TextView video = new TextView(getContext());
-            video.setText("Video");
 
-            layout.addView(video);
+            TdApi.MessageVideo messageVideo = (TdApi.MessageVideo) item.message;
+            if (messageVideo.video.thumb.photo instanceof TdApi.FileLocal) {
+                TdApi.FileLocal file = (TdApi.FileLocal) messageVideo.video.thumb.photo;
+                ImageView video = new ImageView(getContext());
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(50,50);
+                video.setLayoutParams(layoutParams);
+                video.setImageURI(Uri.parse(file.path));
+                layout.addView(video);
+            }
         }
         if (item.message instanceof TdApi.MessageUnsupported) {
             Log.i("Message", "Unsupported " + item.message);
