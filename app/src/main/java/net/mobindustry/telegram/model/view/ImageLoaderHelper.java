@@ -12,7 +12,6 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.PhotoDownloadHolder;
-import net.mobindustry.telegram.ui.activity.ChatActivity;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -30,22 +29,30 @@ public class ImageLoaderHelper {
         @Override
         public InputStream getStream(String imageUri, Object extra) throws IOException {
 
-            PhotoDownloadHolder holder = PhotoDownloadHolder.getInstance();
-            ((ChatActivity) DataHolder.getContext()).downloadFile(holder.getFileId(), holder.getMessageId());
-            try {
-                holder.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            TdApi.Photo photo = holder.getPhoto();
-            for (int i = 0; i < photo.photos.length; i++) {
-                if (photo.photos[i].type.equals("m")) {
-                    if (photo.photos[i].photo instanceof TdApi.FileLocal) {
-                        TdApi.FileLocal file = (TdApi.FileLocal) photo.photos[i].photo;
-                        imageUri = "file://" + file.path;
+            if (Scheme.ofUri(imageUri) != Scheme.FILE) {
+                PhotoDownloadHolder holder = PhotoDownloadHolder.getInstance();
+                holder.getActivity().downloadFile(holder.getFileId(), holder.getMessageId());
+
+                synchronized (holder.getSync()) {
+                    try {
+                        holder.getSync().wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                TdApi.Photo photo = holder.getPhoto();
+                for (int i = 0; i < photo.photos.length; i++) {
+                    if (photo.photos[i].type.equals("m")) {
+                        if (photo.photos[i].photo instanceof TdApi.FileLocal) {
+                            TdApi.FileLocal file = (TdApi.FileLocal) photo.photos[i].photo;
+                            imageUri = "file://" + file.path;
+                        }
                     }
                 }
             }
+
+
             return super.getStream(imageUri, extra);
         }
     }
@@ -75,11 +82,6 @@ public class ImageLoaderHelper {
 
     public static void displayImage(final String url, final ImageView imageView) {
         imageLoader.displayImage(url, imageView);
-    }
-
-    public static void clearCache() {
-        imageLoader.clearDiskCache();
-        imageLoader.clearMemoryCache();
     }
 
 }
