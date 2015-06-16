@@ -103,22 +103,21 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             Log.i("Log", "Message foto " + messagePhoto.toString());
 
             for (int i = 0; i < messagePhoto.photo.photos.length; i++) {
+                if (messagePhoto.photo.photos[i].type.equals("m")) {
+                    if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileLocal) {
+                        TdApi.FileLocal file = (TdApi.FileLocal) messagePhoto.photo.photos[i].photo;
 
-                if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileLocal){
-                    TdApi.FileLocal file = (TdApi.FileLocal) messagePhoto.photo.photos[i].photo;
+                        Log.i("Message", "Photo " + item.message);
 
-                    Log.i("Message", "Photo " + item.message);
-
-                    ImageView photo = new ImageView(getContext());
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
-                    photo.setLayoutParams(layoutParams);
-                    photo.setImageURI(Uri.parse(file.path));
-                    photo.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                    layout.addView(photo);
+                        ImageView photo = new ImageView(getContext());
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
+                        photo.setLayoutParams(layoutParams);
+                        photo.setImageURI(Uri.parse(file.path));
+                        photo.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                        layout.addView(photo);
+                    }
                 }
             }
-
-
         }
         if (item.message instanceof TdApi.MessageAudio) {
             Log.i("Message", "Audio " + item.message);

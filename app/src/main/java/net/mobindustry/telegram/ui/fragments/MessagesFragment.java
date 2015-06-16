@@ -15,7 +15,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -34,6 +33,7 @@ import android.widget.Toast;
 import com.soundcloud.android.crop.Crop;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
@@ -71,7 +71,8 @@ public class MessagesFragment extends Fragment implements Serializable {
     private TdApi.User user;
     private TdApi.Chat chat;
     private ChatActivity activity;
-    private File neTelegramDirectory;
+
+    MessagesFragmentHolder holder = MessagesFragmentHolder.getInstance();
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -124,9 +125,7 @@ public class MessagesFragment extends Fragment implements Serializable {
         super.onActivityCreated(savedInstanceState);
 
         activity = (ChatActivity) getActivity();
-        if (neTelegramDirectory == null) {
-            neTelegramDirectory = getExternalStoragePublicPictureDir();
-        }
+
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
@@ -253,12 +252,9 @@ public class MessagesFragment extends Fragment implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         popupMenu.getMenuInflater().inflate(R.menu.attach_menu, popupMenu.getMenu());
-
         popupMenu
                 .setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
@@ -285,14 +281,12 @@ public class MessagesFragment extends Fragment implements Serializable {
                         return true;
                     }
                 });
-
         popupMenu.show();
-
     }
 
     private void makePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        tempTakePhotoFile = getOutputMediaFile();
+        tempTakePhotoFile = holder.getOutputMediaFile();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempTakePhotoFile));
         startActivityForResult(intent, Const.REQUEST_CODE_TAKE_PHOTO);
         Log.e("LOG", "ACTIVITY " + activity);
@@ -306,29 +300,6 @@ public class MessagesFragment extends Fragment implements Serializable {
         } else {
             startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), Const.REQUEST_CODE_SELECT_IMAGE);
         }
-    }
-
-    public File getExternalStoragePublicPictureDir() {
-        Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-        // Check if device has SD card I save photo on it, if no I save photo on internal memory
-        if (isSDPresent) {
-            String dir = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram";
-            File path = new File(dir);
-            path.mkdirs();
-            return path;
-        } else {
-            String dir = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram";
-            File path = new File(dir);
-            path.mkdirs();
-            return path;
-        }
-    }
-
-
-    public File getOutputMediaFile() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
-        return new File(neTelegramDirectory, fileName);
     }
 
     public static String getPathFromURI(Uri contentUri, Activity activity) {
