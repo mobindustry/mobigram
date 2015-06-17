@@ -22,7 +22,7 @@
     <dimen name="contact_list_item_icon_size">50dp</dimen>
     <dimen name="contact_list_icon_text_size">20sp</dimen>
     <dimen name="contact_list_item_name_text_size">18sp</dimen>
-    <dimen name="contact_list_item_last_message_size">18sp</dimen>
+    <dimen name="contact_list_item_last_message_size">16sp</dimen>
 
     <dimen name="text_country_list_header_row">18sp</dimen>
     <dimen name="text_row">18sp</dimen>

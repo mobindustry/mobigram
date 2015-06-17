@@ -197,10 +197,8 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
 
                 }
             }
-
         });
     }
-
 
     public long getMyId() {
         return holder.getUserMe().id;

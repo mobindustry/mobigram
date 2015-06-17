@@ -51,8 +51,6 @@ public class ImageLoaderHelper {
                     }
                 }
             }
-
-
             return super.getStream(imageUri, extra);
         }
     }

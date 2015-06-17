@@ -15,5 +15,8 @@
     <color name="pressed_choose_country">#33b5e5</color>
     <color name="unpressed_choose_country">#ff7a7a7a</color>
 
+    <color name="background_floating_button">#5b95c2</color>
+    <color name="background_floating_button_pressed">#ff46698c</color>
 
+    <color name="content_text_color">#5b95c2</color>
 </resources>

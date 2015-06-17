@@ -15,6 +15,7 @@ import android.widget.TextView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.PhotoDownloadHolder;
 import net.mobindustry.telegram.model.view.ImageLoaderHelper;
+import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.Utils;
 
@@ -46,7 +47,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 }
                 return Const.OUT_CONTENT_MESSAGE;
             }
-
         } else {
             if (message.message instanceof TdApi.MessageText) {
                 return Const.IN_MESSAGE;
@@ -109,6 +109,10 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 if (messagePhoto.photo.photos[i].type.equals("m")) {
                     if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileEmpty) {
                         TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
+                        ((ChatActivity) getContext()).downloadFile(file.id);
+                    }
+                    if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileEmpty) {
+                        TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
                         holder.setLoadFileId(file.id);
                         holder.setMessageId(item.id);
                         ImageLoaderHelper.displayImage("custom://path", photo);
@@ -159,9 +163,8 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
             if (sticker.sticker instanceof TdApi.FileLocal) {
                 TdApi.FileLocal file = (TdApi.FileLocal) sticker.sticker;
-                stickerImage.setImageURI(Uri.parse(file.path));
+                ImageLoaderHelper.displayImage("file://" + file.path, stickerImage);
             }
-
             layout.addView(stickerImage);
         }
         if (item.message instanceof TdApi.MessageVideo) {

@@ -55,6 +55,9 @@ public class ChatListFragment extends ListFragment {
 
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.attachToListView(getListView());
+        fab.setColorPressedResId(R.color.background_floating_button_pressed);
+        fab.setColorNormalResId(R.color.background_floating_button);
+        fab.setShadow(true);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +143,7 @@ public class ChatListFragment extends ListFragment {
             long resultId = data.getLongExtra("id", 0);
             clickedId = resultId;
             int position = getChatPosition(resultId);
-            if(position == Const.CHAT_NOT_FOUND) {
+            if (position == Const.CHAT_NOT_FOUND) {
                 Toast.makeText(getActivity(), "You have no chat with this contact. " +
                         "Open a new chat with a contact in the development mode.", Toast.LENGTH_LONG).show();
                 //((ChatActivity) getActivity()).newPrivateChat((int)resultId); //TODO Start new chat;

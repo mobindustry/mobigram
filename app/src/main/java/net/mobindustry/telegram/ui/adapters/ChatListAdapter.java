@@ -4,10 +4,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
@@ -40,6 +43,8 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         TextView time = (TextView) convertView.findViewById(R.id.contactItemTime);
         TextView notify = (TextView) convertView.findViewById(R.id.chat_notification);
 
+        ImageView imageIcon = (ImageView) convertView.findViewById(R.id.message_icon_image);
+
         TdApi.Chat item = getItem(position);
 
         TdApi.ChatInfo info = item.type;
@@ -52,15 +57,41 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         if (message.message instanceof TdApi.MessageText) {
             text = (TdApi.MessageText) message.message;
+            lastMessage.setTextColor(Color.BLACK);
             lastMessage.setText(text.text);
         } else {
-            lastMessage.setText("\"Content\"");
+            lastMessage.setTextColor(getContext().getResources().getColor(R.color.content_text_color));
+            if (message.message instanceof TdApi.MessagePhoto) {
+                lastMessage.setText("Photo");
+            }
+            if (message.message instanceof TdApi.MessageAudio) {
+                lastMessage.setText("Audio");
+            }
+            if (message.message instanceof TdApi.MessageContact) {
+                lastMessage.setText("Contact");
+            }
+            if (message.message instanceof TdApi.MessageDocument) {
+                lastMessage.setText("Document");
+            }
+            if (message.message instanceof TdApi.MessageGeoPoint) {
+                lastMessage.setText("GeoPoint");
+            }
+            if (message.message instanceof TdApi.MessageSticker) {
+                lastMessage.setText("Sticker");
+            }
+            if (message.message instanceof TdApi.MessageVideo) {
+                lastMessage.setText("Video");
+            }
+            if (message.message instanceof TdApi.MessageUnsupported) {
+                lastMessage.setText("Unknown");
+            }
         }
 
         if (info instanceof TdApi.PrivateChatInfo) {
             privateChatInfo = (TdApi.PrivateChatInfo) info;
         }
         TdApi.User user = privateChatInfo.user;
+        Log.i("Log", "User " + user.toString());
 
         if (item.unreadCount != 0) {
             notify.setText(String.valueOf(item.unreadCount));
@@ -69,9 +100,13 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
             notify.setText("");
             notify.setBackground(null);
         }
-
-        icon.setBackground(Utils.getShapeDrawable(60, -user.id)); //TODO set color
-        icon.setText(Utils.getInitials(user.firstName, user.lastName));
+        if(user.photoBig instanceof TdApi.FileLocal) {
+            TdApi.FileLocal file = (TdApi.FileLocal) user.photoSmall;
+            imageIcon.setImageURI(Uri.parse(file.path));
+        } else {
+            icon.setBackground(Utils.getShapeDrawable(60, -user.id));
+            icon.setText(Utils.getInitials(user.firstName, user.lastName));
+        }
 
         firstLastName.setText(user.firstName + " " + user.lastName);
 

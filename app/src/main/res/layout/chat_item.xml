@@ -2,29 +2,43 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/contact_list_selector"
-    android:orientation="horizontal">
+    android:background="@drawable/contact_list_selector">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5dp"
+            android:layout_marginRight="@dimen/margin_5dp"
+            >
 
-        <TextView
-            android:id="@+id/message_icon_text"
-            android:layout_width="@dimen/contact_list_item_icon_size"
-            android:layout_height="@dimen/contact_list_item_icon_size"
-            android:layout_margin="@dimen/margin_5dp"
-            android:gravity="center"
-            android:textColor="#fff"
-            android:textSize="@dimen/contact_list_icon_text_size" />
+            <TextView
+                android:id="@+id/message_icon_text"
+                android:layout_width="@dimen/contact_list_item_icon_size"
+                android:layout_height="@dimen/contact_list_item_icon_size"
+
+                android:gravity="center_horizontal|center_vertical"
+                android:textColor="#fff"
+                android:textSize="@dimen/contact_list_icon_text_size" />
+
+            <ImageView
+                android:id="@+id/message_icon_image"
+                android:layout_width="@dimen/contact_list_item_icon_size"
+                android:layout_height="@dimen/contact_list_item_icon_size"
+                />
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/margin_5dp"
             android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_5dp"
             android:orientation="vertical">
 
             <TextView
@@ -41,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textColor="#000"
+                android:layout_marginTop="@dimen/margin_3dp"
                 android:textSize="@dimen/contact_list_item_last_message_size" />
 
         </LinearLayout>
