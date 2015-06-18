@@ -45,6 +45,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     private TextView textCurrentPosition;
     private FloatingActionButton buttonSendLocation;
     private FloatingActionButton buttonFoursquare;
+    private LatLng userLocation;
 
     @Override
     public void onApiResult(BaseHandler output) {
@@ -84,7 +85,6 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             public void onClick(View v) {
                 double lat = myMarker.getPosition().latitude;
                 double lng = myMarker.getPosition().longitude;
-                Toast.makeText(getActivity(), "LAT " + lat + "\n" + "LNG " + lng, Toast.LENGTH_SHORT).show();
                 sendGeoPointMessage(lat, lng);
             }
         });
@@ -148,17 +148,14 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Location location = map.getMyLocation();
-                if (location != null) {
+                if (userLocation != null) {
                     map.clear();
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14));
                     myMarker = map.addMarker(new MarkerOptions()
-                            .position(new LatLng(location.getLatitude(), location.getLatitude()))
+                            .position(userLocation)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new
-                            LatLng(location.getLatitude(),
-                            location.getLongitude()), 14));
-                    textCurrentPosition.setText("(" + String.valueOf(location.getLatitude()
-                            + " : " + String.valueOf(location.getLongitude()) + ")"));
+                    textCurrentPosition.setText("(" + String.valueOf(userLocation.latitude
+                            + " , " + String.valueOf(userLocation.longitude) + ")"));
                 }
             }
         });
@@ -173,7 +170,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         Criteria criteria = new Criteria();
         String provider = service.getBestProvider(criteria, false);
         Location location = service.getLastKnownLocation(provider);
-        LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(userLocation)
@@ -188,7 +185,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             Log.e("LOG", "LAT " + location.getLatitude());
             Log.e("LOG", "LNG " + location.getLongitude());
             textCurrentPosition.setText("(" + String.valueOf(location.getLatitude()
-                    + ") : (" + String.valueOf(location.getLongitude()) + ")"));
+                    + " , " + String.valueOf(location.getLongitude()) + ")"));
         }
 
         if (map != null) {
@@ -200,7 +197,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                             .position(new LatLng(latLng.latitude, latLng.longitude))
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                     textCurrentPosition.setText("(" + String.valueOf(String.valueOf(latLng.latitude)
-                            + ") : (" + String.valueOf(String.valueOf(latLng.longitude)) + ")"));
+                            + " , " + String.valueOf(String.valueOf(latLng.longitude)) + ")"));
                 }
             });
         }
