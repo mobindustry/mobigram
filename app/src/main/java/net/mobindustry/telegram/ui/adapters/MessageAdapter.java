@@ -103,7 +103,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[0].width, messagePhoto.photo.photos[0].height);
             photo.setLayoutParams(layoutParams);
 
-            Log.i("Log", "Message photo " + messagePhoto.toString());
+            //Log.i("Log", "Message photo " + messagePhoto.toString());
 
             for (int i = 0; i < messagePhoto.photo.photos.length; i++) {
                 if (messagePhoto.photo.photos[i].type.equals("m")) {
@@ -127,28 +127,28 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(photo);
         }
         if (item.message instanceof TdApi.MessageAudio) {
-            Log.i("Message", "Audio " + item.message);
+            //Log.i("Message", "Audio " + item.message);
             TextView audio = new TextView(getContext());
             audio.setText("Audio");
 
             layout.addView(audio);
         }
         if (item.message instanceof TdApi.MessageContact) {
-            Log.i("Message", "Contact " + item.message);
+            //Log.i("Message", "Contact " + item.message);
             TextView contact = new TextView(getContext());
             contact.setText("Contact");
 
             layout.addView(contact);
         }
         if (item.message instanceof TdApi.MessageDocument) {
-            Log.i("Message", "Document " + item.message);
+            //Log.i("Message", "Document " + item.message);
             TextView document = new TextView(getContext());
             document.setText("Document");
 
             layout.addView(document);
         }
         if (item.message instanceof TdApi.MessageGeoPoint) {
-            Log.i("Message", "GeoPoint " + item.message);
+            //Log.i("Message", "GeoPoint " + item.message);
             TextView geopoint = new TextView(getContext());
             geopoint.setText(((TdApi.MessageGeoPoint) item.message).geoPoint.toString());
 
@@ -168,7 +168,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(stickerImage);
         }
         if (item.message instanceof TdApi.MessageVideo) {
-            Log.i("Message", "Video " + item.message);
+            //Log.i("Message", "Video " + item.message);
 
             TdApi.MessageVideo messageVideo = (TdApi.MessageVideo) item.message;
             if (messageVideo.video.thumb.photo instanceof TdApi.FileLocal) {
@@ -181,7 +181,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             }
         }
         if (item.message instanceof TdApi.MessageUnsupported) {
-            Log.i("Message", "Unsupported " + item.message);
+            //Log.i("Message", "Unsupported " + item.message);
             TextView unsupport = new TextView(getContext());
             unsupport.setText("Unsupport");
 

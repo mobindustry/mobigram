@@ -44,7 +44,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-
         textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
         Log.e("LOG", "##### Start program #####");
@@ -55,7 +54,6 @@ public class MainActivity extends Activity {
 
                 if (object instanceof TdApi.AuthStateOk) {
                     stateWaitCode = false;
-
                     client.send(new TdApi.GetMe(), new Client.ResultHandler() {
                         @Override
                         public void onResult(TdApi.TLObject object) {
@@ -70,11 +68,7 @@ public class MainActivity extends Activity {
                 }
             }
         };
-        TG.setDir(Const.PATH_TO_NETELEGRAM);
-        TG.setUpdatesHandler(resultHandler);
-
         client = TG.getClientInstance();
-
 
         start();
     }

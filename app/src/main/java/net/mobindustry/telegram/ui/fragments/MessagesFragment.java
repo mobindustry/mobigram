@@ -154,7 +154,7 @@ public class MessagesFragment extends Fragment implements Serializable {
                             }
                         }, 100L);
                     } else {
-                        activity.sendMessage(chat.id, input.getText().toString());
+                        activity.sendTextMessage(chat.id, input.getText().toString());
                         input.setText("");
                     }
                 }

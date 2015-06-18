@@ -1,9 +1,8 @@
 package net.mobindustry.telegram.ui.activity;
 
-public interface ClientReqest {
+public interface ClientRequest {
 
     void getUser(long id);
-    void getChats(int offset, int limit);
     void getChatHistory(long id, int messageId, int offset, int limit);
     void getContacts();
 

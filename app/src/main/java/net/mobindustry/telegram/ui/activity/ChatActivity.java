@@ -3,6 +3,7 @@ package net.mobindustry.telegram.ui.activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -24,6 +25,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
+import net.mobindustry.telegram.core.handlers.ContactsHandler;
+import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
+import net.mobindustry.telegram.core.handlers.LogHandler;
+import net.mobindustry.telegram.core.handlers.MessageHandler;
+import net.mobindustry.telegram.core.handlers.StickersHandler;
 import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.model.holder.PhotoDownloadHolder;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
@@ -40,7 +49,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatActivity extends AppCompatActivity implements ClientReqest {
+public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiResultHandler {
 
     private DrawerLayout drawerLayout;
     private ListView drawerList;
@@ -51,17 +60,48 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     private CharSequence title;
 
     private Client client;
-    private TdApi.Chats chats;
     private NavigationDrawerAdapter adapter;
 
     private UserMeHolder holder = UserMeHolder.getInstance();
 
-    @Override
+    public void getContacts() {
+        new ApiClient<>(new TdApi.GetContacts(), new ContactsHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public void sendTextMessage(long chatId, String message) {
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageText(message)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public void sendPhotoMessage(long chatId, String path) {
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public void getStickers() {
+        new ApiClient<>(new TdApi.GetStickers(), new StickersHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public void getChatHistory(final long id, final int messageId, final int offset, final int limit) {
+        new ApiClient<>(new TdApi.GetChatHistory(id, messageId, offset, limit), new ChatHistoryHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public void downloadFile(int fileId) {
+        new ApiClient<>(new TdApi.DownloadFile(fileId), new DownloadFileHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public void logOut() {
+        Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
+        new ApiClient<>(new TdApi.AuthReset(), new LogHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        finish(); //TODO crash???
+    }
+
+    commit -am"50% rebase client to ApiClient, add country get from gps, many modifications"
+
+
     public void getUser(long id) {
         client.send(new TdApi.GetUser((int) id), new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
-                System.out.println("User object " + object.toString());
+                //System.out.println("User object " + object.toString());
                 if (object instanceof TdApi.User) {
                     getMessageFragment().setUser((TdApi.User) object);
                 }
@@ -69,69 +109,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         });
     }
 
-    @Override
-    public void getChats(int offset, int limit) {
-        client.send(new TdApi.GetChats(offset, limit), new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                if (object instanceof TdApi.Chats) {
-                    chats = (TdApi.Chats) object;
-                    fm = getSupportFragmentManager();
-                    ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
-                    chatListFragment.setChatsList(chats);
-                }
-            }
-        });
-    }
-
-    @Override
-    public void getChatHistory(final long id, final int messageId, final int offset, final int limit) {
-        client.send(new TdApi.GetChatHistory(id, messageId, offset, limit), new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                if (object instanceof TdApi.Messages) {
-                    if (getMessageFragment().getShownChatId() == id) {
-                        getMessageFragment().setChatHistory((TdApi.Messages) object);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void getContacts() {
-        client.send(new TdApi.GetContacts(), new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                if (object instanceof TdApi.Contacts) {
-                    ContactListHolder contactListHolder = ContactListHolder.getInstance();
-                    contactListHolder.setContacts((TdApi.Contacts) object);
-                }
-            }
-        });
-    }
-
-    public void newPrivateChat(int id) {
-        client.send(new TdApi.CreatePrivateChat(id), new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                Log.i("Log", "New private chat " + object);
-
-            }
-        });
-    }
-
-    @Override
-    public void downloadFile(int fileId) {
-        client.send(new TdApi.DownloadFile(fileId), new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                Log.i("Log", "DownloadResult " + object);
-            }
-        });
-    }
-
-    @Override
     public void downloadFile(final int fileId, final int messageId) {
         client.send(new TdApi.DownloadFile(fileId), new Client.ResultHandler() {
             @Override
@@ -156,50 +133,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         });
     }
 
-    @Override
-    public void sendMessage(long chatId, String message) {
-        client.send(new TdApi.SendMessage(chatId, new TdApi.InputMessageText(message)), new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                Log.e("Log", "Result message " + object);
-                if (object instanceof TdApi.Message) {
-
-                }
-            }
-        });
-    }
-
-    @Override
-    public void sendPhotoMessage(long chatId, String path) {
-        client.send(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                Log.e("Log", "Result photo message " + object);
-                if (object instanceof TdApi.Message) {
-
-                }
-            }
-        });
-    }
-
-    public void getStickers() {
-        client.send(new TdApi.GetStickers(), new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                if (object instanceof TdApi.Stickers) {
-                    TdApi.Stickers stickers = (TdApi.Stickers) object;
-                    for (int i = 0; i < stickers.stickers.length; i++) {
-                        if (stickers.stickers[i].sticker instanceof TdApi.FileEmpty) {
-                            TdApi.FileEmpty file = (TdApi.FileEmpty) stickers.stickers[i].sticker;
-                            downloadFile(file.id);
-                        }
-                    }
-
-                }
-            }
-        });
-    }
-
     public long getMyId() {
         return holder.getUserMe().id;
     }
@@ -207,6 +140,36 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
     public MessagesFragment getMessageFragment() {
         fm = getSupportFragmentManager();
         return (MessagesFragment) fm.findFragmentById(R.id.messages);
+    }
+
+    @Override
+    public void onApiResult(BaseHandler output) {
+        if (output.GetHandlerId() == ContactsHandler.HANDLER_ID) {
+            ContactListHolder contactListHolder = ContactListHolder.getInstance();
+            contactListHolder.setContacts((TdApi.Contacts) output.getResponse());
+        }
+        if (output.GetHandlerId() == StickersHandler.HANDLER_ID) {
+            TdApi.Stickers stickers = (TdApi.Stickers) output.getResponse();
+            if (stickers != null) {
+                for (int i = 0; i < stickers.stickers.length; i++) {
+                    if (stickers.stickers[i].sticker instanceof TdApi.FileEmpty) {
+                        TdApi.FileEmpty file = (TdApi.FileEmpty) stickers.stickers[i].sticker;
+                        downloadFile(file.id);
+                    }
+                }
+            } else {
+                getStickers();
+            }
+        }
+        if (output.GetHandlerId() == ChatHistoryHandler.HANDLER_ID) {
+            TdApi.Messages messages = (TdApi.Messages) output.getResponse();
+            if (getMessageFragment().getShownChatId() == messages.messages[0].chatId) {
+                getMessageFragment().setChatHistory(messages);
+            }
+        }
+        if (output.GetHandlerId() == MessageHandler.HANDLER_ID) {
+            Log.e("Log", "Result photo message " + output.getResponse());
+        }
     }
 
     @Override
@@ -221,16 +184,20 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
         Client.ResultHandler resultHandler = new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
-                Log.i("LOG", "Updates result : " + object);
+                //Log.i("LOG", "Updates result : " + object);
                 if (object instanceof TdApi.UpdateMessageId) {
                     TdApi.UpdateMessageId updateMessageId = (TdApi.UpdateMessageId) object;
-                    getChats(0, 200);
+                    fm = getSupportFragmentManager();
+                    ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
+                    chatListFragment.getChatsList(0, 200);
                     getChatHistory(updateMessageId.chatId, updateMessageId.newId, -1, 200);
                 }
 
                 if (object instanceof TdApi.UpdateNewMessage) {
                     TdApi.UpdateNewMessage updateMessageId = (TdApi.UpdateNewMessage) object;
-                    getChats(0, 200);
+                    fm = getSupportFragmentManager();
+                    ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
+                    chatListFragment.getChatsList(0, 200);
                     getChatHistory(updateMessageId.message.chatId, updateMessageId.message.id, -1, 200);
                 }
 
@@ -243,10 +210,6 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
 
         adapter = new NavigationDrawerAdapter(ChatActivity.this);
 
-        TG.setDir(Const.PATH_TO_NETELEGRAM);
-        TG.setUpdatesHandler(resultHandler);
-
-        getChats(0, 200);
         getContacts();
         getStickers();
 
@@ -364,14 +327,7 @@ public class ChatActivity extends AppCompatActivity implements ClientReqest {
 
         switch (position) {
             case 1:
-                Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
-                client.send(new TdApi.AuthReset(), new Client.ResultHandler() {
-                    @Override
-                    public void onResult(TdApi.TLObject object) {
-                        finish();
-                    }
-                });
-
+                logOut();
                 break;
             default:
                 break;

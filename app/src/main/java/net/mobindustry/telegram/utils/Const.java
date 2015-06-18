@@ -30,7 +30,14 @@ public class Const {
     public static final int NEW_MESSAGE_FRAGMENT = 200;
     public static final int FILE_CHOOSE_FRAGMENT = 201;
 
-
-
     public static final int CHAT_NOT_FOUND = 1001;
+
+    public static final int CHATS_HANDLER_ID = 0x1;
+    public static final int CONTACTS_HANDLER_ID = 0x2;
+    public static final int MESSAGE_HANDLER_ID = 0x3;
+    public static final int STICKERS_HANDLER_ID = 0x4;
+    public static final int CHAT_HISTORY_HANDLER_ID = 0x5;
+    public static final int DOWNLOAD_FILE_HANDLER_ID = 0x6;
+
+    public static final int LOG_HANDLER_ID = 0x10;
 }

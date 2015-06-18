@@ -1,7 +1,12 @@
 package net.mobindustry.telegram.ui.activity;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +16,7 @@ import android.util.Log;
 
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyInvalid;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyUnregistered;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogFirstNameInvalid;
@@ -37,6 +43,10 @@ import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class RegistrationActivity extends AppCompatActivity {
 
     private Fragment registrationUserPhone;
@@ -49,6 +59,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Client.ResultHandler handler;
     private String phoneForServer = "";
     private String codeFromServer = "";
+    private LocationManager locationManager;
 
     public String getPhoneForServer() {
         return phoneForServer;
@@ -82,6 +93,15 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
+        locationManager = ((LocationManager) getSystemService(Context.LOCATION_SERVICE));
+
+        InfoRegistration holder = InfoRegistration.getInstance();
+        try {
+            holder.setCountryName(getLastKnownCountry());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         handler = new Client.ResultHandler() {
             @Override
@@ -234,13 +254,8 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         };
 
-        TG.setUpdatesHandler(handler);
-        TG.setDir(Const.PATH_TO_NETELEGRAM);
-
         client = TG.getClientInstance();
         client.send(new TdApi.AuthGetState(), handler);
-
-
     }
 
     public CountryObject getCountryObject() {
@@ -259,4 +274,24 @@ public class RegistrationActivity extends AppCompatActivity {
         this.listCountryObject = listCountryObject;
     }
 
+    private String getLastKnownCountry() throws IOException {
+        Location location = getLastKnownLocation();
+        if (location != null) {
+            Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                return addresses.get(0).getCountryName();
+            }
+        }
+        return null;
+    }
+
+    private Location getLastKnownLocation() {
+        Location location = null;
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        return location;
+    }
 }

@@ -36,7 +36,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class  RegistrationMainFragment extends Fragment {
+public class RegistrationMainFragment extends Fragment {
 
 
     private String phoneNumberForServer = "";
@@ -55,7 +55,6 @@ public class  RegistrationMainFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
         setRetainInstance(true);
     }
-
 
     @Nullable
     @Override
@@ -89,11 +88,21 @@ public class  RegistrationMainFragment extends Fragment {
         activity = (RegistrationActivity) getActivity();
         activity.setListCountryObject(countries);
 
-
         //Set country object from ChooseCountryFragment
-
         countryObject = activity.getCountryObject();
 
+        if (countryObject == null && !infoRegistration.getCountryName().isEmpty()) {
+            String name = infoRegistration.getCountryName();
+            List<CountryObject> list = ((RegistrationActivity) getActivity()).getListCountryObject().getListCountries();
+            System.out.println("CountryListSize " + list.size());
+            for (int i = 0; i < list.size(); i++) {
+                CountryObject obj = list.get(i);
+                if (obj.getCountryName().contains(name)) {
+                    System.out.println("Found obj " + obj.toString());
+                    countryObject = obj;
+                }
+            }
+        }
         chooseCountry = (TextView) getActivity().findViewById(R.id.chooseCountry);
         code = (EditText) getActivity().findViewById(R.id.code);
         phone = (EditText) getActivity().findViewById(R.id.phone);

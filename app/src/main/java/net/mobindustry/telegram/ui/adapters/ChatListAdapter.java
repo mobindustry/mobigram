@@ -91,7 +91,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
             privateChatInfo = (TdApi.PrivateChatInfo) info;
         }
         TdApi.User user = privateChatInfo.user;
-        Log.i("Log", "User " + user.toString());
+        //Log.i("Log", "User " + user.toString());
 
         if (item.unreadCount != 0) {
             notify.setText(String.valueOf(item.unreadCount));

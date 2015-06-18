@@ -166,7 +166,7 @@ public class Client implements Runnable {
         }
     }
 
-    private Client(ResultHandler updatesHandler, String dir) {
+    protected Client(ResultHandler updatesHandler, String dir) {
         long nativeClientId = NativeClient.createClient();
         NativeClient.clientInit(nativeClientId, dir);
 
