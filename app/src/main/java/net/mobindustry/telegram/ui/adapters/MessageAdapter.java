@@ -115,7 +115,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                         TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
                         holder.setLoadFileId(file.id);
                         holder.setMessageId(item.id);
-                        ImageLoaderHelper.displayImage("custom://path", photo);
+                        //ImageLoaderHelper.displayImage("custom://path", photo);
                     }
                     if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileLocal) {
                         TdApi.FileLocal file = (TdApi.FileLocal) messagePhoto.photo.photos[i].photo;
@@ -148,11 +148,24 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(document);
         }
         if (item.message instanceof TdApi.MessageGeoPoint) {
+            TdApi.MessageGeoPoint point = (TdApi.MessageGeoPoint) item.message;
             //Log.i("Message", "GeoPoint " + item.message);
-            TextView geopoint = new TextView(getContext());
-            geopoint.setText(((TdApi.MessageGeoPoint) item.message).geoPoint.toString());
+            int height = 100;
+            int width = 200;
 
-            layout.addView(geopoint);
+            String url = "https://maps.googleapis.com/maps/api/staticmap?center=" +
+                    point.geoPoint.latitude + "," + point.geoPoint.longitude +
+                    "&zoom=13&size="+ width + "x" + height + "&maptype=roadmap&scale=1&markers=color:red|size:big|" +
+                    point.geoPoint.latitude + "," + point.geoPoint.longitude + "&sensor=false";
+
+            ImageView map = new ImageView(getContext());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
+            map.setLayoutParams(layoutParams);
+            System.out.println(url);
+
+            ImageLoaderHelper.displayImage(url, map);
+
+            layout.addView(map);
         }
         if (item.message instanceof TdApi.MessageSticker) {
             TdApi.Sticker sticker = ((TdApi.MessageSticker) item.message).sticker;
@@ -174,14 +187,14 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             if (messageVideo.video.thumb.photo instanceof TdApi.FileLocal) {
                 TdApi.FileLocal file = (TdApi.FileLocal) messageVideo.video.thumb.photo;
                 ImageView video = new ImageView(getContext());
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(50,50);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(50, 50);
                 video.setLayoutParams(layoutParams);
                 video.setImageURI(Uri.parse(file.path));
                 layout.addView(video);
             }
         }
         if (item.message instanceof TdApi.MessageUnsupported) {
-            //Log.i("Message", "Unsupported " + item.message);
+            Log.i("Message", "Unsupported " + item.message);
             TextView unsupport = new TextView(getContext());
             unsupport.setText("Unsupport");
 

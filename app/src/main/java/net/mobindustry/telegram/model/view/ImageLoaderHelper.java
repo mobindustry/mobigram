@@ -28,29 +28,6 @@ public class ImageLoaderHelper {
 
         @Override
         public InputStream getStream(String imageUri, Object extra) throws IOException {
-
-            if (Scheme.ofUri(imageUri) != Scheme.FILE) {
-                PhotoDownloadHolder holder = PhotoDownloadHolder.getInstance();
-                holder.getActivity().downloadFile(holder.getFileId(), holder.getMessageId());
-
-                synchronized (holder.getSync()) {
-                    try {
-                        holder.getSync().wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                TdApi.Photo photo = holder.getPhoto();
-                for (int i = 0; i < photo.photos.length; i++) {
-                    if (photo.photos[i].type.equals("m")) {
-                        if (photo.photos[i].photo instanceof TdApi.FileLocal) {
-                            TdApi.FileLocal file = (TdApi.FileLocal) photo.photos[i].photo;
-                            imageUri = "file://" + file.path;
-                        }
-                    }
-                }
-            }
             return super.getStream(imageUri, extra);
         }
     }
