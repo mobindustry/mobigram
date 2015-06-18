@@ -4,6 +4,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -36,8 +37,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.melnykov.fab.FloatingActionButton;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.MessageHandler;
 
-public class LocationFragment extends Fragment {
+import org.drinkless.td.libcore.telegram.TdApi;
+
+public class LocationFragment extends Fragment implements ApiClient.OnApiResultHandler {
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -48,9 +54,15 @@ public class LocationFragment extends Fragment {
     private FloatingActionButton buttonSendLocation;
     private FloatingActionButton buttonFoursquare;
 
+    @Override
+    public void onApiResult(BaseHandler output) {
+
+    }
 
     public void sendGeoPointMessage(double lat, double lng) {
-        //todo
+        MessagesFragment fragment = (MessagesFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.messages);
+        long chatId = fragment.getShownChatId();
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageGeoPoint(lng, lat)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Override
@@ -65,7 +77,6 @@ public class LocationFragment extends Fragment {
         View view = inflater.inflate(R.layout.location_fragment_layout, container, false);
         return view;
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -202,5 +213,6 @@ public class LocationFragment extends Fragment {
             });
         }
     }
+
 
 }
