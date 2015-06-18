@@ -308,6 +308,7 @@ public class MessagesFragment extends Fragment implements Serializable {
         return fileHolder.getTempPhotoFile().getPath();
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

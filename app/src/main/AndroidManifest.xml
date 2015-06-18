@@ -16,6 +16,7 @@
 
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/launcher"
         tools:replace="android:icon"

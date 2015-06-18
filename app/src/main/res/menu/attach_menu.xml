@@ -18,7 +18,7 @@
         android:title="@string/text_file" />
 
     <item android:id="@+id/location"
-        android:icon="@drawable/ic_attach_location"
+        android:icon="@drawable/ic_for_attach_menu"
         android:title="@string/text_location" />
 
 </menu>
