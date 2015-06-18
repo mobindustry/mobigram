@@ -94,9 +94,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         finish(); //TODO crash???
     }
 
-    commit -am"50% rebase client to ApiClient, add country get from gps, many modifications"
-
-
     public void getUser(long id) {
         client.send(new TdApi.GetUser((int) id), new Client.ResultHandler() {
             @Override
