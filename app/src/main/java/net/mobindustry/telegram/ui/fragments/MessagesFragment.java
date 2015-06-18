@@ -77,7 +77,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private TdApi.Chat chat;
     private ChatActivity activity;
 
-    private MessagesFragmentHolder fileHolder;
+    private MessagesFragmentHolder holder;
     private BroadcastReceiver receiver;
     private IntentFilter filter = new IntentFilter("new_message");
 
@@ -135,9 +135,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        fileHolder = MessagesFragmentHolder.getInstance();
+        holder = MessagesFragmentHolder.getInstance();
         activity = (ChatActivity) getActivity();
-
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -194,6 +193,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
             ChatListFragment fragment = (ChatListFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.titles);
             chat = fragment.getChat();
+
+            holder.setChat(chat);
 
             TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) chat.type; //TODO verify;
             TdApi.User chatUser = privateChatInfo.user;
@@ -324,7 +325,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     private void makePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        tempTakePhotoFile = fileHolder.getNewTempPhotoFile();
+        tempTakePhotoFile = holder.getNewTempPhotoFile();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempTakePhotoFile));
         startActivityForResult(intent, Const.REQUEST_CODE_TAKE_PHOTO);
         Log.e("LOG", "ACTIVITY " + activity);
@@ -349,7 +350,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
 
     public String getPhotoPath() {
-        return fileHolder.getTempPhotoFile().getPath();
+        return holder.getTempPhotoFile().getPath();
     }
 
 
@@ -359,10 +360,10 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO) {
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            Uri contentUri = Uri.fromFile(fileHolder.getTempPhotoFile());
+            Uri contentUri = Uri.fromFile(holder.getTempPhotoFile());
             mediaScanIntent.setData(contentUri);
             getActivity().sendBroadcast(mediaScanIntent);
-            Uri external = Uri.fromFile(fileHolder.getTempPhotoFile());
+            Uri external = Uri.fromFile(holder.getTempPhotoFile());
             Crop.of(external, external).asSquare().start(getActivity());
             Crop.pickImage(getActivity(), Const.CROP_REQUEST_CODE);
         }

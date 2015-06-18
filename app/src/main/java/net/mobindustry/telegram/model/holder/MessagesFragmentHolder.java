@@ -4,6 +4,8 @@ import android.os.Environment;
 
 import net.mobindustry.telegram.utils.Const;
 
+import org.drinkless.td.libcore.telegram.TdApi;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,6 +16,7 @@ public class MessagesFragmentHolder {
 
     private static File neTelegramDirectory;
     private File tempPhotoFile;
+    private TdApi.Chat chat;
 
     public static synchronized MessagesFragmentHolder getInstance() {
         if (instance == null) {
@@ -54,5 +57,13 @@ public class MessagesFragmentHolder {
     public File getNewTempPhotoFile() {
         tempPhotoFile = getOutputMediaFile();
         return tempPhotoFile;
+    }
+
+    public TdApi.Chat getChat() {
+        return chat;
+    }
+
+    public void setChat(TdApi.Chat chat) {
+        this.chat = chat;
     }
 }
