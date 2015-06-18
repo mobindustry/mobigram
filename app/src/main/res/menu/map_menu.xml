@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item
+        android:id="@+id/map_item_menu"
+        android:orderInCategory="100"
+        android:title="@string/text_map" />
+
+    <item
+        android:id="@+id/satellite_item_menu"
+        tools:ignore="AppCompatResource"
+        android:title="@string/text_satellite" />
+    <item
+        android:id="@+id/hybrid_item_menu"
+        android:title="@string/text_hybrid" />
+</menu>

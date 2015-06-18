@@ -14,6 +14,12 @@
     <color name="pressed_contact">#ff74c8ff</color>
     <color name="pressed_choose_country">#33b5e5</color>
     <color name="unpressed_choose_country">#ff7a7a7a</color>
+    <color name="button_on_map">#ff89e568</color>
+    <color name="button_on_map_pressed">#ff548b3f</color>
+    <color name="button_send_location">#ff35c3f5</color>
+    <color name="button_send_location_pressed">#ff1c6983</color>
+    <color name="button_foursquare">#ff35c3f5</color>
+    <color name="button_foursquare_pressed">#ff1c6983</color>
 
     <color name="background_floating_button">#5b95c2</color>
     <color name="background_floating_button_pressed">#ff46698c</color>

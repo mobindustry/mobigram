@@ -39,9 +39,10 @@ public class TransparentActivity extends AppCompatActivity {
                 ft.commit();
                 break;
             case Const.MAP_FRAGMENT:
-                LocationFragment locationFragment = new LocationFragment();
+                MapFragment mapFragment = new MapFragment();
+                //LocationFragment locationFragment=new LocationFragment();
                 ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.transparent_content, locationFragment);
+                ft.replace(R.id.transparent_content, mapFragment);
                 ft.commit();
                 break;
 

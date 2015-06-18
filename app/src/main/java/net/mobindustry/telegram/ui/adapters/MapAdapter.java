@@ -1,32 +1,65 @@
 package net.mobindustry.telegram.ui.adapters;
 
-import android.content.Context;
+
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.utils.Test;
 
-public class MapAdapter extends ArrayAdapter<String> {
-    private LayoutInflater inflater;
+import java.util.List;
 
-    public MapAdapter(Context context) {
-        super(context, 0);
-        inflater = LayoutInflater.from(context);
+public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
+    private List<Test> itemsData;
+
+    public MapAdapter(List<Test> itemsData) {
+        this.itemsData = itemsData;
     }
 
+    // Create new views (invoked by the layout manager)
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.map_list_item, parent, false);
+    public MapAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                    int viewType) {
+        // create a new view
+        View itemLayoutView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.map_list_item, null);
+
+        // create ViewHolder
+
+        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
+        return viewHolder;
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+
+        // - get data from your itemsData at this position
+        // - replace the contents of the view with that itemsData
+
+        viewHolder.txtViewTitle.setText(itemsData.get(position).getTitle());
+
+
+    }
+
+    // inner class to hold a reference to each item of RecyclerView
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView txtViewTitle;
+
+        public ViewHolder(View itemLayoutView) {
+            super(itemLayoutView);
+            txtViewTitle = (TextView) itemLayoutView.findViewById(R.id.map_item);
         }
-
-        TextView text = (TextView) convertView.findViewById(R.id.map_item);
-        text.setText("Item 1");
+    }
 
 
-        return convertView;
+    // Return the size of your itemsData (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return itemsData.size();
     }
 }

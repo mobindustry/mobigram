@@ -44,4 +44,7 @@
     <dimen name="height_land_sw600">500dp</dimen>
     <dimen name="margin_2dp">2dp</dimen>
 
+    <item name="containerFrag" type="id"/>
+
 </resources>
+
