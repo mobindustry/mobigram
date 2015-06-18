@@ -38,7 +38,6 @@ public class MainActivity extends Activity {
     private TextView textCheckInternet;
     private BroadcastReceiver receiver;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

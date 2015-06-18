@@ -22,8 +22,9 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
 
     @Override
     public UpdatesHandler resultHandler(TdApi.TLObject object) {
-        //Log.d("Log", "UpdateHandler: " + object.toString());
+        Log.d("Log", "UpdateHandler: " + object.toString());
         switch (object.getConstructor()) {
+
 //            case TdApi.UpdateFile.CONSTRUCTOR: {
 //                TdApi.UpdateFile result = (TdApi.UpdateFile) object;
 //                Intent intent = new Intent(FILE_DOWNLOADED);
@@ -32,17 +33,35 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
 //                context.sendBroadcast(intent);
 //                break;
 //            }
-            case TdApi.UpdateNewMessage.CONSTRUCTOR: {
-//                TdApi.UpdateNewMessage message = (TdApi.UpdateNewMessage) object;
-//                Intent intent = new Intent(NEW_MESSAGE);
-//                intent.putExtra("chatId", message.message.chatId);
+            case TdApi.UpdateMessageId.CONSTRUCTOR: {
+                TdApi.UpdateMessageId message = (TdApi.UpdateMessageId) object;
+                Intent intent = new Intent("new_message");
+                intent.putExtra("message_id", message.newId);
+                intent.putExtra("chatId", message.chatId);
+
 //                intent.putExtra("fromId", message.message.fromId);
 //                intent.putExtra("message", message.message.message);
 //                intent.putExtra("forwardFromId", message.message.forwardFromId);
 //                intent.putExtra("forwardDate", message.message.forwardDate);
 //                intent.putExtra("date", message.message.date);
 //                intent.putExtra("id", message.message.id);
-//                context.sendBroadcast(intent);
+                context.sendBroadcast(intent);
+                break;
+            }
+            case TdApi.UpdateNewMessage.CONSTRUCTOR: {
+                TdApi.UpdateNewMessage message = (TdApi.UpdateNewMessage) object;
+                Intent intent = new Intent("new_message");
+                intent.putExtra("message_id", message.message.id);
+                intent.putExtra("chatId", message.message.chatId);
+
+//                intent.putExtra("fromId", message.message.fromId);
+//                intent.putExtra("message", message.message.message);
+//                intent.putExtra("forwardFromId", message.message.forwardFromId);
+//                intent.putExtra("forwardDate", message.message.forwardDate);
+//                intent.putExtra("date", message.message.date);
+//                intent.putExtra("id", message.message.id);
+                context.sendBroadcast(intent);
+                break;
             }
         }
         return null;

@@ -5,11 +5,15 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -32,6 +36,10 @@ import android.widget.Toast;
 import com.soundcloud.android.crop.Crop;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
+import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
@@ -47,7 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class MessagesFragment extends Fragment implements Serializable {
+public class MessagesFragment extends Fragment implements Serializable, ApiClient.OnApiResultHandler {
 
     public static final int LEVEL_SEND = 0;
     public static final int LEVEL_ATTACH = 1;
@@ -69,7 +77,9 @@ public class MessagesFragment extends Fragment implements Serializable {
     private TdApi.Chat chat;
     private ChatActivity activity;
 
-    MessagesFragmentHolder fileHolder;
+    private MessagesFragmentHolder fileHolder;
+    private BroadcastReceiver receiver;
+    private IntentFilter filter = new IntentFilter("new_message");
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -89,12 +99,20 @@ public class MessagesFragment extends Fragment implements Serializable {
     }
 
     public void setChatHistory(final TdApi.Messages messages) {
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                adapter.clear();
-                adapter.addAll(Utils.reverseMessages(messages.messages));
-            }
-        });
+        adapter.clear();
+        adapter.addAll(Utils.reverseMessages(messages.messages));
+    }
+
+    public void getChatHistory(final long id, final int messageId, final int offset, final int limit) {
+        new ApiClient<>(new TdApi.GetChatHistory(id, messageId, offset, limit), new ChatHistoryHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public void sendTextMessage(long chatId, String message) {
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageText(message)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public void sendPhotoMessage(long chatId, String path) {
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public void setUser(TdApi.User user) {
@@ -119,6 +137,20 @@ public class MessagesFragment extends Fragment implements Serializable {
 
         fileHolder = MessagesFragmentHolder.getInstance();
         activity = (ChatActivity) getActivity();
+
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int id = intent.getIntExtra("message_id", 0);
+                long chat_id = intent.getLongExtra("chatId", 0);
+                if (chat_id == chat.id) {
+                    getChatHistory(chat_id, id, -1, 200);
+                }
+            }
+        };
+
+        activity.registerReceiver(receiver, filter);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
@@ -154,7 +186,7 @@ public class MessagesFragment extends Fragment implements Serializable {
                             }
                         }, 100L);
                     } else {
-                        activity.sendTextMessage(chat.id, input.getText().toString());
+                        sendTextMessage(chat.id, input.getText().toString());
                         input.setText("");
                     }
                 }
@@ -170,7 +202,7 @@ public class MessagesFragment extends Fragment implements Serializable {
             lastSeenText.setText("lastSeen"); //TODO
             icon.setText(Utils.getInitials(chatUser.firstName, chatUser.lastName));
             icon.setBackground(Utils.getShapeDrawable(60, -chatUser.id));
-            activity.getChatHistory(chat.id, chat.topMessage.id, -1, 200);
+            getChatHistory(chat.id, chat.topMessage.id, -1, 200);
 
             toolbar.inflateMenu(R.menu.message_menu);
 
@@ -193,6 +225,18 @@ public class MessagesFragment extends Fragment implements Serializable {
                 });
             }
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        activity.unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        activity.registerReceiver(receiver, filter);
     }
 
     private void animateLevel(final int level) {
@@ -328,13 +372,30 @@ public class MessagesFragment extends Fragment implements Serializable {
                 Uri uriImage = data.getData();
                 String path = getPathFromURI(uriImage, getActivity());
                 if (!TextUtils.isEmpty(path)) {
-                    ((ChatActivity) getActivity()).sendPhotoMessage(getShownChatId(), path);
+                    sendPhotoMessage(getShownChatId(), path);
                 } else {
                     Toast.makeText(getActivity(), "File not found", Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "File not found", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    @Override
+    public void onApiResult(BaseHandler output) {
+        if (output.GetHandlerId() == ChatHistoryHandler.HANDLER_ID) {
+            TdApi.Messages messages = (TdApi.Messages) output.getResponse();
+            Log.e("Log", "ChatHistory " + messages);
+            Log.e("Log", "ChatId " + getShownChatId());
+
+
+            if (chat.id == messages.messages[0].chatId) {
+                setChatHistory(messages);
+            }
+        }
+        if (output.GetHandlerId() == MessageHandler.HANDLER_ID) {
+            Log.e("Log", "Result message " + output.getResponse());
         }
     }
 }

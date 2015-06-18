@@ -68,20 +68,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         new ApiClient<>(new TdApi.GetContacts(), new ContactsHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
-    public void sendTextMessage(long chatId, String message) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageText(message)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public void sendPhotoMessage(long chatId, String path) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
     public void getStickers() {
         new ApiClient<>(new TdApi.GetStickers(), new StickersHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public void getChatHistory(final long id, final int messageId, final int offset, final int limit) {
-        new ApiClient<>(new TdApi.GetChatHistory(id, messageId, offset, limit), new ChatHistoryHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public void downloadFile(int fileId) {
@@ -92,18 +80,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
         new ApiClient<>(new TdApi.AuthReset(), new LogHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         finish(); //TODO crash???
-    }
-
-    public void getUser(long id) {
-        client.send(new TdApi.GetUser((int) id), new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                //System.out.println("User object " + object.toString());
-                if (object instanceof TdApi.User) {
-                    getMessageFragment().setUser((TdApi.User) object);
-                }
-            }
-        });
     }
 
     public void downloadFile(final int fileId, final int messageId) {
@@ -147,25 +123,12 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         }
         if (output.GetHandlerId() == StickersHandler.HANDLER_ID) {
             TdApi.Stickers stickers = (TdApi.Stickers) output.getResponse();
-            if (stickers != null) {
-                for (int i = 0; i < stickers.stickers.length; i++) {
-                    if (stickers.stickers[i].sticker instanceof TdApi.FileEmpty) {
-                        TdApi.FileEmpty file = (TdApi.FileEmpty) stickers.stickers[i].sticker;
-                        downloadFile(file.id);
-                    }
+            for (int i = 0; i < stickers.stickers.length; i++) {
+                if (stickers.stickers[i].sticker instanceof TdApi.FileEmpty) {
+                    TdApi.FileEmpty file = (TdApi.FileEmpty) stickers.stickers[i].sticker;
+                    downloadFile(file.id);
                 }
-            } else {
-                getStickers();
             }
-        }
-        if (output.GetHandlerId() == ChatHistoryHandler.HANDLER_ID) {
-            TdApi.Messages messages = (TdApi.Messages) output.getResponse();
-            if (getMessageFragment().getShownChatId() == messages.messages[0].chatId) {
-                getMessageFragment().setChatHistory(messages);
-            }
-        }
-        if (output.GetHandlerId() == MessageHandler.HANDLER_ID) {
-            Log.e("Log", "Result photo message " + output.getResponse());
         }
     }
 
@@ -187,7 +150,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                     fm = getSupportFragmentManager();
                     ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
                     chatListFragment.getChatsList(0, 200);
-                    getChatHistory(updateMessageId.chatId, updateMessageId.newId, -1, 200);
+                    //getChatHistory(updateMessageId.chatId, updateMessageId.newId, -1, 200);
                 }
 
                 if (object instanceof TdApi.UpdateNewMessage) {
@@ -195,7 +158,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                     fm = getSupportFragmentManager();
                     ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
                     chatListFragment.getChatsList(0, 200);
-                    getChatHistory(updateMessageId.message.chatId, updateMessageId.message.id, -1, 200);
+                    //getChatHistory(updateMessageId.message.chatId, updateMessageId.message.id, -1, 200);
                 }
 
                 //if (object instanceof TdApi.UpdateChatReadInbox ||
@@ -354,7 +317,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Const.CROP_REQUEST_CODE) {
-            sendPhotoMessage(getMessageFragment().getShownChatId(), getMessageFragment().getPhotoPath());
+            getMessageFragment().sendPhotoMessage(getMessageFragment().getShownChatId(), getMessageFragment().getPhotoPath());
         }
     }
 }

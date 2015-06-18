@@ -158,7 +158,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             TdApi.Sticker sticker = ((TdApi.MessageSticker) item.message).sticker;
 
             ImageView stickerImage = new ImageView(getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(150, 200);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 300);
             stickerImage.setLayoutParams(layoutParams);
 
             if (sticker.sticker instanceof TdApi.FileLocal) {
