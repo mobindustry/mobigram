@@ -128,7 +128,8 @@ public class LocationFragment extends Fragment {
             map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
-                    map.addMarker(new MarkerOptions()
+                    map.clear();
+                    myMarker=map.addMarker(new MarkerOptions()
                             .position(new LatLng(latLng.latitude, latLng.longitude))
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 }
