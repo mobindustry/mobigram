@@ -394,9 +394,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void onApiResult(BaseHandler output) {
         if (output.getHandlerId() == ChatHistoryHandler.HANDLER_ID) {
             TdApi.Messages messages = (TdApi.Messages) output.getResponse();
-            Log.e("Log", "ChatHistory " + messages);
-            Log.e("Log", "ChatId " + getShownChatId());
-
 
             if (chat.id == messages.messages[0].chatId) {
                 setChatHistory(messages);

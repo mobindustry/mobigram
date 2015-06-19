@@ -11,7 +11,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 public class ApiClient<TFunction extends TdApi.TLFunction, THandler extends BaseHandler> extends AsyncTask<Void, Integer, THandler> {
 
     private static final long THREAD_SLEEP_TIME = 100;
-    private static final int TIMEOUT = 10;
+    private static final int TIMEOUT = 20;
     private TFunction function;
     private THandler handler;
     private OnApiResultHandler resultHandler;
