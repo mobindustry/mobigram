@@ -45,5 +45,5 @@ public class Const {
     public static final String CLIENT_ID_FOR_FOURSQUARE = "ABDMITGWDOMKIGHTWRU25XKIS2MJ3IPJQOEMZ5CVTRR0H05I";
     public static final String CLIENT_SECRET_FOR_FOURSQUARE = "XHS2CWCC5VD23MP1W2120RMUUYZJXFTCHK4A5KA3JAEZRFRG";
     public static final String URL_FOR_FOURSQUARE = "https://api.foursquare.com";
-
+    public static final String LIST_KEY_FOR_FOURSQUARE = "foursquare list";
 }
