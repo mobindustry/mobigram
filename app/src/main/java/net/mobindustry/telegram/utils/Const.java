@@ -13,7 +13,6 @@ public class Const {
     public final static int OUT_CONTENT_MESSAGE = 4;
     public final static int OUT_STICKER = 5;
 
-    public final static String COUNTRY = "country";
     public static final int REQUEST_CODE_TAKE_PHOTO = 101;
     public static final int REQUEST_CODE_SELECT_IMAGE = 102;
 
@@ -41,7 +40,6 @@ public class Const {
     public static final int CHAT_HISTORY_HANDLER_ID = 0x5;
     public static final int DOWNLOAD_FILE_HANDLER_ID = 0x6;
 
-    public static final int UPDATE_FILE_HANDLER_ID = 0x9;
     public static final int LOG_HANDLER_ID = 0x10;
 
     public static final String CLIENT_ID_FOR_FOURSQUARE = "ABDMITGWDOMKIGHTWRU25XKIS2MJ3IPJQOEMZ5CVTRR0H05I";

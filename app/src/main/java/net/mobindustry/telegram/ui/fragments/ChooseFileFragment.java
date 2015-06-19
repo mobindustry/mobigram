@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 
 public class ChooseFileFragment extends Fragment {
 
+    private static double mByte;
     private LinearLayout internalStorage;
     private LinearLayout systemRoot;
     private LinearLayout neTelegramDirectory;
@@ -75,10 +76,11 @@ public class ChooseFileFragment extends Fragment {
         String hrSize = null;
 
         double b = size;
-        double k = size / 1024.0;
-        double m = ((size / 1024.0) / 1024.0);
-        double g = (((size / 1024.0) / 1024.0) / 1024.0);
-        double t = ((((size / 1024.0) / 1024.0) / 1024.0) / 1024.0);
+        mByte = 1024.0;
+        double k = size / mByte;
+        double m = ((size / mByte) / mByte);
+        double g = (((size / mByte) / mByte) / mByte);
+        double t = ((((size / mByte) / mByte) / mByte) / mByte);
 
         DecimalFormat dec = new DecimalFormat("0.00");
 
