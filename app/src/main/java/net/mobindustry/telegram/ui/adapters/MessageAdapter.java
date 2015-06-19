@@ -149,7 +149,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
         if (item.message instanceof TdApi.MessageGeoPoint) {
             TdApi.MessageGeoPoint point = (TdApi.MessageGeoPoint) item.message;
-            //Log.i("Message", "GeoPoint " + item.message);
             int height = 100;
             int width = 200;
 
@@ -161,7 +160,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             ImageView map = new ImageView(getContext());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
             map.setLayoutParams(layoutParams);
-            System.out.println(url);
 
             ImageLoaderHelper.displayImage(url, map);
 

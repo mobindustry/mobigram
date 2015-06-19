@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -14,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,16 +44,16 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     private FloatingActionButton buttonSendLocation;
     private FloatingActionButton buttonFoursquare;
     private LatLng userLocation;
+    private LocationManager service;
 
     @Override
-    public void onApiResult(BaseHandler output) {
-
-    }
+    public void onApiResult(BaseHandler output) {}
 
     public void sendGeoPointMessage(double lat, double lng) {
         long id = MessagesFragmentHolder.getInstance().getChat().id;
         new ApiClient<>(new TdApi.SendMessage(id, new TdApi.InputMessageGeoPoint(lng, lat)),
                 new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        getActivity().finish();
     }
 
     @Override
@@ -159,17 +157,22 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                 }
             }
         });
+    }
 
-
+    private Location getLastKnownLocation() {
+        Location location = null;
+        if (service.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            location = service.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        else if (service.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+            location = service.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        return location;
     }
 
     private void init() {
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(false);
-        LocationManager service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String provider = service.getBestProvider(criteria, false);
-        Location location = service.getLastKnownLocation(provider);
+        service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+        Location location = getLastKnownLocation();
         userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -180,7 +183,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         map.animateCamera(cameraUpdate);
         if (myMarker == null) {
             myMarker = map.addMarker(new MarkerOptions()
-                    .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                    .position(new LatLng(userLocation.latitude, userLocation.longitude))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
             Log.e("LOG", "LAT " + location.getLatitude());
             Log.e("LOG", "LNG " + location.getLongitude());

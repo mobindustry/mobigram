@@ -26,7 +26,9 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/padding_3dp"
                 android:textColor="#FFD0D0D0"
-                android:textSize="@dimen/message_time_text_size" />
+                android:textSize="@dimen/message_time_text_size"
+                android:background="#877c7c7c"
+                />
         </LinearLayout>
     </FrameLayout>
 </FrameLayout>
