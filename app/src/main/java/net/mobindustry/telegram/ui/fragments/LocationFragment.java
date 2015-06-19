@@ -147,6 +147,9 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             @Override
             public void onClick(View view) {
                 if (userLocation != null) {
+                    Location location = map.getMyLocation();
+                    userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
                     map.clear();
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14));
                     myMarker = map.addMarker(new MarkerOptions()
@@ -174,7 +177,6 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         Location location = getLastKnownLocation();
         userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(userLocation)
                 .zoom(14)
