@@ -17,6 +17,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
 }
 
 dependencies {
@@ -35,5 +40,6 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.3.0'
     compile 'com.github.jorgecastilloprz:pagedheadlistview:1.0.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    compile 'com.turbomanage.basic-http-client:http-client-android:0.89'
 
 }

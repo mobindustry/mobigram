@@ -14,25 +14,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.melnykov.fab.FloatingActionButton;
+import com.turbomanage.httpclient.HttpResponse;
+import com.turbomanage.httpclient.ParameterMap;
+import com.turbomanage.httpclient.android.AndroidHttpClient;
+
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
+import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 
 import org.drinkless.td.libcore.telegram.TdApi;
+
+import java.io.Serializable;
 
 public class LocationFragment extends Fragment implements ApiClient.OnApiResultHandler {
 
@@ -43,6 +53,8 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     private TextView textCurrentPosition;
     private FloatingActionButton buttonSendLocation;
     private FloatingActionButton buttonFoursquare;
+    private double lat;
+    private double lng;
     private LatLng userLocation;
     private LocationManager service;
 
@@ -84,6 +96,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             public void onClick(View v) {
                 double lat = myMarker.getPosition().latitude;
                 double lng = myMarker.getPosition().longitude;
+                Toast.makeText(getActivity(), "LAT " + lat + "\n" + "LNG " + lng, Toast.LENGTH_SHORT).show();
                 sendGeoPointMessage(lat, lng);
             }
         });
@@ -95,6 +108,8 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         buttonFoursquare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MyTaskForFoursquareList myTaskForFoursquareList=new MyTaskForFoursquareList();
+                myTaskForFoursquareList.execute();
 
             }
         });
@@ -218,6 +233,46 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                             + " , " + String.valueOf(String.valueOf(latLng.longitude)) + ")"));
                 }
             });
+        }
+    }
+
+    public class MyTaskForFoursquareList extends AsyncTask<Void, Void, Void> implements Serializable {
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            //TODO
+
+                AndroidHttpClient httpClient = new AndroidHttpClient(Const.URL_FOR_FOURSQUARE);
+                httpClient.setMaxRetries(5);
+                ParameterMap param = httpClient.newParams()
+                        .add("client_id", Const.CLIENT_ID_FOR_FOURSQUARE)
+                        .add("client_secret", Const.CLIENT_SECRET_FOR_FOURSQUARE)
+                        .add("limit", "50")
+                        .add("radius", "80000")
+                        .add("ll", String.valueOf(lat) + "," + String.valueOf(lng));
+                HttpResponse httpResponse = httpClient.get("/v2/venues/search", param);
+
+               if (httpResponse.getBodyAsString() != null) {
+                   Log.e("LOG", "LINK " + httpResponse.getUrl());
+                    Log.e("LOG", "LINK " + httpResponse.getBodyAsString());
+                   Log.e("LOG", "Param " + param.urlEncode());
+                    //Type listType = new TypeToken<List<SoundInfo>>() {
+                    //}.getType();
+                    //Gson gson = new Gson();
+                    //listSoundInfo = gson.fromJson(httpResponse.getBodyAsString(), listType);
+                    //Log.e(Const.TAG, "Quantity of object = " + listSoundInfo.size());
+
+                }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //adapter.clear();
+            //adapter.addAll(listSoundInfo);
         }
     }
 }
