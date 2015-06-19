@@ -40,6 +40,7 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
+import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
@@ -129,6 +130,12 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId());
         messageListView.setAdapter(adapter);
         return view;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        DownloadFileHolder.clearList();
     }
 
     @Override

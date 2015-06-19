@@ -1,5 +1,7 @@
 package net.mobindustry.telegram.model.holder;
 
+import android.util.Log;
+
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ public class DownloadFileHolder {
     private static List<TdApi.UpdateFile> list = new ArrayList<>();
 
     public static void addFile(TdApi.UpdateFile file) {
+        Log.i("Log", "DownloadFileHolder: Add file " + file.fileId);
         list.add(file);
     }
 
@@ -20,5 +23,10 @@ public class DownloadFileHolder {
             }
         }
         return null;
+    }
+
+    public static void clearList() {
+        Log.i("Log", "DownloadFileHolder: List clear.");
+        list.clear();
     }
 }
