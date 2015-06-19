@@ -175,7 +175,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(false);
         service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-        Location location = getLastKnownLocation();
+        Location location = map.getMyLocation();
         userLocation = new LatLng(location.getLatitude(), location.getLongitude());
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(userLocation)
