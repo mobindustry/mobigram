@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -58,8 +56,6 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     private Marker myMarker;
     private Toolbar toolbar;
     private TextView textCurrentPosition;
-    private FloatingActionButton buttonSendLocation;
-    private FloatingActionButton buttonFoursquare;
     private LatLng userLocation;
     private LocationManager service;
     private List<FoursquareVenue> foursquareVenueList;
@@ -70,11 +66,12 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     public void onApiResult(BaseHandler output) {
     }
 
+    //TODO fix correct update after send;
     public void sendGeoPointMessage(double lat, double lng) {
+        getActivity().finish();
         long id = MessagesFragmentHolder.getInstance().getChat().id;
         new ApiClient<>(new TdApi.SendMessage(id, new TdApi.InputMessageGeoPoint(lng, lat)),
                 new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        getActivity().finish();
     }
 
     @Override
@@ -96,21 +93,19 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         foursquareVenueList = new ArrayList<>();
         textCurrentPosition = (TextView) getActivity().findViewById(R.id.textCurrentPosition);
 
-        buttonSendLocation = (FloatingActionButton) getActivity().findViewById(R.id.buttonSendLocation);
+        FloatingActionButton buttonSendLocation = (FloatingActionButton) getActivity().findViewById(R.id.buttonSendLocation);
         buttonSendLocation.setColorPressedResId(R.color.button_send_location_pressed);
         buttonSendLocation.setColorNormalResId(R.color.button_send_location);
         buttonSendLocation.setShadow(true);
         buttonSendLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double lat = myMarker.getPosition().latitude;
-                double lng = myMarker.getPosition().longitude;
-                Toast.makeText(getActivity(), "LAT " + lat + "\n" + "LNG " + lng, Toast.LENGTH_SHORT).show();
-                sendGeoPointMessage(lat, lng);
+                sendGeoPointMessage(myMarker.getPosition().latitude, myMarker.getPosition().longitude);
+
             }
         });
 
-        buttonFoursquare = (FloatingActionButton) getActivity().findViewById(R.id.buttonWatchLocationList);
+        FloatingActionButton buttonFoursquare = (FloatingActionButton) getActivity().findViewById(R.id.buttonWatchLocationList);
         buttonFoursquare.setColorPressedResId(R.color.button_foursquare_pressed);
         buttonFoursquare.setColorNormalResId(R.color.button_foursquare);
         buttonFoursquare.setShadow(true);
@@ -219,16 +214,6 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                     + " , " + String.valueOf(location.getLongitude()) + ")"));
         }
 
-        if (myMarker == null) {
-            myMarker = map.addMarker(new MarkerOptions()
-                    .position(new LatLng(userLocation.latitude, userLocation.longitude))
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-            Log.e("LOG", "LAT " + userLocation.latitude);
-            Log.e("LOG", "LNG " + userLocation.longitude);
-            textCurrentPosition.setText("(" + String.valueOf(userLocation.latitude
-                    + " , " + String.valueOf(userLocation.longitude) + ")"));
-        }
-
         if (map != null) {
             map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
@@ -245,7 +230,6 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     }
 
     public class MyTaskForFoursquareList extends AsyncTask<Void, Void, List<FoursquareVenue>> implements Serializable {
-
 
         @Override
         protected List<FoursquareVenue> doInBackground(Void... params) {
@@ -270,10 +254,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                 List<FoursquareVenue>list=foursquareVenueList;
                 Log.e("LOG", "Quantity of object = " + list.size());
                 return list;
-                //FoursquareHolder foursquareHolder=new FoursquareHolder();
-                //foursquareHolder.setFoursquareVenueList(foursquareVenueList);
             }
-
             return null;
         }
 

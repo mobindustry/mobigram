@@ -1,9 +1,9 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,13 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.foursquare.FoursquareVenue;
 import net.mobindustry.telegram.model.holder.FoursquareHolder;
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.adapters.FoursquareAdapter;
+
+import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,7 +33,7 @@ public class FoursquareListFragment extends Fragment implements Serializable {
     private Toolbar toolbar;
     private FoursquareAdapter foursquareAdapter;
     private ListView foursquareList;
-    private List<FoursquareVenue> foursquareVenueList=new ArrayList<>();
+    private List<FoursquareVenue> foursquareVenueList = new ArrayList<>();
     private double lng;
     private double lat;
 
@@ -39,13 +43,25 @@ public class FoursquareListFragment extends Fragment implements Serializable {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         foursquareAdapter = new FoursquareAdapter(getActivity());
         foursquareAdapter.clear();
-        FoursquareHolder foursquareHolder=FoursquareHolder.getInstance();
-        foursquareVenueList =foursquareHolder.getFoursquareVenueList() ;
+        FoursquareHolder foursquareHolder = FoursquareHolder.getInstance();
+        foursquareVenueList = foursquareHolder.getFoursquareVenueList();
         Log.e("LOG", "LIST " + foursquareVenueList.size());
         Log.e("LOG", "ADAPTER " + foursquareAdapter);
         foursquareAdapter.addAll(foursquareVenueList);
         View view = inflater.inflate(R.layout.foursquare_list_fragment_layout, container, false);
         return view;
+    }
+
+    //TODO fix correct update after send;
+    public void sendGeoPointMessage(double lat, double lng) {
+        getActivity().finish();
+        long id = MessagesFragmentHolder.getInstance().getChat().id;
+        new ApiClient<>(new TdApi.SendMessage(id, new TdApi.InputMessageGeoPoint(lng, lat)),
+                new MessageHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Override
@@ -72,7 +88,7 @@ public class FoursquareListFragment extends Fragment implements Serializable {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 lat = foursquareVenueList.get(position).getFoursquareLocation().getLatitude();
                 lng = foursquareVenueList.get(position).getFoursquareLocation().getLongitude();
-                Toast.makeText(getActivity(),String.valueOf(lat)+" "+String.valueOf(lng),Toast.LENGTH_SHORT).show();
+                sendGeoPointMessage(lat, lng);
             }
         });
 

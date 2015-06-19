@@ -252,7 +252,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        //TODO if result != ok
         if (requestCode == Const.CROP_REQUEST_CODE) {
             getMessageFragment().sendPhotoMessage(getMessageFragment().getShownChatId(), getMessageFragment().getPhotoPath());
         }
