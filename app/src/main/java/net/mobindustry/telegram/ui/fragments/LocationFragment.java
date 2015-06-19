@@ -47,7 +47,8 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     private LocationManager service;
 
     @Override
-    public void onApiResult(BaseHandler output) {}
+    public void onApiResult(BaseHandler output) {
+    }
 
     public void sendGeoPointMessage(double lat, double lng) {
         long id = MessagesFragmentHolder.getInstance().getChat().id;
@@ -133,8 +134,8 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                map = googleMap;
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                map = googleMap;
                 init();
             }
         });
@@ -148,8 +149,9 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             public void onClick(View view) {
                 if (userLocation != null) {
                     Location location = map.getMyLocation();
-                    userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
+                    if (location != null) {
+                        userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    }
                     map.clear();
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14));
                     myMarker = map.addMarker(new MarkerOptions()
@@ -177,6 +179,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         Location location = getLastKnownLocation();
         userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(userLocation)
                 .zoom(14)
@@ -193,6 +196,16 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                     + " , " + String.valueOf(location.getLongitude()) + ")"));
         }
 
+        if (myMarker == null) {
+            myMarker = map.addMarker(new MarkerOptions()
+                    .position(new LatLng(userLocation.latitude, userLocation.longitude))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+            Log.e("LOG", "LAT " + userLocation.latitude);
+            Log.e("LOG", "LNG " + userLocation.longitude);
+            textCurrentPosition.setText("(" + String.valueOf(userLocation.latitude
+                    + " , " + String.valueOf(userLocation.longitude) + ")"));
+        }
+
         if (map != null) {
             map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
@@ -207,6 +220,4 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             });
         }
     }
-
-
 }
