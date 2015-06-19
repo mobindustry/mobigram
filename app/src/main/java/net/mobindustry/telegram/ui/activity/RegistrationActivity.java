@@ -89,6 +89,10 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
+    public void setAuthReset() {
+        client.send(new TdApi.AuthReset(), handler);
+    }
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +106,6 @@ public class RegistrationActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         handler = new Client.ResultHandler() {
             @Override
             public void onResult(TdApi.TLObject object) {
@@ -217,6 +220,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 }
                 if (object instanceof TdApi.AuthStateWaitSetPhoneNumber) {
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     registrationUserPhone = new RegistrationMainFragment();
                     fragmentTransaction.replace(R.id.fragmentContainer, registrationUserPhone);
                     fragmentTransaction.commit();

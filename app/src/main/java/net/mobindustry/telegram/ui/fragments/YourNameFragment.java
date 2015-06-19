@@ -47,8 +47,6 @@ public class YourNameFragment extends Fragment {
         lastName.setText(infoRegistration.getLastName());
         cancel = (TextView) activity.findViewById(R.id.cancel_registration);
 
-
-
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.yor_name_toolbar);
         toolbar.inflateMenu(R.menu.ok);
         toolbar.setTitle(getActivity().getString(R.string.your_name_fragment_title));
@@ -67,7 +65,8 @@ public class YourNameFragment extends Fragment {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("onClick");
+                ((RegistrationActivity)getActivity()).setAuthReset();
+                infoRegistration.setPhone("");
             }
         });
     }

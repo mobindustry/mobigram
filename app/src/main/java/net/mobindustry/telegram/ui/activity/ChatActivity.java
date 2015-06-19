@@ -32,15 +32,12 @@ import net.mobindustry.telegram.core.handlers.LogHandler;
 import net.mobindustry.telegram.core.handlers.StickersHandler;
 import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.model.holder.ContactListHolder;
-import net.mobindustry.telegram.model.holder.PhotoDownloadHolder;
 import net.mobindustry.telegram.model.holder.UserMeHolder;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 import net.mobindustry.telegram.utils.Const;
 
-import org.drinkless.td.libcore.telegram.Client;
-import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.ArrayList;
@@ -56,7 +53,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private CharSequence drawerTitle;
     private CharSequence title;
 
-    private Client client;
     private NavigationDrawerAdapter adapter;
 
     private UserMeHolder holder = UserMeHolder.getInstance();
@@ -79,30 +75,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         finish(); //TODO crash???
     }
 
-    public void downloadFile(final int fileId, final int messageId) {
-        client.send(new TdApi.DownloadFile(fileId), new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                if (object instanceof TdApi.Ok) {
-                    client.send(new TdApi.GetChatHistory(getMessageFragment().getShownChatId(), messageId, -1, 1), new Client.ResultHandler() {
-                        @Override
-                        public void onResult(TdApi.TLObject object) {
-                            if (object instanceof TdApi.Messages) {
-                                PhotoDownloadHolder holder = PhotoDownloadHolder.getInstance();
-                                TdApi.Messages message = (TdApi.Messages) object;
-                                TdApi.MessagePhoto photo = (TdApi.MessagePhoto) message.messages[0].message;
-                                synchronized (holder.getSync()) {
-                                    holder.setPhoto(photo.photo);
-                                    holder.getSync().notify();
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
-
     public long getMyId() {
         return holder.getUserMe().id;
     }
@@ -114,11 +86,11 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     @Override
     public void onApiResult(BaseHandler output) {
-        if (output.GetHandlerId() == ContactsHandler.HANDLER_ID) {
+        if (output.getHandlerId() == ContactsHandler.HANDLER_ID) {
             ContactListHolder contactListHolder = ContactListHolder.getInstance();
             contactListHolder.setContacts((TdApi.Contacts) output.getResponse());
         }
-        if (output.GetHandlerId() == StickersHandler.HANDLER_ID) {
+        if (output.getHandlerId() == StickersHandler.HANDLER_ID) {
             TdApi.Stickers stickers = (TdApi.Stickers) output.getResponse();
             for (int i = 0; i < stickers.stickers.length; i++) {
                 if (stickers.stickers[i].sticker instanceof TdApi.FileEmpty) {
@@ -133,38 +105,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
-
-        PhotoDownloadHolder.getInstance().setActivity(this);
-
-        client = TG.getClientInstance();
-
-        Client.ResultHandler resultHandler = new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-                //Log.i("LOG", "Updates result : " + object);
-                if (object instanceof TdApi.UpdateMessageId) {
-                    TdApi.UpdateMessageId updateMessageId = (TdApi.UpdateMessageId) object;
-                    fm = getSupportFragmentManager();
-                    ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
-                    chatListFragment.getChatsList(0, 200);
-                    //getChatHistory(updateMessageId.chatId, updateMessageId.newId, -1, 200);
-                }
-
-                if (object instanceof TdApi.UpdateNewMessage) {
-                    TdApi.UpdateNewMessage updateMessageId = (TdApi.UpdateNewMessage) object;
-                    fm = getSupportFragmentManager();
-                    ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
-                    chatListFragment.getChatsList(0, 200);
-                    //getChatHistory(updateMessageId.message.chatId, updateMessageId.message.id, -1, 200);
-                }
-
-                //if (object instanceof TdApi.UpdateChatReadInbox ||
-                //        object instanceof TdApi.UpdateChatReadOutbox) {
-                //   getChats(0, 200);
-                //}
-            }
-        };
-
         adapter = new NavigationDrawerAdapter(ChatActivity.this);
 
         getContacts();

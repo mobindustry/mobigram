@@ -1,6 +1,7 @@
-package net.mobindustry.telegram.model.view;
+package net.mobindustry.telegram.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -11,9 +12,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import net.mobindustry.telegram.model.holder.DataHolder;
-import net.mobindustry.telegram.model.holder.PhotoDownloadHolder;
-
-import org.drinkless.td.libcore.telegram.TdApi;
+import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +27,19 @@ public class ImageLoaderHelper {
 
         @Override
         public InputStream getStream(String imageUri, Object extra) throws IOException {
-            return super.getStream(imageUri, extra);
+
+            if (!imageUri.contains("/")) {
+                String path = DownloadFileHolder.getUpdatedFilePath(Integer.parseInt(imageUri));
+                while (path == null) {
+                    path = DownloadFileHolder.getUpdatedFilePath(Integer.parseInt(imageUri));
+                    if (path != null) {
+                        break;
+                    }
+                }
+                return super.getStream("file://" + path, extra);
+            } else {
+                return super.getStream(imageUri, extra);
+            }
         }
     }
 

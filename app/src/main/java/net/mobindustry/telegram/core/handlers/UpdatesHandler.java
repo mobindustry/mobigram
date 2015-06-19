@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -61,6 +62,11 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
 //                intent.putExtra("date", message.message.date);
 //                intent.putExtra("id", message.message.id);
                 context.sendBroadcast(intent);
+                break;
+            }
+            case TdApi.UpdateFile.CONSTRUCTOR: {
+                TdApi.UpdateFile file = (TdApi.UpdateFile) object;
+                DownloadFileHolder.addFile(file);
                 break;
             }
         }

@@ -46,7 +46,7 @@ public abstract class BaseHandler<T> implements Client.ResultHandler {
 
     public abstract T resultHandler(TdApi.TLObject object);
 
-    public int GetHandlerId() {
+    public int getHandlerId() {
         return HANDLER_ID;
     }
 }

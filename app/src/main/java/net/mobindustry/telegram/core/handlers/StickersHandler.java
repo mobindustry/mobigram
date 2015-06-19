@@ -15,7 +15,7 @@ public class StickersHandler extends BaseHandler<TdApi.Stickers> {
     }
 
     @Override
-    public int GetHandlerId() {
+    public int getHandlerId() {
         return HANDLER_ID;
     }
 }

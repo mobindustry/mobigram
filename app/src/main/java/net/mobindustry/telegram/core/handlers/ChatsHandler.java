@@ -15,7 +15,7 @@ public class ChatsHandler extends BaseHandler<TdApi.Chats> {
     }
 
     @Override
-    public int GetHandlerId() {
+    public int getHandlerId() {
         return HANDLER_ID;
     }
 }

@@ -2,6 +2,7 @@ package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.model.holder.PhotoDownloadHolder;
-import net.mobindustry.telegram.model.view.ImageLoaderHelper;
-import net.mobindustry.telegram.ui.activity.ChatActivity;
+import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
+import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.Utils;
 
@@ -97,25 +99,23 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         if (item.message instanceof TdApi.MessagePhoto) {
 
             TdApi.MessagePhoto messagePhoto = (TdApi.MessagePhoto) item.message;
-            PhotoDownloadHolder holder = PhotoDownloadHolder.getInstance();
 
-            ImageView photo = new ImageView(getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[0].width, messagePhoto.photo.photos[0].height);
-            photo.setLayoutParams(layoutParams);
-
-            //Log.i("Log", "Message photo " + messagePhoto.toString());
+            final ImageView photo = new ImageView(getContext());
 
             for (int i = 0; i < messagePhoto.photo.photos.length; i++) {
                 if (messagePhoto.photo.photos[i].type.equals("m")) {
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[i].width, messagePhoto.photo.photos[i].height);
+                    photo.setLayoutParams(layoutParams);
                     if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileEmpty) {
-                        TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
-                        ((ChatActivity) getContext()).downloadFile(file.id);
-                    }
-                    if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileEmpty) {
-                        TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
-                        holder.setLoadFileId(file.id);
-                        holder.setMessageId(item.id);
-                        //ImageLoaderHelper.displayImage("custom://path", photo);
+                        final TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
+                        new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                            @Override
+                            public void onApiResult(BaseHandler output) {
+                                if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                                    ImageLoaderHelper.displayImage(String.valueOf(file.id), photo);
+                                }
+                            }
+                        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                     }
                     if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileLocal) {
                         TdApi.FileLocal file = (TdApi.FileLocal) messagePhoto.photo.photos[i].photo;
@@ -152,9 +152,10 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             int height = 100;
             int width = 200;
 
+            //Fucking hardcode!!!
             String url = "https://maps.googleapis.com/maps/api/staticmap?center=" +
                     point.geoPoint.latitude + "," + point.geoPoint.longitude +
-                    "&zoom=13&size="+ width + "x" + height + "&maptype=roadmap&scale=1&markers=color:red|size:big|" +
+                    "&zoom=13&size=" + width + "x" + height + "&maptype=roadmap&scale=1&markers=color:red|size:big|" +
                     point.geoPoint.latitude + "," + point.geoPoint.longitude + "&sensor=false";
 
             ImageView map = new ImageView(getContext());

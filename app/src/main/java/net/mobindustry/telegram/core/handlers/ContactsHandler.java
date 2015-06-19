@@ -15,7 +15,7 @@ public class ContactsHandler extends BaseHandler<TdApi.Contacts> {
     }
 
     @Override
-    public int GetHandlerId() {
+    public int getHandlerId() {
         return HANDLER_ID;
     }
 }

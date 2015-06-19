@@ -16,7 +16,7 @@ public class ChatHistoryHandler extends BaseHandler<TdApi.Messages> {
     }
 
     @Override
-    public int GetHandlerId() {
+    public int getHandlerId() {
         return HANDLER_ID;
     }
 }
