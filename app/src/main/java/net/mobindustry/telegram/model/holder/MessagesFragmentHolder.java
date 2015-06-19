@@ -1,7 +1,5 @@
 package net.mobindustry.telegram.model.holder;
 
-import android.os.Environment;
-
 import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -32,12 +30,12 @@ public class MessagesFragmentHolder {
         Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
         // Check if device has SD card I save photo on it, if no I save photo on internal memory
         if (isSDPresent) {
-            String dir = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram" + File.separator + "photo";
+            String dir = Const.PATH_TO_GALLERY;
             File path = new File(dir);
             path.mkdirs();
             return path;
         } else {
-            String dir = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram" + File.separator + "photo";
+            String dir = Const.PATH_TO_GALLERY;
             File path = new File(dir);
             path.mkdirs();
             return path;

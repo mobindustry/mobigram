@@ -13,7 +13,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
 
-        TG.setDir(Const.PATH_TO_NETELEGRAM);
+        TG.setDir(getFilesDir().toString());//TODO set correct path!!!
         TG.setUpdatesHandler(new UpdatesHandler(this));
 
         DataHolder.setContext(this);

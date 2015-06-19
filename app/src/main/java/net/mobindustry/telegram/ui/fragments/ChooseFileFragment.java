@@ -1,13 +1,11 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.app.ActivityManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.utils.Const;
 
-import java.io.File;
 import java.text.DecimalFormat;
 
 public class ChooseFileFragment extends Fragment {
@@ -58,7 +55,7 @@ public class ChooseFileFragment extends Fragment {
         infoDeviceMemory = (TextView) getActivity().findViewById(R.id.text_info_about_internal_storage_memory);
         pathToNeTelegram = (TextView) getActivity().findViewById(R.id.path_to_ne_telegram_directory);
 
-        pathToNeTelegram.setText(Const.PATH_TO_NETELEGRAM);
+        pathToNeTelegram.setText(Const.PATH_TO_GALLERY); //TODO set correct path!!!
         infoDeviceMemory.setText("Free " + formatFileSize(getAvailableMemory()) + " of " + formatFileSize(getMaxMemory()));
     }
 
