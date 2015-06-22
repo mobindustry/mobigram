@@ -183,12 +183,23 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     }
 
     private Location getLastKnownLocation() {
-        Location location = null;
-        if (service.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            location = service.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        else if (service.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
-            location = service.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        return location;
+        List<String> providers = service.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            Location l = service.getLastKnownLocation(provider);
+
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null
+                    || l.getAccuracy() < bestLocation.getAccuracy()) {
+                bestLocation = l;
+            }
+        }
+        if (bestLocation == null) {
+            return null;
+        }
+        return bestLocation;
     }
 
     private void init() {
@@ -196,6 +207,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         map.getUiSettings().setMyLocationButtonEnabled(false);
         service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         Location location = getLastKnownLocation();
+
         userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
