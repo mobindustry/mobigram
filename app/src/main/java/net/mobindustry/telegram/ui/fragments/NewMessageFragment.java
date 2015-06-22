@@ -2,6 +2,7 @@ package net.mobindustry.telegram.ui.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -12,12 +13,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.ContactsHandler;
 import net.mobindustry.telegram.ui.adapters.ContactListAdapter;
-import net.mobindustry.telegram.model.holder.ContactListHolder;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
 public class NewMessageFragment extends Fragment {
+
+    private TdApi.Contacts contacts;
+    private ContactListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -27,11 +33,22 @@ public class NewMessageFragment extends Fragment {
         return view;
     }
 
+    public void getContacts() {
+        new ApiClient<>(new TdApi.GetContacts(), new ContactsHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+                if (output.getHandlerId() == ContactsHandler.HANDLER_ID) {
+                    contacts = (TdApi.Contacts) output.getResponse();
+                    adapter.addAll(contacts.users);
+                }
+
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        ContactListHolder holder = ContactListHolder.getInstance();
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.newMessageToolbar);
         toolbar.setTitle("New message");
@@ -44,23 +61,20 @@ public class NewMessageFragment extends Fragment {
             }
         });
 
-        final ContactListAdapter adapter = new ContactListAdapter(getActivity());
+        adapter = new ContactListAdapter(getActivity());
         ListView listView = (ListView) getActivity().findViewById(R.id.contacts);
         listView.setAdapter(adapter);
 
-        TdApi.Contacts contacts = holder.getContacts();
-        adapter.addAll(contacts.users);
+        getContacts();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ChatListFragment.class);
-
-                intent.putExtra("id", (long)adapter.getItem(position).id);
+                intent.putExtra("id", (long) adapter.getItem(position).id);
                 getActivity().setResult(Activity.RESULT_OK, intent);
                 getActivity().finish();
             }
         });
-
     }
 }

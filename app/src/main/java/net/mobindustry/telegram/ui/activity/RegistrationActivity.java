@@ -99,8 +99,12 @@ public class RegistrationActivity extends AppCompatActivity {
         locationManager = ((LocationManager) getSystemService(Context.LOCATION_SERVICE));
 
         InfoRegistration holder = InfoRegistration.getInstance();
+
         try {
-            holder.setCountryName(getLastKnownCountry());
+            String country = getLastKnownCountry();
+            if (country != null) {
+                holder.setCountryName(getLastKnownCountry());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -290,11 +294,22 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private Location getLastKnownLocation() {
-        Location location = null;
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
-            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        return location;
+        List<String> providers = locationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            Location l = locationManager.getLastKnownLocation(provider);
+
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null
+                    || l.getAccuracy() < bestLocation.getAccuracy()) {
+                bestLocation = l;
+            }
+        }
+        if (bestLocation == null) {
+            return null;
+        }
+        return bestLocation;
     }
 }

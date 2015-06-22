@@ -29,13 +29,12 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.ContactsHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.LogHandler;
 import net.mobindustry.telegram.core.handlers.StickersHandler;
 import net.mobindustry.telegram.core.handlers.UserMeHandler;
 import net.mobindustry.telegram.model.NavigationItem;
-import net.mobindustry.telegram.model.holder.ContactListHolder;
+import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.UserMeHolder;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
@@ -64,15 +63,12 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private UserMeHolder holder = UserMeHolder.getInstance();
     private UserMeHolder userMeHolder;
 
-    public void getContacts() {
-        new ApiClient<>(new TdApi.GetContacts(), new ContactsHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
     public void getStickers() {
         new ApiClient<>(new TdApi.GetStickers(), new StickersHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public void downloadFile(int fileId) {
+        Log.e("Log", "Download file from chat activity: " + fileId);
         new ApiClient<>(new TdApi.DownloadFile(fileId), new DownloadFileHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
@@ -101,16 +97,16 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     @Override
     public void onApiResult(BaseHandler output) {
-        if (output.getHandlerId() == ContactsHandler.HANDLER_ID) {
-            ContactListHolder contactListHolder = ContactListHolder.getInstance();
-            contactListHolder.setContacts((TdApi.Contacts) output.getResponse());
-        }
         if (output.getHandlerId() == StickersHandler.HANDLER_ID) {
             TdApi.Stickers stickers = (TdApi.Stickers) output.getResponse();
-            for (int i = 0; i < stickers.stickers.length; i++) {
-                if (stickers.stickers[i].sticker instanceof TdApi.FileEmpty) {
-                    TdApi.FileEmpty file = (TdApi.FileEmpty) stickers.stickers[i].sticker;
-                    downloadFile(file.id);
+            if (stickers == null) {
+                getStickers();
+            } else {
+                for (int i = 0; i < stickers.stickers.length; i++) {
+                    if (stickers.stickers[i].sticker instanceof TdApi.FileEmpty) {
+                        TdApi.FileEmpty file = (TdApi.FileEmpty) stickers.stickers[i].sticker;
+                        downloadFile(file.id);
+                    }
                 }
             }
         }
@@ -124,9 +120,11 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
+
+        DownloadFileHolder.clearList();
+
         adapter = new NavigationDrawerAdapter(ChatActivity.this);
 
-        getContacts();
         getStickers();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);

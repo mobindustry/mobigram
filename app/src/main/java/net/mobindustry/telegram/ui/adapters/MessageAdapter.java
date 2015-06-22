@@ -108,6 +108,8 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     photo.setLayoutParams(layoutParams);
                     if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileEmpty) {
                         final TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
+                        Log.e("Log", "Download file from message adapter: " + file.id);
+
                         new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
                             @Override
                             public void onApiResult(BaseHandler output) {

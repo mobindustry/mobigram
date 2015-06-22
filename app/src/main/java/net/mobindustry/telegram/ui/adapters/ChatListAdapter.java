@@ -109,6 +109,8 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         if (user.photoBig instanceof TdApi.FileEmpty) {
             final TdApi.FileEmpty file = (TdApi.FileEmpty) user.photoBig;
             if(file.id != 0) {
+                Log.e("Log", "Download file from chat adapter: " + file.id);
+
                 new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
                     @Override
                     public void onApiResult(BaseHandler output) {
@@ -122,8 +124,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
                 icon.setText(Utils.getInitials(user.firstName, user.lastName));
             }
 
-        }
-        if (user.photoBig instanceof TdApi.FileLocal) {
+        } else if (user.photoBig instanceof TdApi.FileLocal) {
             TdApi.FileLocal file = (TdApi.FileLocal) user.photoBig;
             ImageLoaderHelper.displayImage("file://" + file.path, imageIcon);
         }
