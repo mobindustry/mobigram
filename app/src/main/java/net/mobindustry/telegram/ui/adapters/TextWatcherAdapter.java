@@ -3,6 +3,8 @@ package net.mobindustry.telegram.ui.adapters;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+
+// TODO WHY??????
 public class TextWatcherAdapter implements TextWatcher {
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
