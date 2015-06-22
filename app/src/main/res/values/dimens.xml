@@ -43,6 +43,8 @@
     <dimen name="width_land_sw600">450dp</dimen>
     <dimen name="height_land_sw600">500dp</dimen>
     <dimen name="margin_2dp">2dp</dimen>
+    <dimen name="margin_15dp">15dp</dimen>
+    <dimen name="margin_25dp">25dp</dimen>
 
     <item name="containerFrag" type="id"/>
 

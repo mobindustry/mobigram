@@ -175,8 +175,8 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                     myMarker = map.addMarker(new MarkerOptions()
                             .position(userLocation)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                    textCurrentPosition.setText("(" + String.valueOf(userLocation.latitude
-                            + " , " + String.valueOf(userLocation.longitude) + ")"));
+                    textCurrentPosition.setText("lat " + String.valueOf(userLocation.latitude
+                            + "\n" + "lng " + String.valueOf(userLocation.longitude)));
                 }
             }
         });
@@ -210,8 +210,8 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
             Log.e("LOG", "LAT " + location.getLatitude());
             Log.e("LOG", "LNG " + location.getLongitude());
-            textCurrentPosition.setText("(" + String.valueOf(location.getLatitude()
-                    + " , " + String.valueOf(location.getLongitude()) + ")"));
+            textCurrentPosition.setText("lat " + String.valueOf(userLocation.latitude
+                    + "\n" + "lng " + String.valueOf(userLocation.longitude)));
         }
 
         if (map != null) {
@@ -222,8 +222,8 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                     myMarker = map.addMarker(new MarkerOptions()
                             .position(new LatLng(latLng.latitude, latLng.longitude))
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                    textCurrentPosition.setText("(" + String.valueOf(String.valueOf(latLng.latitude)
-                            + " , " + String.valueOf(String.valueOf(latLng.longitude)) + ")"));
+                    textCurrentPosition.setText("lat " + String.valueOf(String.valueOf(latLng.latitude)
+                            + "\n" + "lng " + String.valueOf(String.valueOf(latLng.longitude))));
                 }
             });
         }
@@ -249,9 +249,9 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                 Type frsqObject = new TypeToken<FoursquareObj>() {
                 }.getType();
                 Gson gson = new Gson();
-                FoursquareObj obj = gson.fromJson(httpResponse.getBodyAsString(),frsqObject);
-                foursquareVenueList=obj.getResponse().getVenues();
-                List<FoursquareVenue>list=foursquareVenueList;
+                FoursquareObj obj = gson.fromJson(httpResponse.getBodyAsString(), frsqObject);
+                foursquareVenueList = obj.getResponse().getVenues();
+                List<FoursquareVenue> list = foursquareVenueList;
                 Log.e("LOG", "Quantity of object = " + list.size());
                 return list;
             }
@@ -261,7 +261,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         @Override
         protected void onPostExecute(List<FoursquareVenue> aVoid) {
             super.onPostExecute(aVoid);
-            Log.e("Log","POST");
+            Log.e("Log", "POST");
             foursquareHolder = FoursquareHolder.getInstance();
             foursquareHolder.setFoursquareVenueList(aVoid);
             FoursquareListFragment foursquareListFragment;

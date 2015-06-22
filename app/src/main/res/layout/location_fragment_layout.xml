@@ -15,7 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:orientation="vertical"
-    android:layout_weight="6">
+    android:layout_weight="1">
 
     <fragment
         android:id="@+id/map"
@@ -45,9 +45,9 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.2"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        >
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/buttonSendLocation"
@@ -57,10 +57,9 @@
             android:layout_margin="@dimen/margin_10dp"
             android:src="@drawable/ic_attach_location" />
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_gravity="center">
 
             <TextView
@@ -70,20 +69,20 @@
                 android:textSize="16sp"
                 android:textColor="@color/background_action_bar"
                 android:textStyle="bold"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginTop="@dimen/margin_10dp"/>
+                android:layout_gravity="top|center"
+                android:layout_marginBottom="@dimen/margin_20dp"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="(48,448270 : 35,031320)"
                 android:textSize="12sp"
-                android:layout_gravity="center"
+                android:layout_gravity="bottom|center"
                 android:id="@+id/textCurrentPosition"
-                android:layout_marginTop="@dimen/margin_10dp"/>
+                android:layout_marginTop="@dimen/margin_25dp"/>
 
-        </LinearLayout>
+        </FrameLayout>
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/buttonWatchLocationList"
