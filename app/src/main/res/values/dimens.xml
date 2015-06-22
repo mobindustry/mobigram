@@ -19,6 +19,8 @@
     <dimen name="toolbar_name_text_size">18sp</dimen>
     <dimen name="toolbar_last_seen_text_size">16sp</dimen>
 
+    <dimen name="header_icon_size">50dp</dimen>
+
     <dimen name="contact_list_item_icon_size">50dp</dimen>
     <dimen name="contact_list_icon_text_size">20sp</dimen>
     <dimen name="contact_list_item_name_text_size">18sp</dimen>

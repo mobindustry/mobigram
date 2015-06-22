@@ -23,6 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.makeramen.roundedimageview.RoundedImageView;
+
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
@@ -38,6 +40,8 @@ import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.ImageLoaderHelper;
+import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -173,6 +177,34 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         TextView phoneView = (TextView) header.findViewById(R.id.drawer_header_phone);
         firstLastNameView.setText(userMe.firstName + " " + userMe.lastName);
         phoneView.setText(userMe.phoneNumber);
+
+        TextView icon = (TextView) header.findViewById(R.id.header_text_icon);
+        final RoundedImageView imageIcon = (RoundedImageView) header.findViewById(R.id.header_image_icon);
+
+        if (userMe.photoBig instanceof TdApi.FileEmpty) {
+            final TdApi.FileEmpty file = (TdApi.FileEmpty) userMe.photoBig;
+            if(file.id != 0) {
+                new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                    @Override
+                    public void onApiResult(BaseHandler output) {
+                        if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                            imageIcon.setVisibility(View.VISIBLE);
+                            ImageLoaderHelper.displayImage(String.valueOf(file.id), imageIcon);
+                        }
+                    }
+                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            } else {
+                icon.setVisibility(View.VISIBLE);
+                icon.setBackground(Utils.getShapeDrawable(60, -userMe.id));
+                icon.setText(Utils.getInitials(userMe.firstName, userMe.lastName));
+            }
+
+        }
+        if (userMe.photoBig instanceof TdApi.FileLocal) {
+            imageIcon.setVisibility(View.VISIBLE);
+            TdApi.FileLocal file = (TdApi.FileLocal) userMe.photoBig;
+            ImageLoaderHelper.displayImage("file://" + file.path, imageIcon);
+        }
 
         drawerList.addHeaderView(header, null, false);
     }
