@@ -33,7 +33,6 @@ public class MainActivity extends Activity {
     private TitanicTextView tv;
     private Titanic titanic;
     private TextView textCheckInternet;
-    private BroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
