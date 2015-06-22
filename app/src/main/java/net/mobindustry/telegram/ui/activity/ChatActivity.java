@@ -136,7 +136,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
 
         userMeHolder = UserMeHolder.getInstance();
-        if(userMeHolder.getUser() == null) {
+        if (userMeHolder.getUser() == null) {
             getUserMe();
         } else {
             setHeader(userMeHolder.getUser());
@@ -183,7 +183,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
         if (userMe.photoBig instanceof TdApi.FileEmpty) {
             final TdApi.FileEmpty file = (TdApi.FileEmpty) userMe.photoBig;
-            if(file.id != 0) {
+            if (file.id != 0) {
                 new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
                     @Override
                     public void onApiResult(BaseHandler output) {
