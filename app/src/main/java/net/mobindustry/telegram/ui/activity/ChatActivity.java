@@ -78,8 +78,12 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     public void logOut() {
         Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
-        new ApiClient<>(new TdApi.AuthReset(), new LogHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        finish(); //TODO crash???
+        finish();
+        new ApiClient<>(new TdApi.AuthReset(), new LogHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public long getMyId() {
