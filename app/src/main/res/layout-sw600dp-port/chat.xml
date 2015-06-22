@@ -8,13 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#EEE"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:orientation="vertical">
+        android:orientation="vertical">
 
             <FrameLayout
                 android:id="@+id/messages"
@@ -27,7 +21,7 @@
                     android:orientation="vertical">
 
                     <include
-                        android:id="@+id/contacts_toolbar"
+                        android:id="@+id/chats_toolbar"
                         layout="@layout/toolbar" />
 
                     <FrameLayout
@@ -52,8 +46,6 @@
             </FrameLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
 
     <!-- The navigation drawer -->
     <ListView

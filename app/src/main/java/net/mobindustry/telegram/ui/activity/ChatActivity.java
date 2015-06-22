@@ -12,7 +12,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,7 +67,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     }
 
     public void downloadFile(int fileId) {
-        Log.e("Log", "Download file from chat activity: " + fileId);
         new ApiClient<>(new TdApi.DownloadFile(fileId), new DownloadFileHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
@@ -121,13 +119,13 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
 
-        DownloadFileHolder.clearList();
-
         adapter = new NavigationDrawerAdapter(ChatActivity.this);
+
+        DownloadFileHolder.clearList();
 
         getStickers();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.contacts_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.chats_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
@@ -146,7 +144,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         }
 
         adapter.addAll(drawerItemsList);
-        drawerList.setAdapter(adapter);
+
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -210,6 +208,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         }
 
         drawerList.addHeaderView(header, null, false);
+
+        drawerList.setAdapter(adapter);
     }
 
     @Override

@@ -2,12 +2,9 @@ package net.mobindustry.telegram.ui.activity;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +21,6 @@ import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.concurrent.TimeUnit;
-
 
 public class MainActivity extends Activity {
 
@@ -63,45 +59,23 @@ public class MainActivity extends Activity {
         };
         client = TG.getClientInstance();
 
-        start();
-    }
-
-    public void start() {
         if (isOnline()) {
-            TitanicTextView tv = (TitanicTextView) findViewById(R.id.titanic_tv);
-            Titanic titanic = new Titanic();
-            titanic.start(tv);
-
-            client.send(new TdApi.AuthGetState(), resultHandler);
-
-            splashStart = new SplashStart();
-            splashStart.execute();
+            start();
         } else {
-            tv = (TitanicTextView) findViewById(R.id.titanic_tv);
-            titanic = new Titanic();
-            titanic.start(tv);
             textCheckInternet.setVisibility(View.VISIBLE);
-            receiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    final String action = intent.getAction();
-                    if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
-                        if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false)) {
-                            textCheckInternet.setVisibility(View.GONE);
-                            client.send(new TdApi.AuthGetState(), resultHandler);
-                            splashStart = new SplashStart();
-                            splashStart.execute();
-                            stopReceive();
-                        }
-                    }
-                }
-            };
-            registerReceiver(receiver, new IntentFilter(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION));
+            OnlineCheck onlineCheck = new OnlineCheck();
+            onlineCheck.execute();
         }
     }
 
-    public void stopReceive() {
-        unregisterReceiver(receiver);
+    public void start() {
+        tv = (TitanicTextView) findViewById(R.id.titanic_tv);
+        titanic = new Titanic();
+        titanic.start(tv);
+
+        client.send(new TdApi.AuthGetState(), resultHandler);
+        splashStart = new SplashStart();
+        splashStart.execute();
     }
 
     @Override
@@ -140,21 +114,32 @@ public class MainActivity extends Activity {
         }
     }
 
+    private class OnlineCheck extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            while (!isOnline()) {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                } catch (InterruptedException e) {
+                    Log.e("Log", "SplashStart task interrupted");
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            textCheckInternet.setVisibility(View.GONE);
+            start();
+        }
+    }
+
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
 }
 

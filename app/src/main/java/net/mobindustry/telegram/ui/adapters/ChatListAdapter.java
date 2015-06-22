@@ -2,8 +2,6 @@ package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -126,7 +124,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         } else if (user.photoBig instanceof TdApi.FileLocal) {
             TdApi.FileLocal file = (TdApi.FileLocal) user.photoBig;
-            ImageLoaderHelper.displayImage("file://" + file.path, imageIcon);
+            imageIcon.setImageURI(Uri.parse(file.path));
         }
 
         firstLastName.setText(user.firstName + " " + user.lastName);

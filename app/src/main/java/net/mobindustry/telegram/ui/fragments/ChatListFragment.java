@@ -31,7 +31,7 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     int currentCheckPosition = 0;
     private ChatListAdapter adapter;
 
-    private TdApi.Chats chats;
+    private static TdApi.Chats chats;
 
     private long clickedId;
 

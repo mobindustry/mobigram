@@ -131,12 +131,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        DownloadFileHolder.clearList();
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
