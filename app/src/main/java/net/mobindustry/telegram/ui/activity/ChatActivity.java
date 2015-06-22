@@ -30,6 +30,7 @@ import net.mobindustry.telegram.core.handlers.ContactsHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.LogHandler;
 import net.mobindustry.telegram.core.handlers.StickersHandler;
+import net.mobindustry.telegram.core.handlers.UserMeHandler;
 import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.model.holder.ContactListHolder;
 import net.mobindustry.telegram.model.holder.UserMeHolder;
@@ -56,6 +57,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private NavigationDrawerAdapter adapter;
 
     private UserMeHolder holder = UserMeHolder.getInstance();
+    private UserMeHolder userMeHolder;
 
     public void getContacts() {
         new ApiClient<>(new TdApi.GetContacts(), new ContactsHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -76,12 +78,16 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     }
 
     public long getMyId() {
-        return holder.getUserMe().id;
+        return holder.getUser().id;
     }
 
     public MessagesFragment getMessageFragment() {
         fm = getSupportFragmentManager();
         return (MessagesFragment) fm.findFragmentById(R.id.messages);
+    }
+
+    public void getUserMe() {
+        new ApiClient<>(new TdApi.GetMe(), new UserMeHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Override
@@ -98,6 +104,10 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                     downloadFile(file.id);
                 }
             }
+        }
+        if (output.getHandlerId() == UserMeHandler.HANDLER_ID) {
+            userMeHolder.setUser((TdApi.User) output.getResponse());
+            setHeader(userMeHolder.getUser());
         }
     }
 
@@ -121,7 +131,12 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         List<NavigationItem> drawerItemsList = new ArrayList<>();
         drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
 
-        setHeader(holder.getUserMe());
+        userMeHolder = UserMeHolder.getInstance();
+        if(userMeHolder.getUser() == null) {
+            getUserMe();
+        } else {
+            setHeader(userMeHolder.getUser());
+        }
 
         adapter.addAll(drawerItemsList);
         drawerList.setAdapter(adapter);

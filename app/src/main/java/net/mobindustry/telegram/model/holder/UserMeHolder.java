@@ -1,12 +1,14 @@
 package net.mobindustry.telegram.model.holder;
 
+import android.util.Log;
+
 import org.drinkless.td.libcore.telegram.TdApi;
 
 public class UserMeHolder {
 
     private static UserMeHolder instance;
 
-    private TdApi.User userMe;
+    private TdApi.User user;
 
     public static synchronized UserMeHolder getInstance() {
         if (instance == null) {
@@ -18,11 +20,11 @@ public class UserMeHolder {
     private UserMeHolder() {
     }
 
-    public TdApi.User getUserMe() {
-        return userMe;
+    public TdApi.User getUser() {
+        return user;
     }
 
-    public void setUserMe(TdApi.User userMe) {
-        this.userMe = userMe;
+    public void setUser(TdApi.User user) {
+        this.user = user;
     }
 }

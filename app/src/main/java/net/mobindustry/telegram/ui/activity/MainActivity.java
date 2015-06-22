@@ -13,15 +13,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
 import com.romainpiel.titanic.library.Titanic;
 import com.romainpiel.titanic.library.TitanicTextView;
+
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.model.holder.UserMeHolder;
-import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
+
 import java.util.concurrent.TimeUnit;
 
 
@@ -53,13 +54,6 @@ public class MainActivity extends Activity {
 
                 if (object instanceof TdApi.AuthStateOk) {
                     stateWaitCode = false;
-                    client.send(new TdApi.GetMe(), new Client.ResultHandler() {
-                        @Override
-                        public void onResult(TdApi.TLObject object) {
-                            UserMeHolder holder = UserMeHolder.getInstance();
-                            holder.setUserMe((TdApi.User) object);
-                        }
-                    });
                 }
 
                 if (object instanceof TdApi.AuthStateWaitSetPhoneNumber) {

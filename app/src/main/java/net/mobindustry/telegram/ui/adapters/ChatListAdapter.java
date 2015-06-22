@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -43,7 +48,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         TextView time = (TextView) convertView.findViewById(R.id.contactItemTime);
         TextView notify = (TextView) convertView.findViewById(R.id.chat_notification);
 
-        ImageView imageIcon = (ImageView) convertView.findViewById(R.id.message_icon_image);
+        final ImageView imageIcon = (ImageView) convertView.findViewById(R.id.message_icon_image);
 
         TdApi.Chat item = getItem(position);
 
@@ -100,12 +105,28 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
             notify.setText("");
             notify.setBackground(null);
         }
-        if(user.photoBig instanceof TdApi.FileLocal) {
-            TdApi.FileLocal file = (TdApi.FileLocal) user.photoSmall;
-            imageIcon.setImageURI(Uri.parse(file.path));
-        } else {
-            icon.setBackground(Utils.getShapeDrawable(60, -user.id));
-            icon.setText(Utils.getInitials(user.firstName, user.lastName));
+
+
+        if (user.photoBig instanceof TdApi.FileEmpty) {
+            final TdApi.FileEmpty file = (TdApi.FileEmpty) user.photoBig;
+            if(file.id != 0) {
+                new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                    @Override
+                    public void onApiResult(BaseHandler output) {
+                        if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                            ImageLoaderHelper.displayImage(String.valueOf(file.id), imageIcon);
+                        }
+                    }
+                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            } else {
+                icon.setBackground(Utils.getShapeDrawable(60, -user.id));
+                icon.setText(Utils.getInitials(user.firstName, user.lastName));
+            }
+
+        }
+        if (user.photoBig instanceof TdApi.FileLocal) {
+            TdApi.FileLocal file = (TdApi.FileLocal) user.photoBig;
+            ImageLoaderHelper.displayImage("file://" + file.path, imageIcon);
         }
 
         firstLastName.setText(user.firstName + " " + user.lastName);

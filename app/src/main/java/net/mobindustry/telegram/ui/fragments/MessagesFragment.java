@@ -33,12 +33,15 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.makeramen.roundedimageview.RoundedDrawable;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.soundcloud.android.crop.Crop;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
+import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
@@ -47,6 +50,7 @@ import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
 import net.mobindustry.telegram.ui.adapters.TextWatcherAdapter;
 import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -74,7 +78,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     private AnimatorSet currentAnimation;
 
-    private TdApi.User user;
     private TdApi.Chat chat;
     private ChatActivity activity;
 
@@ -114,11 +117,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     public void sendPhotoMessage(long chatId, String path) {
         new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public void setUser(TdApi.User user) {
-        this.user = user;
-        Log.e("Log", "User " + user.toString());
     }
 
     @Override
@@ -208,8 +206,34 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
             name.setText(chatUser.firstName + " " + chatUser.lastName);
             lastSeenText.setText("lastSeen"); //TODO
-            icon.setText(Utils.getInitials(chatUser.firstName, chatUser.lastName));
-            icon.setBackground(Utils.getShapeDrawable(60, -chatUser.id));
+
+            final RoundedImageView imageIcon = (RoundedImageView) getActivity().findViewById(R.id.toolbar_image_icon);
+
+            if (chatUser.photoBig instanceof TdApi.FileEmpty) {
+                final TdApi.FileEmpty file = (TdApi.FileEmpty) chatUser.photoBig;
+                if(file.id != 0) {
+                    new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                        @Override
+                        public void onApiResult(BaseHandler output) {
+                            if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                                imageIcon.setVisibility(View.VISIBLE);
+                                ImageLoaderHelper.displayImage(String.valueOf(file.id), imageIcon);
+                            }
+                        }
+                    }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                } else {
+                    icon.setVisibility(View.VISIBLE);
+                    icon.setBackground(Utils.getShapeDrawable(60, -chatUser.id));
+                    icon.setText(Utils.getInitials(chatUser.firstName, chatUser.lastName));
+                }
+
+            }
+            if (chatUser.photoBig instanceof TdApi.FileLocal) {
+                imageIcon.setVisibility(View.VISIBLE);
+                TdApi.FileLocal file = (TdApi.FileLocal) chatUser.photoBig;
+                ImageLoaderHelper.displayImage("file://" + file.path, imageIcon);
+            }
+
             getChatHistory(chat.id, chat.topMessage.id, -1, 200);
 
             toolbar.inflateMenu(R.menu.message_menu);

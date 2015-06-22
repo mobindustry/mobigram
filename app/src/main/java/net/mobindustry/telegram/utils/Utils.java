@@ -1,5 +1,11 @@
 package net.mobindustry.telegram.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 
@@ -46,5 +52,4 @@ public class Utils {
         circle.getPaint().setColor(color);
         return circle;
     }
-
 }

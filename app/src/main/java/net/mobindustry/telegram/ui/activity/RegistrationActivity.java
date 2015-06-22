@@ -34,7 +34,6 @@ import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogUserDeactivat
 import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.ui.fragments.YourNameFragment;
-import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.CountryObject;
 import net.mobindustry.telegram.model.holder.UserMeHolder;
 import net.mobindustry.telegram.utils.ListCountryObject;
@@ -247,7 +246,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         @Override
                         public void onResult(TdApi.TLObject object) {
                             UserMeHolder holder = UserMeHolder.getInstance();
-                            holder.setUserMe((TdApi.User) object);
+                            holder.setUser((TdApi.User) object);
                         }
                     });
 
