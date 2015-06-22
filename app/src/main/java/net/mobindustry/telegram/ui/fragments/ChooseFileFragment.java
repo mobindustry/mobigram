@@ -56,7 +56,7 @@ public class ChooseFileFragment extends Fragment {
         infoDeviceMemory = (TextView) getActivity().findViewById(R.id.text_info_about_internal_storage_memory);
         pathToNeTelegram = (TextView) getActivity().findViewById(R.id.path_to_ne_telegram_directory);
 
-        pathToNeTelegram.setText(Const.PATH_TO_GALLERY); //TODO set correct path!!!
+        pathToNeTelegram.setText(Const.PATH_TO_GALLERY);
         infoDeviceMemory.setText("Free " + formatFileSize(getAvailableMemory()) + " of " + formatFileSize(getMaxMemory()));
     }
 

@@ -83,7 +83,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     private MessagesFragmentHolder holder;
     private BroadcastReceiver receiver;
-    private IntentFilter filter = new IntentFilter("new_message");
+    private IntentFilter filter = new IntentFilter(Const.NEW_MESSAGE_INTENT_FILTER);
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -183,14 +183,14 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 @Override
                 public void onClick(View v) {
                     String text = input.getText().toString();
-                    if (text.length() == 0) {
+                    if (text.isEmpty()) {
                         new Handler().postDelayed(new Runnable() {
                             public void run() {
                                 showPopupMenu(attach);
                             }
                         }, 100L);
                     } else {
-                        sendTextMessage(chat.id, input.getText().toString());
+                        sendTextMessage(chat.id, input.getText().toString().trim());
                         input.setText("");
                     }
                 }
@@ -384,22 +384,20 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         return holder.getTempPhotoFile().getPath();
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO) {
+        if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO && resultCode == getActivity().RESULT_OK) {
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             Uri contentUri = Uri.fromFile(holder.getTempPhotoFile());
             mediaScanIntent.setData(contentUri);
             getActivity().sendBroadcast(mediaScanIntent);
             Uri external = Uri.fromFile(holder.getTempPhotoFile());
-            Crop.of(external, external).asSquare().start(getActivity());
-            Crop.pickImage(getActivity(), Const.CROP_REQUEST_CODE);
+            Crop.of(external, external).start(getActivity(), Const.CROP_REQUEST_CODE);
         }
 
-        if (requestCode == Const.REQUEST_CODE_SELECT_IMAGE) {
+        if (requestCode == Const.REQUEST_CODE_SELECT_IMAGE && resultCode == getActivity().RESULT_OK) {
             try {
                 Uri uriImage = data.getData();
                 String path = getPathFromURI(uriImage, getActivity());

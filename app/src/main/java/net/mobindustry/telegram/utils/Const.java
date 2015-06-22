@@ -48,4 +48,6 @@ public class Const {
     public static final String URL_FOR_FOURSQUARE = "https://api.foursquare.com";
     public static final String LIST_KEY_FOR_FOURSQUARE = "foursquare list";
 
+    public static final String NEW_MESSAGE_INTENT_FILTER = "net.mobindustry.telegram.new_message";
+
 }

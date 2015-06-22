@@ -96,7 +96,6 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
             privateChatInfo = (TdApi.PrivateChatInfo) info;
         }
         TdApi.User user = privateChatInfo.user;
-        //Log.i("Log", "User " + user.toString());
 
         //TODO set unread messages;
 //        if (item.unreadCount != 0) {

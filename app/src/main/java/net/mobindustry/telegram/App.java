@@ -13,7 +13,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
 
-        TG.setDir(getFilesDir().toString());//TODO set correct path!!!
+        TG.setDir(getFilesDir().toString());
         TG.setUpdatesHandler(new UpdatesHandler(this));
 
         DataHolder.setContext(this);

@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -299,8 +300,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //TODO if result != ok
-        if (requestCode == Const.CROP_REQUEST_CODE) {
+
+        if (requestCode == Const.CROP_REQUEST_CODE && resultCode == RESULT_OK) {
             getMessageFragment().sendPhotoMessage(getMessageFragment().getShownChatId(), getMessageFragment().getPhotoPath());
         }
     }

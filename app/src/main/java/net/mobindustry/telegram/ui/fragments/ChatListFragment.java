@@ -31,7 +31,7 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     int currentCheckPosition = 0;
     private ChatListAdapter adapter;
 
-    private static TdApi.Chats chats;
+    private TdApi.Chats chats;
 
     private long clickedId;
 
@@ -152,7 +152,7 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
             if (position == Const.CHAT_NOT_FOUND) {
                 Toast.makeText(getActivity(), "You have no chat with this contact. " +
                         "Open a new chat with a contact in the development mode.", Toast.LENGTH_LONG).show();
-                //((ChatActivity) getActivity()).newPrivateChat((int)resultId); //TODO Start new chat;
+                //TODO Start new chat;
             } else {
                 showMessages(position);
             }
