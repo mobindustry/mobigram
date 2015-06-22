@@ -27,7 +27,7 @@ public class TransparentActivity extends AppCompatActivity {
         switch (choice) {
             case Const.NEW_MESSAGE_FRAGMENT:
                 NewMessageFragment newMessageFragment = new NewMessageFragment();
-                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft = fragmentManager.beginTransaction();
                 ft.replace(R.id.transparent_content, newMessageFragment);
                 ft.commit();
                 break;
