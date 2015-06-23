@@ -179,6 +179,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             }
         });
 
+
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab); //my custom button
         fab.setColorPressedResId(R.color.button_on_map_pressed);
         fab.setColorNormalResId(R.color.button_on_map);
