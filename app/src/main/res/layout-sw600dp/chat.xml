@@ -17,6 +17,7 @@
             android:layout_weight="0.55"
             android:orientation="vertical">
 
+
             <include layout="@layout/toolbar"
                 android:id="@+id/chats_toolbar"/>
 
@@ -27,6 +28,14 @@
                 >
 
             </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/fragment_layout"
+                >
+            </LinearLayout>
         </LinearLayout>
         <FrameLayout
             android:id="@+id/messages"

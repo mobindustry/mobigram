@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -242,13 +244,18 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
             toolbar.inflateMenu(R.menu.message_menu);
 
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+
             if (getResources().getConfiguration().orientation
                     == Configuration.ORIENTATION_PORTRAIT) {
                 toolbar.setNavigationIcon(R.drawable.ic_back);
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        getFragmentManager().beginTransaction().remove(MessagesFragment.this).commit();
+                        LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
+                        layout.setVisibility(View.VISIBLE);
+                        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+                        ft.remove(MessagesFragment.this).commit();
                     }
                 });
             } else {
@@ -256,7 +263,10 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        getFragmentManager().beginTransaction().remove(MessagesFragment.this).commit();
+                        LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
+                        layout.setVisibility(View.VISIBLE);
+                        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+                        ft.remove(MessagesFragment.this).commit();
                     }
                 });
             }

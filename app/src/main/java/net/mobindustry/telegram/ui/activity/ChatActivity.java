@@ -123,8 +123,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         ChatListFragment chatListFragment = new ChatListFragment();
         FragmentTransaction ft
                 = getSupportFragmentManager().beginTransaction();
+        //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
         ft.replace(R.id.chat_list, chatListFragment);
-        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
 
         ft.commit();
 

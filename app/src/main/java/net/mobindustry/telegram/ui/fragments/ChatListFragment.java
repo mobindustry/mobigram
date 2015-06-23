@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -134,12 +135,14 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
                 getFragmentManager().findFragmentById(R.id.messages);
         if (messagesFragment == null || messagesFragment.getShownIndex() != index) {
             messagesFragment = MessagesFragment.newInstance(index);
-
+            //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
             ft.replace(R.id.messages, messagesFragment);
-            ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-
             ft.commit();
+
+            LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
+            layout.setVisibility(View.GONE);
         }
+
     }
 
     @Override
