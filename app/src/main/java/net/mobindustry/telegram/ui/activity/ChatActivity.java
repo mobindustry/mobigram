@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -118,6 +119,14 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
+
+        ChatListFragment chatListFragment = new ChatListFragment();
+        FragmentTransaction ft
+                = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.chat_list, chatListFragment);
+        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+
+        ft.commit();
 
         adapter = new NavigationDrawerAdapter(ChatActivity.this);
 
@@ -244,7 +253,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 MenuItemCompat.setActionView(item, sv);
 
                 fm = getSupportFragmentManager();
-                final ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.titles);
+                final ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.chat_list);
 
                 sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override

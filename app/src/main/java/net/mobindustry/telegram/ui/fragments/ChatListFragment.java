@@ -39,7 +39,7 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         adapter = new ChatListAdapter(getActivity());
-        return inflater.inflate(R.layout.contact_list_fragment, null);
+        return inflater.inflate(R.layout.chat_list_fragment, null);
     }
 
     public void setChatsList(final TdApi.Chats chats) {

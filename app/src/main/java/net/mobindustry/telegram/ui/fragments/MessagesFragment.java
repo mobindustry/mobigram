@@ -191,7 +191,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 }
             });
 
-            ChatListFragment fragment = (ChatListFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.titles);
+            ChatListFragment fragment = (ChatListFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.chat_list);
             chat = fragment.getChat();
 
             holder.setChat(chat);
