@@ -40,7 +40,6 @@ import net.mobindustry.telegram.model.foursquare.FoursquareObj;
 import net.mobindustry.telegram.model.foursquare.FoursquareVenue;
 import net.mobindustry.telegram.model.holder.FoursquareHolder;
 import net.mobindustry.telegram.model.holder.InfoLocation;
-import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.utils.Const;
 
@@ -93,6 +92,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         infoLocation = InfoLocation.getInstance();
         foursquareVenueList = new ArrayList<>();
         textCurrentPosition = (TextView) getActivity().findViewById(R.id.textCurrentPosition);
@@ -131,20 +131,23 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                 switch (item.getItemId()) {
                     case R.id.satellite_item_menu:
                         map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                        init();
+                        init(map.getMyLocation());
                         return true;
                     case R.id.hybrid_item_menu:
                         map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                        init();
+                        init(map.getMyLocation());
                         return true;
                     case R.id.map_item_menu:
                         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                        init();
+                        init(map.getMyLocation());
                         return true;
                 }
                 return false;
             }
         });
+
+        service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,7 +161,21 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             public void onMapReady(GoogleMap googleMap) {
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 map = googleMap;
-                init();
+                map.setMyLocationEnabled(true);
+                map.getUiSettings().setMyLocationButtonEnabled(false);
+
+                Location location = getLastKnownLocation();
+                if(location == null) {
+                    map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                        @Override
+                        public void onMyLocationChange(Location location) {
+                            init(location);
+                            map.setOnMyLocationChangeListener(null);
+                        }
+                    });
+                } else {
+                    init(location);
+                }
             }
         });
 
@@ -195,6 +212,8 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
 
             if (l == null) {
                 continue;
+            } else {
+                Log.e("Log", l.toString());
             }
             if (bestLocation == null
                     || l.getAccuracy() < bestLocation.getAccuracy()) {
@@ -207,13 +226,10 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         return bestLocation;
     }
 
-    private void init() {
-        map.setMyLocationEnabled(true);
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-        service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-        Location location = getLastKnownLocation();
+    private void init(Location location) {
 
-        userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+            userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(userLocation)
@@ -226,8 +242,6 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             myMarker = map.addMarker(new MarkerOptions()
                     .position(new LatLng(userLocation.latitude, userLocation.longitude))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-            Log.e("LOG", "LAT " + location.getLatitude());
-            Log.e("LOG", "LNG " + location.getLongitude());
             textCurrentPosition.setText("lat " + String.valueOf(userLocation.latitude
                     + "\n" + "lng " + String.valueOf(userLocation.longitude)));
         }

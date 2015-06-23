@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -219,7 +220,14 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                 } else {
                     icon.setVisibility(View.VISIBLE);
-                    icon.setBackground(Utils.getShapeDrawable(60, -chatUser.id));
+
+                    int sdk = android.os.Build.VERSION.SDK_INT;
+                    if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        icon.setBackgroundDrawable(Utils.getShapeDrawable(60, -chatUser.id));
+                    } else {
+                        icon.setBackground(Utils.getShapeDrawable(60, -chatUser.id));
+                    }
+
                     icon.setText(Utils.getInitials(chatUser.firstName, chatUser.lastName));
                 }
 

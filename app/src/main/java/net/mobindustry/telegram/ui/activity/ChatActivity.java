@@ -196,8 +196,13 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
             } else {
                 icon.setVisibility(View.VISIBLE);
-                // TODO fix api
-                icon.setBackground(Utils.getShapeDrawable(60, -userMe.id));
+
+                int sdk = android.os.Build.VERSION.SDK_INT;
+                if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                    icon.setBackgroundDrawable(Utils.getShapeDrawable(60, -userMe.id));
+                } else {
+                    icon.setBackground(Utils.getShapeDrawable(60, -userMe.id));
+                }
                 icon.setText(Utils.getInitials(userMe.firstName, userMe.lastName));
             }
 

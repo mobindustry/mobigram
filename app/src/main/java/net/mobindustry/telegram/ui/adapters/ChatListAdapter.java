@@ -118,7 +118,13 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
                     }
                 }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
             } else {
-                icon.setBackground(Utils.getShapeDrawable(60, -user.id));
+
+                int sdk = android.os.Build.VERSION.SDK_INT;
+                if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                    icon.setBackgroundDrawable(Utils.getShapeDrawable(60, -user.id));
+                } else {
+                    icon.setBackground(Utils.getShapeDrawable(60, -user.id));
+                }
                 icon.setText(Utils.getInitials(user.firstName, user.lastName));
             }
 

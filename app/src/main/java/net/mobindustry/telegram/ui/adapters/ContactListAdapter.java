@@ -38,7 +38,13 @@ public class ContactListAdapter extends ArrayAdapter<TdApi.User> {
 
         TdApi.User item = getItem(position);
 
-        icon.setBackground(Utils.getShapeDrawable(60, -item.id));
+        int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            icon.setBackgroundDrawable(Utils.getShapeDrawable(60, -item.id));
+        } else {
+            icon.setBackground(Utils.getShapeDrawable(60, -item.id));
+        }
+
         icon.setText(Utils.getInitials(item.firstName, item.lastName));
 
         firstLastName.setText(item.firstName + " " + item.lastName);
