@@ -37,10 +37,10 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
     public void onApiResult(BaseHandler output) {
 
         if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
-            if (((GetStateHandler) output).getResponse() != Enums.StatesEnum.WaitSetPhoneNumber) {
+            if (((GetStateHandler) output).getResponse() == Enums.StatesEnum.WaitSetPhoneNumber) {
                 stateWaitCode = true;
             }
-            if (((GetStateHandler) output).getResponse() != Enums.StatesEnum.OK) {
+            if (((GetStateHandler) output).getResponse() == Enums.StatesEnum.OK) {
                 stateWaitCode = false;
             }
         }

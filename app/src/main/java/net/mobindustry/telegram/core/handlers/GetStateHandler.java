@@ -16,7 +16,6 @@ public class GetStateHandler extends BaseHandler<Enums.StatesEnum> {
             return Enums.StatesEnum.OK;
         }
         if (object.getConstructor() == TdApi.AuthStateWaitSetCode.CONSTRUCTOR) {
-
             return Enums.StatesEnum.WaitSetCode;
         }
         if (object.getConstructor() == TdApi.AuthStateWaitSetName.CONSTRUCTOR) {
