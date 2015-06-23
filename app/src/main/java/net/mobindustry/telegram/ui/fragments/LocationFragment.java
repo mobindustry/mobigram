@@ -39,6 +39,8 @@ import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.foursquare.FoursquareObj;
 import net.mobindustry.telegram.model.foursquare.FoursquareVenue;
 import net.mobindustry.telegram.model.holder.FoursquareHolder;
+import net.mobindustry.telegram.model.holder.InfoLocation;
+import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.utils.Const;
 
@@ -61,6 +63,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     private List<FoursquareVenue> foursquareVenueList;
     private FragmentTransaction ft;
     private FoursquareHolder foursquareHolder;
+    private InfoLocation infoLocation;
 
     @Override
     public void onApiResult(BaseHandler output) {
@@ -90,6 +93,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        infoLocation = InfoLocation.getInstance();
         foursquareVenueList = new ArrayList<>();
         textCurrentPosition = (TextView) getActivity().findViewById(R.id.textCurrentPosition);
 
@@ -169,6 +173,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                     Location location = map.getMyLocation();
                     if (location != null) {
                         userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        infoLocation.setLng(userLocation);
                     }
                     map.clear();
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14));
@@ -217,6 +222,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
         map.animateCamera(cameraUpdate);
         if (myMarker == null) {
+            infoLocation.setLng(new LatLng(userLocation.latitude, userLocation.longitude));
             myMarker = map.addMarker(new MarkerOptions()
                     .position(new LatLng(userLocation.latitude, userLocation.longitude))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
@@ -254,7 +260,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                     .add("v", "20140421")
                     .add("limit", "50")
                     .add("radius", "80000")
-                    .add("ll", String.valueOf(userLocation.latitude) + "," + String.valueOf(userLocation.longitude));
+                    .add("ll", String.valueOf(infoLocation.getLng().latitude) + "," + String.valueOf(infoLocation.getLng().longitude));
             HttpResponse httpResponse = httpClient.get("/v2/venues/search", param);
 
             if (httpResponse.getBodyAsString() != null) {

@@ -47,6 +47,7 @@
     <dimen name="margin_2dp">2dp</dimen>
     <dimen name="margin_15dp">15dp</dimen>
     <dimen name="margin_25dp">25dp</dimen>
+    <dimen name="text_send_your_current_location">16sp</dimen>
 
     <item name="containerFrag" type="id"/>
 
