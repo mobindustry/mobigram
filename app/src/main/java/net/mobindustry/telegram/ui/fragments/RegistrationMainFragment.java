@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.ui.fragments;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,9 +22,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.utils.CountryObject;
-import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
 import java.io.BufferedReader;
@@ -39,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RegistrationMainFragment extends Fragment {
-
 
     private String phoneNumberForServer = "";
     private TextView chooseCountry;
@@ -159,7 +157,6 @@ public class RegistrationMainFragment extends Fragment {
         code.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -176,17 +173,14 @@ public class RegistrationMainFragment extends Fragment {
                         chooseCountry.setText("Wrong country code");
                     }
                 }
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
         // The user enters the phone number
-
 
         final TextWatcher watcher = new TextWatcher() {
             List<String> phoneList = new ArrayList<>();
@@ -195,12 +189,10 @@ public class RegistrationMainFragment extends Fragment {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -252,11 +244,9 @@ public class RegistrationMainFragment extends Fragment {
                     return true;
                 }
                 return false;
-
             }
         });
     }
-
 
     public static String convertStreamToString(InputStream is)
             throws IOException {
@@ -264,8 +254,7 @@ public class RegistrationMainFragment extends Fragment {
 
         char[] buffer = new char[2048];
         try {
-            Reader reader = new BufferedReader(new InputStreamReader(is,
-                    "UTF-8"));
+            Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             int n;
             while ((n = reader.read(buffer)) != -1) {
                 writer.write(buffer, 0, n);

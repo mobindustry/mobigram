@@ -2,16 +2,12 @@ package net.mobindustry.telegram.utils;
 
 import java.io.Serializable;
 
-/**
- * Created by alytar on 28.05.15.
- */
 public class CountryObject implements Serializable {
 
     private String countryCode;
     private String countryName;
     private String countryStringCode;
     private String initialLetter;
-
 
     public String getInitialLetter() {
         return initialLetter;
@@ -22,7 +18,6 @@ public class CountryObject implements Serializable {
     }
 
     public CountryObject() {
-
     }
 
     public String getCountryCode() {

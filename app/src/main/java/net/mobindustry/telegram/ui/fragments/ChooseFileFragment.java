@@ -19,19 +19,10 @@ import java.text.DecimalFormat;
 
 public class ChooseFileFragment extends Fragment {
 
-    private static double mByte;
-    private LinearLayout internalStorage;
-    private LinearLayout systemRoot;
-    private LinearLayout neTelegramDirectory;
-    private LinearLayout gallery;
-    private TextView infoDeviceMemory;
-    private TextView pathToNeTelegram;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.choose_file_fragment, container, false);
-        return view;
+        return inflater.inflate(R.layout.choose_file_fragment, container, false);
     }
 
     @Override
@@ -49,34 +40,33 @@ public class ChooseFileFragment extends Fragment {
             }
         });
 
-        internalStorage = (LinearLayout) getActivity().findViewById(R.id.internal_storage);
-        systemRoot = (LinearLayout) getActivity().findViewById(R.id.root_storage);
-        neTelegramDirectory = (LinearLayout) getActivity().findViewById(R.id.neTelegram_storage);
-        gallery = (LinearLayout) getActivity().findViewById(R.id.gallery);
-        infoDeviceMemory = (TextView) getActivity().findViewById(R.id.text_info_about_internal_storage_memory);
-        pathToNeTelegram = (TextView) getActivity().findViewById(R.id.path_to_ne_telegram_directory);
+        LinearLayout internalStorage = (LinearLayout) getActivity().findViewById(R.id.internal_storage);
+        LinearLayout systemRoot = (LinearLayout) getActivity().findViewById(R.id.root_storage);
+        LinearLayout neTelegramDirectory = (LinearLayout) getActivity().findViewById(R.id.neTelegram_storage);
+        LinearLayout gallery = (LinearLayout) getActivity().findViewById(R.id.gallery);
+
+        TextView infoDeviceMemory = (TextView) getActivity().findViewById(R.id.text_info_about_internal_storage_memory);
+        TextView pathToNeTelegram = (TextView) getActivity().findViewById(R.id.path_to_ne_telegram_directory);
 
         pathToNeTelegram.setText(Const.PATH_TO_GALLERY);
         infoDeviceMemory.setText("Free " + formatFileSize(getAvailableMemory()) + " of " + formatFileSize(getMaxMemory()));
     }
 
-    public long getAvailableMemory(){
+    public long getAvailableMemory() {
         StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
-        long bytesAvailable = (long) stat.getBlockSize() * (long) stat.getAvailableBlocks();
-        return bytesAvailable;
+        return stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
     }
 
-    public long getMaxMemory(){
+    public long getMaxMemory() {
         StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
-        long totalSize = (long)stat.getBlockCount()*(long)stat.getBlockSize();
-        return totalSize;
+        return stat.getBlockCountLong() * stat.getBlockSizeLong();
     }
 
     public static String formatFileSize(long size) {
         String hrSize = null;
 
         double b = size;
-        mByte = 1024.0;
+        double mByte = 1024.0;
         double k = size / mByte;
         double m = ((size / mByte) / mByte);
         double g = (((size / mByte) / mByte) / mByte);
@@ -95,9 +85,6 @@ public class ChooseFileFragment extends Fragment {
         } else {
             hrSize = dec.format(b).concat(" Bytes");
         }
-
         return hrSize;
     }
-
-
 }

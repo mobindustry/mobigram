@@ -17,10 +17,6 @@ public class FoursquareVenue implements Parcelable {
     @SerializedName("categories")
     private ArrayList<FoursquareCategory> foursquareCategories;
 
-
-    public FoursquareVenue() {
-    }
-
     public String getId() {
         return id;
     }
@@ -41,16 +37,8 @@ public class FoursquareVenue implements Parcelable {
         return foursquareLocation;
     }
 
-    public void setFoursquareLocation(FoursquareLocation foursquareLocation) {
-        this.foursquareLocation = foursquareLocation;
-    }
-
     public ArrayList<FoursquareCategory> getFoursquareCategories() {
         return foursquareCategories;
-    }
-
-    public void setFoursquareCategories(ArrayList<FoursquareCategory> foursquareCategories) {
-        this.foursquareCategories = foursquareCategories;
     }
 
     @Override

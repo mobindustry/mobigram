@@ -7,20 +7,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
 public class ListCountryObject implements Serializable {
-
 
     private List<CountryObject> listCountries = new ArrayList<>();
     private List<Integer> listHeaderPositions = new ArrayList<>();
     private List<Integer> listRowsQuantity = new ArrayList<>();
-    private int countRows = 0;
-
 
     public List<CountryObject> getListCountries() {
         return listCountries;
     }
-
 
     public ListCountryObject(String text) {
         List<String> listSplitRow = splitRow(text);
@@ -80,16 +75,5 @@ public class ListCountryObject implements Serializable {
             }
         }
     }
-
-    public int getRowsQuantity() {
-        int position = listRowsQuantity.get(countRows);
-        if (countRows != listHeaderPositions.size() - 1) {
-            countRows++;
-        } else {
-            countRows = 0;
-        }
-        return position;
-    }
-
 }
 

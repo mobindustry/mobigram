@@ -106,7 +106,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         if (user.photoBig instanceof TdApi.FileEmpty) {
             final TdApi.FileEmpty file = (TdApi.FileEmpty) user.photoBig;
-            if(file.id != 0) {
+            if (file.id != 0) {
                 Log.e("Log", "Download file from chat adapter: " + file.id);
 
                 new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
@@ -120,7 +120,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
             } else {
 
                 int sdk = android.os.Build.VERSION.SDK_INT;
-                if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     icon.setBackgroundDrawable(Utils.getShapeDrawable(60, -user.id));
                 } else {
                     icon.setBackground(Utils.getShapeDrawable(60, -user.id));

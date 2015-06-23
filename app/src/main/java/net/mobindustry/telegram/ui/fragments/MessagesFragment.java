@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,6 +22,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,7 +36,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.makeramen.roundedimageview.RoundedDrawable;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.soundcloud.android.crop.Crop;
 
@@ -46,12 +45,10 @@ import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
-import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
-import net.mobindustry.telegram.ui.adapters.TextWatcherAdapter;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
@@ -70,23 +67,17 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private static final long SCALE_UP_DURATION = 80;
     private static final long SCALE_DOWN_DURATION = 80;
 
+    private BroadcastReceiver receiver;
+    private ChatActivity activity;
     private MessageAdapter adapter;
+    private AnimatorSet currentAnimation;
+    private MessagesFragmentHolder holder;
+    private IntentFilter filter = new IntentFilter(Const.NEW_MESSAGE_INTENT_FILTER);
 
     private ImageView attach;
     private ImageView smiles;
-    private File tempTakePhotoFile;
-    private TextView icon;
-    private TextView name;
-    private TextView lastSeenText;
-
-    private AnimatorSet currentAnimation;
 
     private TdApi.Chat chat;
-    private ChatActivity activity;
-
-    private MessagesFragmentHolder holder;
-    private BroadcastReceiver receiver;
-    private IntentFilter filter = new IntentFilter(Const.NEW_MESSAGE_INTENT_FILTER);
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -157,7 +148,15 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         if (toolbar != null) {
 
             final EditText input = (EditText) getActivity().findViewById(R.id.message_edit_text);
-            input.addTextChangedListener(new TextWatcherAdapter() {
+            input.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
                 @Override
                 public void afterTextChanged(Editable s) {
                     if (s.length() == 0) {
@@ -172,9 +171,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             attach.setImageLevel(LEVEL_ATTACH);
 
             smiles = (ImageView) getActivity().findViewById(R.id.smiles);
-            icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
-            name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
-            lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
+            TextView icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
+            TextView name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
+            TextView lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
 
             attach.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -244,7 +243,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
             toolbar.inflateMenu(R.menu.message_menu);
 
-            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
             if (getResources().getConfiguration().orientation
                     == Configuration.ORIENTATION_PORTRAIT) {
@@ -254,8 +253,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     public void onClick(View v) {
                         LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
                         layout.setVisibility(View.VISIBLE);
-                        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-                        ft.remove(MessagesFragment.this).commit();
+                        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+                        fragmentTransaction.remove(MessagesFragment.this).commit();
                     }
                 });
             } else {
@@ -265,8 +264,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     public void onClick(View v) {
                         LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
                         layout.setVisibility(View.VISIBLE);
-                        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-                        ft.remove(MessagesFragment.this).commit();
+                        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+                        fragmentTransaction.remove(MessagesFragment.this).commit();
                     }
                 });
             }
@@ -370,7 +369,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     private void makePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        tempTakePhotoFile = holder.getNewTempPhotoFile();
+        File tempTakePhotoFile = holder.getNewTempPhotoFile();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempTakePhotoFile));
         startActivityForResult(intent, Const.REQUEST_CODE_TAKE_PHOTO);
         Log.e("LOG", "ACTIVITY " + activity);

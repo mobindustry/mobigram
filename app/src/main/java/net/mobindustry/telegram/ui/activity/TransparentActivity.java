@@ -14,8 +14,6 @@ import net.mobindustry.telegram.utils.Const;
 public class TransparentActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
-    private FragmentTransaction ft;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,26 +22,22 @@ public class TransparentActivity extends AppCompatActivity {
 
         int choice = getIntent().getIntExtra("choice", 0);
 
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         switch (choice) {
             case Const.NEW_MESSAGE_FRAGMENT:
                 NewMessageFragment newMessageFragment = new NewMessageFragment();
-                ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.transparent_content, newMessageFragment);
-                ft.commit();
+                fragmentTransaction.replace(R.id.transparent_content, newMessageFragment);
                 break;
             case Const.FILE_CHOOSE_FRAGMENT:
                 ChooseFileFragment chooseFileFragment = new ChooseFileFragment();
-                ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.transparent_content, chooseFileFragment);
-                ft.commit();
+                fragmentTransaction.replace(R.id.transparent_content, chooseFileFragment);
                 break;
             case Const.MAP_FRAGMENT:
-                LocationFragment locationFragment=new LocationFragment();
-                ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.transparent_content, locationFragment);
-                ft.commit();
+                LocationFragment locationFragment = new LocationFragment();
+                fragmentTransaction.replace(R.id.transparent_content, locationFragment);
                 break;
-
         }
+        fragmentTransaction.commit();
     }
 }

@@ -21,7 +21,6 @@ public class CountriesListAdapter extends BaseAdapter implements StickyListHeade
         this.activity = activity;
         this.listCountryObject = listCountryObject;
         inflater = LayoutInflater.from(activity);
-
     }
 
     @Override
@@ -78,5 +77,14 @@ public class CountriesListAdapter extends BaseAdapter implements StickyListHeade
         holder.countryCode.setText(listCountryObject.getListCountries().get(position).getCountryCode());
 
         return convertView;
+    }
+
+    public class ViewHolderCountriesList {
+        TextView country;
+        TextView countryCode;
+    }
+
+    public class HeaderViewHolderCountriesList {
+        TextView titleLetter;
     }
 }

@@ -29,8 +29,6 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
 
     private boolean stateWaitCode = true;
 
-    private TitanicTextView titanicTextView;
-    private Titanic titanic;
     private TextView textCheckInternet;
 
     @Override
@@ -65,8 +63,8 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
     }
 
     public void start() {
-        titanicTextView = (TitanicTextView) findViewById(R.id.titanic_tv);
-        titanic = new Titanic();
+        TitanicTextView titanicTextView = (TitanicTextView) findViewById(R.id.titanic_tv);
+        Titanic titanic = new Titanic();
         titanic.start(titanicTextView);
 
         new ApiClient<>(new TdApi.AuthGetState(), new GetStateHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);

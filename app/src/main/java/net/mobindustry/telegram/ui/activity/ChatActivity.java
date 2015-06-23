@@ -53,7 +53,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private DrawerLayout drawerLayout;
     private ListView drawerList;
 
-    private FragmentManager fm;
+    private FragmentManager fragmentManager;
     private ActionBarDrawerToggle drawerToggle;
     private CharSequence drawerTitle;
     private CharSequence title;
@@ -74,11 +74,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     public void logOut() {
         Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
         finish();
-        new ApiClient<>(new TdApi.AuthReset(), new LogHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        new ApiClient<>(new TdApi.AuthReset(), new LogHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public long getMyId() {
@@ -86,8 +82,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     }
 
     public MessagesFragment getMessageFragment() {
-        fm = getSupportFragmentManager();
-        return (MessagesFragment) fm.findFragmentById(R.id.messages);
+        fragmentManager = getSupportFragmentManager();
+        return (MessagesFragment) fragmentManager.findFragmentById(R.id.messages);
     }
 
     public void getUserMe() {
@@ -120,21 +116,17 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
 
+        getStickers();
         DownloadFileHolder.clearList();
-
 
         ChatListFragment chatListFragment = new ChatListFragment();
         FragmentTransaction ft
                 = getSupportFragmentManager().beginTransaction();
         //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
         ft.replace(R.id.chat_list, chatListFragment);
-
         ft.commit();
 
         adapter = new NavigationDrawerAdapter(ChatActivity.this);
-
-
-        getStickers();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.chats_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -209,7 +201,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 icon.setVisibility(View.VISIBLE);
 
                 int sdk = android.os.Build.VERSION.SDK_INT;
-                if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     icon.setBackgroundDrawable(Utils.getShapeDrawable(60, -userMe.id));
                 } else {
                     icon.setBackground(Utils.getShapeDrawable(60, -userMe.id));
@@ -253,8 +245,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
                 MenuItemCompat.setActionView(item, sv);
 
-                fm = getSupportFragmentManager();
-                final ChatListFragment chatListFragment = (ChatListFragment) fm.findFragmentById(R.id.chat_list);
+                fragmentManager = getSupportFragmentManager();
+                final ChatListFragment chatListFragment = (ChatListFragment) fragmentManager.findFragmentById(R.id.chat_list);
 
                 sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
@@ -287,7 +279,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     }
 
     private void selectItem(int position) {
-
         switch (position) {
             case 1:
                 logOut();

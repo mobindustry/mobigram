@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.ui.fragments;
 
-
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -24,11 +23,10 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 public class ReceiverCodeFragment extends Fragment implements Serializable {
+
     private EditText codeFromUser;
     private RegistrationActivity activity;
     private TextView countDownTimer;
-    private TextView textForUser;
-    private TextView wrongNumber;
 
     @Nullable
     @Override
@@ -40,14 +38,15 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         InfoRegistration infoRegistration = InfoRegistration.getInstance();
 
         activity = (RegistrationActivity) getActivity();
 
         codeFromUser = (EditText) getActivity().findViewById(R.id.code_from_user);
         countDownTimer = (TextView) getActivity().findViewById(R.id.countdown_timer);
-        textForUser = (TextView) getActivity().findViewById(R.id.text_with_user_phone);
-        wrongNumber = (TextView) getActivity().findViewById(R.id.wrong_number);
+        TextView textForUser = (TextView) getActivity().findViewById(R.id.text_with_user_phone);
+        TextView wrongNumber = (TextView) getActivity().findViewById(R.id.wrong_number);
 
         wrongNumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +77,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
         codeFromUser.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_DONE && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                     activity.setCodeFromServer(codeFromUser.getText().toString());
                     return true;
                 }

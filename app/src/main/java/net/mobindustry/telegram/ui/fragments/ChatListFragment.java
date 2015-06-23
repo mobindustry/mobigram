@@ -58,7 +58,7 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     public void onActivityCreated(Bundle savedState) {
         super.onActivityCreated(savedState);
 
-        getChatsList(0, 200);
+        getChatsList(0, 200); //TODO constant or logical get;
 
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.attachToListView(getListView());
@@ -80,11 +80,9 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
         View detailsFrame = getActivity().findViewById(R.id.messages);
         dualPane = detailsFrame != null
                 && detailsFrame.getVisibility() == View.VISIBLE;
-
         if (savedState != null) {
             currentCheckPosition = savedState.getInt("curChoice", 0);
         }
-
         if (dualPane) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
@@ -142,7 +140,6 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
             LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
             layout.setVisibility(View.GONE);
         }
-
     }
 
     @Override

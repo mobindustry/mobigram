@@ -13,14 +13,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.model.holder.InfoRegistration;
+import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 
 public class YourNameFragment extends Fragment {
 
     private EditText firstName;
     private EditText lastName;
-    private TextView cancel;
     private RegistrationActivity activity;
 
     @Override
@@ -39,13 +38,13 @@ public class YourNameFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final InfoRegistration infoRegistration=InfoRegistration.getInstance();
+        final InfoRegistration infoRegistration = InfoRegistration.getInstance();
         activity = (RegistrationActivity) getActivity();
         firstName = (EditText) activity.findViewById(R.id.first_name);
         lastName = (EditText) activity.findViewById(R.id.last_name);
         firstName.setText(infoRegistration.getFirstName());
         lastName.setText(infoRegistration.getLastName());
-        cancel = (TextView) activity.findViewById(R.id.cancel_registration);
+        TextView cancel = (TextView) activity.findViewById(R.id.cancel_registration);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.yor_name_toolbar);
         toolbar.inflateMenu(R.menu.ok);
@@ -65,7 +64,7 @@ public class YourNameFragment extends Fragment {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((RegistrationActivity)getActivity()).setAuthReset();
+                ((RegistrationActivity) getActivity()).setAuthReset();
                 infoRegistration.setPhone("");
             }
         });

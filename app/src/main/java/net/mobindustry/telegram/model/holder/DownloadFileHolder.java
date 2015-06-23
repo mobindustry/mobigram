@@ -18,7 +18,7 @@ public class DownloadFileHolder {
 
     public static String getUpdatedFilePath(int id) {
         for (int i = 0; i < list.size(); i++) {
-            if(list.get(i).fileId == id) {
+            if (list.get(i).fileId == id) {
                 return list.get(i).path;
             }
         }

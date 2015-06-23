@@ -1,7 +1,5 @@
 package net.mobindustry.telegram.model.holder;
 
-import android.util.Log;
-
 import org.drinkless.td.libcore.telegram.TdApi;
 
 public class UserMeHolder {

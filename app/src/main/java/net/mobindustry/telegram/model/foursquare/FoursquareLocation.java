@@ -25,65 +25,17 @@ public class FoursquareLocation implements Parcelable {
 
     private ArrayList<String> formattedAddress;
 
-    public FoursquareLocation() {
-    }
-
     public double getLatitude() {
         return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
     }
 
     public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public long getDistance() {
-        return distance;
-    }
-
-    public void setDistance(long distance) {
-        this.distance = distance;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public ArrayList<String> getFormattedAddress() {
-        return formattedAddress;
-    }
-
-    public void setFormattedAddress(ArrayList<String> formattedAddress) {
-        this.formattedAddress = formattedAddress;
-    }
-
     public String getAddress() {
         return address;
     }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
 
     @Override
     public int describeContents() {

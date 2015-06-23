@@ -28,9 +28,7 @@ public class NewMessageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_message_fragment, container, false);
-
-        return view;
+        return inflater.inflate(R.layout.new_message_fragment, container, false);
     }
 
     public void getContacts() {
@@ -51,7 +49,7 @@ public class NewMessageFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.newMessageToolbar);
-        toolbar.setTitle("New message");
+        toolbar.setTitle(getString(R.string.new_message_fragment_title));
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

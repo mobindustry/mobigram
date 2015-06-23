@@ -23,12 +23,11 @@ import java.io.Serializable;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ChooseCountryList extends Fragment implements Serializable {
+
     private StickyListHeadersListView list;
-    private CountriesListAdapter countriesListAdapter;
     private FragmentTransaction fragmentTransaction;
     private RegistrationMainFragment registrationMainFragment;
     private ListCountryObject countries;
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choose_country_fragment, container, false);
@@ -43,7 +42,6 @@ public class ChooseCountryList extends Fragment implements Serializable {
         Log.e("LOG", "PHONE " + infoRegistration.getPhone());
         RegistrationActivity activity = (RegistrationActivity) getActivity();
         countries = activity.getListCountryObject();
-
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.choose_country);
@@ -61,15 +59,13 @@ public class ChooseCountryList extends Fragment implements Serializable {
             }
         });
 
-
-        countriesListAdapter = new CountriesListAdapter(getActivity(), countries);
+        CountriesListAdapter countriesListAdapter = new CountriesListAdapter(getActivity(), countries);
         list.setAdapter(countriesListAdapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 fragmentTransaction = getFragmentManager().beginTransaction();
-
                 registrationMainFragment = new RegistrationMainFragment();
 
                 CountryObject countryObject = countries.getListCountries().get(position);

@@ -29,14 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FoursquareListFragment extends Fragment implements Serializable {
+
     private FragmentTransaction ft;
-    private Toolbar toolbar;
     private FoursquareAdapter foursquareAdapter;
-    private ListView foursquareList;
     private List<FoursquareVenue> foursquareVenueList = new ArrayList<>();
     private double lng;
     private double lat;
-
 
     @Nullable
     @Override
@@ -48,8 +46,7 @@ public class FoursquareListFragment extends Fragment implements Serializable {
         Log.e("LOG", "LIST " + foursquareVenueList.size());
         Log.e("LOG", "ADAPTER " + foursquareAdapter);
         foursquareAdapter.addAll(foursquareVenueList);
-        View view = inflater.inflate(R.layout.foursquare_list_fragment_layout, container, false);
-        return view;
+        return inflater.inflate(R.layout.foursquare_list_fragment_layout, container, false);
     }
 
     //TODO fix correct update after send;
@@ -67,9 +64,9 @@ public class FoursquareListFragment extends Fragment implements Serializable {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        foursquareList = (ListView) getActivity().findViewById(R.id.foursquare_list);
+        ListView foursquareList = (ListView) getActivity().findViewById(R.id.foursquare_list);
         foursquareList.setAdapter(foursquareAdapter);
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_foursquare_list);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_foursquare_list);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setTitle(R.string.text_nearest_checkpoints);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -91,7 +88,5 @@ public class FoursquareListFragment extends Fragment implements Serializable {
                 sendGeoPointMessage(lat, lng);
             }
         });
-
-
     }
 }

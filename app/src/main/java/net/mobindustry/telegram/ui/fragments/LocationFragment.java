@@ -52,16 +52,12 @@ import java.util.List;
 
 public class LocationFragment extends Fragment implements ApiClient.OnApiResultHandler {
 
-    private SupportMapFragment mapFragment;
     private GoogleMap map;
     private Marker myMarker;
-    private Toolbar toolbar;
     private TextView textCurrentPosition;
     private LatLng userLocation;
     private LocationManager service;
     private List<FoursquareVenue> foursquareVenueList;
-    private FragmentTransaction ft;
-    private FoursquareHolder foursquareHolder;
     private InfoLocation infoLocation;
 
     @Override
@@ -85,8 +81,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.location_fragment_layout, container, false);
-        return view;
+        return inflater.inflate(R.layout.location_fragment_layout, container, false);
     }
 
     @Override
@@ -121,7 +116,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             }
         });
 
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_map);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_map);
         toolbar.inflateMenu(R.menu.map_menu);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setTitle(R.string.text_location);
@@ -155,7 +150,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             }
         });
 
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -178,7 +173,6 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                 }
             }
         });
-
 
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab); //my custom button
         fab.setColorPressedResId(R.color.button_on_map_pressed);
@@ -293,14 +287,14 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         protected void onPostExecute(List<FoursquareVenue> aVoid) {
             super.onPostExecute(aVoid);
             Log.e("Log", "POST");
-            foursquareHolder = FoursquareHolder.getInstance();
+            FoursquareHolder foursquareHolder = FoursquareHolder.getInstance();
             foursquareHolder.setFoursquareVenueList(aVoid);
             FoursquareListFragment foursquareListFragment;
             foursquareListFragment = new FoursquareListFragment();
             foursquareHolder.setFoursquareVenueList(foursquareVenueList);
-            ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.transparent_content, foursquareListFragment);
-            ft.commit();
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.transparent_content, foursquareListFragment);
+            fragmentTransaction.commit();
         }
     }
 }

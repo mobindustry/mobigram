@@ -10,11 +10,8 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
@@ -24,29 +21,13 @@ import net.mobindustry.telegram.core.handlers.ErrorHandler;
 import net.mobindustry.telegram.core.handlers.GetStateHandler;
 import net.mobindustry.telegram.core.handlers.UserMeHandler;
 import net.mobindustry.telegram.model.holder.InfoRegistration;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyInvalid;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyUnregistered;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogFirstNameInvalid;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogFloodWait;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogLastNameInvalid;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneCodeEmpty;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneCodeExpired;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneCodeInvalid;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneNumberInvalid;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneNumberOccupied;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneNumberUnoccupied;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogSessionExpired;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogSessionRevoked;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogUserDeactivated;
-import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
+import net.mobindustry.telegram.model.holder.UserMeHolder;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
+import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.YourNameFragment;
 import net.mobindustry.telegram.utils.CountryObject;
-import net.mobindustry.telegram.model.holder.UserMeHolder;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
-import org.drinkless.td.libcore.telegram.Client;
-import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.IOException;
@@ -55,10 +36,6 @@ import java.util.Locale;
 
 public class RegistrationActivity extends AppCompatActivity implements ApiClient.OnApiResultHandler {
 
-    private Fragment registrationUserPhone;
-    private Fragment receiverCodeFragment;
-    private Fragment yourNameFragment;
-    private FragmentTransaction fragmentTransaction;
     private CountryObject countryObject;
     private ListCountryObject listCountryObject;
     private LocationManager locationManager;
@@ -66,7 +43,7 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
     @Override
     public void onApiResult(BaseHandler output) {
 
-        if(output.hasErrors()) {
+        if (output.hasErrors()) {
             new ErrorHandler(getSupportFragmentManager(), output.getError());
         }
 
@@ -78,29 +55,29 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
         if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
             GetStateHandler handler = (GetStateHandler) output;
 
+            FragmentTransaction fragmentTransaction;
             if (handler.getResponse() == Enums.StatesEnum.WaitSetPhoneNumber) {
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                registrationUserPhone = new RegistrationMainFragment();
+                Fragment registrationUserPhone = new RegistrationMainFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationUserPhone);
                 fragmentTransaction.commit();
             }
             if (handler.getResponse() == Enums.StatesEnum.OK) {
                 new ApiClient<>(new TdApi.GetMe(), new UserMeHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-
                 Intent intent = new Intent(RegistrationActivity.this, ChatActivity.class);
                 startActivity(intent);
                 finish();
             }
             if (handler.getResponse() == Enums.StatesEnum.WaitSetCode) {
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                receiverCodeFragment = new ReceiverCodeFragment();
+                Fragment receiverCodeFragment = new ReceiverCodeFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, receiverCodeFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
             if (handler.getResponse() == Enums.StatesEnum.WaitSetName) {
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                yourNameFragment = new YourNameFragment();
+                Fragment yourNameFragment = new YourNameFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, yourNameFragment);
                 fragmentTransaction.commit();
             }

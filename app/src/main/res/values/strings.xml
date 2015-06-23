@@ -41,6 +41,7 @@
     <string name="text_satellite">Satellite</string>
     <string name="text_hybrid">Hybrid</string>
     <string name="text_send_selected_location">Send your current location</string>
+    <string name="new_message_fragment_title">New message</string>
 
 
 </resources>

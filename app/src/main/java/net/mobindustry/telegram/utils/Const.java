@@ -15,7 +15,6 @@ public class Const {
 
     public static final int REQUEST_CODE_TAKE_PHOTO = 101;
     public static final int REQUEST_CODE_SELECT_IMAGE = 102;
-
     public static final int REQUEST_CODE_NEW_MESSAGE = 110;
     public static final int CROP_REQUEST_CODE = 111;
 
@@ -23,8 +22,6 @@ public class Const {
 
 
     public static final String DATE_TIME_PHOTO_PATTERN = "yyyyMMdd_HHmmss";
-    public static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    public static final String DATE_PATTERN = "yyyy-MM-dd";
     public static final String TIME_PATTERN = "HH:mm";
 
     public static final int NEW_MESSAGE_FRAGMENT = 200;
@@ -47,7 +44,6 @@ public class Const {
     public static final String CLIENT_ID_FOR_FOURSQUARE = "ABDMITGWDOMKIGHTWRU25XKIS2MJ3IPJQOEMZ5CVTRR0H05I";
     public static final String CLIENT_SECRET_FOR_FOURSQUARE = "XHS2CWCC5VD23MP1W2120RMUUYZJXFTCHK4A5KA3JAEZRFRG";
     public static final String URL_FOR_FOURSQUARE = "https://api.foursquare.com";
-    public static final String LIST_KEY_FOR_FOURSQUARE = "foursquare list";
 
     public static final String NEW_MESSAGE_INTENT_FILTER = "net.mobindustry.telegram.new_message";
 

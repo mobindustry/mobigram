@@ -196,10 +196,10 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
         if (item.message instanceof TdApi.MessageUnsupported) {
             Log.i("Message", "Unsupported " + item.message);
-            TextView unsupport = new TextView(getContext());
-            unsupport.setText("Unsupport");
+            TextView unsupported = new TextView(getContext());
+            unsupported.setText("Unsupported");
 
-            layout.addView(unsupport);
+            layout.addView(unsupported);
         }
 
         long timeInMls = item.date;
