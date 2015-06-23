@@ -120,6 +120,9 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
 
+        DownloadFileHolder.clearList();
+
+
         ChatListFragment chatListFragment = new ChatListFragment();
         FragmentTransaction ft
                 = getSupportFragmentManager().beginTransaction();
@@ -130,7 +133,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
         adapter = new NavigationDrawerAdapter(ChatActivity.this);
 
-        DownloadFileHolder.clearList();
 
         getStickers();
 
