@@ -1,7 +1,6 @@
 package net.mobindustry.telegram.ui.activity;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -15,24 +14,37 @@ import com.romainpiel.titanic.library.Titanic;
 import com.romainpiel.titanic.library.TitanicTextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.Enums;
+import net.mobindustry.telegram.core.handlers.GetStateHandler;
 
-import org.drinkless.td.libcore.telegram.Client;
-import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements ApiClient.OnApiResultHandler {
 
     private SplashStart splashStart;
 
-    private Client client;
-    private Client.ResultHandler resultHandler;
     private boolean stateWaitCode = true;
 
-    private TitanicTextView tv;
+    private TitanicTextView titanicTextView;
     private Titanic titanic;
     private TextView textCheckInternet;
+
+    @Override
+    public void onApiResult(BaseHandler output) {
+
+        if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
+            if (((GetStateHandler) output).getResponse() != Enums.StatesEnum.WaitSetPhoneNumber) {
+                stateWaitCode = true;
+            }
+            if (((GetStateHandler) output).getResponse() != Enums.StatesEnum.OK) {
+                stateWaitCode = false;
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,21 +54,6 @@ public class MainActivity extends Activity {
         textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
         Log.e("LOG", "##### Start program #####");
-
-        resultHandler = new Client.ResultHandler() {
-            @Override
-            public void onResult(TdApi.TLObject object) {
-
-                if (object instanceof TdApi.AuthStateOk) {
-                    stateWaitCode = false;
-                }
-
-                if (object instanceof TdApi.AuthStateWaitSetPhoneNumber) {
-                    stateWaitCode = true;
-                }
-            }
-        };
-        client = TG.getClientInstance();
 
         if (isOnline()) {
             start();
@@ -68,11 +65,11 @@ public class MainActivity extends Activity {
     }
 
     public void start() {
-        tv = (TitanicTextView) findViewById(R.id.titanic_tv);
+        titanicTextView = (TitanicTextView) findViewById(R.id.titanic_tv);
         titanic = new Titanic();
-        titanic.start(tv);
+        titanic.start(titanicTextView);
 
-        client.send(new TdApi.AuthGetState(), resultHandler);
+        new ApiClient<>(new TdApi.AuthGetState(), new GetStateHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         splashStart = new SplashStart();
         splashStart.execute();
     }
@@ -100,7 +97,6 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
             if (stateWaitCode) {
                 Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
                 startActivity(intent);

@@ -214,7 +214,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 }
                 icon.setText(Utils.getInitials(userMe.firstName, userMe.lastName));
             }
-
         }
         if (userMe.photoBig instanceof TdApi.FileLocal) {
             imageIcon.setVisibility(View.VISIBLE);

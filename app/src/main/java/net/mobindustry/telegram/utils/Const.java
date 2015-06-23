@@ -33,6 +33,7 @@ public class Const {
 
     public static final int CHAT_NOT_FOUND = 1001;
 
+    public static final int AUTH_HANDLER_ID = 0x0;
     public static final int CHATS_HANDLER_ID = 0x1;
     public static final int CONTACTS_HANDLER_ID = 0x2;
     public static final int MESSAGE_HANDLER_ID = 0x3;
@@ -49,5 +50,6 @@ public class Const {
     public static final String LIST_KEY_FOR_FOURSQUARE = "foursquare list";
 
     public static final String NEW_MESSAGE_INTENT_FILTER = "net.mobindustry.telegram.new_message";
+
 
 }
