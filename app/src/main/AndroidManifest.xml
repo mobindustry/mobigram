@@ -54,5 +54,8 @@
             android:name=".ui.activity.TransparentActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
             android:theme="@style/Theme.AppCompat.Translucent" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="84181b70bf7c752771df70f1bbf274b88e8cdde0" />
     </application>
 </manifest>

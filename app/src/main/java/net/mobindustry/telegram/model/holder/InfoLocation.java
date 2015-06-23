@@ -6,7 +6,6 @@ public class InfoLocation {
 
     private static InfoLocation instance;
 
-
     private LatLng lng = null;
 
 

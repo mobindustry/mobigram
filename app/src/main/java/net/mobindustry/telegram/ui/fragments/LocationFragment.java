@@ -165,7 +165,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
                 map.getUiSettings().setMyLocationButtonEnabled(false);
 
                 Location location = getLastKnownLocation();
-                if(location == null) {
+                if (location == null) {
                     map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
                         @Override
                         public void onMyLocationChange(Location location) {
@@ -228,9 +228,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     }
 
     private void init(Location location) {
-
-
-            userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(userLocation)
