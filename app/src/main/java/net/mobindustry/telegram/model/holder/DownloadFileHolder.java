@@ -1,32 +1,23 @@
 package net.mobindustry.telegram.model.holder;
 
-import android.util.Log;
-
 import org.drinkless.td.libcore.telegram.TdApi;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class DownloadFileHolder {
 
-    private static List<TdApi.UpdateFile> list = new ArrayList<>();
+    private static Map<Integer, String> map = new TreeMap<>();
 
     public static void addFile(TdApi.UpdateFile file) {
-        Log.i("Log", "DownloadFileHolder: Add file " + file.fileId);
-        list.add(file);
+        map.put(file.fileId, file.path);
     }
 
     public static String getUpdatedFilePath(int id) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).fileId == id) {
-                return list.get(i).path;
-            }
-        }
-        return null;
+        return map.get(id);
     }
 
     public static void clearList() {
-        Log.i("Log", "DownloadFileHolder: List clear.");
-        list.clear();
+        map.clear();
     }
 }

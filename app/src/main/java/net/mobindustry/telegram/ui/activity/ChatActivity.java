@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -97,12 +98,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
             if (stickers == null) {
                 getStickers();
             } else {
-                for (int i = 0; i < stickers.stickers.length; i++) {
-                    if (stickers.stickers[i].sticker instanceof TdApi.FileEmpty) {
-                        TdApi.FileEmpty file = (TdApi.FileEmpty) stickers.stickers[i].sticker;
-                        downloadFile(file.id);
-                    }
-                }
+                Log.i("Log", "Stickers " + stickers);
             }
         }
         if (output.getHandlerId() == UserMeHandler.HANDLER_ID) {

@@ -66,6 +66,26 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         return typeCount;
     }
 
+    public void fileCheckerAndLoader(final TdApi.File file, final ImageView view) {
+        if (file instanceof TdApi.FileEmpty) {
+            final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+            Log.e("Log", "Download file from message adapter: " + fileEmpty.id);
+
+            new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                @Override
+                public void onApiResult(BaseHandler output) {
+                    if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                        ImageLoaderHelper.displayImage(String.valueOf(fileEmpty.id), view);
+                    }
+                }
+            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        }
+        if (file instanceof TdApi.FileLocal) {
+            TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+            ImageLoaderHelper.displayImage("file://" + fileLocal.path, view);
+        }
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -106,23 +126,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 if (messagePhoto.photo.photos[i].type.equals("m")) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[i].width, messagePhoto.photo.photos[i].height);
                     photo.setLayoutParams(layoutParams);
-                    if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileEmpty) {
-                        final TdApi.FileEmpty file = (TdApi.FileEmpty) messagePhoto.photo.photos[i].photo;
-                        Log.e("Log", "Download file from message adapter: " + file.id);
 
-                        new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                            @Override
-                            public void onApiResult(BaseHandler output) {
-                                if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                                    ImageLoaderHelper.displayImage(String.valueOf(file.id), photo);
-                                }
-                            }
-                        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                    }
-                    if (messagePhoto.photo.photos[i].photo instanceof TdApi.FileLocal) {
-                        TdApi.FileLocal file = (TdApi.FileLocal) messagePhoto.photo.photos[i].photo;
-                        ImageLoaderHelper.displayImage("file://" + file.path, photo);
-                    }
+                    fileCheckerAndLoader(messagePhoto.photo.photos[i].photo, photo);
+
                 }
             }
 
@@ -171,14 +177,12 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         if (item.message instanceof TdApi.MessageSticker) {
             TdApi.Sticker sticker = ((TdApi.MessageSticker) item.message).sticker;
 
-            ImageView stickerImage = new ImageView(getContext());
+            final ImageView stickerImage = new ImageView(getContext());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 300);
             stickerImage.setLayoutParams(layoutParams);
 
-            if (sticker.sticker instanceof TdApi.FileLocal) {
-                TdApi.FileLocal file = (TdApi.FileLocal) sticker.sticker;
-                ImageLoaderHelper.displayImage("file://" + file.path, stickerImage);
-            }
+            fileCheckerAndLoader(sticker.sticker, stickerImage);
+
             layout.addView(stickerImage);
         }
         if (item.message instanceof TdApi.MessageVideo) {
@@ -188,7 +192,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             if (messageVideo.video.thumb.photo instanceof TdApi.FileLocal) {
                 TdApi.FileLocal file = (TdApi.FileLocal) messageVideo.video.thumb.photo;
                 ImageView video = new ImageView(getContext());
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(50, 50);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
                 video.setLayoutParams(layoutParams);
                 video.setImageURI(Uri.parse(file.path));
                 layout.addView(video);
