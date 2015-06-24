@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
@@ -44,6 +45,8 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     }
 
     public void setChatsList(final TdApi.Chats chats) {
+        ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.chat_list_progress_bar);
+        progressBar.setVisibility(View.GONE);
         Log.i("LOG", "chatsFragment setList");
         this.chats = chats;
         adapter.clear();

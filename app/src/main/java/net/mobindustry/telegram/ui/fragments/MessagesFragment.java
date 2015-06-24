@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,7 +98,14 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     public void setChatHistory(final TdApi.Messages messages) {
+        ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.messages_progress_bar);
+        progressBar.setVisibility(View.GONE);
+
         adapter.clear();
+
+        Log.e("Log", "0: " + messages.messages[0].toString());
+        Log.e("Log", messages.messages.length + ": " + messages.messages[messages.messages.length-1].toString());
+
         adapter.addAll(Utils.reverseMessages(messages.messages));
     }
 

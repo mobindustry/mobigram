@@ -56,7 +56,7 @@ dependencies {
     compile 'com.github.jorgecastilloprz:pagedheadlistview:1.0.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'com.turbomanage.basic-http-client:http-client-android:0.89'
-    compile('com.crashlytics.sdk.android:crashlytics:2.3.2@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.4.0@aar') {
         transitive = true;
     }
 }
