@@ -117,7 +117,7 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
         try {
             String country = getLastKnownCountry();
             if (country != null) {
-                holder.setCountryName(getLastKnownCountry());
+                holder.setCountryName(country);
             }
         } catch (IOException e) {
             e.printStackTrace();
