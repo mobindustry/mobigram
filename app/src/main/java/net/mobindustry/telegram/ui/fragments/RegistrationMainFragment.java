@@ -168,6 +168,10 @@ public class RegistrationMainFragment extends Fragment {
                         chooseCountry.setText("Wrong country code");
                     }
                 }
+                if(s.length() == 0) {
+                    chooseCountry.setText("");
+                    chooseCountry.setHint(R.string.choose_country);
+                }
             }
 
             @Override

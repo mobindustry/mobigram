@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,6 +61,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MessagesFragment extends Fragment implements Serializable, ApiClient.OnApiResultHandler {
 
@@ -79,6 +82,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private ImageView smiles;
 
     private TdApi.Chat chat;
+    private List<TdApi.Message> list = new LinkedList<>();;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -98,15 +102,17 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     public void setChatHistory(final TdApi.Messages messages) {
-        ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.messages_progress_bar);
-        progressBar.setVisibility(View.GONE);
 
         adapter.clear();
 
-        Log.e("Log", "0: " + messages.messages[0].toString());
-        Log.e("Log", messages.messages.length + ": " + messages.messages[messages.messages.length-1].toString());
+        for (int i = 0; i < messages.messages.length; i++) {
+            list.add(0, messages.messages[i]);
+        }
 
-        adapter.addAll(Utils.reverseMessages(messages.messages));
+            ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.messages_progress_bar);
+            progressBar.setVisibility(View.GONE);
+            adapter.addAll(list);
+
     }
 
     public void getChatHistory(final long id, final int messageId, final int offset, final int limit) {
@@ -127,6 +133,18 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         View view = inflater.inflate(R.layout.message_fragment, container, false);
 
         ListView messageListView = (ListView) view.findViewById(R.id.messageListView);
+        messageListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if(firstVisibleItem <= 5) {
+
+                }
+            }
+        });
         adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId());
         messageListView.setAdapter(adapter);
         return view;
@@ -145,7 +163,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 int id = intent.getIntExtra("message_id", 0);
                 long chat_id = intent.getLongExtra("chatId", 0);
                 if (chat_id == chat.id) {
-                    getChatHistory(chat_id, id, -1, 200);
+                    //todo get last message and add to end of list;
+                    getChatHistory(chat_id, id, -1, 1);
                 }
             }
         };
@@ -438,6 +457,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         if (output.getHandlerId() == ChatHistoryHandler.HANDLER_ID) {
             TdApi.Messages messages = (TdApi.Messages) output.getResponse();
             Log.e("Log", "ChatId " + getShownChatId());
+
+            //todo make different choices receiving messages;
 
             if (chat.id == messages.messages[0].chatId) {
                 setChatHistory(messages);

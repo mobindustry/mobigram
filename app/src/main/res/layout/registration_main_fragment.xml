@@ -46,7 +46,7 @@
             android:singleLine="true"
             android:text="+"
             android:inputType="phone"
-
+            android:maxLength="5"
             />
 
         <EditText

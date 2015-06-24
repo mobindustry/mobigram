@@ -112,7 +112,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
 
-        getStickers();
         DownloadFileHolder.clearList();
 
         ChatListFragment chatListFragment = new ChatListFragment();
@@ -123,6 +122,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         ft.commit();
 
         adapter = new NavigationDrawerAdapter(ChatActivity.this);
+
+        getStickers();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.chats_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
