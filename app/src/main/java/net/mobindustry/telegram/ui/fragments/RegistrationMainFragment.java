@@ -72,18 +72,13 @@ public class RegistrationMainFragment extends Fragment {
 
         //Take file countries.txt from assets folder and parse it to String extFileFromAssets.
         String textFileFromAssets = null;
-
-        InputStream is = null;
         try {
-            is = getResources().getAssets().open("countries.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
+            InputStream is = getResources().getAssets().open("countries.txt");
             textFileFromAssets = convertStreamToString(is);
         } catch (IOException e) {
-            e.printStackTrace();
+            // do nothing
         }
+
         countries = new ListCountryObject(textFileFromAssets);
         activity = (RegistrationActivity) getActivity();
         activity.setListCountryObject(countries);
