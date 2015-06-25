@@ -1,6 +1,9 @@
 package net.mobindustry.telegram.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -35,6 +38,7 @@ import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.LogHandler;
 import net.mobindustry.telegram.core.handlers.StickersHandler;
 import net.mobindustry.telegram.core.handlers.UserMeHandler;
+import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.UserMeHolder;
@@ -54,6 +58,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     private DrawerLayout drawerLayout;
     private ListView drawerList;
+    private BroadcastReceiver receiver;
+    private IntentFilter filter = new IntentFilter();
 
     private FragmentManager fragmentManager;
     private ActionBarDrawerToggle drawerToggle;
@@ -88,6 +94,11 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         return (MessagesFragment) fragmentManager.findFragmentById(R.id.messages);
     }
 
+    public ChatListFragment getChatListFragment() {
+        fragmentManager = getSupportFragmentManager();
+        return (ChatListFragment) fragmentManager.findFragmentById(R.id.chat_list);
+    }
+
     public void getUserMe() {
         new ApiClient<>(new TdApi.GetMe(), new UserMeHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
@@ -98,7 +109,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
             public void onApiResult(BaseHandler output) {
                 if (output.getHandlerId() == ContactsHandler.HANDLER_ID) {
                 }
-
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
@@ -123,6 +133,32 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.e("Log", intent.getAction());
+                if (intent.getAction().equals(Const.NEW_MESSAGE_ACTION)) {
+                    MessagesFragment fragment = getMessageFragment();
+                    if (fragment != null) {
+                        int id = intent.getIntExtra("message_id", 0);
+                        long chat_id = intent.getLongExtra("chatId", 0);
+                        if (chat_id == fragment.getShownChatId()) {
+                            fragment.getChatHistory(chat_id, id, -1, 1, Enums.MessageAddType.NEW);
+                        }
+                    }
+                    getChatListFragment().getChatsList(0, 200);
+                }
+                if (intent.getAction().equals(Const.READ_INBOX_ACTION)) {
+                    getChatListFragment().getChatsList(0, 200);
+                }
+            }
+        };
+
+
+        filter.addAction(Const.NEW_MESSAGE_ACTION);
+        filter.addAction(Const.READ_INBOX_ACTION);
+        registerReceiver(receiver, filter);
 
         DownloadFileHolder.clearList();
 
@@ -226,7 +262,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         }
 
         drawerList.addHeaderView(header, null, false);
-
         drawerList.setAdapter(adapter);
     }
 

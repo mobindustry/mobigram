@@ -25,7 +25,7 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
         switch (object.getConstructor()) {
             case TdApi.UpdateMessageId.CONSTRUCTOR: {
                 TdApi.UpdateMessageId message = (TdApi.UpdateMessageId) object;
-                Intent intent = new Intent(Const.NEW_MESSAGE_INTENT_FILTER);
+                Intent intent = new Intent(Const.NEW_MESSAGE_ACTION);
                 intent.putExtra("message_id", message.newId);
                 intent.putExtra("chatId", message.chatId);
                 context.sendBroadcast(intent);
@@ -33,12 +33,18 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
             }
             case TdApi.UpdateNewMessage.CONSTRUCTOR: {
                 TdApi.UpdateNewMessage message = (TdApi.UpdateNewMessage) object;
-                Intent intent = new Intent(Const.NEW_MESSAGE_INTENT_FILTER);
+                Intent intent = new Intent(Const.NEW_MESSAGE_ACTION);
                 intent.putExtra("message_id", message.message.id);
                 intent.putExtra("chatId", message.message.chatId);
                 context.sendBroadcast(intent);
                 break;
             }
+            case TdApi.UpdateChatReadInbox.CONSTRUCTOR:
+                Intent intent = new Intent(Const.READ_INBOX_ACTION);
+                context.sendBroadcast(intent);
+                break;
+            case TdApi.UpdateChatReadOutbox.CONSTRUCTOR:
+                break;
             case TdApi.UpdateFile.CONSTRUCTOR: {
                 TdApi.UpdateFile file = (TdApi.UpdateFile) object;
                 DownloadFileHolder.addFile(file);

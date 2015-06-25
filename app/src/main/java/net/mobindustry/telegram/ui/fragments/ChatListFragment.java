@@ -125,6 +125,7 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
         TdApi.Chat selectedItem = adapter.getItem(pos);
+        Log.e("Log", selectedItem.toString());
         clickedId = selectedItem.id;
         showMessages(pos);
     }

@@ -64,7 +64,6 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     public void onApiResult(BaseHandler output) {
     }
 
-    //TODO fix correct update after send;
     public void sendGeoPointMessage(double lat, double lng) {
         getActivity().finish();
         long id = MessagesFragmentHolder.getInstance().getChat().id;

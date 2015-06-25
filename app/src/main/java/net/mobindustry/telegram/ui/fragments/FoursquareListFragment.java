@@ -49,7 +49,7 @@ public class FoursquareListFragment extends Fragment implements Serializable {
         return inflater.inflate(R.layout.foursquare_list_fragment_layout, container, false);
     }
 
-    //TODO fix correct update after send;
+
     public void sendGeoPointMessage(double lat, double lng) {
         getActivity().finish();
         long id = MessagesFragmentHolder.getInstance().getChat().id;

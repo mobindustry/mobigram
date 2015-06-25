@@ -47,7 +47,7 @@ public class Const {
     public static final String CLIENT_SECRET_FOR_FOURSQUARE = "XHS2CWCC5VD23MP1W2120RMUUYZJXFTCHK4A5KA3JAEZRFRG";
     public static final String URL_FOR_FOURSQUARE = "https://api.foursquare.com";
 
-    public static final String NEW_MESSAGE_INTENT_FILTER = "net.mobindustry.telegram.new_message";
-
+    public static final String READ_INBOX_ACTION = "net.mobindustry.telegram.message_read_action";
+    public static final String NEW_MESSAGE_ACTION = "net.mobindustry.telegram.new_message_action";
 
 }

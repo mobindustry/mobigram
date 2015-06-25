@@ -71,12 +71,10 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     public boolean loading = false;
 
-    private BroadcastReceiver receiver;
     private ChatActivity activity;
     private MessageAdapter adapter;
     private AnimatorSet currentAnimation;
     private MessagesFragmentHolder holder;
-    private IntentFilter filter = new IntentFilter(Const.NEW_MESSAGE_INTENT_FILTER);
 
     private ImageView attach;
     private ImageView smiles;
@@ -204,20 +202,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
         holder = MessagesFragmentHolder.getInstance();
         activity = (ChatActivity) getActivity();
-
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                int id = intent.getIntExtra("message_id", 0);
-                long chat_id = intent.getLongExtra("chatId", 0);
-                if (chat_id == chat.id) {
-                    //todo get last message and add to end of list;
-                    getChatHistory(chat_id, id, -1, 1, Enums.MessageAddType.NEW);
-                }
-            }
-        };
-
-        activity.registerReceiver(receiver, filter);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
@@ -353,13 +337,11 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     @Override
     public void onPause() {
         super.onPause();
-        activity.unregisterReceiver(receiver);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        activity.registerReceiver(receiver, filter);
     }
 
     private void animateLevel(final int level) {

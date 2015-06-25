@@ -66,7 +66,7 @@
     </LinearLayout>
 <LinearLayout
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="end"
     android:orientation="vertical">
 
@@ -74,17 +74,22 @@
         android:id="@+id/contactItemTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_10dp"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginRight="@dimen/margin_10dp"
         android:textColor="#ff6e6e6e"
-        android:textSize="12sp"/>
+        android:textSize="12sp"
+        android:layout_gravity="top"
+        />
 
     <TextView
         android:id="@+id/chat_notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_10dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="@dimen/margin_10dp"
         android:textColor="#ffffffff"
         android:textSize="12sp"
+        android:layout_gravity="bottom|center_horizontal"
         android:gravity="center"
         />
 

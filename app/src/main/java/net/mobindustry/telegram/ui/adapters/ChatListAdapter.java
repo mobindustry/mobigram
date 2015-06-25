@@ -95,14 +95,13 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         }
         TdApi.User user = privateChatInfo.user;
 
-        //TODO set unread messages;
-//        if (item.unreadCount != 0) {
-//            notify.setText(String.valueOf(item.unreadCount));
-//            notify.setBackground(Utils.getShapeDrawable(25, Color.rgb(255, 145, 0)));
-//        } else  {
-//            notify.setText("");
-//            notify.setBackground(null);
-//        }
+        if (item.unreadCount != 0) {
+            notify.setText(String.valueOf(item.unreadCount));
+            notify.setBackground(Utils.getShapeDrawable(25, Color.rgb(255, 121, 45)));
+        } else {
+            notify.setText("");
+            notify.setBackground(null);
+        }
 
         if (user.photoBig instanceof TdApi.FileEmpty) {
             final TdApi.FileEmpty file = (TdApi.FileEmpty) user.photoBig;
