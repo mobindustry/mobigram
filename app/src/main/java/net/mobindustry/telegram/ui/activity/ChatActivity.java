@@ -30,6 +30,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.ContactsHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.LogHandler;
 import net.mobindustry.telegram.core.handlers.StickersHandler;
@@ -91,6 +92,17 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         new ApiClient<>(new TdApi.GetMe(), new UserMeHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
+    public void getContacts() {
+        new ApiClient<>(new TdApi.GetContacts(), new ContactsHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+                if (output.getHandlerId() == ContactsHandler.HANDLER_ID) {
+                }
+
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
     @Override
     public void onApiResult(BaseHandler output) {
         if (output.getHandlerId() == StickersHandler.HANDLER_ID) {
@@ -123,6 +135,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
         adapter = new NavigationDrawerAdapter(ChatActivity.this);
 
+        getContacts();
         getStickers();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.chats_toolbar);

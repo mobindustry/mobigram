@@ -113,8 +113,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         }
         ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.messages_progress_bar);
         progressBar.setVisibility(View.GONE);
-
-
     }
 
     public void addNewMessage(final TdApi.Messages messages) {
