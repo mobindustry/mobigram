@@ -102,7 +102,14 @@ public class GalleryFragment extends Fragment {
     private List<File> getPhotosFromFolder(String path) {
         File dir = new File(path);
         File[] fileList = dir.listFiles();
-        return new ArrayList<File>(Arrays.asList(fileList));
+        ArrayList<File>listPhotos=new ArrayList<>();
+        ArrayList<File> list=new ArrayList<>(Arrays.asList(fileList));
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).toString().contains((".png")) || list.get(i).toString().contains(".jpg")){
+                listPhotos.add(list.get(i));
+            }
+        }
+        return listPhotos;
     }
 
 
