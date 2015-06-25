@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.fragments.ChooseFileFragment;
+import net.mobindustry.telegram.ui.fragments.GalleryFragment;
 import net.mobindustry.telegram.ui.fragments.LocationFragment;
 import net.mobindustry.telegram.ui.fragments.NewMessageFragment;
 import net.mobindustry.telegram.utils.Const;
@@ -14,6 +15,8 @@ import net.mobindustry.telegram.utils.Const;
 public class TransparentActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
+    private FragmentTransaction ft;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +37,16 @@ public class TransparentActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.transparent_content, chooseFileFragment);
                 break;
             case Const.MAP_FRAGMENT:
-                LocationFragment locationFragment = new LocationFragment();
-                fragmentTransaction.replace(R.id.transparent_content, locationFragment);
+                LocationFragment locationFragment=new LocationFragment();
+                ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.transparent_content, locationFragment);
+                ft.commit();
+                break;
+            case Const.GALLERY_FRAGMENT:
+                GalleryFragment galleryFragment=new GalleryFragment();
+                ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.transparent_content, galleryFragment);
+                ft.commit();
                 break;
         }
         fragmentTransaction.commit();

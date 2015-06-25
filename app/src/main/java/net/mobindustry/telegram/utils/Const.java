@@ -27,6 +27,7 @@ public class Const {
     public static final int NEW_MESSAGE_FRAGMENT = 200;
     public static final int FILE_CHOOSE_FRAGMENT = 201;
     public static final int MAP_FRAGMENT = 202;
+    public static final int GALLERY_FRAGMENT = 203;
 
     public static final int CHAT_NOT_FOUND = 1001;
 

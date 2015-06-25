@@ -20,6 +20,9 @@
     <color name="button_send_location_pressed">#ff698bc1</color>
     <color name="button_foursquare">#ff72bff3</color>
     <color name="button_foursquare_pressed">#ff698bc1</color>
+    <color name="text_color_gallery_fragment">#fff</color>
+    <color name="background_square_gallery_fragment">#ff40b4f4</color>
+    <color name="background_transparent">#80000000</color>
 
     <color name="background_floating_button">#5b95c2</color>
     <color name="background_floating_button_pressed">#ff46698c</color>

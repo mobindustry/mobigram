@@ -426,7 +426,10 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 makePhoto();
                                 break;
                             case R.id.gallery:
-                                selectPhoto();
+                                Intent intentGallery = new Intent(getActivity(), TransparentActivity.class);
+                                intentGallery.putExtra("choice", Const.GALLERY_FRAGMENT);
+                                startActivityForResult(intentGallery, 1);
+                                //selectPhoto();
                                 break;
                             case R.id.video:
                                 Toast.makeText(getActivity(),
@@ -459,6 +462,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     private void selectPhoto() {
+        //TODO custom gallery
         if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
             startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI), Const.REQUEST_CODE_SELECT_IMAGE);
         } else {
