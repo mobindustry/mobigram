@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -46,6 +47,7 @@ public class ImageLoaderHelper {
     private static ImageLoader imageLoader = initImageLoader();
     private static  DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
             .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+            .bitmapConfig(Bitmap.Config.RGB_565)
             .resetViewBeforeLoading(true)
             .cacheInMemory(true)
             .cacheOnDisk(true)
@@ -53,6 +55,7 @@ public class ImageLoaderHelper {
 
     private static  DisplayImageOptions defaultOptionsFadeIn = new DisplayImageOptions.Builder()
             .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+            .bitmapConfig(Bitmap.Config.RGB_565)
             .resetViewBeforeLoading(true)
             .cacheInMemory(true)
             .cacheOnDisk(true)
