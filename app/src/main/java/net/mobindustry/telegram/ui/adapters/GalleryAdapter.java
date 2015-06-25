@@ -32,7 +32,6 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> implements
         }
 
 
-
         ImageView firstPhoto = (ImageView) convertView.findViewById(R.id.firstPhotoGalleryFragment);
         TextView nameFolder = (TextView) convertView.findViewById(R.id.nameFolder);
         TextView photosFolder = (TextView) convertView.findViewById(R.id.photosQuantity);
@@ -41,9 +40,9 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> implements
         FolderCustomGallery galleryFolder = getItem(position);
         if (galleryFolder != null) {
             //Log.e("LOG", "CATEGORY SIZE " + );
-            //firstPhoto.setImageURI(galleryFolder.ge);
+            firstPhoto.setImageURI(galleryFolder.getUriFirstPhoto());
             nameFolder.setText(galleryFolder.getName());
-           photosFolder.setText(galleryFolder.getPhotosQuantity());
+            photosFolder.setText(galleryFolder.getPhotosQuantity());
         }
         return convertView;
     }

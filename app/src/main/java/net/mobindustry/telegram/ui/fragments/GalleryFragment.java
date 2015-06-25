@@ -64,8 +64,8 @@ public class GalleryFragment extends Fragment {
     }
 
     private void adjustGridView() {
-            gridList.setNumColumns(2);
-            gridList.setHorizontalSpacing(15);
+        gridList.setNumColumns(2);
+        gridList.setHorizontalSpacing(15);
     }
 
     private void getAllImages() {
@@ -102,10 +102,10 @@ public class GalleryFragment extends Fragment {
     private List<File> getPhotosFromFolder(String path) {
         File dir = new File(path);
         File[] fileList = dir.listFiles();
-        ArrayList<File>listPhotos=new ArrayList<>();
-        ArrayList<File> list=new ArrayList<>(Arrays.asList(fileList));
+        ArrayList<File> listPhotos = new ArrayList<>();
+        ArrayList<File> list = new ArrayList<>(Arrays.asList(fileList));
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).toString().contains((".png")) || list.get(i).toString().contains(".jpg")){
+            if (list.get(i).toString().contains((".png")) || list.get(i).toString().contains(".jpg")) {
                 listPhotos.add(list.get(i));
             }
         }
@@ -120,6 +120,8 @@ public class GalleryFragment extends Fragment {
             folderCustomGallery.setPath(dirLink[i]);
             folderCustomGallery.setPhotosInFolder(getPhotosFromFolder(dirLink[i]));
             folderCustomGallery.setPhotosQuantity(String.valueOf(getPhotosFromFolder(dirLink[i]).size()));
+            Uri myUri = Uri.parse(dirLink[0]);
+            folderCustomGallery.setUriFirstPhoto(myUri);
             listFolders.add(folderCustomGallery);
             //TODO
         }
