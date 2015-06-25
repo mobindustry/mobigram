@@ -35,11 +35,11 @@ public class TransparentActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.transparent_content, chooseFileFragment);
                 break;
             case Const.MAP_FRAGMENT:
-                LocationFragment locationFragment=new LocationFragment();
+                LocationFragment locationFragment = new LocationFragment();
                 fragmentTransaction.replace(R.id.transparent_content, locationFragment);
                 break;
             case Const.GALLERY_FRAGMENT:
-                GalleryFragment galleryFragment=new GalleryFragment();
+                GalleryFragment galleryFragment = new GalleryFragment();
                 fragmentTransaction.replace(R.id.transparent_content, galleryFragment);
                 break;
         }

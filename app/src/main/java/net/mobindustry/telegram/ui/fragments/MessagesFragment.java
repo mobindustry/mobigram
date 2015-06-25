@@ -135,25 +135,24 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             public void onApiResult(BaseHandler output) {
                 if (output.getHandlerId() == ChatHistoryHandler.HANDLER_ID) {
                     TdApi.Messages messages = (TdApi.Messages) output.getResponse();
-                    if (messages.messages.length != 0) {
-                        if (chat.id == messages.messages[0].chatId) {
-                            switch (type) {
-                                case ALL:
-                                    toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
-                                    setChatHistory(messages);
-                                    break;
-                                case NEW:
-                                    topMessageId = messages.messages[0].id;
-                                    addNewMessage(messages);
-                                    messageListView.setSelection(adapter.getCount() - 1);
-                                    break;
-                                case SCROLL:
-                                    toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
-                                    addLatestMessages(messages);
-                                    messageListView.setSelection(35);
-                                    loading = false;
-                                    break;
-                            }
+                    if (messages.messages.length != 0 && chat.id == messages.messages[0].chatId) {
+                        switch (type) {
+                            case ALL:
+                                toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
+                                setChatHistory(messages);
+                                break;
+                            case NEW:
+                                topMessageId = messages.messages[0].id;
+                                addNewMessage(messages);
+                                messageListView.setSelection(adapter.getCount() - 1);
+                                break;
+                            case SCROLL:
+                                toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
+                                addLatestMessages(messages);
+                                messageListView.setSelection(messages.messages.length + 7);
+
+                                loading = false;
+                                break;
                         }
                     }
                 }

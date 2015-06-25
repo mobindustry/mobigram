@@ -32,7 +32,7 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     boolean dualPane;
     int currentCheckPosition = 0;
     private ChatListAdapter adapter;
-
+    private ProgressBar progressBar;
     private static TdApi.Chats chats;
 
     private long clickedId;
@@ -45,8 +45,9 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     }
 
     public void setChatsList(final TdApi.Chats chats) {
-        ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.chat_list_progress_bar);
-        progressBar.setVisibility(View.GONE);
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
         Log.i("LOG", "chatsFragment setList");
         this.chats = chats;
         adapter.clear();
@@ -60,6 +61,8 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     @Override
     public void onActivityCreated(Bundle savedState) {
         super.onActivityCreated(savedState);
+
+        progressBar = (ProgressBar) getActivity().findViewById(R.id.chat_list_progress_bar);
 
         getChatsList(0, 200); //TODO constant or logical get;
 

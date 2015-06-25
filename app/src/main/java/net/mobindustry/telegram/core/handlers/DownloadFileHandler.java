@@ -11,7 +11,6 @@ public class DownloadFileHandler extends BaseHandler<TdApi.Ok> {
     @Override
     public TdApi.Ok resultHandler(TdApi.TLObject object) {
         if(object.getConstructor() == TdApi.Ok.CONSTRUCTOR) {
-            Log.i("Log", "DownloadHandler: " + object);
             return (TdApi.Ok) object;
         }
         return null;
