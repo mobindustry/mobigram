@@ -1,9 +1,12 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.app.ActionBar;
 import android.content.ContentResolver;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,10 +14,14 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
@@ -50,16 +57,15 @@ public class GalleryFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        AsyncMediaStore asyncMediaStore=new AsyncMediaStore();
+        galleryAdapter = new GalleryAdapter(getActivity());
+        gridList = (GridView) getActivity().findViewById(R.id.gridList);
+        AsyncMediaStore asyncMediaStore = new AsyncMediaStore();
         asyncMediaStore.execute();
     }
 
     private void adjustGridView() {
-        gridList.setNumColumns(GridView.AUTO_FIT);
-        gridList.setNumColumns(2);
-        gridList.setVerticalSpacing(10);
-        //gridList.setHorizontalSpacing(10);
-        //gridList.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
+            gridList.setNumColumns(2);
+            gridList.setHorizontalSpacing(15);
     }
 
     private void getAllImages() {
@@ -93,15 +99,16 @@ public class GalleryFragment extends Fragment {
 
     }
 
-    private List<File> getPhotosFromFolder(String path){
+    private List<File> getPhotosFromFolder(String path) {
         File dir = new File(path);
         File[] fileList = dir.listFiles();
-        return new  ArrayList<File>(Arrays.asList(fileList));
+        return new ArrayList<File>(Arrays.asList(fileList));
     }
 
-    private void completeListFolders(){
+
+    private void completeListFolders() {
         for (int i = 0; i < listDirNames.size(); i++) {
-            FolderCustomGallery folderCustomGallery=new FolderCustomGallery();
+            FolderCustomGallery folderCustomGallery = new FolderCustomGallery();
             folderCustomGallery.setName(listDirNames.get(i));
             folderCustomGallery.setPath(dirLink[i]);
             folderCustomGallery.setPhotosInFolder(getPhotosFromFolder(dirLink[i]));
@@ -132,7 +139,8 @@ public class GalleryFragment extends Fragment {
             listDirNames.add(nameDir);
         }
     }
-    private class AsyncMediaStore extends AsyncTask<Void,Void,Void>{
+
+    private class AsyncMediaStore extends AsyncTask<Void, Void, Void> {
 
 
         @Override
@@ -153,8 +161,6 @@ public class GalleryFragment extends Fragment {
             Log.e("Log", "Folder 1 name " + listFolders.get(0).getName());
             Log.e("Log", "Folder 1 quantity photos " + listFolders.get(0).getPhotosQuantity());
             Log.e("Log", "Folder 1 patch " + listFolders.get(0).getPath());
-            galleryAdapter = new GalleryAdapter(getActivity());
-            gridList = (GridView) getActivity().findViewById(R.id.gridList);
             galleryAdapter.clear();
             galleryAdapter.addAll(listFolders);
             gridList.setAdapter(galleryAdapter);

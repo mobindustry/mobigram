@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,9 +18,11 @@ import java.io.Serializable;
 public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> implements Serializable {
     private LayoutInflater inflater;
 
+
     public GalleryAdapter(Context context) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
+
     }
 
     @Override
@@ -27,6 +30,8 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> implements
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.grid_item, parent, false);
         }
+
+
 
         ImageView firstPhoto = (ImageView) convertView.findViewById(R.id.firstPhotoGalleryFragment);
         TextView nameFolder = (TextView) convertView.findViewById(R.id.nameFolder);
