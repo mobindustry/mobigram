@@ -24,7 +24,6 @@ import net.mobindustry.telegram.utils.Utils;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.Date;
-import java.util.List;
 
 public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
@@ -32,10 +31,13 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
     private int typeCount = 6;
     private long myId;
 
-    public MessageAdapter(Context context, long myId, List<TdApi.Message> list) {
-        super(context, 0, list);
+    private LoadMore loadMore;
+
+    public MessageAdapter(Context context, long myId, LoadMore loadMore) {
+        super(context, 0);
         inflater = LayoutInflater.from(context);
         this.myId = myId;
+        this.loadMore = loadMore;
     }
 
     @Override
@@ -90,6 +92,10 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        if(position == 5) {
+            loadMore.load();
+        }
+
         if (convertView == null) {
             switch (getItemViewType(position)) {
                 case Const.IN_MESSAGE:
@@ -129,10 +135,8 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     photo.setLayoutParams(layoutParams);
 
                     fileCheckerAndLoader(messagePhoto.photo.photos[i].photo, photo);
-
                 }
             }
-
             layout.addView(photo);
         }
         if (item.message instanceof TdApi.MessageAudio) {
@@ -267,5 +271,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 break;
         }
         return convertView;
+    }
+
+    public interface LoadMore {
+        void load();
     }
 }

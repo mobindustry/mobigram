@@ -28,7 +28,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,9 +61,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.EnumSet;
-import java.util.LinkedList;
-import java.util.List;
 
 public class MessagesFragment extends Fragment implements Serializable, ApiClient.OnApiResultHandler {
 
@@ -72,6 +68,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public static final int LEVEL_ATTACH = 1;
     private static final long SCALE_UP_DURATION = 80;
     private static final long SCALE_DOWN_DURATION = 80;
+
+    public boolean loading = false;
 
     private BroadcastReceiver receiver;
     private ChatActivity activity;
@@ -84,10 +82,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private ImageView smiles;
 
     private TdApi.Chat chat;
-    private List<TdApi.Message> list = new LinkedList<>();
+
     private int topMessageId;
     private int toScrollLoadMessageId;
-    private int chatMessageCount;
     private ListView messageListView;
 
     public static MessagesFragment newInstance(int index) {
@@ -108,22 +105,27 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     public void setChatHistory(final TdApi.Messages messages) {
+        adapter.setNotifyOnChange(false);
         for (int i = 0; i < messages.messages.length; i++) {
-            list.add(0, messages.messages[i]);
+            adapter.insert(messages.messages[i], 0);
         }
+        adapter.setNotifyOnChange(true);
+        adapter.notifyDataSetChanged();
         ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.messages_progress_bar);
         progressBar.setVisibility(View.GONE);
     }
 
     public void addNewMessage(final TdApi.Messages messages) {
-        list.add(messages.messages[0]);
-        adapter.notifyDataSetChanged();
+        adapter.add(messages.messages[0]);
+
     }
 
     public void addLatestMessages(final TdApi.Messages messages) {
+        adapter.setNotifyOnChange(false);
         for (int i = 0; i < messages.messages.length; i++) {
-            list.add(0, messages.messages[i]);
+            adapter.insert(messages.messages[i], 0);
         }
+        adapter.setNotifyOnChange(true);
         adapter.notifyDataSetChanged();
     }
 
@@ -133,25 +135,25 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             public void onApiResult(BaseHandler output) {
                 if (output.getHandlerId() == ChatHistoryHandler.HANDLER_ID) {
                     TdApi.Messages messages = (TdApi.Messages) output.getResponse();
-
-                    if (chat.id == messages.messages[0].chatId) {
-                        switch (type) {
-                            case ALL:
-                                chatMessageCount = messages.messages.length;
-                                toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
-                                setChatHistory(messages);
-                                break;
-                            case NEW:
-                                chatMessageCount += messages.messages.length;
-                                topMessageId = messages.messages[0].id;
-                                addNewMessage(messages);
-                                messageListView.setSelection(adapter.getCount() - 1);
-                                break;
-                            case SCROLL:
-                                chatMessageCount += messages.messages.length;
-                                toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
-                                addLatestMessages(messages);
-                                break;
+                    if (messages.messages.length != 0) {
+                        if (chat.id == messages.messages[0].chatId) {
+                            switch (type) {
+                                case ALL:
+                                    toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
+                                    setChatHistory(messages);
+                                    break;
+                                case NEW:
+                                    topMessageId = messages.messages[0].id;
+                                    addNewMessage(messages);
+                                    messageListView.setSelection(adapter.getCount() - 1);
+                                    break;
+                                case SCROLL:
+                                    toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
+                                    addLatestMessages(messages);
+                                    messageListView.setSelection(35);
+                                    loading = false;
+                                    break;
+                            }
                         }
                     }
                 }
@@ -181,20 +183,17 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         View view = inflater.inflate(R.layout.message_fragment, container, false);
 
         messageListView = (ListView) view.findViewById(R.id.messageListView);
-        messageListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
+        messageListView.setFastScrollEnabled(true);
 
+        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), new MessageAdapter.LoadMore() {
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem == 5) {
+            public void load() {
+                if (!loading) {
                     getChatHistory(chat.id, toScrollLoadMessageId, 0, 30, Enums.MessageAddType.SCROLL);
+                    loading = true;
                 }
             }
         });
-
-        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), list);
         messageListView.setAdapter(adapter);
 
         return view;

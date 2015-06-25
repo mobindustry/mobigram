@@ -40,8 +40,8 @@
                     android:layout_height="match_parent"
                     android:divider="@null"
                     android:stackFromBottom="true"
-/>
-
+                    android:transcriptMode="disabled"
+                    />
             </FrameLayout>
 
             <LinearLayout
