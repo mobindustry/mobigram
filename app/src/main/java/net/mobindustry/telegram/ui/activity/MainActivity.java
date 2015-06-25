@@ -16,7 +16,7 @@ import com.romainpiel.titanic.library.TitanicTextView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.Enums;
+import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.core.handlers.GetStateHandler;
 
 import org.drinkless.td.libcore.telegram.TdApi;

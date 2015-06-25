@@ -24,6 +24,7 @@ import net.mobindustry.telegram.utils.Utils;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.Date;
+import java.util.List;
 
 public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
@@ -31,8 +32,8 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
     private int typeCount = 6;
     private long myId;
 
-    public MessageAdapter(Context context, long myId) {
-        super(context, 0);
+    public MessageAdapter(Context context, long myId, List<TdApi.Message> list) {
+        super(context, 0, list);
         inflater = LayoutInflater.from(context);
         this.myId = myId;
     }

@@ -1,4 +1,4 @@
-package net.mobindustry.telegram.core.handlers;
+package net.mobindustry.telegram.model;
 
 public class Enums {
     public enum StatesEnum {
@@ -6,5 +6,11 @@ public class Enums {
         WaitSetCode,
         WaitSetName,
         WaitSetPhoneNumber
+    }
+
+    public enum MessageAddType {
+        NEW,
+        SCROLL,
+        ALL
     }
 }

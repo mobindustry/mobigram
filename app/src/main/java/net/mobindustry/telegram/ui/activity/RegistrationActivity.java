@@ -16,7 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.Enums;
+import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.core.handlers.ErrorHandler;
 import net.mobindustry.telegram.core.handlers.GetStateHandler;
 import net.mobindustry.telegram.core.handlers.UserMeHandler;
