@@ -11,16 +11,16 @@ public class FolderCustomGallery implements Serializable{
     private String path;
     private String photosQuantity;
     private List<File>photosInFolder;
-    private Uri uriFirstPhoto;
+    private String uriFirstPhoto;
 
     public FolderCustomGallery() {
     }
 
-    public Uri getUriFirstPhoto() {
+    public String getUriFirstPhoto() {
         return uriFirstPhoto;
     }
 
-    public void setUriFirstPhoto(Uri uriFirstPhoto) {
+    public void setUriFirstPhoto(String uriFirstPhoto) {
         this.uriFirstPhoto = uriFirstPhoto;
     }
 

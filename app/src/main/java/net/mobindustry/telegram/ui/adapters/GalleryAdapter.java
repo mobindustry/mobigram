@@ -1,6 +1,8 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +12,19 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
+
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
+import net.mobindustry.telegram.utils.ImageLoaderHelper;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> implements Serializable {
+public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery>  {
     private LayoutInflater inflater;
-
+    private ArrayList<String> displayedImages = new ArrayList<>();
 
     public GalleryAdapter(Context context) {
         super(context, 0);
@@ -36,11 +43,24 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> implements
         TextView nameFolder = (TextView) convertView.findViewById(R.id.nameFolder);
         TextView photosFolder = (TextView) convertView.findViewById(R.id.photosQuantity);
 
-
         FolderCustomGallery galleryFolder = getItem(position);
+        Log.e("LOG", "photo uri " + galleryFolder.getUriFirstPhoto());
         if (galleryFolder != null) {
-            //Log.e("LOG", "CATEGORY SIZE " + );
-            firstPhoto.setImageURI(galleryFolder.getUriFirstPhoto());
+
+            String url = "file://" + galleryFolder.getUriFirstPhoto();
+            if (displayedImages.contains(url)) {
+                ImageLoaderHelper.displayImageDefault(url, firstPhoto);
+            } else {
+
+                ImageLoaderHelper.displayImageFadeIn(url, firstPhoto);
+                displayedImages.add(url);
+            }
+
+
+
+
+            //Uri myUri = Uri.parse(galleryFolder.getUriFirstPhoto());
+
             nameFolder.setText(galleryFolder.getName());
             photosFolder.setText(galleryFolder.getPhotosQuantity());
         }

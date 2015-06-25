@@ -1,12 +1,7 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.app.ActionBar;
 import android.content.ContentResolver;
-import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,14 +9,10 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
@@ -50,6 +41,10 @@ public class GalleryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.gallery_fragment, container, false);
+        galleryAdapter = new GalleryAdapter(getActivity());
+        gridList = (GridView) view.findViewById(R.id.gridList);
+        gridList.setAdapter(galleryAdapter);
+        adjustGridView();
         return view;
     }
 
@@ -57,8 +52,7 @@ public class GalleryFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        galleryAdapter = new GalleryAdapter(getActivity());
-        gridList = (GridView) getActivity().findViewById(R.id.gridList);
+
         AsyncMediaStore asyncMediaStore = new AsyncMediaStore();
         asyncMediaStore.execute();
     }
@@ -120,8 +114,7 @@ public class GalleryFragment extends Fragment {
             folderCustomGallery.setPath(dirLink[i]);
             folderCustomGallery.setPhotosInFolder(getPhotosFromFolder(dirLink[i]));
             folderCustomGallery.setPhotosQuantity(String.valueOf(getPhotosFromFolder(dirLink[i]).size()));
-            Uri myUri = Uri.parse(dirLink[0]);
-            folderCustomGallery.setUriFirstPhoto(myUri);
+            folderCustomGallery.setUriFirstPhoto(getPhotosFromFolder(dirLink[i]).get(0).toString());
             listFolders.add(folderCustomGallery);
             //TODO
         }
@@ -155,25 +148,28 @@ public class GalleryFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             getAllImages();
+            getFoldersPath();
+            //Log.e("Log", "List path " + dirLink.length);
+            getDirNames();
+            //Log.e("Log", "List name " + listDirNames.size());
+            completeListFolders();
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            getFoldersPath();
-            //Log.e("Log", "List path " + dirLink.length);
-            getDirNames();
-            //Log.e("Log", "List name " + listDirNames.size());
-            completeListFolders();
+
+
             //Log.e("Log", "Size list " + listFolders.size());
             Log.e("Log", "Folder 1 name " + listFolders.get(0).getName());
             Log.e("Log", "Folder 1 quantity photos " + listFolders.get(0).getPhotosQuantity());
             Log.e("Log", "Folder 1 patch " + listFolders.get(0).getPath());
+
             galleryAdapter.clear();
             galleryAdapter.addAll(listFolders);
-            gridList.setAdapter(galleryAdapter);
-            adjustGridView();
+
+
         }
     }
 

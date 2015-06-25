@@ -44,21 +44,28 @@ public class ImageLoaderHelper {
     }
 
     private static ImageLoader imageLoader = initImageLoader();
+    private static  DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+            .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+            .resetViewBeforeLoading(true)
+            .cacheInMemory(true)
+            .cacheOnDisk(true)
+            .build();
+
+    private static  DisplayImageOptions defaultOptionsFadeIn = new DisplayImageOptions.Builder()
+            .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+            .resetViewBeforeLoading(true)
+            .cacheInMemory(true)
+            .cacheOnDisk(true)
+            .displayer(new FadeInBitmapDisplayer(500))
+            .build();
 
     private static ImageLoader initImageLoader() {
         ImageLoader imageLoader = ImageLoader.getInstance();
 
-        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
-                .resetViewBeforeLoading(true)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .displayer(new FadeInBitmapDisplayer(500))
-                .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(DataHolder.getContext())
                 .diskCacheSize(50 * 1024 * 1024)
-                .defaultDisplayImageOptions(defaultOptions)
+                .defaultDisplayImageOptions(defaultOptionsFadeIn)
                 .imageDownloader(new CustomImageDownloader(DataHolder.getContext())) // setup custom loader
                 .build();
 
@@ -67,7 +74,15 @@ public class ImageLoaderHelper {
     }
 
     public static void displayImage(final String url, final ImageView imageView) {
-        imageLoader.displayImage(url, imageView);
+        imageLoader.displayImage(url, imageView, defaultOptionsFadeIn);
     }
+
+    public static void displayImageFadeIn(final String url, final ImageView imageView) {
+        imageLoader.displayImage(url, imageView, defaultOptionsFadeIn);
+    }
+    public static void displayImageDefault(final String url, final ImageView imageView) {
+        imageLoader.displayImage(url, imageView,defaultOptions);
+    }
+
 
 }
