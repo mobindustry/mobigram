@@ -15,8 +15,6 @@ import net.mobindustry.telegram.utils.Const;
 public class TransparentActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
-    private FragmentTransaction ft;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +36,11 @@ public class TransparentActivity extends AppCompatActivity {
                 break;
             case Const.MAP_FRAGMENT:
                 LocationFragment locationFragment=new LocationFragment();
-                ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.transparent_content, locationFragment);
-                ft.commit();
+                fragmentTransaction.replace(R.id.transparent_content, locationFragment);
                 break;
             case Const.GALLERY_FRAGMENT:
                 GalleryFragment galleryFragment=new GalleryFragment();
-                ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.transparent_content, galleryFragment);
-                ft.commit();
+                fragmentTransaction.replace(R.id.transparent_content, galleryFragment);
                 break;
         }
         fragmentTransaction.commit();
