@@ -31,6 +31,7 @@ public class Const {
 
     public static final int CHAT_NOT_FOUND = 1001;
 
+    public static final int BASE_HANDLER_ID = 0x100;
     public static final int AUTH_HANDLER_ID = 0x0;
     public static final int CHATS_HANDLER_ID = 0x1;
     public static final int CONTACTS_HANDLER_ID = 0x2;

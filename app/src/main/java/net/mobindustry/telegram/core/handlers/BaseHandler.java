@@ -1,10 +1,12 @@
 package net.mobindustry.telegram.core.handlers;
 
+import net.mobindustry.telegram.utils.Const;
+
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 public abstract class BaseHandler<T> implements Client.ResultHandler {
-    public static final int HANDLER_ID = 0x0;
+    public static final int HANDLER_ID = Const.BASE_HANDLER_ID;
     protected T response;
     protected TdApi.Error error;
     protected boolean hasErrors;
