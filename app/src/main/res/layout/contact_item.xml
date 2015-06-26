@@ -37,7 +37,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="#000"
-            android:textSize="@dimen/contact_list_item_last_message_size" />
+            android:textSize="@dimen/contact_list_item_last_seen_text_size" />
 
     </LinearLayout>
 </LinearLayout>

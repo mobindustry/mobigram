@@ -69,6 +69,12 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private static final long SCALE_UP_DURATION = 80;
     private static final long SCALE_DOWN_DURATION = 80;
 
+    private final int MESSAGE_LOAD_LIMIT = 30;
+    private final int MESSAGE_LOAD_OFFSET = 0;
+    private final int NEW_MESSAGE_LOAD_LIMIT = 1;
+    private final int NEW_MESSAGE_LOAD_OFFSET = -1;
+
+
     public boolean loading = false;
 
     private ChatActivity activity;
@@ -148,7 +154,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
                                 addLatestMessages(messages);
                                 messageListView.setSelection(messages.messages.length + 7);
-
                                 loading = false;
                                 break;
                         }
@@ -181,12 +186,11 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
         messageListView = (ListView) view.findViewById(R.id.messageListView);
         messageListView.setFastScrollEnabled(true);
-
         adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), new MessageAdapter.LoadMore() {
             @Override
             public void load() {
                 if (!loading) {
-                    getChatHistory(chat.id, toScrollLoadMessageId, 0, 30, Enums.MessageAddType.SCROLL);
+                    getChatHistory(chat.id, toScrollLoadMessageId, MESSAGE_LOAD_OFFSET, MESSAGE_LOAD_LIMIT, Enums.MessageAddType.SCROLL);
                     loading = true;
                 }
             }
@@ -286,9 +290,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
                     int sdk = android.os.Build.VERSION.SDK_INT;
                     if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        icon.setBackgroundDrawable(Utils.getShapeDrawable(60, -chatUser.id));
+                        icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatUser.id));
                     } else {
-                        icon.setBackground(Utils.getShapeDrawable(60, -chatUser.id));
+                        icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatUser.id));
                     }
 
                     icon.setText(Utils.getInitials(chatUser.firstName, chatUser.lastName));
@@ -301,7 +305,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 ImageLoaderHelper.displayImage("file://" + file.path, imageIcon);
             }
 
-            getChatHistory(chat.id, topMessageId, -1, 30, Enums.MessageAddType.ALL);
+            getChatHistory(chat.id, topMessageId, NEW_MESSAGE_LOAD_OFFSET, MESSAGE_LOAD_LIMIT, Enums.MessageAddType.ALL);
 
             toolbar.inflateMenu(R.menu.message_menu);
 

@@ -19,12 +19,17 @@
     <dimen name="toolbar_name_text_size">18sp</dimen>
     <dimen name="toolbar_last_seen_text_size">16sp</dimen>
 
-    <dimen name="header_icon_size">50dp</dimen>
+    <dimen name="header_icon_size">60dp</dimen>
+
+    <dimen name="chat_list_item_icon_size">50dp</dimen>
+    <dimen name="chat_list_icon_text_size">20sp</dimen>
+    <dimen name="chat_list_item_name_text_size">18sp</dimen>
+    <dimen name="chat_list_item_last_message_size">16sp</dimen>
 
     <dimen name="contact_list_item_icon_size">50dp</dimen>
     <dimen name="contact_list_icon_text_size">20sp</dimen>
     <dimen name="contact_list_item_name_text_size">18sp</dimen>
-    <dimen name="contact_list_item_last_message_size">16sp</dimen>
+    <dimen name="contact_list_item_last_seen_text_size">16sp</dimen>
 
     <dimen name="text_country_list_header_row">18sp</dimen>
     <dimen name="text_row">18sp</dimen>
@@ -50,6 +55,9 @@
     <dimen name="text_send_your_current_location">16sp</dimen>
 
     <item name="containerFrag" type="id"/>
+
+    <dimen name="chat_list_item_notification_size">25dp</dimen>
+
 
 </resources>
 

@@ -137,7 +137,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.e("Log", intent.getAction());
                 if (intent.getAction().equals(Const.NEW_MESSAGE_ACTION)) {
                     MessagesFragment fragment = getMessageFragment();
                     if (fragment != null) {

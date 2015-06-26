@@ -97,7 +97,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         if (item.unreadCount != 0) {
             notify.setText(String.valueOf(item.unreadCount));
-            notify.setBackground(Utils.getShapeDrawable(25, Color.rgb(255, 121, 45)));
+            notify.setBackground(Utils.getShapeDrawable(R.dimen.chat_list_item_notification_size, Color.rgb(255, 121, 45)));
         } else {
             notify.setText("");
             notify.setBackground(null);
@@ -106,8 +106,6 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         if (user.photoBig instanceof TdApi.FileEmpty) {
             final TdApi.FileEmpty file = (TdApi.FileEmpty) user.photoBig;
             if (file.id != 0) {
-                Log.e("Log", "Download file from chat adapter: " + file.id);
-
                 new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
                     @Override
                     public void onApiResult(BaseHandler output) {
@@ -120,9 +118,9 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
                 int sdk = android.os.Build.VERSION.SDK_INT;
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    icon.setBackgroundDrawable(Utils.getShapeDrawable(60, -user.id));
+                    icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.chat_list_item_icon_size, -user.id));
                 } else {
-                    icon.setBackground(Utils.getShapeDrawable(60, -user.id));
+                    icon.setBackground(Utils.getShapeDrawable(R.dimen.chat_list_item_icon_size, -user.id));
                 }
                 icon.setText(Utils.getInitials(user.firstName, user.lastName));
             }
