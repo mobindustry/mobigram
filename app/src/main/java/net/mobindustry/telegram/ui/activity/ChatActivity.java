@@ -40,6 +40,7 @@ import net.mobindustry.telegram.core.handlers.StickersHandler;
 import net.mobindustry.telegram.core.handlers.UserMeHandler;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.NavigationItem;
+import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.UserMeHolder;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
@@ -84,6 +85,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     public void logOut() {
         Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
+        DataHolder.setIsLoggedIn(false);
         finish();
         new ApiClient<>(new TdApi.AuthReset(), new LogHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
@@ -118,6 +120,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
+
+        DataHolder.setIsLoggedIn(true);
 
         receiver = new BroadcastReceiver() {
             @Override

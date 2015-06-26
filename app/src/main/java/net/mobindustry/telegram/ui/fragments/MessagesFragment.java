@@ -5,10 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.drawable.LevelListDrawable;
@@ -74,8 +71,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private final int MESSAGE_LOAD_OFFSET = 0;
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
 
-
-    public boolean loading = false;
+    public boolean isLoading = false;
 
     private ChatActivity activity;
     private MessageAdapter adapter;
@@ -153,8 +149,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                             case SCROLL:
                                 toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
                                 addLatestMessages(messages);
-                                messageListView.setSelection(messages.messages.length + 5);
-                                loading = false;
+                                messageListView.setSelection(messages.messages.length + Const.PRELOAD_POSITION);
+                                isLoading = false;
                                 break;
                         }
                     }
@@ -188,9 +184,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), new MessageAdapter.LoadMore() {
             @Override
             public void load() {
-                if (!loading) {
+                if (!isLoading) {
                     getChatHistory(chat.id, toScrollLoadMessageId, MESSAGE_LOAD_OFFSET, MESSAGE_LOAD_LIMIT, Enums.MessageAddType.SCROLL);
-                    loading = true;
+                    isLoading = true;
                 }
             }
         });

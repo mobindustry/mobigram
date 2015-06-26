@@ -16,8 +16,11 @@ import com.romainpiel.titanic.library.TitanicTextView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.UserMeHandler;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.core.handlers.GetStateHandler;
+import net.mobindustry.telegram.model.holder.DataHolder;
+import net.mobindustry.telegram.model.holder.UserMeHolder;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -48,13 +51,19 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        Log.e("LOG", "##### Start program #####");
 
         textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
-        Log.e("LOG", "##### Start program #####");
 
         if (isOnline()) {
-            start();
+            if (DataHolder.isLoggedIn()) {
+                Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                start();
+            }
         } else {
             textCheckInternet.setVisibility(View.VISIBLE);
             OnlineCheck onlineCheck = new OnlineCheck();

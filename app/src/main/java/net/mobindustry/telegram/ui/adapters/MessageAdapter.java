@@ -92,7 +92,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if(position == 7) {
+        if(position == Const.PRELOAD_POSITION) {
             loadMore.load();
         }
 
