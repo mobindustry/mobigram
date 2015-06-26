@@ -38,7 +38,7 @@ public class ImageLoaderHelper {
                         break;
                     }
                 }
-                return super.getStream("file://" + path, extra);
+                return super.getStream(Const.IMAGE_LOADER_PATH_PREFIX + path, extra);
             } else {
                 return super.getStream(imageUri, extra);
             }

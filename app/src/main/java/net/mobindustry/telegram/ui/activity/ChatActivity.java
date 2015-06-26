@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
@@ -60,6 +61,9 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private ListView drawerList;
     private BroadcastReceiver receiver;
     private IntentFilter filter = new IntentFilter();
+
+    private final int CHATS_LIST_OFFSET = 0;
+    private final int CHATS_LIST_LIMIT = 200;
 
     private FragmentManager fragmentManager;
     private ActionBarDrawerToggle drawerToggle;
@@ -146,14 +150,13 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                             fragment.getChatHistory(chat_id, id, -1, 1, Enums.MessageAddType.NEW);
                         }
                     }
-                    getChatListFragment().getChatsList(0, 200);
+                    getChatListFragment().getChatsList(CHATS_LIST_OFFSET, CHATS_LIST_LIMIT);
                 }
                 if (intent.getAction().equals(Const.READ_INBOX_ACTION)) {
-                    getChatListFragment().getChatsList(0, 200);
+                    getChatListFragment().getChatsList(CHATS_LIST_OFFSET, CHATS_LIST_LIMIT);
                 }
             }
         };
-
 
         filter.addAction(Const.NEW_MESSAGE_ACTION);
         filter.addAction(Const.READ_INBOX_ACTION);
@@ -247,9 +250,9 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
                 int sdk = android.os.Build.VERSION.SDK_INT;
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    icon.setBackgroundDrawable(Utils.getShapeDrawable(60, -userMe.id));
+                    icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.header_icon_size, -userMe.id));
                 } else {
-                    icon.setBackground(Utils.getShapeDrawable(60, -userMe.id));
+                    icon.setBackground(Utils.getShapeDrawable(R.dimen.header_icon_size, -userMe.id));
                 }
                 icon.setText(Utils.getInitials(userMe.firstName, userMe.lastName));
             }
@@ -257,7 +260,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         if (userMe.photoBig instanceof TdApi.FileLocal) {
             imageIcon.setVisibility(View.VISIBLE);
             TdApi.FileLocal file = (TdApi.FileLocal) userMe.photoBig;
-            ImageLoaderHelper.displayImage("file://" + file.path, imageIcon);
+            ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + file.path, imageIcon);
         }
 
         drawerList.addHeaderView(header, null, false);

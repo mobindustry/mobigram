@@ -85,7 +85,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
         if (file instanceof TdApi.FileLocal) {
             TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
-            ImageLoaderHelper.displayImage("file://" + fileLocal.path, view);
+            ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, view);
         }
     }
 

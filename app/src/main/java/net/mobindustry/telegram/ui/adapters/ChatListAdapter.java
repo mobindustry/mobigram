@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
@@ -115,7 +117,6 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
                     }
                 }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
             } else {
-
                 int sdk = android.os.Build.VERSION.SDK_INT;
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.chat_list_item_icon_size, -user.id));
@@ -127,15 +128,12 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         } else if (user.photoBig instanceof TdApi.FileLocal) {
             TdApi.FileLocal file = (TdApi.FileLocal) user.photoBig;
-            imageIcon.setImageURI(Uri.parse(file.path));
+            ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + file.path, imageIcon);
         }
 
         firstLastName.setText(user.firstName + " " + user.lastName);
-
         time.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
 
         return convertView;
     }
-
-
 }

@@ -37,9 +37,9 @@ public class FoursquareAdapter extends ArrayAdapter<FoursquareVenue> implements 
 
         int sdk = android.os.Build.VERSION.SDK_INT;
         if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            iconPlace.setBackgroundDrawable(Utils.getShapeDrawable(60, Color.GRAY));
+            iconPlace.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.foursquare_icon_size, Color.GRAY));
         } else {
-            iconPlace.setBackground(Utils.getShapeDrawable(60, Color.GRAY));
+            iconPlace.setBackground(Utils.getShapeDrawable(R.dimen.foursquare_icon_size, Color.GRAY));
         }
 
         FoursquareVenue foursquareVenue = getItem(position);

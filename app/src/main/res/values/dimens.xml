@@ -21,6 +21,8 @@
 
     <dimen name="header_icon_size">60dp</dimen>
 
+    <dimen name="foursquare_icon_size">60dp</dimen>
+
     <dimen name="chat_list_item_icon_size">50dp</dimen>
     <dimen name="chat_list_icon_text_size">20sp</dimen>
     <dimen name="chat_list_item_name_text_size">18sp</dimen>
