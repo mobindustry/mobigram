@@ -153,7 +153,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                             case SCROLL:
                                 toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
                                 addLatestMessages(messages);
-                                messageListView.setSelection(messages.messages.length + 7);
+                                messageListView.setSelection(messages.messages.length + 5);
                                 loading = false;
                                 break;
                         }
