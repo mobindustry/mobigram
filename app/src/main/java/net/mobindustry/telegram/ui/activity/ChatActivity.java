@@ -16,12 +16,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -79,6 +83,19 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     public void downloadFile(int fileId) {
         new ApiClient<>(new TdApi.DownloadFile(fileId), new DownloadFileHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public int getSW() {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int screenWidth = displaymetrics.widthPixels;
+        int screenHeight = displaymetrics.heightPixels;
+
+        if(screenWidth > screenHeight) {
+            return screenHeight;
+        } else {
+            return screenWidth;
+        }
     }
 
     public void logOut() {
@@ -350,6 +367,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     @Override
     public void onBackPressed() {
+
         if (getMessageFragment() != null) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             LinearLayout layout = (LinearLayout) findViewById(R.id.fragment_layout);
