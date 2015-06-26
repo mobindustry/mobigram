@@ -2,6 +2,8 @@ package net.mobindustry.telegram.utils;
 
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import java.text.SimpleDateFormat;
 
@@ -34,5 +36,18 @@ public class Utils {
         circle.setIntrinsicWidth(size);
         circle.getPaint().setColor(color);
         return circle;
+    }
+
+    public static int getSW(WindowManager manager) {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        manager.getDefaultDisplay().getMetrics(displaymetrics);
+        int screenWidth = displaymetrics.widthPixels;
+        int screenHeight = displaymetrics.heightPixels;
+
+        if(screenWidth > screenHeight) {
+            return screenHeight;
+        } else {
+            return screenWidth;
+        }
     }
 }

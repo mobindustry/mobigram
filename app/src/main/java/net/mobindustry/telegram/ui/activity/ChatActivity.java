@@ -81,23 +81,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private UserMeHolder holder = UserMeHolder.getInstance();
     private UserMeHolder userMeHolder;
 
-    public void downloadFile(int fileId) {
-        new ApiClient<>(new TdApi.DownloadFile(fileId), new DownloadFileHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public int getSW() {
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int screenWidth = displaymetrics.widthPixels;
-        int screenHeight = displaymetrics.heightPixels;
-
-        if(screenWidth > screenHeight) {
-            return screenHeight;
-        } else {
-            return screenWidth;
-        }
-    }
-
     public void logOut() {
         Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
         DataHolder.setIsLoggedIn(false);
@@ -367,13 +350,15 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     @Override
     public void onBackPressed() {
-
-        if (getMessageFragment() != null) {
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            LinearLayout layout = (LinearLayout) findViewById(R.id.fragment_layout);
-            layout.setVisibility(View.VISIBLE);
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-            fragmentTransaction.remove(getMessageFragment()).commit();
+        if (!(Utils.getSW(getWindowManager()) >= 550 && getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE)) {
+            if (getMessageFragment() != null) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                LinearLayout layout = (LinearLayout) findViewById(R.id.fragment_layout);
+                layout.setVisibility(View.VISIBLE);
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+                fragmentTransaction.remove(getMessageFragment()).commit();
+            }
         } else {
             super.onBackPressed();
         }
