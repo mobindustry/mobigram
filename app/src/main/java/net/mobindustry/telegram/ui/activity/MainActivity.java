@@ -55,7 +55,6 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
 
         textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
-
         if (isOnline()) {
             if (DataHolder.isLoggedIn()) {
                 Intent intent = new Intent(MainActivity.this, ChatActivity.class);

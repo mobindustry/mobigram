@@ -16,7 +16,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,10 +33,8 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.ContactsHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.LogHandler;
-import net.mobindustry.telegram.core.handlers.StickersHandler;
 import net.mobindustry.telegram.core.handlers.UserMeHandler;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.NavigationItem;
@@ -348,5 +346,18 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getMessageFragment() != null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            LinearLayout layout = (LinearLayout) findViewById(R.id.fragment_layout);
+            layout.setVisibility(View.VISIBLE);
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+            fragmentTransaction.remove(getMessageFragment()).commit();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
