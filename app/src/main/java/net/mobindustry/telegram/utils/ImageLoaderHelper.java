@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
+import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 
@@ -62,6 +63,7 @@ public class ImageLoaderHelper {
             .displayer(new FadeInBitmapDisplayer(500))
             .build();
 
+
     private static ImageLoader initImageLoader() {
         ImageLoader imageLoader = ImageLoader.getInstance();
 
@@ -85,6 +87,20 @@ public class ImageLoaderHelper {
     }
     public static void displayImageDefault(final String url, final ImageView imageView) {
         imageLoader.displayImage(url, imageView,defaultOptions);
+    }
+
+    public static void displayImageList(final String url, final ImageView imageView) {
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+                .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .displayer(new FadeInBitmapDisplayer(500))
+                .showImageOnLoading(R.drawable.image_placeholder)
+                .build();
+
+        imageLoader.displayImage(url, imageView, options);
     }
 
 

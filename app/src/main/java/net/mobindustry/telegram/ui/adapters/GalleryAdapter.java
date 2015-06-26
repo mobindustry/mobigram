@@ -46,17 +46,10 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
         FolderCustomGallery galleryFolder = getItem(position);
 
         if (galleryFolder != null) {
-            ImageLoader.getInstance().loadImage("file://" + galleryFolder.getFirstPhoto().getAbsolutePath(), new SimpleImageLoadingListener() {
 
-                @Override
-                public void onLoadingComplete(String imageUri, View view,
-                                              Bitmap loadedImage) {
-                    super.onLoadingComplete(imageUri, view, loadedImage);
+            ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstPhoto().getAbsolutePath(),firstPhoto);
 
-                    //write your code here to use loadedImage
-                }
-
-            });
+            //ImageLoaderHelper.displayImage("file://" + galleryFolder.getFirstPhoto().getAbsolutePath(),firstPhoto);
 
             nameFolder.setText(galleryFolder.getName());
             photosFolder.setText(galleryFolder.getPhotosQuantity());
