@@ -136,7 +136,11 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                     getChatListFragment().getChatsList(CHATS_LIST_OFFSET, CHATS_LIST_LIMIT);
                 }
                 if (intent.getAction().equals(Const.READ_INBOX_ACTION)) {
-                    getChatListFragment().getChatsList(CHATS_LIST_OFFSET, CHATS_LIST_LIMIT);
+                    long chatId = intent.getLongExtra("chat_id", 0);
+                    int unread = intent.getIntExtra("unread_count", 0);
+                    int lastRead = intent.getIntExtra("last_read", 0);
+                    //TODO do not update many times or update only one item!!!
+                    getChatListFragment().update(chatId, unread, lastRead);
                 }
             }
         };
@@ -150,7 +154,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         ChatListFragment chatListFragment = new ChatListFragment();
         FragmentTransaction ft
                 = getSupportFragmentManager().beginTransaction();
-        //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
         ft.replace(R.id.chat_list, chatListFragment);
         ft.commit();
 

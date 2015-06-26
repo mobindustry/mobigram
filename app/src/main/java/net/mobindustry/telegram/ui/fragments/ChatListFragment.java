@@ -172,4 +172,16 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
             setChatsList((TdApi.Chats) output.getResponse());
         }
     }
+
+    public void update(long chatId, int unread, int lastRead) {
+
+        int count = adapter.getCount();
+        for (int i = 0; i < count; i++) {
+            TdApi.Chat chat = adapter.getItem(i);
+            if(chat.id == chatId) {
+                adapter.getItem(i).unreadCount = unread;
+                adapter.getItem(i).lastReadInboxMessageId = lastRead;
+            }
+        }
+    }
 }

@@ -40,7 +40,11 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
                 break;
             }
             case TdApi.UpdateChatReadInbox.CONSTRUCTOR:
+                TdApi.UpdateChatReadInbox update = (TdApi.UpdateChatReadInbox) object;
                 Intent intent = new Intent(Const.READ_INBOX_ACTION);
+                intent.putExtra("chat_id", update.chatId);
+                intent.putExtra("unread_count", update.unreadCount);
+                intent.putExtra("last_read", update.lastRead);
                 context.sendBroadcast(intent);
                 break;
             case TdApi.UpdateChatReadOutbox.CONSTRUCTOR:
