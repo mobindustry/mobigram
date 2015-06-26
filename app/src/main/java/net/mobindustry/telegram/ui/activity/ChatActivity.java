@@ -60,6 +60,13 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private DrawerLayout drawerLayout;
     private ListView drawerList;
     private BroadcastReceiver receiver;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
     private IntentFilter filter = new IntentFilter();
 
     private final int CHATS_LIST_OFFSET = 0;
@@ -191,8 +198,9 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
             setHeader(userMeHolder.getUser());
         }
 
-        getContacts();
-        getStickers();
+        //TODO determine whether you need?
+        //getContacts();
+        //getStickers();
 
         adapter.addAll(drawerItemsList);
 
