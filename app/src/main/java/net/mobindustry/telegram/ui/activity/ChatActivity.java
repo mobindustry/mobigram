@@ -29,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
@@ -61,16 +60,13 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private ListView drawerList;
     private BroadcastReceiver receiver;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receiver);
-    }
-
     private IntentFilter filter = new IntentFilter();
 
     private final int CHATS_LIST_OFFSET = 0;
     private final int CHATS_LIST_LIMIT = 200;
+    private final int NEW_MESSAGE_LOAD_LIMIT = 1;
+    private final int NEW_MESSAGE_LOAD_OFFSET = -1;
+
 
     private FragmentManager fragmentManager;
     private ActionBarDrawerToggle drawerToggle;
@@ -81,10 +77,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     private UserMeHolder holder = UserMeHolder.getInstance();
     private UserMeHolder userMeHolder;
-
-    public void getStickers() {
-        new ApiClient<>(new TdApi.GetStickers(), new StickersHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
 
     public void downloadFile(int fileId) {
         new ApiClient<>(new TdApi.DownloadFile(fileId), new DownloadFileHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -114,26 +106,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         new ApiClient<>(new TdApi.GetMe(), new UserMeHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
-    public void getContacts() {
-        new ApiClient<>(new TdApi.GetContacts(), new ContactsHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-                if (output.getHandlerId() == ContactsHandler.HANDLER_ID) {
-                }
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
     @Override
     public void onApiResult(BaseHandler output) {
-        if (output.getHandlerId() == StickersHandler.HANDLER_ID) {
-            TdApi.Stickers stickers = (TdApi.Stickers) output.getResponse();
-            if (stickers == null) {
-                getStickers();
-            } else {
-                Log.i("Log", "Stickers " + stickers);
-            }
-        }
         if (output.getHandlerId() == UserMeHandler.HANDLER_ID) {
             userMeHolder.setUser((TdApi.User) output.getResponse());
             setHeader(userMeHolder.getUser());
@@ -154,7 +128,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                         int id = intent.getIntExtra("message_id", 0);
                         long chat_id = intent.getLongExtra("chatId", 0);
                         if (chat_id == fragment.getShownChatId()) {
-                            fragment.getChatHistory(chat_id, id, -1, 1, Enums.MessageAddType.NEW);
+                            fragment.getChatHistory(chat_id, id, NEW_MESSAGE_LOAD_OFFSET, NEW_MESSAGE_LOAD_LIMIT, Enums.MessageAddType.NEW);
                         }
                     }
                     getChatListFragment().getChatsList(CHATS_LIST_OFFSET, CHATS_LIST_LIMIT);
@@ -197,10 +171,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         } else {
             setHeader(userMeHolder.getUser());
         }
-
-        //TODO determine whether you need?
-        //getContacts();
-        //getStickers();
 
         adapter.addAll(drawerItemsList);
 
@@ -368,5 +338,11 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         if (requestCode == Const.CROP_REQUEST_CODE && resultCode == RESULT_OK) {
             getMessageFragment().sendPhotoMessage(getMessageFragment().getShownChatId(), getMessageFragment().getPhotoPath());
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
     }
 }

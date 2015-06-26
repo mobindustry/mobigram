@@ -69,9 +69,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private static final long SCALE_UP_DURATION = 80;
     private static final long SCALE_DOWN_DURATION = 80;
 
+    private final int FIRST_MESSAGE_LOAD_LIMIT = 60;
     private final int MESSAGE_LOAD_LIMIT = 30;
     private final int MESSAGE_LOAD_OFFSET = 0;
-    private final int NEW_MESSAGE_LOAD_LIMIT = 1;
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
 
 
@@ -185,7 +185,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         View view = inflater.inflate(R.layout.message_fragment, container, false);
 
         messageListView = (ListView) view.findViewById(R.id.messageListView);
-        messageListView.setFastScrollEnabled(true);
         adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), new MessageAdapter.LoadMore() {
             @Override
             public void load() {
@@ -305,7 +304,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 ImageLoaderHelper.displayImage("file://" + file.path, imageIcon);
             }
 
-            getChatHistory(chat.id, topMessageId, NEW_MESSAGE_LOAD_OFFSET, MESSAGE_LOAD_LIMIT, Enums.MessageAddType.ALL);
+            getChatHistory(chat.id, topMessageId, NEW_MESSAGE_LOAD_OFFSET, FIRST_MESSAGE_LOAD_LIMIT, Enums.MessageAddType.ALL);
 
             toolbar.inflateMenu(R.menu.message_menu);
 

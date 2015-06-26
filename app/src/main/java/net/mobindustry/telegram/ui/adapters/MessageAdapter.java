@@ -166,6 +166,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             int width = 200;
 
             //Fucking hardcode!!!
+
             String url = "https://maps.googleapis.com/maps/api/staticmap?center=" +
                     point.geoPoint.latitude + "," + point.geoPoint.longitude +
                     "&zoom=13&size=" + width + "x" + height + "&maptype=roadmap&scale=1&markers=color:red|size:big|" +
