@@ -96,7 +96,6 @@ public class ImageLoaderHelper {
                 .resetViewBeforeLoading(true)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
-                .displayer(new FadeInBitmapDisplayer(500))
                 .showImageOnLoading(R.drawable.image_placeholder)
                 .build();
 

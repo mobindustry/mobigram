@@ -63,6 +63,7 @@ public class GalleryFragment extends Fragment {
     }
 
     private void adjustGridView() {
+        gridList.setNumColumns(GridView.AUTO_FIT);
         gridList.setNumColumns(2);
         gridList.setHorizontalSpacing(15);
     }
@@ -99,10 +100,11 @@ public class GalleryFragment extends Fragment {
     }
 
     private List<File> getPhotosFromFolder(String path) {
+
         File dir = new File(path);
         File[] fileList = dir.listFiles();
-        ArrayList<File> listPhotos = new ArrayList<>();
-        ArrayList<File> list = new ArrayList<>(Arrays.asList(fileList));
+        List<File> listPhotos = new ArrayList<>();
+        List<File> list = new ArrayList<>(Arrays.asList(fileList));
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).toString().contains((".png")) || list.get(i).toString().contains(".jpg")) {
                 listPhotos.add(list.get(i));
@@ -119,10 +121,19 @@ public class GalleryFragment extends Fragment {
             folderCustomGallery.setPath(dirLink[i]);
             folderCustomGallery.setPhotosInFolder(getPhotosFromFolder(dirLink[i]));
             folderCustomGallery.setPhotosQuantity(String.valueOf(getPhotosFromFolder(dirLink[i]).size()));
-            listFolders.add(folderCustomGallery);
-            //TODO
+            if (folderCustomGallery.getPhotosInFolder().isEmpty()) {
+                continue;
+            } else {
+                File image = new File(getPhotosFromFolder(dirLink[i]).get(0).toString());
+                folderCustomGallery.setFirstPhoto(image);
+                listFolders.add(folderCustomGallery);
+            }
 
-            File image = new File(getPhotosFromFolder(dirLink[i]).get(0).toString());
+
+            //TODO
+            //Log.e("Log", "get Photo " + getPhotosFromFolder(dirLink[i]).get(0).toString());
+
+            //File image = new File(getPhotosFromFolder(dirLink[i]).get(0).toString());
 
 
             //BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -131,7 +142,7 @@ public class GalleryFragment extends Fragment {
             //Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
             //Bitmap bitmap = ImageLoader.getInstance().loadImageSync("file://" + image.getAbsolutePath());
 
-                //Bitmap myBitmap = BitmapFactory.decodeFile(getPhotosFromFolder(dirLink[i]).get(0).toString());
+            //Bitmap myBitmap = BitmapFactory.decodeFile(getPhotosFromFolder(dirLink[i]).get(0).toString());
 
             //Bitmap bmp = imageLoader.loadImageSync(imageUri);
 
@@ -149,7 +160,7 @@ public class GalleryFragment extends Fragment {
                 outHeight = maxSize;
                 outWidth = (inWidth * maxSize) / inHeight;
             }*/
-            folderCustomGallery.setFirstPhoto(image);
+            //folderCustomGallery.setFirstPhoto(image);
         }
     }
 
@@ -182,9 +193,9 @@ public class GalleryFragment extends Fragment {
         protected Void doInBackground(Void... params) {
             getAllImages();
             getFoldersPath();
-            //Log.e("Log", "List path " + dirLink.length);
+            Log.e("Log", "List path " + dirLink.length);
             getDirNames();
-            //Log.e("Log", "List name " + listDirNames.size());
+            Log.e("Log", "List name " + listDirNames.size());
             completeListFolders();
             return null;
         }
@@ -195,9 +206,9 @@ public class GalleryFragment extends Fragment {
 
 
             //Log.e("Log", "Size list " + listFolders.size());
-            Log.e("Log", "Folder 1 name " + listFolders.get(0).getName());
-            Log.e("Log", "Folder 1 quantity photos " + listFolders.get(0).getPhotosQuantity());
-            Log.e("Log", "Folder 1 patch " + listFolders.get(0).getPath());
+            //Log.e("Log", "Folder 1 name " + listFolders.get(0).getName());
+            //Log.e("Log", "Folder 1 quantity photos " + listFolders.get(0).getPhotosQuantity());
+            //Log.e("Log", "Folder 1 patch " + listFolders.get(0).getPath());
             adjustGridView();
             galleryAdapter.clear();
             galleryAdapter.addAll(listFolders);
