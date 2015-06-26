@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="150dp"
     android:layout_height="150dp">
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/rect"
-    android:layout_marginTop="@dimen/margin_10dp"
-    android:layout_marginBottom="@dimen/margin_10dp"
-    android:id="@+id/frameItem">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        tools:src="@drawable/photo_test"
-        android:id="@+id/firstPhotoGalleryFragment"/>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:id="@+id/imagePhoto"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:padding="10dp"
+            android:src="@drawable/photo_test"
+            android:scaleType="centerCrop"
+            />
+
+        <View
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignLeft="@+id/imagePhoto"
+            android:layout_alignTop="@+id/imagePhoto"
+            android:background="@drawable/rect" />
+    </RelativeLayout>
 
 
     <LinearLayout
@@ -48,5 +54,4 @@
             android:textColor="@color/text_color_gallery_fragment"
             tools:text="@string/text_test_number" />
     </LinearLayout>
-</FrameLayout>
 </FrameLayout>

@@ -39,7 +39,7 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
         }
 
 
-        final ImageView firstPhoto = (ImageView) convertView.findViewById(R.id.firstPhotoGalleryFragment);
+        ImageView firstPhoto = (ImageView) convertView.findViewById(R.id.imagePhoto);
         TextView nameFolder = (TextView) convertView.findViewById(R.id.nameFolder);
         TextView photosFolder = (TextView) convertView.findViewById(R.id.photosQuantity);
 
@@ -47,10 +47,9 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
 
         if (galleryFolder != null) {
 
+            Log.e("LOg","LINK PHOTO "+galleryFolder.getFirstPhoto().getAbsolutePath());
+
             ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstPhoto().getAbsolutePath(),firstPhoto);
-
-            //ImageLoaderHelper.displayImage("file://" + galleryFolder.getFirstPhoto().getAbsolutePath(),firstPhoto);
-
             nameFolder.setText(galleryFolder.getName());
             photosFolder.setText(galleryFolder.getPhotosQuantity());
         }

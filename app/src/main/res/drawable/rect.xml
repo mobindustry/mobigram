@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="@color/background_square_gallery_fragment">
-    </solid>
-    <corners
-        android:bottomRightRadius="15dp"
-        android:bottomLeftRadius="15dp"
-        android:topLeftRadius="15dp"
-        android:topRightRadius="15dp"/>
-
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="-20dp"
+        android:left="-20dp"
+        android:right="-20dp"
+        android:top="-20dp">
+        <shape android:shape="rectangle">
+            <stroke
+                android:width="30dp"
+                android:color="#fff" />
+            <corners android:radius="40dp" />
+        </shape>
+    </item>
+</layer-list>

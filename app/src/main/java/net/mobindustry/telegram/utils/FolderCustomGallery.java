@@ -13,6 +13,15 @@ public class FolderCustomGallery implements Serializable{
     private String photosQuantity;
     private List<File>photosInFolder;
     private File firstPhoto;
+    private Bitmap bitmapPhoto;
+
+    public Bitmap getBitmapPhoto() {
+        return bitmapPhoto;
+    }
+
+    public void setBitmapPhoto(Bitmap bitmapPhoto) {
+        this.bitmapPhoto = bitmapPhoto;
+    }
 
     public FolderCustomGallery() {
     }
