@@ -171,9 +171,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
         adapter = new NavigationDrawerAdapter(ChatActivity.this);
 
-        getContacts();
-        getStickers();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.chats_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
@@ -191,6 +188,9 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         } else {
             setHeader(userMeHolder.getUser());
         }
+
+        getContacts();
+        getStickers();
 
         adapter.addAll(drawerItemsList);
 

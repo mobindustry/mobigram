@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background_activity">
+    android:background="@color/background_activity"
+    android:orientation="vertical">
 
     <include
         layout="@layout/toolbar_gallery_fragment"
@@ -13,8 +13,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/accent_material_dark">
+        android:background="@color/accent_material_dark"
+        android:orientation="horizontal">
 
         <FrameLayout
             android:layout_width="0dp"
@@ -24,24 +24,26 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/abc_ic_search_api_mtrl_alpha"
                 android:layout_gravity="left|center"
-                />
+                android:src="@drawable/abc_ic_search_api_mtrl_alpha" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="right">
+                android:layout_gravity="right"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FIND IMAGES"
-                    android:layout_gravity="top|center"/>
+                    android:layout_gravity="top|center"
+                    android:text="FIND IMAGES" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="web search"
-                    android:layout_gravity="bottom|center"/>
+                    android:layout_gravity="bottom|center"
+                    android:text="web search" />
             </LinearLayout>
 
         </FrameLayout>
@@ -54,40 +56,55 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/abc_ic_search_api_mtrl_alpha"
                 android:layout_gravity="left|center"
-                />
+                android:src="@drawable/abc_ic_search_api_mtrl_alpha" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="right">
+                android:layout_gravity="right"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FIND IMAGES"
-                    android:layout_gravity="top|center"/>
+                    android:layout_gravity="top|center"
+                    android:text="FIND IMAGES" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="web search"
-                    android:layout_gravity="bottom|center"/>
+                    android:layout_gravity="bottom|center"
+                    android:text="web search" />
             </LinearLayout>
 
         </FrameLayout>
 
     </LinearLayout>
 
-    <GridView
-        android:id="@+id/gridList"
-        android:layout_marginLeft="@dimen/margin_10dp"
-        android:layout_marginRight="@dimen/margin_10dp"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:background="@color/background_activity"
-        android:stretchMode="columnWidth">
-    </GridView>
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/gridProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <GridView
+            android:id="@+id/gridList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"
+            android:background="@color/background_activity"
+            android:gravity="center">
+
+        </GridView>
+
+    </FrameLayout>
 
 
 </LinearLayout>

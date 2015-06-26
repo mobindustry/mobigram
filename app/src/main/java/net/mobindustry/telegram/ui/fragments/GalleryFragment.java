@@ -2,6 +2,8 @@ package net.mobindustry.telegram.ui.fragments;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ListView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
@@ -44,7 +49,7 @@ public class GalleryFragment extends Fragment {
         galleryAdapter = new GalleryAdapter(getActivity());
         gridList = (GridView) view.findViewById(R.id.gridList);
         gridList.setAdapter(galleryAdapter);
-        adjustGridView();
+        //adjustGridView();
         return view;
     }
 
@@ -114,9 +119,37 @@ public class GalleryFragment extends Fragment {
             folderCustomGallery.setPath(dirLink[i]);
             folderCustomGallery.setPhotosInFolder(getPhotosFromFolder(dirLink[i]));
             folderCustomGallery.setPhotosQuantity(String.valueOf(getPhotosFromFolder(dirLink[i]).size()));
-            folderCustomGallery.setUriFirstPhoto(getPhotosFromFolder(dirLink[i]).get(0).toString());
             listFolders.add(folderCustomGallery);
             //TODO
+
+            File image = new File(getPhotosFromFolder(dirLink[i]).get(0).toString());
+
+
+            //BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+
+
+            //Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
+            //Bitmap bitmap = ImageLoader.getInstance().loadImageSync("file://" + image.getAbsolutePath());
+
+                //Bitmap myBitmap = BitmapFactory.decodeFile(getPhotosFromFolder(dirLink[i]).get(0).toString());
+
+            //Bitmap bmp = imageLoader.loadImageSync(imageUri);
+
+
+
+            /*final int maxSize = 960;
+            int outWidth;
+            int outHeight;
+            int inWidth = bitmap.getWidth();
+            int inHeight = bitmap.getHeight();
+            if (inWidth > inHeight) {
+                outWidth = maxSize;
+                outHeight = (inHeight * maxSize) / inWidth;
+            } else {
+                outHeight = maxSize;
+                outWidth = (inWidth * maxSize) / inHeight;
+            }*/
+            folderCustomGallery.setFirstPhoto(image);
         }
     }
 
@@ -165,7 +198,7 @@ public class GalleryFragment extends Fragment {
             Log.e("Log", "Folder 1 name " + listFolders.get(0).getName());
             Log.e("Log", "Folder 1 quantity photos " + listFolders.get(0).getPhotosQuantity());
             Log.e("Log", "Folder 1 patch " + listFolders.get(0).getPath());
-
+            adjustGridView();
             galleryAdapter.clear();
             galleryAdapter.addAll(listFolders);
 

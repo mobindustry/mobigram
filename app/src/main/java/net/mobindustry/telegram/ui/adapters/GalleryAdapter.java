@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 
 import net.mobindustry.telegram.R;
@@ -22,9 +23,8 @@ import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery>  {
+public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
     private LayoutInflater inflater;
-    private ArrayList<String> displayedImages = new ArrayList<>();
 
     public GalleryAdapter(Context context) {
         super(context, 0);
@@ -39,31 +39,30 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery>  {
         }
 
 
-        ImageView firstPhoto = (ImageView) convertView.findViewById(R.id.firstPhotoGalleryFragment);
+        final ImageView firstPhoto = (ImageView) convertView.findViewById(R.id.firstPhotoGalleryFragment);
         TextView nameFolder = (TextView) convertView.findViewById(R.id.nameFolder);
         TextView photosFolder = (TextView) convertView.findViewById(R.id.photosQuantity);
 
         FolderCustomGallery galleryFolder = getItem(position);
-        Log.e("LOG", "photo uri " + galleryFolder.getUriFirstPhoto());
+
         if (galleryFolder != null) {
+            ImageLoader.getInstance().loadImage("file://" + galleryFolder.getFirstPhoto().getAbsolutePath(), new SimpleImageLoadingListener() {
 
-            String url = "file://" + galleryFolder.getUriFirstPhoto();
-            if (displayedImages.contains(url)) {
-                ImageLoaderHelper.displayImageDefault(url, firstPhoto);
-            } else {
+                @Override
+                public void onLoadingComplete(String imageUri, View view,
+                                              Bitmap loadedImage) {
+                    super.onLoadingComplete(imageUri, view, loadedImage);
 
-                ImageLoaderHelper.displayImageFadeIn(url, firstPhoto);
-                displayedImages.add(url);
-            }
+                    //write your code here to use loadedImage
+                }
 
-
-
-
-            //Uri myUri = Uri.parse(galleryFolder.getUriFirstPhoto());
+            });
 
             nameFolder.setText(galleryFolder.getName());
             photosFolder.setText(galleryFolder.getPhotosQuantity());
         }
+
         return convertView;
     }
 }
+

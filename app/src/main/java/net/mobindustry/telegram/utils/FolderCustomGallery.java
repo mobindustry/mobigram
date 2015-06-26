@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.utils;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import java.io.File;
@@ -11,17 +12,17 @@ public class FolderCustomGallery implements Serializable{
     private String path;
     private String photosQuantity;
     private List<File>photosInFolder;
-    private String uriFirstPhoto;
+    private File firstPhoto;
 
     public FolderCustomGallery() {
     }
 
-    public String getUriFirstPhoto() {
-        return uriFirstPhoto;
+    public File getFirstPhoto() {
+        return firstPhoto;
     }
 
-    public void setUriFirstPhoto(String uriFirstPhoto) {
-        this.uriFirstPhoto = uriFirstPhoto;
+    public void setFirstPhoto(File firstPhoto) {
+        this.firstPhoto = firstPhoto;
     }
 
     public String getName() {
