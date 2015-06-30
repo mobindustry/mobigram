@@ -86,6 +86,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private int topMessageId;
     private int toScrollLoadMessageId;
     private ListView messageListView;
+    private ProgressBar progressBar;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -111,13 +112,13 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         }
         adapter.setNotifyOnChange(true);
         adapter.notifyDataSetChanged();
-        ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.messages_progress_bar);
-        progressBar.setVisibility(View.GONE);
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     public void addNewMessage(final TdApi.Messages messages) {
         adapter.add(messages.messages[0]);
-
     }
 
     public void addLatestMessages(final TdApi.Messages messages) {
@@ -191,6 +192,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             }
         });
         messageListView.setAdapter(adapter);
+
+        progressBar = (ProgressBar) view.findViewById(R.id.messages_progress_bar);
 
         return view;
     }
@@ -302,7 +305,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
             getChatHistory(chat.id, topMessageId, NEW_MESSAGE_LOAD_OFFSET, FIRST_MESSAGE_LOAD_LIMIT, Enums.MessageAddType.ALL);
 
-            toolbar.inflateMenu(R.menu.message_menu);
+            toolbar.inflateMenu(R.menu.message_menu);  //TODO color of menu.
 
             final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 

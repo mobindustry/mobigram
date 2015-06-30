@@ -174,7 +174,6 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     }
 
     public void update(long chatId, int unread, int lastRead) {
-
         int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
             TdApi.Chat chat = adapter.getItem(i);
