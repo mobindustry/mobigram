@@ -171,13 +171,17 @@ public class GalleryFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if ((Utils.getSW(getActivity().getWindowManager()) >= 550)) {
+            if (Utils.isTablet(getActivity())) {
                 adjustGridViewPort();
                 galleryAdapter.clear();
                 galleryAdapter.addAll(listFolders);
             }
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && Utils.getSW(getActivity().getWindowManager()) >= 480) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
                 adjustGridViewLand();
+                galleryAdapter.clear();
+                galleryAdapter.addAll(listFolders);
+            } else {
+                adjustGridViewPort();
                 galleryAdapter.clear();
                 galleryAdapter.addAll(listFolders);
             }
@@ -188,7 +192,20 @@ public class GalleryFragment extends Fragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.e("Log", "SW " + Utils.getSW(getActivity().getWindowManager()));
+        if (Utils.isTablet(getActivity())) {
+            adjustGridViewPort();
+            galleryAdapter.clear();
+            galleryAdapter.addAll(listFolders);
+        }
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+            adjustGridViewLand();
+            galleryAdapter.clear();
+            galleryAdapter.addAll(listFolders);
+        } else {
+            adjustGridViewPort();
+            galleryAdapter.clear();
+            galleryAdapter.addAll(listFolders);
+        }
 
 
     }
