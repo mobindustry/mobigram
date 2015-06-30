@@ -101,8 +101,13 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
             notify.setText(String.valueOf(item.unreadCount));
             notify.setBackground(Utils.getShapeDrawable(R.dimen.chat_list_item_notification_size, Color.rgb(255, 121, 45)));
         } else {
+            int sdk = android.os.Build.VERSION.SDK_INT;
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                notify.setBackgroundDrawable(null);
+            } else {
+                notify.setBackground(null);
+            }
             notify.setText("");
-            notify.setBackground(null);
         }
 
         if (user.photoBig instanceof TdApi.FileEmpty) {
