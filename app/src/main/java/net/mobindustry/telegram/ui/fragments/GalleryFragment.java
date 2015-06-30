@@ -138,11 +138,13 @@ public class GalleryFragment extends Fragment {
         for (int i = 0; i < listImagesMediaStore.size(); i++) {
             String dirLink = "";
             String uri = listImagesMediaStore.get(i).getData();
-            String[] segments = uri.split("/");
-            for (int j = 0; j < segments.length - 1; j++) {
-                dirLink = dirLink + segments[j] + "/";
+            if (uri != null) {
+                String[] segments = uri.split("/");
+                for (int j = 0; j < segments.length - 1; j++) {
+                    dirLink = dirLink + segments[j] + "/";
+                }
+                listDirLink.add(dirLink);
             }
-            listDirLink.add(dirLink);
         }
         dirLink = new String[listDirLink.size()];
         listDirLink.toArray(dirLink);
