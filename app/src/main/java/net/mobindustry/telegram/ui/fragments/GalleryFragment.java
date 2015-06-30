@@ -132,8 +132,7 @@ public class GalleryFragment extends Fragment {
             if (folderCustomGallery.getPhotosInFolder().isEmpty()) {
                 continue;
             } else {
-                File image = new File(getPhotosFromFolder(dirLink[i]).get(0).toString());
-                folderCustomGallery.setFirstPhoto(image);
+                folderCustomGallery.setFirstPhoto(getPhotosFromFolder(dirLink[i]).get(0).toString());
                 listFolders.add(folderCustomGallery);
             }
 

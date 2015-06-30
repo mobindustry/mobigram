@@ -1,8 +1,5 @@
 package net.mobindustry.telegram.utils;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
@@ -12,25 +9,17 @@ public class FolderCustomGallery implements Serializable{
     private String path;
     private String photosQuantity;
     private List<File>photosInFolder;
-    private File firstPhoto;
-    private Bitmap bitmapPhoto;
+    private String firstPhoto;
 
-    public Bitmap getBitmapPhoto() {
-        return bitmapPhoto;
-    }
-
-    public void setBitmapPhoto(Bitmap bitmapPhoto) {
-        this.bitmapPhoto = bitmapPhoto;
-    }
 
     public FolderCustomGallery() {
     }
 
-    public File getFirstPhoto() {
+    public String getFirstPhoto() {
         return firstPhoto;
     }
 
-    public void setFirstPhoto(File firstPhoto) {
+    public void setFirstPhoto(String firstPhoto) {
         this.firstPhoto = firstPhoto;
     }
 
