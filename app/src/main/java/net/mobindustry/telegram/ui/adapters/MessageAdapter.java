@@ -72,7 +72,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
     public void fileCheckerAndLoader(final TdApi.File file, final ImageView view) {
         if (file instanceof TdApi.FileEmpty) {
             final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-            Log.e("Log", "Download file from message adapter: " + fileEmpty.id);
 
             new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
                 @Override

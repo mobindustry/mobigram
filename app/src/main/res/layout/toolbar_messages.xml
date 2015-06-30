@@ -4,6 +4,7 @@
     android:layout_height="@dimen/toolbar_height"
     android:background="@color/background_action_bar"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     >
 
     <TextView

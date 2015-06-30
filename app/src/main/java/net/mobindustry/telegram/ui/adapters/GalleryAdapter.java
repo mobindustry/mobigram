@@ -47,7 +47,7 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
 
         if (galleryFolder != null) {
 
-            Log.e("LOg","LINK PHOTO "+galleryFolder.getFirstPhoto());
+            Log.e("Log","LINK PHOTO "+galleryFolder.getFirstPhoto());
             //ImageLoader.getInstance().displayImage("file://" + galleryFolder.getFirstPhoto(),firstPhoto);
             ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstPhoto(),firstPhoto);
             nameFolder.setText(galleryFolder.getName());

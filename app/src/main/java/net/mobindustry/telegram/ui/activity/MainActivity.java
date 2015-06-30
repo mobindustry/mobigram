@@ -123,7 +123,7 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
                 try {
                     TimeUnit.MILLISECONDS.sleep(100);
                 } catch (InterruptedException e) {
-                    Log.e("Log", "SplashStart task interrupted");
+                    Log.e("Log", "OnlineCheck task interrupted");
                 }
             }
             return null;

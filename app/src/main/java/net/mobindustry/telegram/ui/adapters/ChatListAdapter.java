@@ -2,17 +2,13 @@ package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;

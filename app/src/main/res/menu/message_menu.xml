@@ -2,7 +2,6 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
-
     <item
         android:id="@+id/clear_history"
         android:orderInCategory="100"

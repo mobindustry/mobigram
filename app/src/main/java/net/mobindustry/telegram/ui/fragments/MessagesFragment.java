@@ -272,8 +272,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             if (chatUser.photoBig instanceof TdApi.FileEmpty) {
                 final TdApi.FileEmpty file = (TdApi.FileEmpty) chatUser.photoBig;
                 if (file.id != 0) {
-                    Log.e("Log", "Download file from message fragment: " + file.id);
-
                     new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
                         @Override
                         public void onApiResult(BaseHandler output) {

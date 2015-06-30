@@ -12,7 +12,7 @@ public class GetStateHandler extends BaseHandler<Enums.StatesEnum> {
 
     @Override
     public Enums.StatesEnum resultHandler(TdApi.TLObject object) {
-        Log.d("object constructor", Long.toString(object.getConstructor()));
+
         if (object.getConstructor() == TdApi.AuthStateOk.CONSTRUCTOR) {
             return Enums.StatesEnum.OK;
         }
