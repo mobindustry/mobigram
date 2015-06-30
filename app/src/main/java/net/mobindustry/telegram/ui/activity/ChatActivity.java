@@ -348,8 +348,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     @Override
     public void onBackPressed() {
-        if (Utils.isTablet(this) && getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE && getMessageFragment() != null) {
+        if (!(Utils.isTablet(this) && getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) && getMessageFragment() != null) {
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             LinearLayout layout = (LinearLayout) findViewById(R.id.fragment_layout);
