@@ -3,6 +3,7 @@ package net.mobindustry.telegram.ui.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,6 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         final ImageView imageIcon = (ImageView) convertView.findViewById(R.id.message_icon_image);
 
         TdApi.Chat item = getItem(position);
-
         TdApi.ChatInfo info = item.type;
         TdApi.PrivateChatInfo privateChatInfo = null;
         TdApi.MessageText text = null;
@@ -95,7 +95,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         if (item.unreadCount != 0) {
             notify.setText(String.valueOf(item.unreadCount));
-            notify.setBackground(Utils.getShapeDrawable(R.dimen.chat_list_item_notification_size, Color.rgb(255, 121, 45)));
+            notify.setBackground(Utils.getShapeDrawable(R.dimen.chat_list_item_notification_size, getContext().getResources().getColor(R.color.message_notify)));
         } else {
             int sdk = android.os.Build.VERSION.SDK_INT;
             if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {

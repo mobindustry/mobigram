@@ -66,7 +66,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private final int NEW_MESSAGE_LOAD_LIMIT = 1;
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
 
-
     private FragmentManager fragmentManager;
     private ActionBarDrawerToggle drawerToggle;
     private CharSequence drawerTitle;
@@ -349,15 +348,14 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     @Override
     public void onBackPressed() {
-        if (!(Utils.getSW(getWindowManager()) >= 550 && getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE)) {
-            if (getMessageFragment() != null) {
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                LinearLayout layout = (LinearLayout) findViewById(R.id.fragment_layout);
-                layout.setVisibility(View.VISIBLE);
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-                fragmentTransaction.remove(getMessageFragment()).commit();
-            }
+        if (Utils.isTablet(this) && getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE && getMessageFragment() != null) {
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            LinearLayout layout = (LinearLayout) findViewById(R.id.fragment_layout);
+            layout.setVisibility(View.VISIBLE);
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+            fragmentTransaction.remove(getMessageFragment()).commit();
         } else {
             super.onBackPressed();
         }

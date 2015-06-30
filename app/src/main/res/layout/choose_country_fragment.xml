@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
     <se.emilsjolander.stickylistheaders.StickyListHeadersListView
         android:id="@+id/countriesList"
         android:layout_width="match_parent"

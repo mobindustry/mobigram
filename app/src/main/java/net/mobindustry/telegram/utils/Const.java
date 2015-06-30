@@ -31,15 +31,15 @@ public class Const {
 
     public static final int CHAT_NOT_FOUND = 1001;
 
-    public static final int BASE_HANDLER_ID = 0x100;
-    public static final int AUTH_HANDLER_ID = 0x0;
-    public static final int CHATS_HANDLER_ID = 0x1;
-    public static final int CONTACTS_HANDLER_ID = 0x2;
-    public static final int MESSAGE_HANDLER_ID = 0x3;
-    public static final int STICKERS_HANDLER_ID = 0x4;
-    public static final int CHAT_HISTORY_HANDLER_ID = 0x5;
-    public static final int DOWNLOAD_FILE_HANDLER_ID = 0x6;
-    public static final int USER_HANDLER_ID = 0x7;
+    public static final int BASE_HANDLER_ID = 700;
+    public static final int AUTH_HANDLER_ID = 701;
+    public static final int CHATS_HANDLER_ID = 702;
+    public static final int CONTACTS_HANDLER_ID = 703;
+    public static final int MESSAGE_HANDLER_ID = 704;
+    public static final int STICKERS_HANDLER_ID = 705;
+    public static final int CHAT_HISTORY_HANDLER_ID = 706;
+    public static final int DOWNLOAD_FILE_HANDLER_ID = 707;
+    public static final int USER_HANDLER_ID = 708;
 
     public static final int PRELOAD_POSITION = 10;
 

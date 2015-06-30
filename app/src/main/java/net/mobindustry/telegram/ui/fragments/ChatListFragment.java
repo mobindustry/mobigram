@@ -48,7 +48,6 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
         }
-        Log.i("LOG", "chatsFragment setList");
         this.chats = chats;
         adapter.clear();
         adapter.addAll(chats.chats);
@@ -125,7 +124,7 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
         TdApi.Chat selectedItem = adapter.getItem(pos);
-        Log.e("Log", selectedItem.toString());
+        //Log.e("Log", selectedItem.toString());
         clickedId = selectedItem.id;
         showMessages(pos);
     }
@@ -182,5 +181,6 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
                 adapter.getItem(i).lastReadInboxMessageId = lastRead;
             }
         }
+        adapter.notifyDataSetChanged();
     }
 }

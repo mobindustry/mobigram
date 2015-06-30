@@ -1,5 +1,7 @@
 package net.mobindustry.telegram.utils;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.util.DisplayMetrics;
@@ -38,16 +40,9 @@ public class Utils {
         return circle;
     }
 
-    public static int getSW(WindowManager manager) {
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        manager.getDefaultDisplay().getMetrics(displaymetrics);
-        int screenWidth = displaymetrics.widthPixels;
-        int screenHeight = displaymetrics.heightPixels;
-
-        if(screenWidth > screenHeight) {
-            return screenHeight;
-        } else {
-            return screenWidth;
-        }
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }
