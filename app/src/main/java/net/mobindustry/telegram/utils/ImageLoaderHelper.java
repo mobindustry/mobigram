@@ -59,7 +59,7 @@ public class ImageLoaderHelper {
             .resetViewBeforeLoading(true)
             .cacheInMemory(true)
             .cacheOnDisk(true)
-            .displayer(new FadeInBitmapDisplayer(500))
+            //.displayer(new FadeInBitmapDisplayer(500))
             .build();
 
 
