@@ -91,11 +91,11 @@ public class ImageLoaderHelper {
 
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-                //.imageScaleType(ImageScaleType.IN_SAMPLE_INT)
-                //.resetViewBeforeLoading(true)
-                //.cacheInMemory(true)
-                //.cacheOnDisk(true)
-                //.showImageOnLoading(R.drawable.image_placeholder)
+                .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+                .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .showImageOnLoading(R.drawable.image_placeholder)
                 .build();
 
         imageLoader.displayImage(url, imageView, options);

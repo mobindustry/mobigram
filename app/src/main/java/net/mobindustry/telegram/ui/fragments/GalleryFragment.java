@@ -1,38 +1,29 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.content.ContentResolver;
+import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ListView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
+import android.widget.LinearLayout;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
 import net.mobindustry.telegram.utils.ImagesFromMediaStore;
+import net.mobindustry.telegram.utils.Utils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -57,7 +48,7 @@ public class GalleryFragment extends Fragment {
         galleryAdapter = new GalleryAdapter(getActivity());
         gridList = (GridView) view.findViewById(R.id.gridList);
         gridList.setAdapter(galleryAdapter);
-        //adjustGridView();
+        adjustGridViewPort();
         return view;
     }
 
@@ -65,14 +56,19 @@ public class GalleryFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         AsyncMediaStore asyncMediaStore = new AsyncMediaStore();
         asyncMediaStore.execute();
     }
 
-    private void adjustGridView() {
+    private void adjustGridViewPort() {
         gridList.setNumColumns(GridView.AUTO_FIT);
         gridList.setNumColumns(2);
+        gridList.setHorizontalSpacing(15);
+    }
+
+    private void adjustGridViewLand() {
+        gridList.setNumColumns(GridView.AUTO_FIT);
+        gridList.setNumColumns(3);
         gridList.setHorizontalSpacing(15);
     }
 
@@ -135,39 +131,6 @@ public class GalleryFragment extends Fragment {
                 folderCustomGallery.setFirstPhoto(getPhotosFromFolder(dirLink[i]).get(0).toString());
                 listFolders.add(folderCustomGallery);
             }
-
-
-            //TODO
-            //Log.e("Log", "get Photo " + getPhotosFromFolder(dirLink[i]).get(0).toString());
-
-            //File image = new File(getPhotosFromFolder(dirLink[i]).get(0).toString());
-
-
-            //BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-
-
-            //Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
-            //Bitmap bitmap = ImageLoader.getInstance().loadImageSync("file://" + image.getAbsolutePath());
-
-            //Bitmap myBitmap = BitmapFactory.decodeFile(getPhotosFromFolder(dirLink[i]).get(0).toString());
-
-            //Bitmap bmp = imageLoader.loadImageSync(imageUri);
-
-
-
-            /*final int maxSize = 960;
-            int outWidth;
-            int outHeight;
-            int inWidth = bitmap.getWidth();
-            int inHeight = bitmap.getHeight();
-            if (inWidth > inHeight) {
-                outWidth = maxSize;
-                outHeight = (inHeight * maxSize) / inWidth;
-            } else {
-                outHeight = maxSize;
-                outWidth = (inWidth * maxSize) / inHeight;
-            }*/
-            //folderCustomGallery.setFirstPhoto(image);
         }
     }
 
@@ -200,9 +163,7 @@ public class GalleryFragment extends Fragment {
         protected Void doInBackground(Void... params) {
             getAllImages();
             getFoldersPath();
-            Log.e("Log", "List path " + dirLink.length);
             getDirNames();
-            Log.e("Log", "List name " + listDirNames.size());
             completeListFolders();
             return null;
         }
@@ -210,18 +171,26 @@ public class GalleryFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
-
-            //Log.e("Log", "Size list " + listFolders.size());
-            //Log.e("Log", "Folder 1 name " + listFolders.get(0).getName());
-            //Log.e("Log", "Folder 1 quantity photos " + listFolders.get(0).getPhotosQuantity());
-            //Log.e("Log", "Folder 1 patch " + listFolders.get(0).getPath());
-            adjustGridView();
-            galleryAdapter.clear();
-            galleryAdapter.addAll(listFolders);
-
+            if ((Utils.getSW(getActivity().getWindowManager()) >= 550)) {
+                adjustGridViewPort();
+                galleryAdapter.clear();
+                galleryAdapter.addAll(listFolders);
+            }
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && Utils.getSW(getActivity().getWindowManager()) >= 480) {
+                adjustGridViewLand();
+                galleryAdapter.clear();
+                galleryAdapter.addAll(listFolders);
+            }
 
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.e("Log", "SW " + Utils.getSW(getActivity().getWindowManager()));
+
+
     }
 
 }

@@ -2,6 +2,7 @@ package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,9 +48,7 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
 
         if (galleryFolder != null) {
 
-            Log.e("Log","LINK PHOTO "+galleryFolder.getFirstPhoto());
-            //ImageLoader.getInstance().displayImage("file://" + galleryFolder.getFirstPhoto(),firstPhoto);
-            ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstPhoto(),firstPhoto);
+            ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstPhoto(), firstPhoto);
             nameFolder.setText(galleryFolder.getName());
             photosFolder.setText(galleryFolder.getPhotosQuantity());
         }
