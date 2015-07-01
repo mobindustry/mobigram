@@ -4,8 +4,16 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import android.widget.ImageView;
+
+import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
+
+import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.text.SimpleDateFormat;
 
@@ -46,5 +54,23 @@ public class Utils {
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
+    public static void fileCheckerAndLoader(final TdApi.File file, final ImageView view) {
+        if (file instanceof TdApi.FileEmpty) {
+            final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+
+            new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                @Override
+                public void onApiResult(BaseHandler output) {
+                    if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                        ImageLoaderHelper.displayImage(String.valueOf(fileEmpty.id), view);
+                    }
+                }
+            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        }
+        if (file instanceof TdApi.FileLocal) {
+            TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+            ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, view);
+        }
+    }
 
 }

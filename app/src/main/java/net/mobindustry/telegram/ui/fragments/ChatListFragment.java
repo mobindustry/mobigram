@@ -63,7 +63,7 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
 
         progressBar = (ProgressBar) getActivity().findViewById(R.id.chat_list_progress_bar);
 
-        getChatsList(0, 200); //TODO constant or logical get;
+        getChatsList(Const.CHATS_LIST_OFFSET, Const.CHATS_LIST_LIMIT);
 
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.attachToListView(getListView());

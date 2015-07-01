@@ -61,8 +61,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     private IntentFilter filter = new IntentFilter();
 
-    private final int CHATS_LIST_OFFSET = 0;
-    private final int CHATS_LIST_LIMIT = 200;
+
     private final int NEW_MESSAGE_LOAD_LIMIT = 1;
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
 
@@ -128,7 +127,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                             fragment.getChatHistory(chat_id, id, NEW_MESSAGE_LOAD_OFFSET, NEW_MESSAGE_LOAD_LIMIT, Enums.MessageAddType.NEW);
                         }
                     }
-                    getChatListFragment().getChatsList(CHATS_LIST_OFFSET, CHATS_LIST_LIMIT);
+                    getChatListFragment().getChatsList(Const.CHATS_LIST_OFFSET, Const.CHATS_LIST_LIMIT);
                 }
                 if (intent.getAction().equals(Const.READ_INBOX_ACTION)) {
                     long chatId = intent.getLongExtra("chat_id", 0);

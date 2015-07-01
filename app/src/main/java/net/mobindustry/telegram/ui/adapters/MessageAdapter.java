@@ -2,7 +2,6 @@ package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.core.ApiClient;
-import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.Utils;
@@ -69,29 +65,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         return typeCount;
     }
 
-    public void fileCheckerAndLoader(final TdApi.File file, final ImageView view) {
-        if (file instanceof TdApi.FileEmpty) {
-            final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-
-            new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                @Override
-                public void onApiResult(BaseHandler output) {
-                    if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                        ImageLoaderHelper.displayImage(String.valueOf(fileEmpty.id), view);
-                    }
-                }
-            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        }
-        if (file instanceof TdApi.FileLocal) {
-            TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
-            ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, view);
-        }
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        if(position == Const.PRELOAD_POSITION) {
+        if(position == Const.LIST_PRELOAD_POSITION) {
             loadMore.load();
         }
 
@@ -133,7 +109,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[i].width, messagePhoto.photo.photos[i].height);
                     photo.setLayoutParams(layoutParams);
 
-                    fileCheckerAndLoader(messagePhoto.photo.photos[i].photo, photo);
+                    Utils.fileCheckerAndLoader(messagePhoto.photo.photos[i].photo, photo);
                 }
             }
             layout.addView(photo);
@@ -183,11 +159,11 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             TdApi.Sticker sticker = ((TdApi.MessageSticker) item.message).sticker;
 
             final ImageView stickerImage = new ImageView(getContext());
+
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 300);
             stickerImage.setLayoutParams(layoutParams);
 
-            fileCheckerAndLoader(sticker.sticker, stickerImage);
-
+            Utils.fileCheckerAndLoader(sticker.sticker, stickerImage);
             layout.addView(stickerImage);
         }
         if (item.message instanceof TdApi.MessageVideo) {

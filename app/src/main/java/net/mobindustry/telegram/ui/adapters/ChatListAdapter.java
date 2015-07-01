@@ -49,6 +49,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         TdApi.Chat item = getItem(position);
         TdApi.ChatInfo info = item.type;
+
         TdApi.PrivateChatInfo privateChatInfo = null;
         TdApi.MessageText text = null;
         TdApi.Message message = item.topMessage;
@@ -88,7 +89,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
             }
         }
 
-        if (info instanceof TdApi.PrivateChatInfo) {
+        if (info instanceof TdApi.PrivateChatInfo) { //TODO verify;
             privateChatInfo = (TdApi.PrivateChatInfo) info;
         }
         TdApi.User user = privateChatInfo.user;

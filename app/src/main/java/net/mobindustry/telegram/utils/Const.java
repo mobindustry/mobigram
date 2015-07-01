@@ -28,6 +28,7 @@ public class Const {
     public static final int FILE_CHOOSE_FRAGMENT = 201;
     public static final int MAP_FRAGMENT = 202;
     public static final int GALLERY_FRAGMENT = 203;
+    public static final int SELECTED_MAP_FRAGMENT = 204;
 
     public static final int CHAT_NOT_FOUND = 1001;
 
@@ -41,9 +42,12 @@ public class Const {
     public static final int DOWNLOAD_FILE_HANDLER_ID = 707;
     public static final int USER_HANDLER_ID = 708;
 
-    public static final int PRELOAD_POSITION = 10;
+    public static final int LOG_HANDLER_ID = 710;
 
-    public static final int LOG_HANDLER_ID = 0x10;
+    public static final int LIST_PRELOAD_POSITION = 10;
+
+    public static final int CHATS_LIST_OFFSET = 0;
+    public static final int CHATS_LIST_LIMIT = 200;
 
     public static final String CLIENT_ID_FOR_FOURSQUARE = "ABDMITGWDOMKIGHTWRU25XKIS2MJ3IPJQOEMZ5CVTRR0H05I";
     public static final String CLIENT_SECRET_FOR_FOURSQUARE = "XHS2CWCC5VD23MP1W2120RMUUYZJXFTCHK4A5KA3JAEZRFRG";
