@@ -223,7 +223,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("Log", "OnItemClick");
+                Toast.makeText(getActivity(), "PopUp", Toast.LENGTH_SHORT).show();
             }
         });
 

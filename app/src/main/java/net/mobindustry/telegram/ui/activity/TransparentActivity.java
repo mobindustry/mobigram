@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.fragments.ChooseFileFragment;
 import net.mobindustry.telegram.ui.fragments.GalleryFragment;
 import net.mobindustry.telegram.ui.fragments.LocationFragment;
@@ -62,5 +63,11 @@ public class TransparentActivity extends AppCompatActivity {
                 break;
         }
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        MessagesFragmentHolder.mapClosed();
+        super.onDestroy();
     }
 }

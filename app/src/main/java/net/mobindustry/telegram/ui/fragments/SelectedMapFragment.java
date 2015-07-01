@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,8 +22,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.InfoLocation;
-
-import java.util.ArrayList;
 
 public class SelectedMapFragment extends Fragment {
 

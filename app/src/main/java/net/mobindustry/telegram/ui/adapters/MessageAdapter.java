@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Const;
@@ -57,11 +58,15 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                         break;
                     case TdApi.MessageGeoPoint.CONSTRUCTOR:
                         TdApi.MessageGeoPoint geoPoint = (TdApi.MessageGeoPoint) message.message;
-                        Intent intentMap = new Intent(context, TransparentActivity.class);
-                        intentMap.putExtra("choice", Const.SELECTED_MAP_FRAGMENT);
-                        intentMap.putExtra("lng", geoPoint.geoPoint.longitude);
-                        intentMap.putExtra("lat", geoPoint.geoPoint.latitude);
-                        context.startActivity(intentMap);
+
+                        if (!MessagesFragmentHolder.isMapCalled()) {
+                            MessagesFragmentHolder.mapCalled();
+                            Intent intentMap = new Intent(context, TransparentActivity.class);
+                            intentMap.putExtra("choice", Const.SELECTED_MAP_FRAGMENT);
+                            intentMap.putExtra("lng", geoPoint.geoPoint.longitude);
+                            intentMap.putExtra("lat", geoPoint.geoPoint.latitude);
+                            context.startActivity(intentMap);
+                        }
                         break;
                     case TdApi.MessagePhoto.CONSTRUCTOR:
                         TdApi.MessagePhoto photo = (TdApi.MessagePhoto) message.message;
@@ -116,8 +121,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     break;
                 case Const.IN_CONTENT_MESSAGE:
                     convertView = inflater.inflate(R.layout.in_content_message, parent, false);
-                    convertView.findViewById(R.id.in_content).setOnClickListener(onClickListener);
-                    convertView.findViewById(R.id.in_content).setTag(getItem(position));
                     break;
                 case Const.IN_STICKER:
                     convertView = inflater.inflate(R.layout.in_sticker_message, parent, false);
@@ -127,8 +130,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     break;
                 case Const.OUT_CONTENT_MESSAGE:
                     convertView = inflater.inflate(R.layout.out_content_message, parent, false);
-                    convertView.findViewById(R.id.out_content).setOnClickListener(onClickListener);
-                    convertView.findViewById(R.id.out_content).setTag(getItem(position));
                     break;
                 case Const.OUT_STICKER:
                     convertView = inflater.inflate(R.layout.out_sticker_message, parent, false);
@@ -246,6 +247,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 FrameLayout inContent = (FrameLayout) convertView.findViewById(R.id.in_content);
                 inContent.removeAllViews();
 
+                inContent.setOnClickListener(onClickListener);
+                inContent.setTag(getItem(position));
+
                 TextView inContentTime = (TextView) convertView.findViewById(R.id.in_content_msg_time);
 
                 inContent.addView(layout);
@@ -272,6 +276,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             case Const.OUT_CONTENT_MESSAGE:
                 FrameLayout outContent = (FrameLayout) convertView.findViewById(R.id.out_content);
                 outContent.removeAllViews();
+
+                outContent.setOnClickListener(onClickListener);
+                outContent.setTag(getItem(position));
 
                 TextView outContentTime = (TextView) convertView.findViewById(R.id.out_content_msg_time);
 

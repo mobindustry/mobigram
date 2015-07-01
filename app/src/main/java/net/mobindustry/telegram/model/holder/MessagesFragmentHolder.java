@@ -11,7 +11,7 @@ import java.util.Date;
 public class MessagesFragmentHolder {
 
     private static MessagesFragmentHolder instance;
-
+    private static boolean isMapCalled = false;
     private static File neTelegramDirectory;
     private File tempPhotoFile;
     private TdApi.Chat chat;
@@ -63,5 +63,17 @@ public class MessagesFragmentHolder {
 
     public void setChat(TdApi.Chat chat) {
         this.chat = chat;
+    }
+
+    public static boolean isMapCalled() {
+        return isMapCalled;
+    }
+
+    public static void mapClosed() {
+        isMapCalled = false;
+    }
+
+    public static void mapCalled() {
+        isMapCalled = true;
     }
 }
