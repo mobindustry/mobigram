@@ -1,11 +1,13 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -13,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.Utils;
@@ -27,13 +30,48 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
     private int typeCount = 6;
     private long myId;
 
+    private View.OnClickListener onClickListener;
+
     private LoadMore loadMore;
 
-    public MessageAdapter(Context context, long myId, LoadMore loadMore) {
+    public MessageAdapter(final Context context, long myId, LoadMore loadMore) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
         this.myId = myId;
         this.loadMore = loadMore;
+
+        onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TdApi.Message message = (TdApi.Message) v.getTag();
+
+                switch (message.message.getConstructor()) {
+                    case TdApi.MessageAudio.CONSTRUCTOR:
+                        TdApi.MessageAudio audio = (TdApi.MessageAudio) message.message;
+                        break;
+                    case TdApi.MessageContact.CONSTRUCTOR:
+                        TdApi.MessageContact contact = (TdApi.MessageContact) message.message;
+                        break;
+                    case TdApi.MessageDocument.CONSTRUCTOR:
+                        TdApi.MessageDocument document = (TdApi.MessageDocument) message.message;
+                        break;
+                    case TdApi.MessageGeoPoint.CONSTRUCTOR:
+                        TdApi.MessageGeoPoint geoPoint = (TdApi.MessageGeoPoint) message.message;
+                        Intent intentMap = new Intent(context, TransparentActivity.class);
+                        intentMap.putExtra("choice", Const.SELECTED_MAP_FRAGMENT);
+                        intentMap.putExtra("lng", geoPoint.geoPoint.longitude);
+                        intentMap.putExtra("lat", geoPoint.geoPoint.latitude);
+                        context.startActivity(intentMap);
+                        break;
+                    case TdApi.MessagePhoto.CONSTRUCTOR:
+                        TdApi.MessagePhoto photo = (TdApi.MessagePhoto) message.message;
+                        break;
+                    case TdApi.MessageVideo.CONSTRUCTOR:
+                        TdApi.MessageVideo video = (TdApi.MessageVideo) message.message;
+                        break;
+                }
+            }
+        };
     }
 
     @Override
@@ -78,6 +116,8 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     break;
                 case Const.IN_CONTENT_MESSAGE:
                     convertView = inflater.inflate(R.layout.in_content_message, parent, false);
+                    convertView.findViewById(R.id.in_content).setOnClickListener(onClickListener);
+                    convertView.findViewById(R.id.in_content).setTag(getItem(position));
                     break;
                 case Const.IN_STICKER:
                     convertView = inflater.inflate(R.layout.in_sticker_message, parent, false);
@@ -87,6 +127,8 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     break;
                 case Const.OUT_CONTENT_MESSAGE:
                     convertView = inflater.inflate(R.layout.out_content_message, parent, false);
+                    convertView.findViewById(R.id.out_content).setOnClickListener(onClickListener);
+                    convertView.findViewById(R.id.out_content).setTag(getItem(position));
                     break;
                 case Const.OUT_STICKER:
                     convertView = inflater.inflate(R.layout.out_sticker_message, parent, false);

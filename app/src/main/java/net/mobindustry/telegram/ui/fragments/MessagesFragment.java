@@ -220,6 +220,13 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("Log", "OnItemClick");
+            }
+        });
+
         holder = MessagesFragmentHolder.getInstance();
         activity = (ChatActivity) getActivity();
 
@@ -347,46 +354,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     }
                 });
             }
-
-            messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    TdApi.Message message = adapter.getItem(position);
-
-                    switch (message.message.getConstructor()) {
-                        case TdApi.MessageAudio.CONSTRUCTOR:
-                            TdApi.MessageAudio audio = (TdApi.MessageAudio) message.message;
-                            break;
-                        case TdApi.MessageContact.CONSTRUCTOR:
-                            TdApi.MessageContact contact = (TdApi.MessageContact) message.message;
-                            break;
-                        case TdApi.MessageDocument.CONSTRUCTOR:
-                            TdApi.MessageDocument document = (TdApi.MessageDocument) message.message;
-                            break;
-                        case TdApi.MessageGeoPoint.CONSTRUCTOR:
-                            TdApi.MessageGeoPoint geoPoint = (TdApi.MessageGeoPoint) message.message;
-                            Intent intentMap = new Intent(getActivity(), TransparentActivity.class);
-                            intentMap.putExtra("choice", Const.SELECTED_MAP_FRAGMENT);
-                            intentMap.putExtra("lng", geoPoint.geoPoint.longitude);
-                            intentMap.putExtra("lat", geoPoint.geoPoint.latitude);
-                            startActivity(intentMap);
-                            break;
-                        case TdApi.MessagePhoto.CONSTRUCTOR:
-                            TdApi.MessagePhoto photo = (TdApi.MessagePhoto) message.message;
-                            break;
-                        case TdApi.MessageSticker.CONSTRUCTOR:
-                            TdApi.MessageSticker sticker = (TdApi.MessageSticker) message.message;
-                            break;
-                        case TdApi.MessageVideo.CONSTRUCTOR:
-                            TdApi.MessageVideo video = (TdApi.MessageVideo) message.message;
-                            break;
-                        case TdApi.MessageText.CONSTRUCTOR:
-                            TdApi.MessageText text = (TdApi.MessageText) message.message;
-                            Log.e("Log", text.toString());
-                            break;
-                    }
-                }
-            });
         }
     }
 
