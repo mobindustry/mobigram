@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
+import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.PhotoViewerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
@@ -36,7 +37,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
     private LoadMore loadMore;
 
-    public MessageAdapter(final Context context, long myId, final Activity activity, LoadMore loadMore) {
+    public MessageAdapter(final Context context, long myId, LoadMore loadMore) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
         this.myId = myId;
@@ -81,7 +82,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                             intent.putExtra("file_path", fileLocal.path);
                         }
                         context.startActivity(intent);
-                        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        ((ChatActivity)context).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case TdApi.MessageVideo.CONSTRUCTOR:
                         TdApi.MessageVideo video = (TdApi.MessageVideo) message.message;
