@@ -3,13 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent_background"
+    android:id="@+id/transparent_frame_layout"
     >
 
     <ImageView
         android:id="@+id/photo_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
         />
 
 </FrameLayout>

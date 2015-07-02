@@ -2,6 +2,8 @@ package net.mobindustry.telegram.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import net.mobindustry.telegram.R;
@@ -9,7 +11,7 @@ import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
 
-public class PhotoViewer extends Activity {
+public class PhotoViewerActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,14 @@ public class PhotoViewer extends Activity {
         } else {
             ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + path, imageView);
         }
+
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.transparent_frame_layout);
+        frameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override

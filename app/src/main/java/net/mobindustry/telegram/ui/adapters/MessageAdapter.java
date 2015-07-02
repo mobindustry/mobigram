@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
-import net.mobindustry.telegram.ui.activity.PhotoViewer;
+import net.mobindustry.telegram.ui.activity.PhotoViewerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Const;
@@ -60,7 +59,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                         break;
                     case TdApi.MessageGeoPoint.CONSTRUCTOR:
                         TdApi.MessageGeoPoint geoPoint = (TdApi.MessageGeoPoint) message.message;
-
                         if (!MessagesFragmentHolder.isMapCalled()) {
                             MessagesFragmentHolder.mapCalled();
                             Intent intentMap = new Intent(context, TransparentActivity.class);
@@ -73,9 +71,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     case TdApi.MessagePhoto.CONSTRUCTOR:
                         TdApi.MessagePhoto photo = (TdApi.MessagePhoto) message.message;
                         TdApi.File file = photo.photo.photos[photo.photo.photos.length-1].photo;
-
-                        Intent intent = new Intent(context, PhotoViewer.class);
-
+                        Intent intent = new Intent(context, PhotoViewerActivity.class);
                         if(file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
                             TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
                             intent.putExtra("file_id", fileEmpty.id);
@@ -196,8 +192,8 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
         if (item.message instanceof TdApi.MessageGeoPoint) {
             TdApi.MessageGeoPoint point = (TdApi.MessageGeoPoint) item.message;
-            int height = 100;
-            int width = 200;
+            int height = 150;
+            int width = 250;
 
             //Fucking hardcode!!!
 

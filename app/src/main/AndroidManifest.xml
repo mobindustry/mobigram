@@ -54,7 +54,7 @@
             android:name=".ui.activity.TransparentActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
             android:theme="@style/Theme.AppCompat.Translucent" />
-        <activity android:name=".ui.activity.PhotoViewer"
+        <activity android:name=".ui.activity.PhotoViewerActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <meta-data

@@ -60,6 +60,7 @@ public class TransparentActivity extends AppCompatActivity {
                 double lat = getIntent().getDoubleExtra("lat", 0.0);
                 double lng = getIntent().getDoubleExtra("lng", 0.0);
                 selectedMapFragment.setUserLocation(lng, lat);
+
                 break;
         }
         fragmentTransaction.commit();

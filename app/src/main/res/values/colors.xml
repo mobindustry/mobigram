@@ -35,6 +35,6 @@
     <color name="message_notify">#ff3ac34b</color>
 
     <color name="transparent_activity_background">#9f363948</color>
-    <color name="transparent_background">#c5090909</color>
+    <color name="transparent_background">#df090909</color>
 
 </resources>
