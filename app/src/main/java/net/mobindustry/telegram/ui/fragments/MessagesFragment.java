@@ -196,7 +196,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 setFirstVisibleItem(firstVisibleItem);
             }
         });
-        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), new MessageAdapter.LoadMore() {
+        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), getActivity(), new MessageAdapter.LoadMore() {
             @Override
             public void load() {
                 if (!isLoading) {

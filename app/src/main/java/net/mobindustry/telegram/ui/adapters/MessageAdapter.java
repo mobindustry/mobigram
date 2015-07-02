@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
+import net.mobindustry.telegram.ui.activity.PhotoViewer;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Const;
@@ -35,7 +37,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
     private LoadMore loadMore;
 
-    public MessageAdapter(final Context context, long myId, LoadMore loadMore) {
+    public MessageAdapter(final Context context, long myId, final Activity activity, LoadMore loadMore) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
         this.myId = myId;
@@ -70,6 +72,20 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                         break;
                     case TdApi.MessagePhoto.CONSTRUCTOR:
                         TdApi.MessagePhoto photo = (TdApi.MessagePhoto) message.message;
+                        TdApi.File file = photo.photo.photos[photo.photo.photos.length-1].photo;
+
+                        Intent intent = new Intent(context, PhotoViewer.class);
+
+                        if(file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
+                            TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+                            intent.putExtra("file_id", fileEmpty.id);
+                        }
+                        if(file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                            TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+                            intent.putExtra("file_path", fileLocal.path);
+                        }
+                        context.startActivity(intent);
+                        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case TdApi.MessageVideo.CONSTRUCTOR:
                         TdApi.MessageVideo video = (TdApi.MessageVideo) message.message;

@@ -73,4 +73,15 @@ public class Utils {
         }
     }
 
-}
+    public static void fileLoader(final int id, final ImageView view) {
+            new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                @Override
+                public void onApiResult(BaseHandler output) {
+                    if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                        ImageLoaderHelper.displayImage(String.valueOf(id), view);
+                    }
+                }
+            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        }
+    }
+
