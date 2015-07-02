@@ -59,8 +59,9 @@
     <item name="containerFrag" type="id"/>
 
     <dimen name="chat_list_item_notification_size">25dp</dimen>
-    <dimen name="dimension_grid_item">200dp</dimen>
+    <dimen name="dimension_grid_item">150dp</dimen>
     <dimen name="text_grid_item">12sp</dimen>
+    <dimen name="margin_45dp">45dp</dimen>
 
 
 </resources>

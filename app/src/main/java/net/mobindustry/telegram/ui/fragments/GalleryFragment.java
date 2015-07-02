@@ -9,21 +9,25 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
 import net.mobindustry.telegram.utils.ImagesFromMediaStore;
 import net.mobindustry.telegram.utils.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -33,13 +37,15 @@ import java.util.Set;
 
 public class GalleryFragment extends Fragment {
 
-    GridView gridList;
-    GalleryAdapter galleryAdapter;
-    List<ImagesFromMediaStore> listImagesMediaStore = new ArrayList<>();
-    Set<String> listDirLink = new HashSet<>();
-    List<FolderCustomGallery> listFolders = new ArrayList<>();
-    List<String> listDirNames = new ArrayList<>();
+    private GridView gridList;
+    private GalleryAdapter galleryAdapter;
+    private List<ImagesFromMediaStore> listImagesMediaStore = new ArrayList<>();
+    private Set<String> listDirLink = new HashSet<>();
+    private List<FolderCustomGallery> listFolders = new ArrayList<>();
+    private List<String> listDirNames = new ArrayList<>();
     private String[] dirLink;
+    private FrameLayout findGifs;
+    private FrameLayout findImages;
 
     @Nullable
     @Override
@@ -47,6 +53,8 @@ public class GalleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.gallery_fragment, container, false);
         galleryAdapter = new GalleryAdapter(getActivity());
         gridList = (GridView) view.findViewById(R.id.gridList);
+        findGifs = (FrameLayout) view.findViewById(R.id.findGifs);
+        findImages = (FrameLayout) view.findViewById(R.id.findImages);
         gridList.setAdapter(galleryAdapter);
         adjustGridViewPort();
         return view;
@@ -58,6 +66,44 @@ public class GalleryFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         AsyncMediaStore asyncMediaStore = new AsyncMediaStore();
         asyncMediaStore.execute();
+
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_gallery);
+        toolbar.setTitle(R.string.photos);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return true;
+            }
+        });
+
+        findGifs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO find gifs
+            }
+        });
+
+        findImages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO find images
+            }
+        });
+
+        gridList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("LOG","AAAAAAAAAAAAAA");
+                ListFoldersHolder.setList(listFolders.get(position).getPhotosInFolder());
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                FolderFragment folderFragment = new FolderFragment();
+                fragmentTransaction.replace(R.id.transparent_content, folderFragment);
+                fragmentTransaction.commit();
+            }
+        });
     }
 
     private void adjustGridViewPort() {
@@ -103,14 +149,14 @@ public class GalleryFragment extends Fragment {
 
     }
 
-    private List<File> getPhotosFromFolder(String path) {
+    private List<java.io.File> getPhotosFromFolder(String path) {
 
-        File dir = new File(path);
-        File[] fileList = dir.listFiles();
-        List<File> listPhotos = new ArrayList<>();
-        List<File> list = new ArrayList<>(Arrays.asList(fileList));
+        java.io.File dir = new java.io.File(path);
+        java.io.File[] fileList = dir.listFiles();
+        List<java.io.File> listPhotos = new ArrayList<>();
+        List<java.io.File> list = new ArrayList<>(Arrays.asList(fileList));
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).toString().contains((".png")) || list.get(i).toString().contains(".jpg")) {
+            if (list.get(i).toString().contains((".png")) || list.get(i).toString().contains(".jpeg") || list.get(i).toString().contains(".jpg")) {
                 listPhotos.add(list.get(i));
             }
         }
@@ -167,6 +213,10 @@ public class GalleryFragment extends Fragment {
             getFoldersPath();
             getDirNames();
             completeListFolders();
+            Log.e("LOG", "SSSSSSSSSS " + listFolders.size());
+            Log.e("LOG", "SSSSSSSSSIIIII " + listFolders.get(0).getPhotosInFolder().size());
+            Log.e("LOG", "SSSSSSSSSIIIIISSSSS " + listFolders.get(1).getPhotosInFolder().size());
+
             return null;
         }
 

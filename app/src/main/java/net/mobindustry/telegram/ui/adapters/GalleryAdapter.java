@@ -1,28 +1,16 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 
 public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
     private LayoutInflater inflater;
@@ -50,7 +38,12 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
 
             ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstPhoto(), firstPhoto);
             nameFolder.setText(galleryFolder.getName());
-            photosFolder.setText(galleryFolder.getPhotosQuantity());
+            if (Integer.valueOf(galleryFolder.getPhotosQuantity())>1000){
+                photosFolder.setText("> 1k");
+            } else {
+                photosFolder.setText(galleryFolder.getPhotosQuantity());
+            }
+
         }
 
         return convertView;

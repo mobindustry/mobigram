@@ -30,7 +30,7 @@ public class ChooseFileFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.chooseFileToolbar);
-        toolbar.setTitle("Select File");
+        toolbar.setTitle(R.string.select_file);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

@@ -26,15 +26,25 @@
         android:layout_margin="@dimen/margin_20dp"
         android:id="@+id/code_from_user"
         android:inputType="phone"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone"
+        />
+    <TextView
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Wrong code"
+        android:layout_margin="@dimen/margin_20dp"
+        android:id="@+id/wrongCode"
+        android:textColor="@color/wrong_code"
+        />
     <TextView
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@string/we_call_you_test"
         android:layout_margin="@dimen/margin_20dp"
-        android:id="@+id/countdown_timer"
-        />
+        android:id="@+id/countdown_timer"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

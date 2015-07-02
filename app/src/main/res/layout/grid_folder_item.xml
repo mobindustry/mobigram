@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/dimension_grid_item"
+    android:layout_height="@dimen/dimension_grid_item">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imagePhoto"
+            android:layout_width="@dimen/dimension_grid_item"
+            android:layout_height="@dimen/dimension_grid_item"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/photo_test" />
+
+        <View
+            android:layout_width="@dimen/dimension_grid_item"
+            android:layout_height="@dimen/dimension_grid_item"
+            android:layout_alignLeft="@+id/imagePhoto"
+            android:layout_alignTop="@+id/imagePhoto"
+            android:background="@drawable/rect" />
+
+        <ImageView
+            android:id="@+id/photoFolder"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_15dp"
+            android:src="@drawable/ic_attach_photo_in_folder" />
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -52,6 +52,7 @@ dependencies {
     compile 'com.makeramen:roundedimageview:2.1.0'
     compile 'com.googlecode.libphonenumber:libphonenumber:7.0.6'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.github.markushi:circlebutton:1.1'
     compile 'com.github.jorgecastilloprz:pagedheadlistview:1.0.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'com.turbomanage.basic-http-client:http-client-android:0.89'

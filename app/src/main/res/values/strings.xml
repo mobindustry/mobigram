@@ -5,6 +5,8 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="your_phone">Your phone</string>
+    <string name="photos">Photos</string>
+    <string name="select_file">Select File</string>
     <string name="your_code">Your code</string>
     <string name="choose_country">Choose a country</string>
 
@@ -39,9 +41,15 @@
     <string name="text_satellite">Satellite</string>
     <string name="text_hybrid">Hybrid</string>
     <string name="text_send_selected_location">Send your current location</string>
-    <string name="text_test_netelegram">NeTelegram</string>
-    <string name="text_test_number">1</string>
+    <string name="text_test_netelegram">NeTelegram - jkdksafkfsmskjsa</string>
+    <string name="text_test_number">100000</string>
     <string name="new_message_fragment_title">New message</string>
+    <string name="text_web_search">web search</string>
+    <string name="text_find_images">FIND IMAGES</string>
+    <string name="text_find_gifs">FIND GIFS</string>
+    <string name="text_giphy">giphy</string>
+    <string name="text_cancel">CANCEL</string>
+    <string name="text_send">SEND</string>
 
 
 </resources>
