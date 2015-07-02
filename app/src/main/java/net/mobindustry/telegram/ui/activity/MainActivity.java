@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.romainpiel.titanic.library.Titanic;
@@ -31,6 +32,7 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
     private SplashStart splashStart;
 
     private boolean stateWaitCode = true;
+    private boolean hasAnswer = false;
 
     private TextView textCheckInternet;
 
@@ -40,9 +42,11 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
         if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
             if (((GetStateHandler) output).getResponse() == Enums.StatesEnum.WaitSetPhoneNumber) {
                 stateWaitCode = true;
+                hasAnswer = true;
             }
             if (((GetStateHandler) output).getResponse() == Enums.StatesEnum.OK) {
                 stateWaitCode = false;
+                hasAnswer = true;
             }
         }
     }
@@ -57,9 +61,7 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
 
         if (isOnline()) {
             if (DataHolder.isLoggedIn()) {
-                Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-                startActivity(intent);
-                finish();
+                runStartActivity();
             } else {
                 start();
             }
@@ -68,6 +70,19 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
             OnlineCheck onlineCheck = new OnlineCheck();
             onlineCheck.execute();
         }
+
+        FrameLayout layout = (FrameLayout) findViewById(R.id.main_layout);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isOnline() && hasAnswer) {
+                    if (splashStart != null && !splashStart.isCancelled()) {
+                        splashStart.cancel(false);
+                    }
+                    runStartActivity();
+                }
+            }
+        });
     }
 
     public void start() {
@@ -88,12 +103,24 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
         }
     }
 
+    private void runStartActivity() {
+        if (stateWaitCode) {
+            Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
     private class SplashStart extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(5);
             } catch (InterruptedException e) {
                 Log.e("Log", "SplashStart task interrupted");
             }
@@ -103,15 +130,7 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (stateWaitCode) {
-                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-                startActivity(intent);
-                finish();
-            }
+            runStartActivity();
         }
     }
 
