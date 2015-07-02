@@ -39,7 +39,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        InfoRegistration infoRegistration = InfoRegistration.getInstance();
+        final InfoRegistration infoRegistration = InfoRegistration.getInstance();
 
         activity = (RegistrationActivity) getActivity();
 
@@ -51,6 +51,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
         wrongNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                infoRegistration.setPhone("");
                 FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
                 Fragment registrationUserPhone = new RegistrationMainFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationUserPhone);

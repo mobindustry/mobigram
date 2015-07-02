@@ -45,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:textSize="@dimen/cancel_registration_text_size"
         android:layout_margin="@dimen/margin_20dp"
         android:text="@string/cancel_registration"
         android:textColor="@color/background_action_bar" />

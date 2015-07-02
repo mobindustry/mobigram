@@ -62,6 +62,8 @@
     <dimen name="dimension_grid_item">150dp</dimen>
     <dimen name="text_grid_item">12sp</dimen>
     <dimen name="margin_45dp">45dp</dimen>
+    <dimen name="cancel_registration_text_size">18sp</dimen>
+    <dimen name="wrong_number_text_size">18sp</dimen>
 
 
 </resources>
