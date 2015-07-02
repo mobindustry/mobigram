@@ -28,7 +28,6 @@ public class ErrorHandler {
     private  FragmentManager fm;
     private TdApi.Error error;
 
-
     public ErrorHandler(FragmentManager fm, TdApi.Error error) {
         this.fm = fm;
         this.error = error;

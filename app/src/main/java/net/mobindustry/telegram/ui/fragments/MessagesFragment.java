@@ -479,7 +479,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         return cursor.getString(column_index);
     }
 
-
     public String getPhotoPath() {
         return holder.getTempPhotoFile().getPath();
     }

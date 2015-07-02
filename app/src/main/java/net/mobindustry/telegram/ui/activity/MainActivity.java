@@ -93,7 +93,7 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                TimeUnit.SECONDS.sleep(5);
+                TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 Log.e("Log", "SplashStart task interrupted");
             }
