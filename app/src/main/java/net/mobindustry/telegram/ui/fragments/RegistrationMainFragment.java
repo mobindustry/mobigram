@@ -60,7 +60,6 @@ public class RegistrationMainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.registration_main_fragment, container, false);
-        chooseCountryList = new ChooseCountryList();
         return view;
     }
 
@@ -68,6 +67,9 @@ public class RegistrationMainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setRetainInstance(true);
+
+        chooseCountryList = new ChooseCountryList();
+
         final InfoRegistration infoRegistration = InfoRegistration.getInstance();
 
         //Take file countries.txt from assets folder and parse it to String extFileFromAssets.

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
@@ -56,11 +57,11 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
             GetStateHandler handler = (GetStateHandler) output;
 
             FragmentTransaction fragmentTransaction;
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
             if (handler.getResponse() == Enums.StatesEnum.WaitSetPhoneNumber) {
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
                 Fragment registrationUserPhone = new RegistrationMainFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationUserPhone);
-                fragmentTransaction.commit();
             }
             if (handler.getResponse() == Enums.StatesEnum.OK) {
                 new ApiClient<>(new TdApi.GetMe(), new UserMeHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -69,18 +70,16 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
                 finish();
             }
             if (handler.getResponse() == Enums.StatesEnum.WaitSetCode) {
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 Fragment receiverCodeFragment = new ReceiverCodeFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, receiverCodeFragment);
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
             }
             if (handler.getResponse() == Enums.StatesEnum.WaitSetName) {
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 Fragment yourNameFragment = new YourNameFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, yourNameFragment);
-                fragmentTransaction.commit();
             }
+            fragmentTransaction.commit();
+
         }
     }
 
@@ -109,11 +108,11 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registration_activity);
-        locationManager = ((LocationManager) getSystemService(Context.LOCATION_SERVICE));
+        new ApiClient<>(new TdApi.AuthGetState(), new GetStateHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 
         InfoRegistration holder = InfoRegistration.getInstance();
 
+        locationManager = ((LocationManager) getSystemService(Context.LOCATION_SERVICE));
         try {
             String country = getLastKnownCountry();
             if (country != null) {
@@ -122,7 +121,8 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new ApiClient<>(new TdApi.AuthGetState(), new GetStateHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        setContentView(R.layout.registration_activity);
+
     }
 
     public CountryObject getCountryObject() {
@@ -147,6 +147,7 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
             Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             if (addresses != null && !addresses.isEmpty()) {
+
                 return addresses.get(0).getCountryName();
             }
         }
@@ -170,6 +171,7 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
         if (bestLocation == null) {
             return null;
         }
+
         return bestLocation;
     }
 }
