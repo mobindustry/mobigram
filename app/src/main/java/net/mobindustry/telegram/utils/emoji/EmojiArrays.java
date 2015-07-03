@@ -33,7 +33,7 @@ public class EmojiArrays {
             0x2B1C, 0x2B50, 0x2B55, 0x3030, 0x303D, 0x3297, 0x3299
     };
 
-    public static long[][] data = {
+    private static long[][] data = {
             new long[]
                     {},
             new long[]//189

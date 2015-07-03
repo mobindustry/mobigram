@@ -12,13 +12,14 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.utils.Utils;
 
 public class EmojiPopup extends PopupWindow implements ObservableLinearLayout.CallBack {
     final ObservableLinearLayout parentView;
     private final WindowManager wm;
     private boolean keyboardVisible;
     private final Context ctx;
-    private DpCalculator calc = new DpCalculator(1f);
+    private DpCalculator calc;
 
     private final SharedPreferences prefs;
     EmojiKeyboardView view;
@@ -28,6 +29,7 @@ public class EmojiPopup extends PopupWindow implements ObservableLinearLayout.Ca
         this.view = view;
         this.parentView = rootView;
         ctx = view.getContext();
+        calc = new DpCalculator(Utils.getDensity(ctx.getResources()));
         prefs = ctx.getSharedPreferences("EmojiPopup", Context.MODE_PRIVATE);
 
         rootView.setCallback(this);

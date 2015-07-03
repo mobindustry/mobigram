@@ -101,8 +101,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private EditText input;
     private ObservableLinearLayout linearLayout;
 
-    DpCalculator calc = new DpCalculator(1f);
-    Emoji emoji = new Emoji(getActivity(), calc);
+    DpCalculator calc;
+    Emoji emoji;
 
     private EmojiPopup emojiPopup;
     private boolean emojiPopupShowWithKeyboard;
@@ -237,6 +237,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        calc = new DpCalculator(Utils.getDensity(getResources()));
+        emoji = new Emoji(getActivity(), calc);
 
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -554,8 +557,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             }
         }
     }
-
-
 
     private EmojiKeyboardView.CallBack emojiKeyboardCallback = new EmojiKeyboardView.CallBack() {
         @Override

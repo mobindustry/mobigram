@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 
 import com.astuetz.PagerSlidingTabStrip;
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.utils.Utils;
+
 import org.drinkless.td.libcore.telegram.TdApi;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class EmojiKeyboardView extends LinearLayout {
     private ViewPager pager;
 
     Stickers stickers;
-    DpCalculator calc = new DpCalculator(1f);
+    DpCalculator calc = new DpCalculator(Utils.getDensity(getResources()));
     Emoji emoji = new Emoji(getContext(), calc);
 
     private PagerSlidingTabStrip strip;
@@ -125,37 +127,35 @@ public class EmojiKeyboardView extends LinearLayout {
 
         @Override
         public GridView instantiateItem(ViewGroup container, int position) {
-//            if (position == 0){
-//                //todo cleanup
-//
-//                final long[] longs = recentIds;
-//                GridView gridPage = createGridPage(container, position, new EmojiPageAdapter(longs), R.dimen.emoji_size);
-//                gridPage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        long emojiCode = longs[position];
-//                        callback.emojiClicked(emojiCode);
-//                    }
-//                });
-//                return gridPage;
-//            } else
-//            if (position == getCount() -1){
-//                final List<TdApi.Sticker> ss = EmojiKeyboardView.this.stickers.getStickers();
-//                GridView res = createGridPage(container, position, new StickerAdapter(ss), R.dimen.sticker_size);
-//                res.setVerticalSpacing(calc.dp(16));
-//                res.setClipToPadding(false);
-//                int dip8 = calc.dp(8);
-//                res.setPadding(dip8/2, dip8, dip8/2, dip8);
-//                res.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        stickerClicked(ss.get(position));
-//                    }
-//                });
-//                return res;
-//            } else
-            {
-                final long[] data = Emoji.data[position];
+            if (position == 0){
+                //todo cleanup
+
+                final long[] longs = recentIds;
+                GridView gridPage = createGridPage(container, position, new EmojiPageAdapter(longs), R.dimen.emoji_size);
+                gridPage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        long emojiCode = longs[position];
+                        callback.emojiClicked(emojiCode);
+                    }
+                });
+                return gridPage;
+            } else if (position == getCount() -1) {
+                final List<TdApi.Sticker> ss = EmojiKeyboardView.this.stickers.getStickers();
+                GridView res = createGridPage(container, position, new StickerAdapter(ss), R.dimen.sticker_size);
+                res.setVerticalSpacing(calc.dp(16));
+                res.setClipToPadding(false);
+                int dip8 = calc.dp(8);
+                res.setPadding(dip8/2, dip8, dip8/2, dip8);
+                res.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        stickerClicked(ss.get(position));
+                    }
+                });
+                return res;
+            } else {
+                final long[] data = EmojiArrays.getData()[position];
                 GridView gridPage = createGridPage(container, position, new EmojiPageAdapter(data), R.dimen.emoji_size);
                 gridPage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

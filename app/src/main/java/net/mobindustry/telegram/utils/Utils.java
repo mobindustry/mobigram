@@ -2,6 +2,7 @@ package net.mobindustry.telegram.utils;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.AsyncTask;
@@ -95,6 +96,12 @@ public class Utils {
     public static int compare(long lhs, long rhs) {
         return lhs < rhs ? -1 : (lhs == rhs ? 0 : 1);
     }
+
+    public static float getDensity(Resources res) {
+        DisplayMetrics metrics = res.getDisplayMetrics();
+        return metrics.density;
+    }
+
 
 
     }

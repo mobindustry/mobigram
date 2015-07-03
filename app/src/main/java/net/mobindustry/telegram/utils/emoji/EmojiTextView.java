@@ -5,11 +5,12 @@ import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import net.mobindustry.telegram.utils.Utils;
 
 
 //invalidates itself when the emojies are loaded
 public class EmojiTextView extends TextView {
-    Emoji emoji = new Emoji(getContext(), new DpCalculator(1f));
+    Emoji emoji = new Emoji(getContext(), new DpCalculator(Utils.getDensity(getResources())));
     private Subscription s;
 
     public EmojiTextView(Context context, AttributeSet attrs) {
