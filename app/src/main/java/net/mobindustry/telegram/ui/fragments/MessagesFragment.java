@@ -21,6 +21,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +48,7 @@ import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.Enums;
+import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
@@ -53,6 +56,11 @@ import net.mobindustry.telegram.ui.adapters.MessageAdapter;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
+import net.mobindustry.telegram.utils.emoji.DpCalculator;
+import net.mobindustry.telegram.utils.emoji.Emoji;
+import net.mobindustry.telegram.utils.emoji.EmojiKeyboardView;
+import net.mobindustry.telegram.utils.emoji.EmojiPopup;
+import net.mobindustry.telegram.utils.emoji.ObservableLinearLayout;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -90,6 +98,14 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private int toScrollLoadMessageId;
     private ListView messageListView;
     private ProgressBar progressBar;
+    private EditText input;
+    private ObservableLinearLayout linearLayout;
+
+    DpCalculator calc = new DpCalculator(1f);
+    Emoji emoji = new Emoji(getActivity(), calc);
+
+    private EmojiPopup emojiPopup;
+    private boolean emojiPopupShowWithKeyboard;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -173,7 +189,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     @Override
     public void onApiResult(BaseHandler output) {
-
         if (output.getHandlerId() == MessageHandler.HANDLER_ID) {
             Log.e("Log", "Result message " + output.getResponse());
         }
@@ -182,7 +197,10 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        DownloadFileHolder.clearList();
+
         View view = inflater.inflate(R.layout.message_fragment, container, false);
+        linearLayout = (ObservableLinearLayout) view.findViewById(R.id.observable_layout);
 
         messageListView = (ListView) view.findViewById(R.id.messageListView);
         messageListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -233,7 +251,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
 
-            final EditText input = (EditText) getActivity().findViewById(R.id.message_edit_text);
+            input = (EditText) getActivity().findViewById(R.id.message_edit_text);
             input.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -355,6 +373,32 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 });
             }
         }
+
+        smiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (emojiPopup != null) {
+                    emojiPopup.dismiss();
+                } else {
+                    ObservableLinearLayout parent = getParentView();
+                    emojiPopup = EmojiPopup.create(getActivity(), parent, emojiKeyboardCallback);
+                    emojiPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                        @Override
+                        public void onDismiss() {
+                            emojiPopup = null;
+                        }
+                    });
+                    assert emojiPopup != null;
+                    emojiPopupShowWithKeyboard = parent.getKeyboardHeight() > 0;
+
+                }
+            }
+        });
+
+    }
+
+    private ObservableLinearLayout getParentView() {
+        return linearLayout;
     }
 
     @Override
@@ -510,6 +554,29 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             }
         }
     }
-}
+
+
+
+    private EmojiKeyboardView.CallBack emojiKeyboardCallback = new EmojiKeyboardView.CallBack() {
+        @Override
+        public void backspaceClicked() {
+            input.dispatchKeyEvent(new KeyEvent(0, KeyEvent.KEYCODE_DEL));
+        }
+
+        @Override
+        public void emojiClicked(long code) {
+            String strEmoji = emoji.toString(code);
+            Editable text = input.getText();
+            text.append(emoji.replaceEmoji(strEmoji));
+        }
+
+        @Override
+        public void stickerCLicked(String stickerFilePath) {
+//            Chat c = Chat.get(getContext());
+//            RxChat rxChat = chat.getRxChat(c.chat.id);
+//            rxChat.sendSticker(stickerFilePath);
+        }
+    };
+    }
 
 

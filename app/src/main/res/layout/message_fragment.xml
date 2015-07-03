@@ -44,7 +44,8 @@
                     />
             </FrameLayout>
 
-            <LinearLayout
+            <net.mobindustry.telegram.utils.emoji.ObservableLinearLayout
+                android:id="@+id/observable_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.0001"
@@ -86,7 +87,7 @@
                     android:layout_marginBottom="2dp"
                     />
 
-            </LinearLayout>
+            </net.mobindustry.telegram.utils.emoji.ObservableLinearLayout>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

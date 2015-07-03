@@ -7,6 +7,8 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import net.mobindustry.telegram.core.ApiClient;
@@ -83,5 +85,19 @@ public class Utils {
                 }
             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         }
+
+    public static void hideKeyboard(EditText e){
+        InputMethodManager imm = (InputMethodManager)e.getContext().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(e.getWindowToken(), 0);
     }
+
+    public static int compare(long lhs, long rhs) {
+        return lhs < rhs ? -1 : (lhs == rhs ? 0 : 1);
+    }
+
+
+    }
+
+
 

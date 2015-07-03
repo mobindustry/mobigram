@@ -30,13 +30,13 @@ public class ImageLoaderHelper {
         public InputStream getStream(String imageUri, Object extra) throws IOException {
 
             if (!imageUri.contains("/")) {
-                String path = DownloadFileHolder.getUpdatedFilePath(Integer.parseInt(imageUri));
-                while (path == null) {
+                String path;
+                do {
                     path = DownloadFileHolder.getUpdatedFilePath(Integer.parseInt(imageUri));
                     if (path != null) {
                         break;
                     }
-                }
+                } while (path == null);
                 return super.getStream(Const.IMAGE_LOADER_PATH_PREFIX + path, extra);
             } else {
                 return super.getStream(imageUri, extra);
@@ -45,7 +45,7 @@ public class ImageLoaderHelper {
     }
 
     private static ImageLoader imageLoader = initImageLoader();
-    private static  DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+    private static DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
             .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .resetViewBeforeLoading(true)
@@ -53,7 +53,7 @@ public class ImageLoaderHelper {
             .cacheOnDisk(true)
             .build();
 
-    private static  DisplayImageOptions defaultOptionsFadeIn = new DisplayImageOptions.Builder()
+    private static DisplayImageOptions defaultOptionsFadeIn = new DisplayImageOptions.Builder()
             .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .resetViewBeforeLoading(true)
@@ -84,8 +84,9 @@ public class ImageLoaderHelper {
     public static void displayImageFadeIn(final String url, final ImageView imageView) {
         imageLoader.displayImage(url, imageView, defaultOptionsFadeIn);
     }
+
     public static void displayImageDefault(final String url, final ImageView imageView) {
-        imageLoader.displayImage(url, imageView,defaultOptions);
+        imageLoader.displayImage(url, imageView, defaultOptions);
     }
 
     public static void displayImageList(final String url, final ImageView imageView) {

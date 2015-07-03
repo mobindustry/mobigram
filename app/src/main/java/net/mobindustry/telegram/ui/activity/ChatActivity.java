@@ -142,8 +142,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         filter.addAction(Const.READ_INBOX_ACTION);
         registerReceiver(receiver, filter);
 
-        DownloadFileHolder.clearList();
-
         ChatListFragment chatListFragment = new ChatListFragment();
         FragmentTransaction ft
                 = getSupportFragmentManager().beginTransaction();

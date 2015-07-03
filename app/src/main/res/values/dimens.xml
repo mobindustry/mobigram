@@ -65,6 +65,8 @@
     <dimen name="cancel_registration_text_size">18sp</dimen>
     <dimen name="wrong_number_text_size">18sp</dimen>
 
+    <dimen name="emoji_size">45dp</dimen>
+    <dimen name="sticker_size">66dp</dimen>
 
 </resources>
 

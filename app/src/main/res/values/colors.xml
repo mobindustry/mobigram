@@ -37,4 +37,8 @@
     <color name="transparent_activity_background">#9f363948</color>
     <color name="transparent_background">#df090909</color>
 
+    <color name="bg_keyboard">#ffffffff</color>
+    <color name="tab_divider">#ff0fff0e</color>
+    <color name="bg_tab_selected">#ff74c8ff</color>
+
 </resources>
