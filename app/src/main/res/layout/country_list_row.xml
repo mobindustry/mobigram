@@ -5,25 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/background_activity">
+    >
 
     <TextView
         android:id="@+id/country"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="5"
-        android:background="@color/background_row_country_list"
         android:textColor="@color/text_country_list"
         android:textSize="@dimen/text_row"
         tools:text="text"
-        android:gravity="center"/>
+        android:gravity="left"
+        android:layout_marginLeft="@dimen/margin_60dp"/>
 
     <TextView
         android:id="@+id/code_country"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/background_row_country_list"
         android:gravity="center"
         android:textColor="@color/background_action_bar"
         android:textSize="@dimen/text_row"

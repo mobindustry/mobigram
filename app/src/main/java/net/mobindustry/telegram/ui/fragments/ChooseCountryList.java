@@ -51,6 +51,7 @@ public class ChooseCountryList extends Fragment implements Serializable {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 fragmentTransaction = getFragmentManager().beginTransaction();
                 registrationMainFragment = new RegistrationMainFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationMainFragment);

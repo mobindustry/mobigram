@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,7 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -170,7 +173,8 @@ public class RegistrationMainFragment extends Fragment {
                         chooseCountry.setText("Wrong country code");
                     }
                 }
-                if(s.length() == 0) {
+                String st = "+";
+                if (s.length() == 0 || s.toString().equals(st)) {
                     chooseCountry.setText("");
                     chooseCountry.setHint(R.string.choose_country);
                 }
@@ -265,6 +269,13 @@ public class RegistrationMainFragment extends Fragment {
         }
         String text = writer.toString();
         return text;
+    }
+
+    private class NumericKeyBoardTransformationMethod extends PasswordTransformationMethod {
+        @Override
+        public CharSequence getTransformation(CharSequence source, View view) {
+            return source;
+        }
     }
 }
 

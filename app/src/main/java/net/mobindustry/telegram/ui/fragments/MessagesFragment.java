@@ -48,6 +48,7 @@ import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.Enums;
+import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
@@ -482,6 +483,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 Intent intentGallery = new Intent(getActivity(), TransparentActivity.class);
                                 intentGallery.putExtra("choice", Const.GALLERY_FRAGMENT);
                                 startActivityForResult(intentGallery, 1);
+                                ListFoldersHolder.setCheckQuantity(0);
+                                ListFoldersHolder.setListFolders(null);
+                                ListFoldersHolder.setList(null);
                                 //selectPhoto();
                                 break;
                             case R.id.video:

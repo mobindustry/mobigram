@@ -65,11 +65,13 @@
             <TextView
                 android:id="@+id/numberPhotos"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_45dp"
-                android:gravity="left|center"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
                 android:textColor="@color/text_color_gallery_fragment"
-                tools:text="14" />
+                tools:text="14"
+                android:layout_marginStart="@dimen/margin_25dp"/>
         </FrameLayout>
 
     </LinearLayout>

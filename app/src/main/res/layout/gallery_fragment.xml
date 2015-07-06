@@ -134,7 +134,8 @@
            android:layout_height="match_parent"
            android:layout_weight="1"
            android:layout_gravity="center"
-           android:background="@color/background_gallery_buttons">
+           android:background="@color/background_gallery_buttons"
+           android:id="@+id/buttonCancel">
 
            <TextView
                android:layout_width="match_parent"
@@ -148,7 +149,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/background_gallery_buttons">
+            android:background="@color/background_gallery_buttons"
+            android:id="@+id/buttonSend">
 
             <TextView
                 android:layout_width="match_parent"
@@ -158,14 +160,15 @@
                 android:textColor="@color/text_color_gallery_fragment"
                 />
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                tools:text="14"
-                android:gravity="left|center"
-                android:layout_marginLeft="@dimen/margin_45dp"
-                android:textColor="@color/text_color_gallery_fragment"
                 android:id="@+id/numberPhotos"
-                />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_45dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@color/text_color_gallery_fragment"
+                tools:text="14"
+                android:layout_marginStart="@dimen/margin_30dp"/>
         </FrameLayout>
 
     </LinearLayout>

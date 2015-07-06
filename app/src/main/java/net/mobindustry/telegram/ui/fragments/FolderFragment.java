@@ -1,29 +1,22 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.res.Configuration;
-import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.adapters.FolderAdapter;
-import net.mobindustry.telegram.utils.FolderCustomGallery;
+import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +24,9 @@ public class FolderFragment extends Fragment {
 
     private GridView gridView;
     private FolderAdapter folderAdapter;
-    private List<File> listFolders = new ArrayList<>();
+    private List<FileWithIndicator> listFolders = new ArrayList<>();
     private ListFoldersHolder listFoldersHolder;
+    private TextView numberPhotos;
 
 
     @Nullable
@@ -40,15 +34,53 @@ public class FolderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.folder_fragment, container, false);
         listFolders=listFoldersHolder.getList();
-        Log.e("LOG","SSSSSSSSSS "+listFoldersHolder.getList().size());
-        folderAdapter = new FolderAdapter(getActivity());
+        folderAdapter = new FolderAdapter(getActivity(), new FolderAdapter.LoadPhotos() {
+            @Override
+            public void load() {
+                if (Utils.isTablet(getActivity())) {
+                    if (ListFoldersHolder.getCheckQuantity()!=0){
+                        numberPhotos.setVisibility(View.VISIBLE);
+                        int sdk = android.os.Build.VERSION.SDK_INT;
+                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                            numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                        } else {
+                            numberPhotos.setBackground(Utils.getShapeDrawable(40,  getActivity().getResources().getColor(R.color.message_notify)));
+                        }
+
+                        numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+                    } else {
+                        numberPhotos.setVisibility(View.GONE);
+                    }
+                } else {
+                    if (ListFoldersHolder.getCheckQuantity()!=0){
+                        numberPhotos.setVisibility(View.VISIBLE);
+                        int sdk = android.os.Build.VERSION.SDK_INT;
+                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                            numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
+                        } else {
+                            numberPhotos.setBackground(Utils.getShapeDrawable(60,  getActivity().getResources().getColor(R.color.message_notify)));
+                        }
+
+                        numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+                    } else {
+                        numberPhotos.setVisibility(View.GONE);
+                    }
+
+                }
+
+            }
+        });
         gridView = (GridView) view.findViewById(R.id.gridPhotos);
+        numberPhotos=(TextView)view.findViewById(R.id.numberPhotos);
         return view;
     }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         if (Utils.isTablet(getActivity())) {
             adjustGridViewPort();
             folderAdapter.clear();
@@ -106,7 +138,7 @@ public class FolderFragment extends Fragment {
             folderAdapter.addAll(listFolders);
         }
 
-
     }
+
 
 }

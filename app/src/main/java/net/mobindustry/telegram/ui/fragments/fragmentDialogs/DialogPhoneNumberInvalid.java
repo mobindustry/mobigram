@@ -13,7 +13,7 @@ public class DialogPhoneNumberInvalid extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
                 .setTitle("Error")
-                .setMessage("The phone number is invalid")
+                .setMessage("Invalid phone number")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();

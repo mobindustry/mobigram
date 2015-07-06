@@ -2,6 +2,7 @@ package net.mobindustry.telegram.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -39,6 +40,7 @@ public class ImageLoaderHelper {
                 } while (path == null);
                 return super.getStream(Const.IMAGE_LOADER_PATH_PREFIX + path, extra);
             } else {
+                Log.e("Log", "Uri " + imageUri);
                 return super.getStream(imageUri, extra);
             }
         }
@@ -97,9 +99,9 @@ public class ImageLoaderHelper {
                 .resetViewBeforeLoading(true)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.ARGB_4444)
                 .showImageOnLoading(R.drawable.image_placeholder)
                 .build();
-
         imageLoader.displayImage(url, imageView, options);
     }
 

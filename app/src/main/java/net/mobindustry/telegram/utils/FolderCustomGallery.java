@@ -1,5 +1,7 @@
 package net.mobindustry.telegram.utils;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,9 +9,17 @@ public class FolderCustomGallery implements Serializable{
     private String name;
     private String path;
     private String photosQuantity;
-    private List<java.io.File>photosInFolder;
+    private List<FileWithIndicator>photosInFolder;
     private String firstPhoto;
+    private String firstThumb;
 
+    public String getFirstThumb() {
+        return firstThumb;
+    }
+
+    public void setFirstThumb(String firstThumb) {
+        this.firstThumb = firstThumb;
+    }
 
     public FolderCustomGallery() {
     }
@@ -46,11 +56,12 @@ public class FolderCustomGallery implements Serializable{
         this.photosQuantity = photosQuantity;
     }
 
-    public List<java.io.File> getPhotosInFolder() {
+
+    public List<FileWithIndicator> getPhotosInFolder() {
         return photosInFolder;
     }
 
-    public void setPhotosInFolder(List<java.io.File> photosInFolder) {
+    public void setPhotosInFolder(List<FileWithIndicator> photosInFolder) {
         this.photosInFolder = photosInFolder;
     }
 }

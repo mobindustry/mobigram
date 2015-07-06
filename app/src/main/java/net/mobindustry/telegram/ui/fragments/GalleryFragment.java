@@ -1,11 +1,16 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,14 +29,21 @@ import android.widget.GridView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
+import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
 import net.mobindustry.telegram.utils.ImagesFromMediaStore;
 import net.mobindustry.telegram.utils.Utils;
 
+import org.drinkless.td.libcore.telegram.TdApi;
+
+import java.io.File;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -42,10 +54,12 @@ public class GalleryFragment extends Fragment {
     private List<ImagesFromMediaStore> listImagesMediaStore = new ArrayList<>();
     private Set<String> listDirLink = new HashSet<>();
     private List<FolderCustomGallery> listFolders = new ArrayList<>();
-    private List<String> listDirNames = new ArrayList<>();
-    private String[] dirLink;
+    private List<String> dirLinkFolders;
     private FrameLayout findGifs;
     private FrameLayout findImages;
+    private FrameLayout buttonCancel;
+    private FrameLayout buttonSend;
+    private Map<Long, String> map;
 
     @Nullable
     @Override
@@ -55,17 +69,55 @@ public class GalleryFragment extends Fragment {
         gridList = (GridView) view.findViewById(R.id.gridList);
         findGifs = (FrameLayout) view.findViewById(R.id.findGifs);
         findImages = (FrameLayout) view.findViewById(R.id.findImages);
+        buttonCancel = (FrameLayout) view.findViewById(R.id.buttonCancel);
+        buttonSend = (FrameLayout) view.findViewById(R.id.buttonSend);
         gridList.setAdapter(galleryAdapter);
         adjustGridViewPort();
         return view;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (Utils.isTablet(getActivity())) {
+            adjustGridViewPort();
+            galleryAdapter.clear();
+            galleryAdapter.addAll(listFolders);
+        }
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+            adjustGridViewLand();
+            galleryAdapter.clear();
+            galleryAdapter.addAll(listFolders);
+        } else {
+            adjustGridViewPort();
+            galleryAdapter.clear();
+            galleryAdapter.addAll(listFolders);
+        }
+
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        AsyncMediaStore asyncMediaStore = new AsyncMediaStore();
-        asyncMediaStore.execute();
+        if (ListFoldersHolder.getListFolders() == null) {
+            AsyncMediaStore asyncMediaStore = new AsyncMediaStore();
+            asyncMediaStore.execute();
+        } else {
+            if (Utils.isTablet(getActivity())) {
+                adjustGridViewPort();
+                galleryAdapter.clear();
+                galleryAdapter.addAll(ListFoldersHolder.getListFolders());
+            }
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+                adjustGridViewLand();
+                galleryAdapter.clear();
+                galleryAdapter.addAll(ListFoldersHolder.getListFolders());
+            } else {
+                adjustGridViewPort();
+                galleryAdapter.clear();
+                galleryAdapter.addAll(ListFoldersHolder.getListFolders());
+            }
+        }
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_gallery);
         toolbar.setTitle(R.string.photos);
@@ -95,15 +147,30 @@ public class GalleryFragment extends Fragment {
         gridList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("LOG","AAAAAAAAAAAAAA");
                 ListFoldersHolder.setList(listFolders.get(position).getPhotosInFolder());
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 FolderFragment folderFragment = new FolderFragment();
                 fragmentTransaction.replace(R.id.transparent_content, folderFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
+
+        buttonSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("Log", "Button send");
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("Log", "Button cancel");
+            }
+        });
+
     }
 
     private void adjustGridViewPort() {
@@ -118,11 +185,34 @@ public class GalleryFragment extends Fragment {
         gridList.setHorizontalSpacing(15);
     }
 
+    public Map<Long, String> getThumbAll() {
+        Uri uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
+        map = new HashMap<Long, String>();
+        String[] projection = {MediaStore.Images.Thumbnails.DATA, MediaStore.Images.Thumbnails.IMAGE_ID};
+        Cursor cursor = MediaStore.Images.Thumbnails.queryMiniThumbnails(getActivity().getContentResolver(), uri,
+                MediaStore.Images.Thumbnails.MINI_KIND, projection);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
+                File file = new File(path);
+                if (file.canRead()) {
+                    //Log.e("LOG", "FILE ");
+                    int idxId = cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.IMAGE_ID);
+                    long id = cursor.getLong(idxId);
+                    map.put(id, path);
+                }
+            }
+            cursor.close();
+        }
+        return map;
+    }
+
     private void getAllImages() {
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.SIZE, MediaStore.MediaColumns.DISPLAY_NAME,
                 MediaStore.MediaColumns.TITLE, MediaStore.MediaColumns.MIME_TYPE, MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
-                MediaStore.Images.ImageColumns.IS_PRIVATE};
+                MediaStore.Images.ImageColumns.IS_PRIVATE, MediaStore.Images.Media._ID};
+        //Todo
         ContentResolver contentResolver = getActivity().getContentResolver();
         Cursor cursor = contentResolver.query(uri, projection, null, null, null);
         if (cursor != null) {
@@ -130,6 +220,8 @@ public class GalleryFragment extends Fragment {
                 ImagesFromMediaStore images = new ImagesFromMediaStore();
                 int idxData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
                 images.setData(cursor.getString(idxData));
+                int idxId = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
+                images.setId(cursor.getLong(idxId));
                 int idxSize = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE);
                 images.setSize(cursor.getString(idxSize));
                 int idxDisplayName = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME);
@@ -149,15 +241,26 @@ public class GalleryFragment extends Fragment {
 
     }
 
-    private List<java.io.File> getPhotosFromFolder(String path) {
 
-        java.io.File dir = new java.io.File(path);
-        java.io.File[] fileList = dir.listFiles();
-        List<java.io.File> listPhotos = new ArrayList<>();
-        List<java.io.File> list = new ArrayList<>(Arrays.asList(fileList));
+    private List<FileWithIndicator> getPhotosFromFolder(List<ImagesFromMediaStore> list) {
+        List<FileWithIndicator> listPhotos = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).toString().contains((".png")) || list.get(i).toString().contains(".jpeg") || list.get(i).toString().contains(".jpg")) {
-                listPhotos.add(list.get(i));
+            if (list.get(i).getData().contains((".png")) || list.get(i).getData().contains(".jpeg") || list.get(i).getData().contains(".jpg")) {
+                FileWithIndicator fileWithIndicator = new FileWithIndicator();
+                File file=new File(list.get(i).getData());
+                if (map.get(list.get(i).getId()) != null) {
+                    if (file.canRead()){
+                        String thumb = map.get(list.get(i).getId());
+                        //Log.e("LOG", "thumb YES" + thumb + " " + i);
+                        fileWithIndicator.setThumbPhoto(thumb);
+                    } else {
+                        fileWithIndicator.setThumbPhoto("");
+                    }
+                    //Log.e("LOG", "YES " + file.getAbsolutePath());
+                }
+                fileWithIndicator.setFile(file);
+                fileWithIndicator.setCheck(false);
+                listPhotos.add(fileWithIndicator);
             }
         }
         return listPhotos;
@@ -165,20 +268,26 @@ public class GalleryFragment extends Fragment {
 
 
     private void completeListFolders() {
-        for (int i = 0; i < listDirNames.size(); i++) {
+        for (int i = 0; i < dirLinkFolders.size(); i++) {
             FolderCustomGallery folderCustomGallery = new FolderCustomGallery();
-            folderCustomGallery.setName(listDirNames.get(i));
-            folderCustomGallery.setPath(dirLink[i]);
-            folderCustomGallery.setPhotosInFolder(getPhotosFromFolder(dirLink[i]));
-            folderCustomGallery.setPhotosQuantity(String.valueOf(getPhotosFromFolder(dirLink[i]).size()));
-            if (folderCustomGallery.getPhotosInFolder().isEmpty()) {
+            folderCustomGallery.setName(getDirNames(dirLinkFolders.get(i)));
+            folderCustomGallery.setPath(dirLinkFolders.get(i));
+            List<ImagesFromMediaStore> fromMediaStoreList = getListImagesMediaStoreInFolder(dirLinkFolders.get(i));
+            folderCustomGallery.setPhotosInFolder(getPhotosFromFolder(fromMediaStoreList));
+            folderCustomGallery.setPhotosQuantity(String.valueOf(getPhotosFromFolder(fromMediaStoreList).size()));
+            if (folderCustomGallery.getPhotosInFolder().size() == 0) {
                 continue;
             } else {
-                folderCustomGallery.setFirstPhoto(getPhotosFromFolder(dirLink[i]).get(0).toString());
+                folderCustomGallery.setFirstPhoto(folderCustomGallery.getPhotosInFolder().get(0).getFile().getAbsolutePath());
+                //Log.e("LOG", "File " + folderCustomGallery.getPhotosInFolder().get(0).getFile().getAbsolutePath());
+                folderCustomGallery.setFirstThumb(folderCustomGallery.getPhotosInFolder().get(0).getThumbPhoto());
+                //Log.e("LOG", "Thumb");
                 listFolders.add(folderCustomGallery);
             }
+
         }
     }
+
 
     private void getFoldersPath() {
         for (int i = 0; i < listImagesMediaStore.size(); i++) {
@@ -192,16 +301,26 @@ public class GalleryFragment extends Fragment {
                 listDirLink.add(dirLink);
             }
         }
-        dirLink = new String[listDirLink.size()];
+        String[] dirLink = new String[listDirLink.size()];
         listDirLink.toArray(dirLink);
+        dirLinkFolders = new ArrayList<String>(Arrays.asList(dirLink));
     }
 
-    private void getDirNames() {
-        for (int i = 0; i < dirLink.length; i++) {
-            String[] segments = dirLink[i].split("/");
-            String nameDir = segments[segments.length - 1];
-            listDirNames.add(nameDir);
+
+    private List<ImagesFromMediaStore> getListImagesMediaStoreInFolder(String folderPath) {
+        List<ImagesFromMediaStore> listPhotosInFolder = new ArrayList<>();
+        for (int i = 0; i < listImagesMediaStore.size(); i++) {
+            if (listImagesMediaStore.get(i).getData().contains(folderPath)) {
+                listPhotosInFolder.add(listImagesMediaStore.get(i));
+            }
         }
+        return listPhotosInFolder;
+    }
+
+    private String getDirNames(String path) {
+        String[] segments = path.split("/");
+        String nameDir = segments[segments.length - 1];
+        return nameDir;
     }
 
     private class AsyncMediaStore extends AsyncTask<Void, Void, Void> {
@@ -210,19 +329,18 @@ public class GalleryFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             getAllImages();
+            Log.e("Log", "SIZE " + listImagesMediaStore.size());
+            getThumbAll();
+            Log.e("Log", "SIZE " + getThumbAll().size());
             getFoldersPath();
-            getDirNames();
             completeListFolders();
-            Log.e("LOG", "SSSSSSSSSS " + listFolders.size());
-            Log.e("LOG", "SSSSSSSSSIIIII " + listFolders.get(0).getPhotosInFolder().size());
-            Log.e("LOG", "SSSSSSSSSIIIIISSSSS " + listFolders.get(1).getPhotosInFolder().size());
-
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            ListFoldersHolder.setListFolders(listFolders);
             if (Utils.isTablet(getActivity())) {
                 adjustGridViewPort();
                 galleryAdapter.clear();
@@ -239,29 +357,8 @@ public class GalleryFragment extends Fragment {
             }
 
         }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (Utils.isTablet(getActivity())) {
-            adjustGridViewPort();
-            galleryAdapter.clear();
-            galleryAdapter.addAll(listFolders);
-        }
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
-            adjustGridViewLand();
-            galleryAdapter.clear();
-            galleryAdapter.addAll(listFolders);
-        } else {
-            adjustGridViewPort();
-            galleryAdapter.clear();
-            galleryAdapter.addAll(listFolders);
-        }
-
 
     }
-
 }
 
 

@@ -8,6 +8,24 @@ public class ImagesFromMediaStore {
     private String mimType;
     private String bucketDisplayName;
     private String isPrivate;
+    private Long id;
+    private String thumbData;
+
+    public String getThumbData() {
+        return thumbData;
+    }
+
+    public void setThumbData(String thumbData) {
+        this.thumbData = thumbData;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public ImagesFromMediaStore() {
     }

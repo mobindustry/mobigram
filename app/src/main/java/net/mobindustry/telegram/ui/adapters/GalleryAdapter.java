@@ -1,6 +1,10 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +39,12 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
         FolderCustomGallery galleryFolder = getItem(position);
 
         if (galleryFolder != null) {
-
-            ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstPhoto(), firstPhoto);
+            if (galleryFolder.getFirstThumb().equals("")){
+                ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstPhoto(), firstPhoto);
+            } else {
+                ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstThumb(), firstPhoto);
+                Log.e("Log","File first "+ galleryFolder.getFirstPhoto());
+            }
             nameFolder.setText(galleryFolder.getName());
             if (Integer.valueOf(galleryFolder.getPhotosQuantity())>1000){
                 photosFolder.setText("> 1k");
@@ -48,5 +56,6 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
 
         return convertView;
     }
+
 }
 

@@ -167,8 +167,12 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
 
     @Override
     public void onApiResult(BaseHandler output) {
-        if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
-            setChatsList((TdApi.Chats) output.getResponse());
+        if (output==null){
+            getChatsList(0,200);
+        } else {
+            if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
+                setChatsList((TdApi.Chats) output.getResponse());
+            }
         }
     }
 
