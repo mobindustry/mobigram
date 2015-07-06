@@ -58,7 +58,7 @@
                     android:layout_height="40dp"
                     android:padding="5dp"
                     android:layout_gravity="bottom"
-                    android:src="@drawable/ic_smiles"
+                    android:src="@drawable/ic_send_smile_levels"
                     android:id="@+id/smiles"
                     android:layout_marginBottom="2dp"
                     />
@@ -75,6 +75,7 @@
                     android:textColorHint="#aaa"
                     android:imeOptions="flagNoExtractUi"
                     android:maxLines="4"
+                    android:inputType="textPhonetic|textNoSuggestions|textVisiblePassword"
                     />
 
                 <ImageView

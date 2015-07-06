@@ -9,7 +9,6 @@
 package net.mobindustry.telegram.utils.emoji;
 
 import android.content.Context;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -46,11 +45,6 @@ public class Emoji {
     private long[][] data = EmojiArrays.getData();
 
     private final Context ctx;
-//    private final PublishSubject<Bitmap> pageLoaded = PublishSubject.create();
-//
-//    public Observable<Bitmap> pageLoaded() {
-//        return pageLoaded;
-//    }
 
     public Emoji(Context ctx, DpCalculator dpCalculator) {
         this.ctx = ctx;
@@ -206,6 +200,9 @@ public class Emoji {
 
     public EmojiDrawable getEmojiDrawable(long code) {
         DrawableInfo info = rects.get(code);
+        if (info == null) {
+            throw new NullPointerException("no info for code " + code);
+        }
         EmojiDrawable ed = new EmojiDrawable(info);
         ed.setBounds(0, 0, drawImgSize, drawImgSize);
         synchronized (weakness) {

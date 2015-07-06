@@ -16,6 +16,8 @@ public class MessagesFragmentHolder {
     private File tempPhotoFile;
     private TdApi.Chat chat;
 
+    private static TdApi.Stickers stickers;
+
     public static synchronized MessagesFragmentHolder getInstance() {
         if (instance == null) {
             instance = new MessagesFragmentHolder();
@@ -75,5 +77,13 @@ public class MessagesFragmentHolder {
 
     public static void mapCalled() {
         isMapCalled = true;
+    }
+
+    public static TdApi.Stickers getStickers() {
+        return stickers;
+    }
+
+    public static void setStickers(TdApi.Stickers stickers1) {
+        stickers = stickers1;
     }
 }

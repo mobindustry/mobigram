@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.astuetz.PagerSlidingTabStrip;
+
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
+
 import java.util.List;
 
 public class EmojiKeyboardView extends LinearLayout {
@@ -26,7 +30,7 @@ public class EmojiKeyboardView extends LinearLayout {
     private final RecentSmiles recent;
     private ViewPager pager;
 
-    Stickers stickers;
+    Stickers stickers = new Stickers();
     DpCalculator calc = new DpCalculator(Utils.getDensity(getResources()));
     Emoji emoji = new Emoji(getContext(), calc);
 
@@ -36,7 +40,7 @@ public class EmojiKeyboardView extends LinearLayout {
 
     public EmojiKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        recent =new RecentSmiles(context.getSharedPreferences("RecentEmoji", Context.MODE_PRIVATE));
+        recent = new RecentSmiles(context.getSharedPreferences("RecentEmoji", Context.MODE_PRIVATE));
         viewFactory = LayoutInflater.from(context);
     }
 
@@ -56,7 +60,7 @@ public class EmojiKeyboardView extends LinearLayout {
                 callback.backspaceClicked();
             }
         });
-        if (adapter.recentIds.length==0) {
+        if (adapter.recentIds.length == 0) {
             pager.setCurrentItem(1);
         }
     }
@@ -69,11 +73,13 @@ public class EmojiKeyboardView extends LinearLayout {
 
     public interface CallBack {
         void backspaceClicked();
+
         void emojiClicked(long code);
+
         void stickerCLicked(String stickerFilePath);
     }
 
-    public static class CallbackWrapper implements CallBack{
+    public static class CallbackWrapper implements CallBack {
         final CallBack delegate;
 
         public CallbackWrapper(CallBack delegate) {
@@ -97,7 +103,7 @@ public class EmojiKeyboardView extends LinearLayout {
     }
 
 
-    class Adapter extends PagerAdapter implements PagerSlidingTabStrip.IconTabProvider{
+    class Adapter extends PagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
         final int[] icons = new int[]{
                 R.drawable.ic_smiles_recent_selector,
                 R.drawable.ic_smiles_smiles_selector,
@@ -127,7 +133,7 @@ public class EmojiKeyboardView extends LinearLayout {
 
         @Override
         public GridView instantiateItem(ViewGroup container, int position) {
-            if (position == 0){
+            if (position == 0) {
                 //todo cleanup
 
                 final long[] longs = recentIds;
@@ -140,13 +146,13 @@ public class EmojiKeyboardView extends LinearLayout {
                     }
                 });
                 return gridPage;
-            } else if (position == getCount() -1) {
+            } else if (position == getCount() - 1) {
                 final List<TdApi.Sticker> ss = EmojiKeyboardView.this.stickers.getStickers();
                 GridView res = createGridPage(container, position, new StickerAdapter(ss), R.dimen.sticker_size);
                 res.setVerticalSpacing(calc.dp(16));
                 res.setClipToPadding(false);
                 int dip8 = calc.dp(8);
-                res.setPadding(dip8/2, dip8, dip8/2, dip8);
+                res.setPadding(dip8 / 2, dip8, dip8 / 2, dip8);
                 res.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -171,22 +177,8 @@ public class EmojiKeyboardView extends LinearLayout {
         }
 
         private void stickerClicked(TdApi.Sticker sticker) {
-//            downloader.downloadWithoutProgress(sticker.sticker)
-//                    .subscribe(new Action1<TdApi.FileLocal>() {
-//                        @Override
-//                        public void call(TdApi.FileLocal fileLocal) {
-//                            callback.stickerCLicked(fileLocal.path);
-//                        }
-//                    });
-//            if (downloader.isDownloaded(sticker.thumb.photo)) {
-//                downloader.downloadWithoutProgress(sticker.thumb.photo)
-//                        .subscribe(new Action1<TdApi.FileLocal>() {
-//                            @Override
-//                            public void call(TdApi.FileLocal fileLocal) {
-//
-//                            }
-//                        });
-//            }
+            TdApi.FileLocal file = (TdApi.FileLocal) sticker.sticker;
+            callback.stickerCLicked(file.path);
         }
 
         private GridView createGridPage(ViewGroup container, int position1, BaseAdapter adapter, int columnSizeResId) {
@@ -200,12 +192,11 @@ public class EmojiKeyboardView extends LinearLayout {
         }
 
 
-
         private GridView createRecent(ViewGroup container, int position) {
             View view = viewFactory.inflate(R.layout.keyboard_page_recent, container, false);
 
             container.addView(view);
-            view.setTag( position);
+            view.setTag(position);
             return (GridView) view;
         }
 
@@ -272,18 +263,18 @@ public class EmojiKeyboardView extends LinearLayout {
             onBindViewHolder(vh, position);
             return vh.img;
         }
-
-
     }
+
     class VH {
         final ImageView img;
+
         public VH(View itemView) {
-            img = (ImageView)itemView.findViewById(R.id.img);
+            img = (ImageView) itemView.findViewById(R.id.img);
         }
     }
 
     class StickerAdapter extends BaseAdapter {
-        final List<TdApi.Sticker> data ;
+        final List<TdApi.Sticker> data;
 
         StickerAdapter(List<TdApi.Sticker> data) {
             this.data = data;
@@ -320,7 +311,10 @@ public class EmojiKeyboardView extends LinearLayout {
         }
 
         private void onBindVH(final VH vh, int position) {
-//            final TdApi.Sticker s = getItem(position);
+            final TdApi.Sticker s = getItem(position);
+            TdApi.File file = s.sticker;
+
+            Utils.fileCheckerAndLoader(file, vh.img);
 //            picasso.loadPhoto(s.thumb.photo, true)
 //                    .priority(Picasso.Priority.HIGH)
 //                    .into(vh.img);

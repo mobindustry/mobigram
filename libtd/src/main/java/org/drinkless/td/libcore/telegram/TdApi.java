@@ -906,6 +906,7 @@ public class TdApi {
 
     public static class MessageText extends MessageContent {
         public String text;
+        transient public CharSequence textWithSmilesAndUserRefs;
 
         public MessageText() {
         }

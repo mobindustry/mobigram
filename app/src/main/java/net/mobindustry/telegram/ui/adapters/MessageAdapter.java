@@ -3,6 +3,7 @@ package net.mobindustry.telegram.ui.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,9 @@ import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
+import net.mobindustry.telegram.utils.emoji.DpCalculator;
+import net.mobindustry.telegram.utils.emoji.Emoji;
+import net.mobindustry.telegram.utils.emoji.EmojiParser;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -35,12 +39,15 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
     private View.OnClickListener onClickListener;
 
     private LoadMore loadMore;
+    private EmojiParser emojiParser;
 
     public MessageAdapter(final Context context, long myId, LoadMore loadMore) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
         this.myId = myId;
         this.loadMore = loadMore;
+
+        emojiParser = new EmojiParser(new Emoji(context, new DpCalculator(Utils.getDensity(context.getResources()))));
 
         onClickListener = new View.OnClickListener() {
             @Override
@@ -249,10 +256,12 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             case Const.IN_MESSAGE:
                 TextView inMessage = (TextView) convertView.findViewById(R.id.in_msg);
                 TextView inTime = (TextView) convertView.findViewById(R.id.in_msg_time);
+                //inMessage.setAutoLinkMask(Linkify.WEB_URLS | Linkify.PHONE_NUMBERS);
 
                 TdApi.MessageText inText = (TdApi.MessageText) item.message;
+                emojiParser.parse(item);
 
-                inMessage.setText(inText.text);
+                inMessage.setText(inText.textWithSmilesAndUserRefs);
                 inTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
             case Const.IN_CONTENT_MESSAGE:
@@ -279,10 +288,12 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             case Const.OUT_MESSAGE:
                 TextView outMessage = (TextView) convertView.findViewById(R.id.out_msg);
                 TextView outTime = (TextView) convertView.findViewById(R.id.out_msg_time);
+                //outMessage.setAutoLinkMask(Linkify.WEB_URLS | Linkify.PHONE_NUMBERS);
 
                 TdApi.MessageText outText = (TdApi.MessageText) item.message;
+                emojiParser.parse(item);
 
-                outMessage.setText(outText.text);
+                outMessage.setText(outText.textWithSmilesAndUserRefs);
                 outTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
             case Const.OUT_CONTENT_MESSAGE:

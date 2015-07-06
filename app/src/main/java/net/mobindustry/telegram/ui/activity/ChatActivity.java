@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,11 +36,12 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.LogHandler;
+import net.mobindustry.telegram.core.handlers.StickersHandler;
 import net.mobindustry.telegram.core.handlers.UserMeHandler;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.model.holder.DataHolder;
-import net.mobindustry.telegram.model.holder.DownloadFileHolder;
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.model.holder.UserMeHolder;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
@@ -60,7 +62,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private BroadcastReceiver receiver;
 
     private IntentFilter filter = new IntentFilter();
-
 
     private final int NEW_MESSAGE_LOAD_LIMIT = 1;
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
@@ -100,11 +101,24 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         new ApiClient<>(new TdApi.GetMe(), new UserMeHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
+    public void getStickers() {
+        new ApiClient<>(new TdApi.GetStickers(), new StickersHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
     @Override
     public void onApiResult(BaseHandler output) {
         if (output.getHandlerId() == UserMeHandler.HANDLER_ID) {
             userMeHolder.setUser((TdApi.User) output.getResponse());
             setHeader(userMeHolder.getUser());
+        }
+
+        if (output.getHandlerId() == StickersHandler.HANDLER_ID) {
+            TdApi.Stickers stickers = (TdApi.Stickers) output.getResponse();
+            if (stickers.stickers.length == 0) {
+                getStickers();
+            } else {
+                MessagesFragmentHolder.setStickers((TdApi.Stickers) output.getResponse());
+            }
         }
     }
 
@@ -112,7 +126,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
-
         DataHolder.setIsLoggedIn(true);
 
         receiver = new BroadcastReceiver() {
@@ -167,6 +180,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         } else {
             setHeader(userMeHolder.getUser());
         }
+
+        getStickers();
 
         adapter.addAll(drawerItemsList);
 
@@ -344,14 +359,18 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     @Override
     public void onBackPressed() {
-        if (!(Utils.isTablet(this) && getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE) && getMessageFragment() != null) {
+        if (getMessageFragment() != null) {
+            if (getMessageFragment().isEmojiAttached()) {
+                getMessageFragment().dissmissEmojiPopup();
+            } else if (!(Utils.isTablet(this) && getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE)) {
 
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            LinearLayout layout = (LinearLayout) findViewById(R.id.fragment_layout);
-            layout.setVisibility(View.VISIBLE);
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-            fragmentTransaction.remove(getMessageFragment()).commit();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                LinearLayout layout = (LinearLayout) findViewById(R.id.fragment_layout);
+                layout.setVisibility(View.VISIBLE);
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+                fragmentTransaction.remove(getMessageFragment()).commit();
+            }
         } else {
             super.onBackPressed();
         }

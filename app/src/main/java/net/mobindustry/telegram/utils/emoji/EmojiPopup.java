@@ -15,14 +15,14 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.utils.Utils;
 
 public class EmojiPopup extends PopupWindow implements ObservableLinearLayout.CallBack {
-    final ObservableLinearLayout parentView;
+    private final ObservableLinearLayout parentView;
     private final WindowManager wm;
     private boolean keyboardVisible;
     private final Context ctx;
     private DpCalculator calc;
 
     private final SharedPreferences prefs;
-    EmojiKeyboardView view;
+    private EmojiKeyboardView view;
 
     public EmojiPopup(EmojiKeyboardView view, ObservableLinearLayout rootView) {
         super(view);
@@ -44,7 +44,6 @@ public class EmojiPopup extends PopupWindow implements ObservableLinearLayout.Ca
         } else {
             height = guessKeyboardHeight();
         }
-
 
         setWidth(exactly(width));
         setHeight(exactly(height));
@@ -94,8 +93,6 @@ public class EmojiPopup extends PopupWindow implements ObservableLinearLayout.Ca
 //        view.setEmoji(emoji);
 
         EmojiPopup res = new EmojiPopup(view, parent);
-
-
         res.showAtLocation(ctx.getWindow().getDecorView(), Gravity.BOTTOM | Gravity.LEFT, 0, 0);
 
         return res;
@@ -123,4 +120,6 @@ public class EmojiPopup extends PopupWindow implements ObservableLinearLayout.Ca
         });
         parentView.setPadding(0, 0, 0, 0);
     }
+
+
 }

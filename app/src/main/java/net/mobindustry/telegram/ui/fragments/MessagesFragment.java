@@ -73,11 +73,13 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     public static final int LEVEL_SEND = 0;
     public static final int LEVEL_ATTACH = 1;
+    public static final int LEVEL_SMILE = 1;
+    public static final int LEVEL_ARROW = 0;
     private static final long SCALE_UP_DURATION = 80;
     private static final long SCALE_DOWN_DURATION = 80;
 
     private final int FIRST_MESSAGE_LOAD_LIMIT = 60;
-    private final int MESSAGE_LOAD_LIMIT = 30;
+    private final int MESSAGE_LOAD_LIMIT = 50;
     private final int MESSAGE_LOAD_OFFSET = 0;
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
 
@@ -101,9 +103,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private EditText input;
     private ObservableLinearLayout linearLayout;
 
-    DpCalculator calc;
-    Emoji emoji;
-
+    private DpCalculator calc;
+    private Emoji emoji;
     private EmojiPopup emojiPopup;
     private boolean emojiPopupShowWithKeyboard;
 
@@ -187,10 +188,14 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
+    public void sendStickerMessage(long chatId, String path) {
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageSticker(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        dissmissEmojiPopup();
+    }
+
     @Override
     public void onApiResult(BaseHandler output) {
         if (output.getHandlerId() == MessageHandler.HANDLER_ID) {
-            Log.e("Log", "Result message " + output.getResponse());
         }
     }
 
@@ -269,9 +274,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 @Override
                 public void afterTextChanged(Editable s) {
                     if (s.length() == 0) {
-                        animateLevel(LEVEL_ATTACH);
+                        animateSendAttachButton(LEVEL_ATTACH);
                     } else {
-                        animateLevel(LEVEL_SEND);
+                        animateSendAttachButton(LEVEL_SEND);
                     }
                 }
             });
@@ -280,6 +285,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             attach.setImageLevel(LEVEL_ATTACH);
 
             smiles = (ImageView) getActivity().findViewById(R.id.smiles);
+            smiles.setImageLevel(LEVEL_SMILE);
             TextView icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
             TextView name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
             TextView lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
@@ -361,6 +367,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                         layout.setVisibility(View.VISIBLE);
                         fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
                         fragmentTransaction.remove(MessagesFragment.this).commit();
+                        dissmissEmojiPopup();
                     }
                 });
             } else {
@@ -372,6 +379,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                         layout.setVisibility(View.VISIBLE);
                         fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
                         fragmentTransaction.remove(MessagesFragment.this).commit();
+                        dissmissEmojiPopup();
                     }
                 });
             }
@@ -381,27 +389,24 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             @Override
             public void onClick(View v) {
                 if (emojiPopup != null) {
+                    smiles.setImageLevel(LEVEL_SMILE);
                     emojiPopup.dismiss();
                 } else {
-                    ObservableLinearLayout parent = getParentView();
-                    emojiPopup = EmojiPopup.create(getActivity(), parent, emojiKeyboardCallback);
+                    emojiPopup = EmojiPopup.create(getActivity(), linearLayout, emojiKeyboardCallback);
                     emojiPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
                         @Override
                         public void onDismiss() {
+                            smiles.setImageLevel(LEVEL_SMILE);
                             emojiPopup = null;
                         }
                     });
+                    smiles.setImageLevel(LEVEL_ARROW);
                     assert emojiPopup != null;
-                    emojiPopupShowWithKeyboard = parent.getKeyboardHeight() > 0;
+                    emojiPopupShowWithKeyboard = linearLayout.getKeyboardHeight() > 0;
 
                 }
             }
         });
-
-    }
-
-    private ObservableLinearLayout getParentView() {
-        return linearLayout;
     }
 
     @Override
@@ -414,7 +419,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         super.onResume();
     }
 
-    private void animateLevel(final int level) {
+    private void animateSendAttachButton(final int level) {
         LevelListDrawable drawable = (LevelListDrawable) attach.getDrawable();
         if (drawable.getLevel() == level) {
             return;
@@ -558,6 +563,25 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         }
     }
 
+    public boolean dissmissEmojiPopup() {
+        smiles.setImageLevel(LEVEL_SMILE);
+        if (emojiPopup == null) {
+            return false;
+        }
+        emojiPopup.dismiss();
+        emojiPopup = null;
+        Utils.hideKeyboard(input);
+        return true;
+    }
+
+    public boolean isEmojiAttached() {
+        if (emojiPopup == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     private EmojiKeyboardView.CallBack emojiKeyboardCallback = new EmojiKeyboardView.CallBack() {
         @Override
         public void backspaceClicked() {
@@ -573,11 +597,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
         @Override
         public void stickerCLicked(String stickerFilePath) {
-//            Chat c = Chat.get(getContext());
-//            RxChat rxChat = chat.getRxChat(c.chat.id);
-//            rxChat.sendSticker(stickerFilePath);
+            sendStickerMessage(getShownChatId(), stickerFilePath);
         }
     };
-    }
+}
 
 
