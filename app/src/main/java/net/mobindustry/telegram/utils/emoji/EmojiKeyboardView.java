@@ -32,7 +32,7 @@ public class EmojiKeyboardView extends LinearLayout {
 
     Stickers stickers = new Stickers();
     DpCalculator calc = new DpCalculator(Utils.getDensity(getResources()));
-    Emoji emoji = new Emoji(getContext(), calc);
+    Emoji emoji = new Emoji(getContext(), calc, null);
 
     private PagerSlidingTabStrip strip;
     private View backspace;

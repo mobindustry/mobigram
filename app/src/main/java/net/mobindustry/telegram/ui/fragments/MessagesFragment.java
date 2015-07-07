@@ -259,7 +259,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         super.onActivityCreated(savedInstanceState);
 
         calc = new DpCalculator(Utils.getDensity(getResources()));
-        emoji = new Emoji(getActivity(), calc);
+        emoji = new Emoji(getActivity(), calc, null);
         emojiParser = new EmojiParser(emoji);
 
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -43,10 +43,12 @@ public class Emoji {
     private int[] cols = EmojiArrays.getCols();
     private char[] emojiChars = EmojiArrays.getEmojiChars();
     private long[][] data = EmojiArrays.getData();
+    private PageLoaded loaded;
 
     private final Context ctx;
 
-    public Emoji(Context ctx, DpCalculator dpCalculator) {
+    public Emoji(Context ctx, DpCalculator dpCalculator, PageLoaded loaded) {
+        this.loaded = loaded;
         this.ctx = ctx;
         this.dpCalculator = dpCalculator;
         int emojiFullSize;
@@ -134,6 +136,12 @@ public class Emoji {
                     for (EmojiDrawable k : weakness.keySet()) {
                         k.invalidateSelf();
                     }
+                }
+                Log.e("Log", "+++++++++++++++++++++++++++++");
+
+                if(loaded != null) {
+                    Log.e("Log", "PageLoaded");
+                    loaded.load();
                 }
                 //pageLoaded.onNext(bitmap);
             }
@@ -381,5 +389,9 @@ public class Emoji {
                 str = str + (char) j;
             }
         }
+    }
+
+    public interface PageLoaded {
+        void load();
     }
 }

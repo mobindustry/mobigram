@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import net.mobindustry.telegram.utils.Utils;
+
 public class EmojiTextView extends TextView {
 
     public EmojiTextView(Context context, AttributeSet attrs) {
@@ -14,6 +16,13 @@ public class EmojiTextView extends TextView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        Emoji emoji = new Emoji(getContext(), new DpCalculator(Utils.getDensity(getResources())), new Emoji.PageLoaded() {
+            @Override
+            public void load() {
+                invalidate();
+            }
+        });
+
     }
 
     @Override

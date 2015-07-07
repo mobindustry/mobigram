@@ -37,7 +37,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         super(context, 0);
         inflater = LayoutInflater.from(context);
         calc = new DpCalculator(Utils.getDensity(context.getResources()));
-        emoji = new Emoji(context, calc);
+        emoji = new Emoji(context, calc, null);
         emojiParser = new EmojiParser(emoji);
     }
 
