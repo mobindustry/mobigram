@@ -43,14 +43,13 @@ public class Emoji {
     private int[] cols = EmojiArrays.getCols();
     private char[] emojiChars = EmojiArrays.getEmojiChars();
     private long[][] data = EmojiArrays.getData();
-    private PageLoaded loaded;
 
     private final Context ctx;
 
-    public Emoji(Context ctx, DpCalculator dpCalculator, PageLoaded loaded) {
-        this.loaded = loaded;
+    public Emoji(Context ctx, DpCalculator dpCalculator) {
         this.ctx = ctx;
         this.dpCalculator = dpCalculator;
+
         int emojiFullSize;
         if (this.dpCalculator.density <= 1.0f) {
             emojiFullSize = 30;
@@ -74,10 +73,21 @@ public class Emoji {
         placeholderPaint = new Paint();
         placeholderPaint.setColor(0x00000000);
 
+
+    }
+
+    public void makeEmoji () {
+        loadEmoji(0);
+        loadEmoji(1);
+        loadEmoji(2);
+        loadEmoji(3);
+        loadEmoji(4);
     }
 
 
     private void loadEmoji(final int page) {
+        Log.e("Log", "Page " + page);
+
         File maskedFile = getMaskedFile(page);
         if (maskedFile.exists()) {
             loadMasked(page, maskedFile);
@@ -114,8 +124,6 @@ public class Emoji {
 
             final Bitmap bitmap = compositeDrawableWithMask(colors, alpha);
             System.gc();
-
-
 //            bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(new File("/mnt/sdcard/foo")));
 
             dispatchPageLoaded(page, bitmap);
@@ -137,13 +145,6 @@ public class Emoji {
                         k.invalidateSelf();
                     }
                 }
-                Log.e("Log", "+++++++++++++++++++++++++++++");
-
-                if(loaded != null) {
-                    Log.e("Log", "PageLoaded");
-                    loaded.load();
-                }
-                //pageLoaded.onNext(bitmap);
             }
         });
     }

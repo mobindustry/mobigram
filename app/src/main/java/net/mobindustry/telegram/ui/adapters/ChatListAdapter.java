@@ -15,6 +15,7 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
@@ -29,15 +30,13 @@ import java.util.Date;
 public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
     private final LayoutInflater inflater;
-    private DpCalculator calc;
     private Emoji emoji;
     private EmojiParser emojiParser;
 
     public ChatListAdapter(Context context) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
-        calc = new DpCalculator(Utils.getDensity(context.getResources()));
-        emoji = new Emoji(context, calc, null);
+        emoji = MessagesFragmentHolder.getInstance().getEmoji();
         emojiParser = new EmojiParser(emoji);
     }
 

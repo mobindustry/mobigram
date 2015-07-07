@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImagesFromMediaStore;
 
@@ -191,6 +192,7 @@ public class CreateGalleryThumbs extends Service {
         }
 
         public void run() {
+            MessagesFragmentHolder.getInstance().makeEmoji(getApplicationContext());
             getAllImages();
             createThumbsFolder();
             checkThumbsInFolder();

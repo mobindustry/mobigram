@@ -108,10 +108,10 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private EditText input;
     private ObservableLinearLayout linearLayout;
 
-    private DpCalculator calc;
     private Emoji emoji;
     private EmojiParser emojiParser;
     private EmojiPopup emojiPopup;
+    private boolean emojiLoaded = false;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -257,11 +257,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        calc = new DpCalculator(Utils.getDensity(getResources()));
-        emoji = new Emoji(getActivity(), calc, null);
-        emojiParser = new EmojiParser(emoji);
-
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -270,6 +265,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         });
 
         holder = MessagesFragmentHolder.getInstance();
+        emoji = holder.getEmoji();
+        emojiParser = new EmojiParser(emoji);
         activity = (ChatActivity) getActivity();
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);

@@ -1,6 +1,11 @@
 package net.mobindustry.telegram.model.holder;
 
+import android.content.Context;
+
 import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.Utils;
+import net.mobindustry.telegram.utils.emoji.DpCalculator;
+import net.mobindustry.telegram.utils.emoji.Emoji;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -16,6 +21,8 @@ public class MessagesFragmentHolder {
     private File tempPhotoFile;
     private TdApi.Chat chat;
 
+    private Emoji emoji;
+
     private static TdApi.Stickers stickers;
 
     public static synchronized MessagesFragmentHolder getInstance() {
@@ -26,6 +33,15 @@ public class MessagesFragmentHolder {
             neTelegramDirectory = getExternalStoragePublicPictureDir();
         }
         return instance;
+    }
+
+    public void makeEmoji(Context context) {
+        emoji = new Emoji(context, new DpCalculator(Utils.getDensity(context.getResources())));
+        emoji.makeEmoji();
+    }
+
+    public Emoji getEmoji() {
+        return emoji;
     }
 
     public static File getExternalStoragePublicPictureDir() {

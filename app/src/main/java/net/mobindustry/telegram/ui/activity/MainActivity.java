@@ -22,6 +22,7 @@ import net.mobindustry.telegram.core.service.CreateGalleryThumbs;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.core.handlers.GetStateHandler;
 import net.mobindustry.telegram.model.holder.DataHolder;
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.model.holder.UserMeHolder;
 
 import org.drinkless.td.libcore.telegram.TdApi;

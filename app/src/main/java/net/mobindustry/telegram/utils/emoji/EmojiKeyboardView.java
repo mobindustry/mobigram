@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import com.astuetz.PagerSlidingTabStrip;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
 
@@ -30,9 +31,10 @@ public class EmojiKeyboardView extends LinearLayout {
     private final RecentSmiles recent;
     private ViewPager pager;
 
-    Stickers stickers = new Stickers();
-    DpCalculator calc = new DpCalculator(Utils.getDensity(getResources()));
-    Emoji emoji = new Emoji(getContext(), calc, null);
+    private Stickers stickers = new Stickers();
+
+    private DpCalculator calc = new DpCalculator(Utils.getDensity(getResources()));
+    private Emoji emoji;
 
     private PagerSlidingTabStrip strip;
     private View backspace;
@@ -47,6 +49,8 @@ public class EmojiKeyboardView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        emoji = MessagesFragmentHolder.getInstance().getEmoji();
+
         pager = ((ViewPager) findViewById(R.id.pager));
         strip = (PagerSlidingTabStrip) findViewById(R.id.tabs_strip);
         strip.setShouldExpand(true);
@@ -101,7 +105,6 @@ public class EmojiKeyboardView extends LinearLayout {
             delegate.stickerCLicked(stickerFilePath);
         }
     }
-
 
     class Adapter extends PagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
         final int[] icons = new int[]{
@@ -190,7 +193,6 @@ public class EmojiKeyboardView extends LinearLayout {
             view.setTag(position1);
             return view;
         }
-
 
         private GridView createRecent(ViewGroup container, int position) {
             View view = viewFactory.inflate(R.layout.keyboard_page_recent, container, false);
