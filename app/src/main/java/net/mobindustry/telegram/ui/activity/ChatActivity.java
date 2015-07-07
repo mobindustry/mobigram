@@ -366,15 +366,16 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         if (getMessageFragment() != null) {
             if (getMessageFragment().isEmojiAttached()) {
                 getMessageFragment().dissmissEmojiPopup();
-            } else if (!(Utils.isTablet(this) && getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE)) {
-
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                LinearLayout layout = (LinearLayout) findViewById(R.id.fragment_layout);
-                layout.setVisibility(View.VISIBLE);
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-                fragmentTransaction.remove(getMessageFragment()).commit();
+                return;
             }
+        }
+        if (!(Utils.isTablet(this) && getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) && getMessageFragment() != null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            LinearLayout layout = (LinearLayout) findViewById(R.id.fragment_layout);
+            layout.setVisibility(View.VISIBLE);
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+            fragmentTransaction.remove(getMessageFragment()).commit();
         } else {
             super.onBackPressed();
         }

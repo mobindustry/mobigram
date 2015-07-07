@@ -49,6 +49,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
         emojiParser = new EmojiParser(new Emoji(context, new DpCalculator(Utils.getDensity(context.getResources()))));
 
+        TdApi.Message message = new TdApi.Message(1,1,1,1,123456789,123456789, new TdApi.MessageText("������"));
+        emojiParser.parse(message);
+
         onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
