@@ -43,7 +43,6 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
                 ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstPhoto(), firstPhoto);
             } else {
                 ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstThumb(), firstPhoto);
-                Log.e("Log","File first "+ galleryFolder.getFirstPhoto());
             }
             nameFolder.setText(galleryFolder.getName());
             if (Integer.valueOf(galleryFolder.getPhotosQuantity())>1000){

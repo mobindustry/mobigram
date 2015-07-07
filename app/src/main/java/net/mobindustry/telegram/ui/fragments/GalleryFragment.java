@@ -1,16 +1,11 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,10 +29,7 @@ import net.mobindustry.telegram.utils.FolderCustomGallery;
 import net.mobindustry.telegram.utils.ImagesFromMediaStore;
 import net.mobindustry.telegram.utils.Utils;
 
-import org.drinkless.td.libcore.telegram.TdApi;
-
 import java.io.File;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -118,6 +110,7 @@ public class GalleryFragment extends Fragment {
                 galleryAdapter.addAll(ListFoldersHolder.getListFolders());
             }
         }
+
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_gallery);
         toolbar.setTitle(R.string.photos);
@@ -329,9 +322,10 @@ public class GalleryFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             getAllImages();
-            Log.e("Log", "SIZE " + listImagesMediaStore.size());
+            //Log.e("Log", "SIZE " + listImagesMediaStore.size());
             getThumbAll();
-            Log.e("Log", "SIZE " + getThumbAll().size());
+            //Log.e("Log", "SIZE " + getThumbAll().size());
+            //Log.e("Log", "Patch " + getActivity().getFilesDir().getAbsolutePath());
             getFoldersPath();
             completeListFolders();
             return null;

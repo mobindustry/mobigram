@@ -18,6 +18,7 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.UserMeHandler;
+import net.mobindustry.telegram.core.service.CreateGalleryThumbs;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.core.handlers.GetStateHandler;
 import net.mobindustry.telegram.model.holder.DataHolder;
@@ -56,6 +57,7 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Log.e("LOG", "##### Start program #####");
+        startService(new Intent(this, CreateGalleryThumbs.class));
 
         textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
