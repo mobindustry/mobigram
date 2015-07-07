@@ -64,6 +64,7 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
 
         if (isOnline()) {
             if (DataHolder.isLoggedIn()) {
+                hasAnswer = true;
                 runStartActivity();
             } else {
                 start();
