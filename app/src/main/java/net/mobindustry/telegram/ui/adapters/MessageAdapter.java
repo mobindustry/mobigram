@@ -39,16 +39,12 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
     private View.OnClickListener onClickListener;
 
     private LoadMore loadMore;
-    private EmojiParser emojiParser;
 
     public MessageAdapter(final Context context, long myId, LoadMore loadMore) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
         this.myId = myId;
         this.loadMore = loadMore;
-
-        Emoji emoji = new Emoji(context, new DpCalculator(Utils.getDensity(context.getResources())));
-        emojiParser = new EmojiParser(emoji);
 
         onClickListener = new View.OnClickListener() {
             @Override
@@ -132,9 +128,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (position == Const.LIST_PRELOAD_POSITION) {
             loadMore.load();
-        }
-        if (position == Const.LIST_UPDATE_POSITION) {
-            loadMore.update();
         }
 
         if (convertView == null) {
@@ -259,7 +252,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         switch (getItemViewType(position)) {
             case Const.IN_MESSAGE:
                 TdApi.MessageText inText = (TdApi.MessageText) item.message;
-                emojiParser.parse(inText);
 
                 TextView inMessage = (TextView) convertView.findViewById(R.id.in_msg);
                 TextView inTime = (TextView) convertView.findViewById(R.id.in_msg_time);
@@ -270,7 +262,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 break;
             case Const.OUT_MESSAGE:
                 TdApi.MessageText outText = (TdApi.MessageText) item.message;
-                emojiParser.parse(outText);
 
                 TextView outMessage = (TextView) convertView.findViewById(R.id.out_msg);
                 TextView outTime = (TextView) convertView.findViewById(R.id.out_msg_time);
@@ -282,7 +273,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             case Const.IN_CONTENT_MESSAGE:
                 FrameLayout inContent = (FrameLayout) convertView.findViewById(R.id.in_content);
 
-                //inContent.removeAllViews();
+                inContent.removeAllViews();
                 TextView inContentTime = (TextView) convertView.findViewById(R.id.in_content_msg_time);
 
                 inContent.setOnClickListener(onClickListener);
@@ -294,7 +285,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             case Const.OUT_CONTENT_MESSAGE:
                 FrameLayout outContent = (FrameLayout) convertView.findViewById(R.id.out_content);
 
-                //outContent.removeAllViews();
+                outContent.removeAllViews();
                 TextView outContentTime = (TextView) convertView.findViewById(R.id.out_content_msg_time);
 
                 outContent.setOnClickListener(onClickListener);
@@ -327,7 +318,5 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
     public interface LoadMore {
         void load();
-
-        void update();
     }
 }

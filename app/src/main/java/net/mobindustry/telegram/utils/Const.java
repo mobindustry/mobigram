@@ -45,7 +45,7 @@ public class Const {
     public static final int LOG_HANDLER_ID = 710;
 
     public static final int LIST_PRELOAD_POSITION = 30;
-    public static final int LIST_UPDATE_POSITION = 5;
+    public static final int LIST_UPDATE_POSITION = 10;
 
     public static final int CHATS_LIST_OFFSET = 0;
     public static final int CHATS_LIST_LIMIT = 200;

@@ -60,6 +60,7 @@ import net.mobindustry.telegram.utils.Utils;
 import net.mobindustry.telegram.utils.emoji.DpCalculator;
 import net.mobindustry.telegram.utils.emoji.Emoji;
 import net.mobindustry.telegram.utils.emoji.EmojiKeyboardView;
+import net.mobindustry.telegram.utils.emoji.EmojiParser;
 import net.mobindustry.telegram.utils.emoji.EmojiPopup;
 import net.mobindustry.telegram.utils.emoji.ObservableLinearLayout;
 
@@ -85,7 +86,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
 
     public boolean isMessagesLoading = false;
-    public boolean isMessagesUpdated = false;
+    public boolean needLoad = true;
 
     private int firstVisibleItem = 0;
     private int loadedMessagesCount = 0;
@@ -109,6 +110,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     private DpCalculator calc;
     private Emoji emoji;
+    private EmojiParser emojiParser;
     private EmojiPopup emojiPopup;
     private boolean emojiPopupShowWithKeyboard;
 
@@ -132,7 +134,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void setChatHistory(final TdApi.Messages messages) {
         adapter.setNotifyOnChange(false);
         for (int i = 0; i < messages.messages.length; i++) {
-            adapter.insert(messages.messages[i], 0);
+            adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
         }
         adapter.setNotifyOnChange(true);
         adapter.notifyDataSetChanged();
@@ -148,9 +150,18 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void addLatestMessages(final TdApi.Messages messages) {
         adapter.setNotifyOnChange(false);
         for (int i = 0; i < messages.messages.length; i++) {
-            adapter.insert(messages.messages[i], 0);
+            adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
         }
         adapter.setNotifyOnChange(true);
+    }
+
+    private TdApi.Message parseEmojiMessages(TdApi.Message message1) {
+        TdApi.Message message = message1;
+        if (message.message.getConstructor() == TdApi.MessageText.CONSTRUCTOR) {
+            TdApi.MessageText text = (TdApi.MessageText) message.message;
+            emojiParser.parse(text);
+        }
+        return message;
     }
 
     public void getChatHistory(final long id, final int messageId, final int offset, final int limit, final Enums.MessageAddType type) {
@@ -174,9 +185,13 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
                                 loadedMessagesCount = messages.messages.length;
                                 addLatestMessages(messages);
+                                adapter.notifyDataSetChanged();
+                                messageListView.setSelection(loadedMessagesCount + firstVisibleItem);
                                 isMessagesLoading = false;
                                 break;
                         }
+                    } else if (messages.messages.length == 0) {
+                        needLoad = false;
                     }
                 }
             }
@@ -225,23 +240,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), new MessageAdapter.LoadMore() {
             @Override
             public void load() {
-                Log.e("Log", "load");
-                if (!isMessagesLoading) {
-                    Log.e("Log", "loading");
+                if (needLoad && !isMessagesLoading) {
                     getChatHistory(chat.id, toScrollLoadMessageId, MESSAGE_LOAD_OFFSET, MESSAGE_LOAD_LIMIT, Enums.MessageAddType.SCROLL);
                     isMessagesLoading = true;
-                    isMessagesUpdated = false;
-                }
-            }
-
-            @Override
-            public void update() {
-                Log.e("Log", "update");
-                if (!isMessagesUpdated) {
-                    Log.e("Log", "updating");
-                    adapter.notifyDataSetChanged();
-                    messageListView.setSelection(loadedMessagesCount + firstVisibleItem);
-                    isMessagesUpdated = true;
                 }
             }
         });
@@ -262,6 +263,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
         calc = new DpCalculator(Utils.getDensity(getResources()));
         emoji = new Emoji(getActivity(), calc);
+        emojiParser = new EmojiParser(emoji);
 
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
