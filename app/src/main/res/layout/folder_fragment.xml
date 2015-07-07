@@ -39,7 +39,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@color/background_gallery_buttons">
+            android:layout_marginRight="0.5dp"
+            android:background="@drawable/send_cancel_buttons_selector"
+            android:id="@+id/buttonCancelFolder">
 
             <TextView
                 android:layout_width="match_parent"
@@ -52,8 +54,10 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="0.5dp"
             android:layout_weight="1"
-            android:background="@color/background_gallery_buttons">
+            android:background="@drawable/send_cancel_buttons_selector"
+            android:id="@+id/buttonSendFolder">
 
             <TextView
                 android:layout_width="match_parent"

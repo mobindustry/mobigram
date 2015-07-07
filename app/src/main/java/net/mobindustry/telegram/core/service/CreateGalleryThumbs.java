@@ -93,7 +93,6 @@ public class CreateGalleryThumbs extends Service {
                         cursor.moveToNext();
                     }
                 }
-                Log.e("Log", "Quantity Photos " + listImagesMediaStore.size());
                 cursor.close();
             }
 
@@ -105,7 +104,6 @@ public class CreateGalleryThumbs extends Service {
             if (!myDirectory.exists()) {
                 myDirectory.mkdirs();
             }
-            Log.e("Log", "Path to folder GALLERY " + myDirectory.getAbsolutePath());
         }
 
         private File createThumb(String path, String name) {
@@ -164,8 +162,6 @@ public class CreateGalleryThumbs extends Service {
                 for (int i = 0; i < files.size(); i++) {
                     Long idForMap = Long.valueOf(separateName(files.get(i).getAbsolutePath()));
                     String pathForMap = files.get(i).getAbsolutePath();
-                   // Log.e("Log", "ID for map " + idForMap);
-                    //Log.e("Log", "Path for map " + pathForMap);
                     map.put(idForMap, pathForMap);
                 }
             }
@@ -175,14 +171,10 @@ public class CreateGalleryThumbs extends Service {
         private void fillFolder() {
             for (int i = 0; i < listImagesMediaStore.size(); i++) {
                 if (map.size() == 0) {
-                    File file = createThumb(listImagesMediaStore.get(i).getData(), String.valueOf(listImagesMediaStore.get(i).getId()) + ".png");
-                    //Log.e("Log", "New thumb map without files " + file.getAbsolutePath());
-                    //Log.e("Log", "New thumb map without files weight " + file.getTotalSpace());
+                    createThumb(listImagesMediaStore.get(i).getData(), String.valueOf(listImagesMediaStore.get(i).getId()) + ".png");
                 } else {
                     if (map.get(listImagesMediaStore.get(i).getId()) == null) {
-                        File file = createThumb(listImagesMediaStore.get(i).getData(), String.valueOf(listImagesMediaStore.get(i).getId()) + ".png");
-                        //Log.e("Log", "New thumb map exist files " + file.getAbsolutePath());
-                        //Log.e("Log", "New thumb map exist files weight " + file.getTotalSpace());
+                        createThumb(listImagesMediaStore.get(i).getData(), String.valueOf(listImagesMediaStore.get(i).getId()) + ".png");
                     } else {
                         continue;
                     }

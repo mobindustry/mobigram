@@ -105,11 +105,13 @@
         android:layout_weight="9">
 
         <ProgressBar
-            android:id="@+id/gridProgressBar"
-            style="@style/Widget.AppCompat.ProgressBar"
+            android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:id="@+id/gallery_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_gravity="center"
+            />
 
         <GridView
             android:id="@+id/gridList"
@@ -117,9 +119,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/margin_10dp"
             android:layout_marginRight="@dimen/margin_10dp"
-            android:background="@color/background_activity"
             android:gravity="center">
-
         </GridView>
 
     </FrameLayout>
@@ -134,7 +134,7 @@
            android:layout_height="match_parent"
            android:layout_weight="1"
            android:layout_gravity="center"
-           android:background="@color/background_gallery_buttons"
+           android:background="@drawable/send_cancel_buttons_selector"
            android:id="@+id/buttonCancel">
 
            <TextView
@@ -149,7 +149,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/background_gallery_buttons"
+            android:background="@drawable/send_cancel_buttons_selector"
             android:id="@+id/buttonSend">
 
             <TextView

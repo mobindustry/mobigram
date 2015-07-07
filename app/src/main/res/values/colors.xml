@@ -24,6 +24,7 @@
     <color name="background_square_gallery_fragment">#ff40b4f4</color>
     <color name="background_transparent">#80000000</color>
     <color name="background_search_gif">#ff286879</color>
+    <color name="background_gallery_buttons_pressed">#ff25516b</color>
     <color name="background_gallery_buttons">#ff0d2028</color>
     <color name="wrong_code">#ffff0000</color>
 

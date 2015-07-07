@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
@@ -54,6 +55,7 @@ public class GalleryFragment extends Fragment {
     private FrameLayout buttonSend;
     private Map<Long, String> map;
     private Map<Long, String> mapForCustomThumbs;
+    private ProgressBar progressBar;
 
 
     @Nullable
@@ -66,6 +68,7 @@ public class GalleryFragment extends Fragment {
         findImages = (FrameLayout) view.findViewById(R.id.findImages);
         buttonCancel = (FrameLayout) view.findViewById(R.id.buttonCancel);
         buttonSend = (FrameLayout) view.findViewById(R.id.buttonSend);
+        progressBar = (ProgressBar) view.findViewById(R.id.gallery_progress_bar);
         gridList.setAdapter(galleryAdapter);
         adjustGridViewPort();
         return view;
@@ -75,15 +78,18 @@ public class GalleryFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (Utils.isTablet(getActivity())) {
+            progressBar.setVisibility(View.GONE);
             adjustGridViewPort();
             galleryAdapter.clear();
             galleryAdapter.addAll(listFolders);
         }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+            progressBar.setVisibility(View.GONE);
             adjustGridViewLand();
             galleryAdapter.clear();
             galleryAdapter.addAll(listFolders);
         } else {
+            progressBar.setVisibility(View.GONE);
             adjustGridViewPort();
             galleryAdapter.clear();
             galleryAdapter.addAll(listFolders);
@@ -99,15 +105,18 @@ public class GalleryFragment extends Fragment {
             asyncMediaStore.execute();
         } else {
             if (Utils.isTablet(getActivity())) {
+                progressBar.setVisibility(View.GONE);
                 adjustGridViewPort();
                 galleryAdapter.clear();
                 galleryAdapter.addAll(ListFoldersHolder.getListFolders());
             }
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+                progressBar.setVisibility(View.GONE);
                 adjustGridViewLand();
                 galleryAdapter.clear();
                 galleryAdapter.addAll(ListFoldersHolder.getListFolders());
             } else {
+                progressBar.setVisibility(View.GONE);
                 adjustGridViewPort();
                 galleryAdapter.clear();
                 galleryAdapter.addAll(ListFoldersHolder.getListFolders());
@@ -179,7 +188,6 @@ public class GalleryFragment extends Fragment {
                 String pathForMap = files.get(i).getAbsolutePath();
                 mapForCustomThumbs.put(idForMap, pathForMap);
             }
-            Log.e("Log", "mapForCustomThumbs " + mapForCustomThumbs.size());
         }
 
     }
@@ -225,7 +233,6 @@ public class GalleryFragment extends Fragment {
                 String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
                 File file = new File(path);
                 if (file.canRead()) {
-                    //Log.e("LOG", "FILE ");
                     int idxId = cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.IMAGE_ID);
                     long id = cursor.getLong(idxId);
                     map.put(id, path);
@@ -289,12 +296,10 @@ public class GalleryFragment extends Fragment {
                     if (map.get(list.get(i).getId()) != null) {
                         if (file.canRead()) {
                             String thumb = map.get(list.get(i).getId());
-                            //Log.e("LOG", "thumb YES" + thumb + " " + i);
                             fileWithIndicator.setThumbPhoto(thumb);
                         } else {
                             fileWithIndicator.setThumbPhoto("");
                         }
-                        //Log.e("LOG", "YES " + file.getAbsolutePath());
                     }
 
                 }
@@ -319,9 +324,7 @@ public class GalleryFragment extends Fragment {
                 continue;
             } else {
                 folderCustomGallery.setFirstPhoto(folderCustomGallery.getPhotosInFolder().get(0).getFile().getAbsolutePath());
-                //Log.e("LOG", "File " + folderCustomGallery.getPhotosInFolder().get(0).getFile().getAbsolutePath());
                 folderCustomGallery.setFirstThumb(folderCustomGallery.getPhotosInFolder().get(0).getThumbPhoto());
-                //Log.e("LOG", "Thumb");
                 listFolders.add(folderCustomGallery);
             }
 
@@ -369,10 +372,7 @@ public class GalleryFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             getAllImages();
-            //Log.e("Log", "SIZE " + listImagesMediaStore.size());
             getThumbAll();
-            //Log.e("Log", "SIZE " + getThumbAll().size());
-            //Log.e("Log", "Patch " + getActivity().getFilesDir().getAbsolutePath());
             checkThumbsInFolder();
             getFoldersPath();
             completeListFolders();
@@ -384,15 +384,18 @@ public class GalleryFragment extends Fragment {
             super.onPostExecute(aVoid);
             ListFoldersHolder.setListFolders(listFolders);
             if (Utils.isTablet(getActivity())) {
+                progressBar.setVisibility(View.GONE);
                 adjustGridViewPort();
                 galleryAdapter.clear();
                 galleryAdapter.addAll(listFolders);
             }
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+                progressBar.setVisibility(View.GONE);
                 adjustGridViewLand();
                 galleryAdapter.clear();
                 galleryAdapter.addAll(listFolders);
             } else {
+                progressBar.setVisibility(View.GONE);
                 adjustGridViewPort();
                 galleryAdapter.clear();
                 galleryAdapter.addAll(listFolders);

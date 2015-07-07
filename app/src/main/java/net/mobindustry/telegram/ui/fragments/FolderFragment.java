@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -27,6 +28,8 @@ public class FolderFragment extends Fragment {
     private List<FileWithIndicator> listFolders = new ArrayList<>();
     private ListFoldersHolder listFoldersHolder;
     private TextView numberPhotos;
+    private FrameLayout buttonSend;
+    private FrameLayout buttonCancel;
 
 
     @Nullable
@@ -70,6 +73,8 @@ public class FolderFragment extends Fragment {
 
             }
         });
+        buttonSend=(FrameLayout)view.findViewById(R.id.buttonSendFolder);
+        buttonCancel=(FrameLayout)view.findViewById(R.id.buttonCancelFolder);
         gridView = (GridView) view.findViewById(R.id.gridPhotos);
         numberPhotos=(TextView)view.findViewById(R.id.numberPhotos);
         return view;
@@ -102,6 +107,20 @@ public class FolderFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            }
+        });
+
+        buttonSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO give files list
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
             }
         });
 

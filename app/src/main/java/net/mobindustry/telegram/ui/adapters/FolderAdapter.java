@@ -31,12 +31,12 @@ public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
                     galleryFolder.setCheck(false);
                     ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getCheckQuantity() - 1);
                     loadPhotos.load();
-                    Log.e("Log","Quantity1111 "+ListFoldersHolder.getCheckQuantity());
                 } else {
-                    galleryFolder.setCheck(true);
-                    ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getCheckQuantity() + 1);
-                    Log.e("Log", "Quantity2222 " + ListFoldersHolder.getCheckQuantity());
-                    loadPhotos.load();
+                    if (ListFoldersHolder.getCheckQuantity()<10){
+                        galleryFolder.setCheck(true);
+                        ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getCheckQuantity() + 1);
+                        loadPhotos.load();
+                    }
                 }
                 notifyDataSetChanged();
 
