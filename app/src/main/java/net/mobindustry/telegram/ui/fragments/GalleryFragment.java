@@ -24,6 +24,7 @@ import android.widget.GridView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
+import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
 import net.mobindustry.telegram.utils.ImagesFromMediaStore;
@@ -52,6 +53,8 @@ public class GalleryFragment extends Fragment {
     private FrameLayout buttonCancel;
     private FrameLayout buttonSend;
     private Map<Long, String> map;
+    private Map<Long, String> mapForCustomThumbs;
+
 
     @Nullable
     @Override
@@ -166,6 +169,39 @@ public class GalleryFragment extends Fragment {
 
     }
 
+    private void checkThumbsInFolder() {
+        mapForCustomThumbs = new HashMap<Long, String>();
+        String path = Const.PATH_TO_THUMBS_GALLERY;
+        List<File> files = getListFiles(new File(path));
+        if (files.size() > 0) {
+            for (int i = 0; i < files.size(); i++) {
+                Long idForMap = Long.valueOf(separateName(files.get(i).getAbsolutePath()));
+                String pathForMap = files.get(i).getAbsolutePath();
+                mapForCustomThumbs.put(idForMap, pathForMap);
+            }
+            Log.e("Log", "mapForCustomThumbs " + mapForCustomThumbs.size());
+        }
+
+    }
+
+    private List<File> getListFiles(File parentDir) {
+        ArrayList<File> inFiles = new ArrayList<File>();
+        File[] files = parentDir.listFiles();
+        for (File file : files) {
+            if (file.getName().endsWith(".png")) {
+                inFiles.add(file);
+            }
+        }
+        return inFiles;
+    }
+
+    private String separateName(String path) {
+        String filename = path.substring(path.lastIndexOf("/") + 1);
+        int pos = filename.lastIndexOf(".");
+        String name = filename.substring(0, pos);
+        return name;
+    }
+
     private void adjustGridViewPort() {
         gridList.setNumColumns(GridView.AUTO_FIT);
         gridList.setNumColumns(2);
@@ -240,16 +276,22 @@ public class GalleryFragment extends Fragment {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getData().contains((".png")) || list.get(i).getData().contains(".jpeg") || list.get(i).getData().contains(".jpg")) {
                 FileWithIndicator fileWithIndicator = new FileWithIndicator();
-                File file=new File(list.get(i).getData());
-                if (map.get(list.get(i).getId()) != null) {
-                    if (file.canRead()){
-                        String thumb = map.get(list.get(i).getId());
-                        //Log.e("LOG", "thumb YES" + thumb + " " + i);
-                        fileWithIndicator.setThumbPhoto(thumb);
-                    } else {
-                        fileWithIndicator.setThumbPhoto("");
+                File file = new File(list.get(i).getData());
+                if (mapForCustomThumbs.get(list.get(i).getId()) != null){
+                    String thumb = mapForCustomThumbs.get(list.get(i).getId());
+                    fileWithIndicator.setThumbPhoto(thumb);
+                } else {
+                    if (map.get(list.get(i).getId()) != null) {
+                        if (file.canRead()) {
+                            String thumb = map.get(list.get(i).getId());
+                            //Log.e("LOG", "thumb YES" + thumb + " " + i);
+                            fileWithIndicator.setThumbPhoto(thumb);
+                        } else {
+                            fileWithIndicator.setThumbPhoto("");
+                        }
+                        //Log.e("LOG", "YES " + file.getAbsolutePath());
                     }
-                    //Log.e("LOG", "YES " + file.getAbsolutePath());
+
                 }
                 fileWithIndicator.setFile(file);
                 fileWithIndicator.setCheck(false);
@@ -326,6 +368,7 @@ public class GalleryFragment extends Fragment {
             getThumbAll();
             //Log.e("Log", "SIZE " + getThumbAll().size());
             //Log.e("Log", "Patch " + getActivity().getFilesDir().getAbsolutePath());
+            checkThumbsInFolder();
             getFoldersPath();
             completeListFolders();
             return null;

@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImagesFromMediaStore;
 
 import java.io.ByteArrayOutputStream;
@@ -20,9 +21,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,19 +94,18 @@ public class CreateGalleryThumbs extends Service {
 
         }
 
-        private String createThumbsFolder() {
+        private void createThumbsFolder() {
             String path = getApplicationContext().getFilesDir().getAbsolutePath() + File.separator + "thumb";
             File myDirectory = new File(path, "gallery");
             if (!myDirectory.exists()) {
                 myDirectory.mkdirs();
             }
             Log.e("Log", "Path to folder GALLERY " + myDirectory.getAbsolutePath());
-            return myDirectory.getAbsolutePath();
         }
 
         private File createThumb(String path, String name) {
             final int THUMBSIZE = 150;
-            String linkToFolder = createThumbsFolder();
+            String linkToFolder = Const.PATH_TO_THUMBS_GALLERY;
             //create a file to write bitmap data
             File file = new File(linkToFolder, name);
             try {
@@ -155,14 +153,14 @@ public class CreateGalleryThumbs extends Service {
         }
 
         private void checkThumbsInFolder() {
-            String path = createThumbsFolder();
+            String path = Const.PATH_TO_THUMBS_GALLERY;
             List<File> files = getListFiles(new File(path));
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {
                     Long idForMap = Long.valueOf(separateName(files.get(i).getAbsolutePath()));
                     String pathForMap = files.get(i).getAbsolutePath();
-                    Log.e("Log", "ID for map " + idForMap);
-                    Log.e("Log", "Path for map " + pathForMap);
+                   // Log.e("Log", "ID for map " + idForMap);
+                    //Log.e("Log", "Path for map " + pathForMap);
                     map.put(idForMap, pathForMap);
                 }
             }
@@ -170,16 +168,16 @@ public class CreateGalleryThumbs extends Service {
         }
 
         private void fillFolder() {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < listImagesMediaStore.size(); i++) {
                 if (map.size() == 0) {
                     File file = createThumb(listImagesMediaStore.get(i).getData(), String.valueOf(listImagesMediaStore.get(i).getId()) + ".png");
-                    Log.e("Log", "New thumb map without files " + file.getAbsolutePath());
-                    Log.e("Log", "New thumb map without files weight " + file.getTotalSpace());
+                    //Log.e("Log", "New thumb map without files " + file.getAbsolutePath());
+                    //Log.e("Log", "New thumb map without files weight " + file.getTotalSpace());
                 } else {
                     if (map.get(listImagesMediaStore.get(i).getId()) == null) {
                         File file = createThumb(listImagesMediaStore.get(i).getData(), String.valueOf(listImagesMediaStore.get(i).getId()) + ".png");
-                        Log.e("Log", "New thumb map exist files " + file.getAbsolutePath());
-                        Log.e("Log", "New thumb map exist files weight " + file.getTotalSpace());
+                        //Log.e("Log", "New thumb map exist files " + file.getAbsolutePath());
+                        //Log.e("Log", "New thumb map exist files weight " + file.getTotalSpace());
                     } else {
                         continue;
                     }

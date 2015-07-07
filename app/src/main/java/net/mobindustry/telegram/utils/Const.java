@@ -2,6 +2,8 @@ package net.mobindustry.telegram.utils;
 
 import android.os.Environment;
 
+import net.mobindustry.telegram.model.holder.DataHolder;
+
 import java.io.File;
 
 public class Const {
@@ -19,7 +21,8 @@ public class Const {
     public static final int CROP_REQUEST_CODE = 111;
 
     public static final String PATH_TO_GALLERY = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "NeTelegram";
-
+    public static final String PATH_TO_THUMBS_GALLERY = DataHolder.getContext().getFilesDir().getAbsolutePath()
+            + File.separator + "thumb" + File.separator + "gallery";
 
     public static final String DATE_TIME_PHOTO_PATTERN = "yyyyMMdd_HHmmss";
     public static final String TIME_PATTERN = "HH:mm";
