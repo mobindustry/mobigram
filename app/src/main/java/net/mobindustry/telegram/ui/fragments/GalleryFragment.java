@@ -268,6 +268,7 @@ public class GalleryFragment extends Fragment {
                 } else {
                     cursor.moveToNext();
                 }
+
             }
             cursor.close();
         }
