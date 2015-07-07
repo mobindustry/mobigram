@@ -86,7 +86,11 @@ public class CreateGalleryThumbs extends Service {
                     images.setBucketDisplayName(cursor.getString(idxBucketName));
                     int idxIsPrivate = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.IS_PRIVATE);
                     images.setIsPrivate(cursor.getString(idxIsPrivate));
-                    listImagesMediaStore.add(images);
+                    if (images.getData() != null){
+                        listImagesMediaStore.add(images);
+                    } else {
+                        cursor.moveToNext();
+                    }
                 }
                 Log.e("Log", "Quantity Photos " + listImagesMediaStore.size());
                 cursor.close();
