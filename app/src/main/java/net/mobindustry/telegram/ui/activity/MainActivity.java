@@ -107,14 +107,19 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
     }
 
     private void runStartActivity() {
-        if (stateWaitCode) {
-            Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-            startActivity(intent);
-            finish();
+        while (true) {
+            if (hasAnswer) {
+                if (stateWaitCode) {
+                    Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                break;
+            }
         }
     }
 

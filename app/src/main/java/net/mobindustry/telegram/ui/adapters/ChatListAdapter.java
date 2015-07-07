@@ -124,7 +124,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
                     @Override
                     public void onApiResult(BaseHandler output) {
                         if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                            ImageLoaderHelper.displayImage(String.valueOf(file.id), imageIcon);
+                            ImageLoaderHelper.displayImageList(String.valueOf(file.id), imageIcon);
                         }
                     }
                 }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);

@@ -342,7 +342,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                         public void onApiResult(BaseHandler output) {
                             if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
                                 imageIcon.setVisibility(View.VISIBLE);
-                                ImageLoaderHelper.displayImage(String.valueOf(file.id), imageIcon);
+                                ImageLoaderHelper.displayImageList(String.valueOf(file.id), imageIcon);
                             }
                         }
                     }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -361,7 +361,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             if (chatUser.photoBig instanceof TdApi.FileLocal) {
                 imageIcon.setVisibility(View.VISIBLE);
                 TdApi.FileLocal file = (TdApi.FileLocal) chatUser.photoBig;
-                ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + file.path, imageIcon);
+                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + file.path, imageIcon);
             }
 
             getChatHistory(chat.id, topMessageId, NEW_MESSAGE_LOAD_OFFSET, FIRST_MESSAGE_LOAD_LIMIT, Enums.MessageAddType.ALL);
