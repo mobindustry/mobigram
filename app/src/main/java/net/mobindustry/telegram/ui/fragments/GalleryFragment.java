@@ -263,7 +263,13 @@ public class GalleryFragment extends Fragment {
                 images.setBucketDisplayName(cursor.getString(idxBucketName));
                 int idxIsPrivate = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.IS_PRIVATE);
                 images.setIsPrivate(cursor.getString(idxIsPrivate));
-                listImagesMediaStore.add(images);
+                File file=new File(images.getData());
+                if (file.canRead()){
+                    listImagesMediaStore.add(images);
+                } else {
+                    cursor.moveToNext();
+                }
+
             }
             cursor.close();
         }
