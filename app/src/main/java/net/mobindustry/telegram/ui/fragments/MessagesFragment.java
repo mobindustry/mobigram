@@ -48,8 +48,8 @@ import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.Enums;
-import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
+import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
@@ -80,12 +80,15 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private static final long SCALE_DOWN_DURATION = 80;
 
     private final int FIRST_MESSAGE_LOAD_LIMIT = 60;
-    private final int MESSAGE_LOAD_LIMIT = 50;
+    private final int MESSAGE_LOAD_LIMIT = 60;
     private final int MESSAGE_LOAD_OFFSET = 0;
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
 
-    public boolean isLoading = false;
+    public boolean isMessagesLoading = false;
+    public boolean isMessagesUpdated = false;
+
     private int firstVisibleItem = 0;
+    private int loadedMessagesCount = 0;
 
     private ChatActivity activity;
     private MessageAdapter adapter;
@@ -148,7 +151,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             adapter.insert(messages.messages[i], 0);
         }
         adapter.setNotifyOnChange(true);
-        adapter.notifyDataSetChanged();
     }
 
     public void getChatHistory(final long id, final int messageId, final int offset, final int limit, final Enums.MessageAddType type) {
@@ -170,9 +172,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 break;
                             case SCROLL:
                                 toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
+                                loadedMessagesCount = messages.messages.length;
                                 addLatestMessages(messages);
-                                messageListView.setSelection(messages.messages.length + firstVisibleItem);
-                                isLoading = false;
+                                isMessagesLoading = false;
                                 break;
                         }
                     }
@@ -223,9 +225,23 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), new MessageAdapter.LoadMore() {
             @Override
             public void load() {
-                if (!isLoading) {
+                Log.e("Log", "load");
+                if (!isMessagesLoading) {
+                    Log.e("Log", "loading");
                     getChatHistory(chat.id, toScrollLoadMessageId, MESSAGE_LOAD_OFFSET, MESSAGE_LOAD_LIMIT, Enums.MessageAddType.SCROLL);
-                    isLoading = true;
+                    isMessagesLoading = true;
+                    isMessagesUpdated = false;
+                }
+            }
+
+            @Override
+            public void update() {
+                Log.e("Log", "update");
+                if (!isMessagesUpdated) {
+                    Log.e("Log", "updating");
+                    adapter.notifyDataSetChanged();
+                    messageListView.setSelection(loadedMessagesCount + firstVisibleItem);
+                    isMessagesUpdated = true;
                 }
             }
         });

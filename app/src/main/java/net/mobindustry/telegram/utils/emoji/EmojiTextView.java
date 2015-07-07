@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-//invalidates itself when the emojies are loaded
 public class EmojiTextView extends TextView {
 
     public EmojiTextView(Context context, AttributeSet attrs) {
@@ -19,6 +18,5 @@ public class EmojiTextView extends TextView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-
     }
 }

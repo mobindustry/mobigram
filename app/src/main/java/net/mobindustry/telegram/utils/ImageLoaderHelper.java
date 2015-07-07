@@ -40,7 +40,6 @@ public class ImageLoaderHelper {
                 } while (path == null);
                 return super.getStream(Const.IMAGE_LOADER_PATH_PREFIX + path, extra);
             } else {
-                Log.e("Log", "Uri " + imageUri);
                 return super.getStream(imageUri, extra);
             }
         }

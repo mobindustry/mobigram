@@ -20,8 +20,7 @@ public class EmojiParser {
         this.emoji = emoji;
     }
 
-    public void parse(TdApi.Message msg) {
-        TdApi.MessageText text = (TdApi.MessageText) msg.message;
+    public void parse(TdApi.MessageText text) {
         String key = text.text;
         CharSequence fromCache = cache.get(key);
         if (fromCache != null) {

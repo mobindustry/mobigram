@@ -47,10 +47,8 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         this.myId = myId;
         this.loadMore = loadMore;
 
-        emojiParser = new EmojiParser(new Emoji(context, new DpCalculator(Utils.getDensity(context.getResources()))));
-
-        TdApi.Message message = new TdApi.Message(1,1,1,1,123456789,123456789, new TdApi.MessageText("������"));
-        emojiParser.parse(message);
+        Emoji emoji = new Emoji(context, new DpCalculator(Utils.getDensity(context.getResources())));
+        emojiParser = new EmojiParser(emoji);
 
         onClickListener = new View.OnClickListener() {
             @Override
@@ -80,18 +78,18 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                         break;
                     case TdApi.MessagePhoto.CONSTRUCTOR:
                         TdApi.MessagePhoto photo = (TdApi.MessagePhoto) message.message;
-                        TdApi.File file = photo.photo.photos[photo.photo.photos.length-1].photo;
+                        TdApi.File file = photo.photo.photos[photo.photo.photos.length - 1].photo;
                         Intent intent = new Intent(context, PhotoViewerActivity.class);
-                        if(file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
+                        if (file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
                             TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
                             intent.putExtra("file_id", fileEmpty.id);
                         }
-                        if(file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                        if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
                             TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
                             intent.putExtra("file_path", fileLocal.path);
                         }
                         context.startActivity(intent);
-                        ((ChatActivity)context).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        ((ChatActivity) context).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     case TdApi.MessageVideo.CONSTRUCTOR:
                         TdApi.MessageVideo video = (TdApi.MessageVideo) message.message;
@@ -132,8 +130,11 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(position == Const.LIST_PRELOAD_POSITION) {
+        if (position == Const.LIST_PRELOAD_POSITION) {
             loadMore.load();
+        }
+        if (position == Const.LIST_UPDATE_POSITION) {
+            loadMore.update();
         }
 
         if (convertView == null) {
@@ -257,27 +258,50 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
         switch (getItemViewType(position)) {
             case Const.IN_MESSAGE:
+                TdApi.MessageText inText = (TdApi.MessageText) item.message;
+                emojiParser.parse(inText);
+
                 TextView inMessage = (TextView) convertView.findViewById(R.id.in_msg);
                 TextView inTime = (TextView) convertView.findViewById(R.id.in_msg_time);
                 //inMessage.setAutoLinkMask(Linkify.WEB_URLS | Linkify.PHONE_NUMBERS);
 
-                TdApi.MessageText inText = (TdApi.MessageText) item.message;
-                emojiParser.parse(item);
-
                 inMessage.setText(inText.textWithSmilesAndUserRefs);
                 inTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
+            case Const.OUT_MESSAGE:
+                TdApi.MessageText outText = (TdApi.MessageText) item.message;
+                emojiParser.parse(outText);
+
+                TextView outMessage = (TextView) convertView.findViewById(R.id.out_msg);
+                TextView outTime = (TextView) convertView.findViewById(R.id.out_msg_time);
+                //outMessage.setAutoLinkMask(Linkify.WEB_URLS | Linkify.PHONE_NUMBERS);
+
+                outMessage.setText(outText.textWithSmilesAndUserRefs);
+                outTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
+                break;
             case Const.IN_CONTENT_MESSAGE:
                 FrameLayout inContent = (FrameLayout) convertView.findViewById(R.id.in_content);
-                inContent.removeAllViews();
+
+                //inContent.removeAllViews();
+                TextView inContentTime = (TextView) convertView.findViewById(R.id.in_content_msg_time);
 
                 inContent.setOnClickListener(onClickListener);
                 inContent.setTag(getItem(position));
 
-                TextView inContentTime = (TextView) convertView.findViewById(R.id.in_content_msg_time);
-
                 inContent.addView(layout);
                 inContentTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
+                break;
+            case Const.OUT_CONTENT_MESSAGE:
+                FrameLayout outContent = (FrameLayout) convertView.findViewById(R.id.out_content);
+
+                //outContent.removeAllViews();
+                TextView outContentTime = (TextView) convertView.findViewById(R.id.out_content_msg_time);
+
+                outContent.setOnClickListener(onClickListener);
+                outContent.setTag(getItem(position));
+
+                outContent.addView(layout);
+                outContentTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
             case Const.IN_STICKER:
                 FrameLayout inSticker = (FrameLayout) convertView.findViewById(R.id.in_sticker);
@@ -288,33 +312,10 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 inSticker.addView(layout);
                 inStickerTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
                 break;
-            case Const.OUT_MESSAGE:
-                TextView outMessage = (TextView) convertView.findViewById(R.id.out_msg);
-                TextView outTime = (TextView) convertView.findViewById(R.id.out_msg_time);
-                //outMessage.setAutoLinkMask(Linkify.WEB_URLS | Linkify.PHONE_NUMBERS);
-
-                TdApi.MessageText outText = (TdApi.MessageText) item.message;
-                emojiParser.parse(item);
-
-                outMessage.setText(outText.textWithSmilesAndUserRefs);
-                outTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
-                break;
-            case Const.OUT_CONTENT_MESSAGE:
-                FrameLayout outContent = (FrameLayout) convertView.findViewById(R.id.out_content);
-                outContent.removeAllViews();
-
-                outContent.setOnClickListener(onClickListener);
-                outContent.setTag(getItem(position));
-
-                TextView outContentTime = (TextView) convertView.findViewById(R.id.out_content_msg_time);
-
-                outContent.addView(layout);
-                outContentTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
-                break;
             case Const.OUT_STICKER:
                 FrameLayout outSticker = (FrameLayout) convertView.findViewById(R.id.out_sticker);
-                outSticker.removeAllViews();
 
+                outSticker.removeAllViews();
                 TextView outStickerTime = (TextView) convertView.findViewById(R.id.out_sticker_msg_time);
 
                 outSticker.addView(layout);
@@ -326,5 +327,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
     public interface LoadMore {
         void load();
+
+        void update();
     }
 }
