@@ -18,6 +18,9 @@ import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
+import net.mobindustry.telegram.utils.emoji.DpCalculator;
+import net.mobindustry.telegram.utils.emoji.Emoji;
+import net.mobindustry.telegram.utils.emoji.EmojiParser;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -26,10 +29,16 @@ import java.util.Date;
 public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
     private final LayoutInflater inflater;
+    private DpCalculator calc;
+    private Emoji emoji;
+    private EmojiParser emojiParser;
 
     public ChatListAdapter(Context context) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
+        calc = new DpCalculator(Utils.getDensity(context.getResources()));
+        emoji = new Emoji(context, calc);
+        emojiParser = new EmojiParser(emoji);
     }
 
     @Override
@@ -59,8 +68,10 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         if (message.message instanceof TdApi.MessageText) {
             text = (TdApi.MessageText) message.message;
+            emojiParser.parse(text);
+
             lastMessage.setTextColor(Color.BLACK);
-            lastMessage.setText(text.text);
+            lastMessage.setText(text.textWithSmilesAndUserRefs);
         } else {
             lastMessage.setTextColor(getContext().getResources().getColor(R.color.content_text_color));
             if (message.message instanceof TdApi.MessagePhoto) {

@@ -9,6 +9,7 @@ public class EmojiTextView extends TextView {
     public EmojiTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+    //TODO find a way to show smiles
 
     @Override
     protected void onAttachedToWindow() {

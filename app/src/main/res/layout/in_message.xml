@@ -9,7 +9,7 @@
         android:background="@drawable/msg_in"
         android:orientation="horizontal">
 
-        <net.mobindustry.telegram.utils.emoji.EmojiTextView
+        <TextView
             android:id="@+id/in_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

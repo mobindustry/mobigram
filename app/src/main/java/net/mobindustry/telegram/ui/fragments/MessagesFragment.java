@@ -112,7 +112,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private Emoji emoji;
     private EmojiParser emojiParser;
     private EmojiPopup emojiPopup;
-    private boolean emojiPopupShowWithKeyboard;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -144,7 +143,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     public void addNewMessage(final TdApi.Messages messages) {
-        adapter.add(messages.messages[0]);
+        adapter.add(parseEmojiMessages(messages.messages[0]));
     }
 
     public void addLatestMessages(final TdApi.Messages messages) {
@@ -247,9 +246,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             }
         });
         messageListView.setAdapter(adapter);
-
         progressBar = (ProgressBar) view.findViewById(R.id.messages_progress_bar);
-
         return view;
     }
 
@@ -421,21 +418,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     });
                     smiles.setImageLevel(LEVEL_ARROW);
                     assert emojiPopup != null;
-                    emojiPopupShowWithKeyboard = linearLayout.getKeyboardHeight() > 0;
-
                 }
             }
         });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     private void animateSendAttachButton(final int level) {
@@ -622,6 +607,12 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             sendStickerMessage(getShownChatId(), stickerFilePath);
         }
     };
+
+    @Override
+    public void onDetach() {
+        dissmissEmojiPopup();
+        super.onDetach();
+    }
 }
 
 
