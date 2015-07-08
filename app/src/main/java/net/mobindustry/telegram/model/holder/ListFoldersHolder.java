@@ -11,6 +11,15 @@ public class ListFoldersHolder {
     private static List<FileWithIndicator>list=new ArrayList<>();
     private static int checkQuantity=0;
     private static List<FolderCustomGallery>listFolders;
+    private static List<String>listForSending;
+
+    public static List<String> getListForSending() {
+        return listForSending;
+    }
+
+    public static void setListForSending(List<String> listForSending) {
+        ListFoldersHolder.listForSending = listForSending;
+    }
 
     public static List<FolderCustomGallery> getListFolders() {
         return listFolders;

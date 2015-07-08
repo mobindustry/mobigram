@@ -87,8 +87,11 @@ public class CreateGalleryThumbs extends Service {
                     images.setBucketDisplayName(cursor.getString(idxBucketName));
                     int idxIsPrivate = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.IS_PRIVATE);
                     images.setIsPrivate(cursor.getString(idxIsPrivate));
-                    if (images.getData() != null){
-                        listImagesMediaStore.add(images);
+                    if (images.getData() != null) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(images.getData());
+                        if (bitmap!=null) {
+                            listImagesMediaStore.add(images);
+                        }
                     } else {
                         cursor.moveToNext();
                     }
@@ -118,7 +121,8 @@ public class CreateGalleryThumbs extends Service {
             }
 
             //Convert bitmap to byte array
-            Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(path), THUMBSIZE, THUMBSIZE);
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, THUMBSIZE, THUMBSIZE);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             thumbImage.compress(Bitmap.CompressFormat.PNG, 0, stream);
             byte[] bitMapData = stream.toByteArray();
@@ -186,8 +190,11 @@ public class CreateGalleryThumbs extends Service {
         public void run() {
             MessagesFragmentHolder.getInstance().makeEmoji(getApplicationContext());
             getAllImages();
+            Log.e("Log", "ALL IMAGES");
             createThumbsFolder();
+            Log.e("Log", "CREATE FOLDER");
             checkThumbsInFolder();
+            Log.e("Log", "CHECK THUMBS");
             fillFolder();
             stopSelf();
         }

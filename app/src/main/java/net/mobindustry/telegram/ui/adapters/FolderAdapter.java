@@ -13,11 +13,15 @@ import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
     //TODO create a simple animation for button check
     private LayoutInflater inflater;
     private ImageView photo;
     private View.OnClickListener clickListener;
+    private List<String>listForHolder=new ArrayList<>();
 
 
     public FolderAdapter(Context context, final LoadPhotos loadPhotos) {
@@ -29,11 +33,15 @@ public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
                 FileWithIndicator galleryFolder = (FileWithIndicator) v.getTag();
                 if (galleryFolder.isCheck()) {
                     galleryFolder.setCheck(false);
+                    listForHolder.remove(galleryFolder.getFile().getAbsolutePath());
+                    ListFoldersHolder.setListForSending(listForHolder);
                     ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getCheckQuantity() - 1);
                     loadPhotos.load();
                 } else {
                     if (ListFoldersHolder.getCheckQuantity()<10){
                         galleryFolder.setCheck(true);
+                        listForHolder.add(galleryFolder.getFile().getAbsolutePath());
+                        ListFoldersHolder.setListForSending(listForHolder);
                         ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getCheckQuantity() + 1);
                         loadPhotos.load();
                     }

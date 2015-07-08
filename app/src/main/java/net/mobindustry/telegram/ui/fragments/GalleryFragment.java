@@ -3,6 +3,8 @@ package net.mobindustry.telegram.ui.fragments;
 import android.content.ContentResolver;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
@@ -56,6 +59,7 @@ public class GalleryFragment extends Fragment {
     private Map<Long, String> map;
     private Map<Long, String> mapForCustomThumbs;
     private ProgressBar progressBar;
+    private TextView numberPhotos;
 
 
     @Nullable
@@ -69,6 +73,7 @@ public class GalleryFragment extends Fragment {
         buttonCancel = (FrameLayout) view.findViewById(R.id.buttonCancel);
         buttonSend = (FrameLayout) view.findViewById(R.id.buttonSend);
         progressBar = (ProgressBar) view.findViewById(R.id.gallery_progress_bar);
+        numberPhotos=(TextView)view.findViewById(R.id.numberPhotos);
         gridList.setAdapter(galleryAdapter);
         adjustGridViewPort();
         return view;
@@ -100,6 +105,36 @@ public class GalleryFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (Utils.isTablet(getActivity())) {
+            if (ListFoldersHolder.getCheckQuantity()!=0){
+                numberPhotos.setVisibility(View.VISIBLE);
+                int sdk = android.os.Build.VERSION.SDK_INT;
+                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                    numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                } else {
+                    numberPhotos.setBackground(Utils.getShapeDrawable(40,  getActivity().getResources().getColor(R.color.message_notify)));
+                }
+
+                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+            } else {
+                numberPhotos.setVisibility(View.GONE);
+            }
+        } else {
+            if (ListFoldersHolder.getCheckQuantity()!=0){
+                numberPhotos.setVisibility(View.VISIBLE);
+                int sdk = android.os.Build.VERSION.SDK_INT;
+                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                    numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
+                } else {
+                    numberPhotos.setBackground(Utils.getShapeDrawable(60,  getActivity().getResources().getColor(R.color.message_notify)));
+                }
+
+                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+            } else {
+                numberPhotos.setVisibility(View.GONE);
+            }
+
+        }
         if (ListFoldersHolder.getListFolders() == null) {
             AsyncMediaStore asyncMediaStore = new AsyncMediaStore();
             asyncMediaStore.execute();
@@ -271,7 +306,10 @@ public class GalleryFragment extends Fragment {
                 int idxIsPrivate = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.IS_PRIVATE);
                 images.setIsPrivate(cursor.getString(idxIsPrivate));
                 if (images.getData() != null){
-                    listImagesMediaStore.add(images);
+                    Bitmap bitmap = BitmapFactory.decodeFile(images.getData());
+                    if (bitmap!=null) {
+                        listImagesMediaStore.add(images);
+                    }
                 } else {
                     cursor.moveToNext();
                 }

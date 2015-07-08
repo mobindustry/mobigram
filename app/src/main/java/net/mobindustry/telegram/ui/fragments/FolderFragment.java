@@ -37,6 +37,48 @@ public class FolderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.folder_fragment, container, false);
         listFolders=listFoldersHolder.getList();
+        buttonSend=(FrameLayout)view.findViewById(R.id.buttonSendFolder);
+        buttonCancel=(FrameLayout)view.findViewById(R.id.buttonCancelFolder);
+        gridView = (GridView) view.findViewById(R.id.gridPhotos);
+        numberPhotos=(TextView)view.findViewById(R.id.numberPhotosAll);
+        if (Utils.isTablet(getActivity())) {
+            if (ListFoldersHolder.getCheckQuantity()!=0){
+                numberPhotos.setVisibility(View.VISIBLE);
+                int sdk = android.os.Build.VERSION.SDK_INT;
+                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                    numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                } else {
+                    numberPhotos.setBackground(Utils.getShapeDrawable(40,  getActivity().getResources().getColor(R.color.message_notify)));
+                }
+
+                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+            } else {
+                numberPhotos.setVisibility(View.GONE);
+            }
+        } else {
+            if (ListFoldersHolder.getCheckQuantity()!=0){
+                numberPhotos.setVisibility(View.VISIBLE);
+                int sdk = android.os.Build.VERSION.SDK_INT;
+                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                    numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
+                } else {
+                    numberPhotos.setBackground(Utils.getShapeDrawable(60,  getActivity().getResources().getColor(R.color.message_notify)));
+                }
+
+                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+            } else {
+                numberPhotos.setVisibility(View.GONE);
+            }
+
+        }
+        return view;
+    }
+
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         folderAdapter = new FolderAdapter(getActivity(), new FolderAdapter.LoadPhotos() {
             @Override
             public void load() {
@@ -73,18 +115,6 @@ public class FolderFragment extends Fragment {
 
             }
         });
-        buttonSend=(FrameLayout)view.findViewById(R.id.buttonSendFolder);
-        buttonCancel=(FrameLayout)view.findViewById(R.id.buttonCancelFolder);
-        gridView = (GridView) view.findViewById(R.id.gridPhotos);
-        numberPhotos=(TextView)view.findViewById(R.id.numberPhotos);
-        return view;
-    }
-
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
         if (Utils.isTablet(getActivity())) {
             adjustGridViewPort();

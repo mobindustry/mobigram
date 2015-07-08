@@ -67,7 +67,7 @@
                 android:textColor="@color/text_color_gallery_fragment" />
 
             <TextView
-                android:id="@+id/numberPhotos"
+                android:id="@+id/numberPhotosAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_45dp"
@@ -75,7 +75,7 @@
                 android:gravity="center"
                 android:textColor="@color/text_color_gallery_fragment"
                 tools:text="14"
-                android:layout_marginStart="@dimen/margin_25dp"/>
+                android:layout_marginStart="@dimen/margin_30dp"/>
         </FrameLayout>
 
     </LinearLayout>
