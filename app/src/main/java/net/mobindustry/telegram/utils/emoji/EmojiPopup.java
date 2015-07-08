@@ -90,7 +90,6 @@ public class EmojiPopup extends PopupWindow implements ObservableLinearLayout.Ca
         LayoutInflater viewFactory = LayoutInflater.from(ctx);
         EmojiKeyboardView view = (EmojiKeyboardView)  viewFactory.inflate(R.layout.view_emoji_keyboard, null, false);
         view.setCallback(cb);
-//        view.setEmoji(emoji);
 
         EmojiPopup res = new EmojiPopup(view, parent);
         res.showAtLocation(ctx.getWindow().getDecorView(), Gravity.BOTTOM | Gravity.LEFT, 0, 0);

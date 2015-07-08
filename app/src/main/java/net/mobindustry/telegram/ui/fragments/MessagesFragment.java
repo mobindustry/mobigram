@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -112,7 +113,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     private Emoji emoji;
     private EmojiParser emojiParser;
-    private EmojiPopup emojiPopup;
+    @Nullable private EmojiPopup emojiPopup;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -256,6 +257,12 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     @Override
+    public void onDetach() {
+        dissmissEmojiPopup();
+        super.onDetach();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -270,65 +277,66 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         emojiParser = new EmojiParser(emoji);
         activity = (ChatActivity) getActivity();
 
+        input = (EditText) getActivity().findViewById(R.id.message_edit_text);
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 0) {
+                    animateSendAttachButton(LEVEL_ATTACH);
+                } else {
+                    animateSendAttachButton(LEVEL_SEND);
+                }
+            }
+        });
+
+        attach = (ImageView) getActivity().findViewById(R.id.attach);
+        attach.setImageLevel(LEVEL_ATTACH);
+
+        smiles = (ImageView) getActivity().findViewById(R.id.smiles);
+        smiles.setImageLevel(LEVEL_SMILE);
+
+        attach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = input.getText().toString();
+                if (text.isEmpty()) {
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            showPopupMenu(attach);
+                        }
+                    }, 100L);
+                } else {
+                    sendTextMessage(chat.id, input.getText().toString().trim());
+                    input.setText("");
+                }
+            }
+        });
+
+        ChatListFragment fragment = (ChatListFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.chat_list);
+        chat = fragment.getChat();
+        topMessageId = chat.topMessage.id;
+
+        holder.setChat(chat);
+
+        TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) chat.type; //TODO verify;
+        TdApi.User chatUser = privateChatInfo.user;
+
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
 
-            input = (EditText) getActivity().findViewById(R.id.message_edit_text);
-            input.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (s.length() == 0) {
-                        animateSendAttachButton(LEVEL_ATTACH);
-                    } else {
-                        animateSendAttachButton(LEVEL_SEND);
-                    }
-                }
-            });
-
-            attach = (ImageView) getActivity().findViewById(R.id.attach);
-            attach.setImageLevel(LEVEL_ATTACH);
-
-            smiles = (ImageView) getActivity().findViewById(R.id.smiles);
-            smiles.setImageLevel(LEVEL_SMILE);
             TextView icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
             TextView name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
             TextView lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
-
-            attach.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String text = input.getText().toString();
-                    if (text.isEmpty()) {
-                        new Handler().postDelayed(new Runnable() {
-                            public void run() {
-                                showPopupMenu(attach);
-                            }
-                        }, 100L);
-                    } else {
-                        sendTextMessage(chat.id, input.getText().toString().trim());
-                        input.setText("");
-                    }
-                }
-            });
-
-            ChatListFragment fragment = (ChatListFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.chat_list);
-            chat = fragment.getChat();
-            topMessageId = chat.topMessage.id;
-
-            holder.setChat(chat);
-
-            TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) chat.type; //TODO verify;
-            TdApi.User chatUser = privateChatInfo.user;
 
             TdApi.UserStatus status = chatUser.status;
             name.setText(chatUser.firstName + " " + chatUser.lastName);
@@ -366,8 +374,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + file.path, imageIcon);
             }
 
-            getChatHistory(chat.id, topMessageId, NEW_MESSAGE_LOAD_OFFSET, FIRST_MESSAGE_LOAD_LIMIT, Enums.MessageAddType.ALL);
-
             toolbar.inflateMenu(R.menu.message_menu);
 
             final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -400,6 +406,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             }
         }
 
+        getChatHistory(chat.id, topMessageId, NEW_MESSAGE_LOAD_OFFSET, FIRST_MESSAGE_LOAD_LIMIT, Enums.MessageAddType.ALL);
+
         smiles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -407,7 +415,24 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     smiles.setImageLevel(LEVEL_SMILE);
                     emojiPopup.dismiss();
                 } else {
-                    emojiPopup = EmojiPopup.create(getActivity(), linearLayout, emojiKeyboardCallback);
+                    emojiPopup = EmojiPopup.create(getActivity(), linearLayout, new EmojiKeyboardView.CallBack() {
+                        @Override
+                        public void backspaceClicked() {
+                            input.dispatchKeyEvent(new KeyEvent(0, KeyEvent.KEYCODE_DEL));
+                        }
+
+                        @Override
+                        public void emojiClicked(long code) {
+                            String strEmoji = emoji.toString(code);
+                            Editable text = input.getText();
+                            text.append(emoji.replaceEmoji(strEmoji));
+                        }
+
+                        @Override
+                        public void stickerCLicked(String stickerFilePath) {
+                            sendStickerMessage(getShownChatId(), stickerFilePath);
+                        }
+                    });
                     emojiPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
                         @Override
                         public void onDismiss() {
@@ -588,30 +613,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         }
     }
 
-    private EmojiKeyboardView.CallBack emojiKeyboardCallback = new EmojiKeyboardView.CallBack() {
-        @Override
-        public void backspaceClicked() {
-            input.dispatchKeyEvent(new KeyEvent(0, KeyEvent.KEYCODE_DEL));
-        }
 
-        @Override
-        public void emojiClicked(long code) {
-            String strEmoji = emoji.toString(code);
-            Editable text = input.getText();
-            text.append(emoji.replaceEmoji(strEmoji));
-        }
-
-        @Override
-        public void stickerCLicked(String stickerFilePath) {
-            sendStickerMessage(getShownChatId(), stickerFilePath);
-        }
-    };
-
-    @Override
-    public void onDetach() {
-        dissmissEmojiPopup();
-        super.onDetach();
-    }
 }
 
 
