@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.model.holder;
 
 import android.content.Context;
+import android.util.Log;
 
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.Utils;
@@ -20,6 +21,7 @@ public class MessagesFragmentHolder {
     private static File neTelegramDirectory;
     private File tempPhotoFile;
     private TdApi.Chat chat;
+    private boolean isEmojiCreated = false;
 
     private Emoji emoji;
 
@@ -36,8 +38,12 @@ public class MessagesFragmentHolder {
     }
 
     public void makeEmoji(Context context) {
-        emoji = new Emoji(context, new DpCalculator(Utils.getDensity(context.getResources())));
-        emoji.makeEmoji();
+        if (!isEmojiCreated) {
+            Log.e("Log", "MakeEmoji");
+            emoji = new Emoji(context, new DpCalculator(Utils.getDensity(context.getResources())));
+            emoji.makeEmoji();
+            isEmojiCreated = true;
+        }
     }
 
     public Emoji getEmoji() {

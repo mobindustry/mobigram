@@ -6,19 +6,24 @@ import android.content.res.Resources;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
+import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
+import net.mobindustry.telegram.model.holder.DataHolder;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class Utils {
 
@@ -100,6 +105,35 @@ public class Utils {
     public static float getDensity(Resources res) {
         DisplayMetrics metrics = res.getDisplayMetrics();
         return metrics.density;
+    }
+
+    public static String getUserStatusString (TdApi.UserStatus status) {
+        Context context = DataHolder.getContext();
+        Locale.setDefault(Locale.US);
+
+        String lastSeenString = "";
+
+        switch (status.getConstructor()) {
+            case TdApi.UserStatusOnline.CONSTRUCTOR:
+                lastSeenString = context.getString(R.string.online);
+                break;
+            case TdApi.UserStatusOffline.CONSTRUCTOR:
+                int ago = ((TdApi.UserStatusOffline) status).wasOnline;
+                lastSeenString = context.getString(R.string.last_seen) + " " + DateUtils.getRelativeTimeSpanString((long) ago * 1000);
+                break;
+            case TdApi.UserStatusRecently.CONSTRUCTOR:
+                lastSeenString = context.getString(R.string.ls_recently);
+                break;
+            case TdApi.UserStatusLastWeek.CONSTRUCTOR:
+                lastSeenString = context.getString(R.string.ls_week_ago);
+                break;
+            case TdApi.UserStatusLastMonth.CONSTRUCTOR:
+                lastSeenString = context.getString(R.string.ls_month_ago);
+                break;
+            default:
+                break;
+        }
+        return lastSeenString;
     }
 
 

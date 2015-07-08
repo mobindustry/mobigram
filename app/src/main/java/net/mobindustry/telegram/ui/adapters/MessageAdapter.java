@@ -255,7 +255,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
                 TextView inMessage = (TextView) convertView.findViewById(R.id.in_msg);
                 TextView inTime = (TextView) convertView.findViewById(R.id.in_msg_time);
-                //inMessage.setAutoLinkMask(Linkify.WEB_URLS | Linkify.PHONE_NUMBERS);
+                inMessage.setAutoLinkMask(Linkify.WEB_URLS | Linkify.PHONE_NUMBERS);
 
                 inMessage.setText(inText.textWithSmilesAndUserRefs);
                 inTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
@@ -265,7 +265,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
                 TextView outMessage = (TextView) convertView.findViewById(R.id.out_msg);
                 TextView outTime = (TextView) convertView.findViewById(R.id.out_msg_time);
-                //outMessage.setAutoLinkMask(Linkify.WEB_URLS | Linkify.PHONE_NUMBERS);
+                outMessage.setAutoLinkMask(Linkify.WEB_URLS | Linkify.PHONE_NUMBERS);
 
                 outMessage.setText(outText.textWithSmilesAndUserRefs);
                 outTime.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));

@@ -51,5 +51,10 @@
     <string name="text_cancel">CANCEL</string>
     <string name="text_send">SEND</string>
 
+    <string name="online">online</string>
+    <string name="last_seen">last seen</string>
+    <string name="ls_recently">last seen recently</string>
+    <string name="ls_week_ago">last seen a week ago</string>
+    <string name="ls_month_ago">last seen a month ago</string>
 
 </resources>

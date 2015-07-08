@@ -86,8 +86,6 @@ public class Emoji {
 
 
     private void loadEmoji(final int page) {
-        Log.e("Log", "Page " + page);
-
         File maskedFile = getMaskedFile(page);
         if (maskedFile.exists()) {
             loadMasked(page, maskedFile);
@@ -390,9 +388,5 @@ public class Emoji {
                 str = str + (char) j;
             }
         }
-    }
-
-    public interface PageLoaded {
-        void load();
     }
 }

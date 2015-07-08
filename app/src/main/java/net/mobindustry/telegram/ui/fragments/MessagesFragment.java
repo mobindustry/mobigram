@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -70,6 +71,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Locale;
 
 public class MessagesFragment extends Fragment implements Serializable, ApiClient.OnApiResultHandler {
 
@@ -111,7 +113,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private Emoji emoji;
     private EmojiParser emojiParser;
     private EmojiPopup emojiPopup;
-    private boolean emojiLoaded = false;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -329,8 +330,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) chat.type; //TODO verify;
             TdApi.User chatUser = privateChatInfo.user;
 
+            TdApi.UserStatus status = chatUser.status;
             name.setText(chatUser.firstName + " " + chatUser.lastName);
-            lastSeenText.setText("lastSeen"); //TODO
+            lastSeenText.setText(Utils.getUserStatusString(status));
 
             final RoundedImageView imageIcon = (RoundedImageView) getActivity().findViewById(R.id.toolbar_image_icon);
 

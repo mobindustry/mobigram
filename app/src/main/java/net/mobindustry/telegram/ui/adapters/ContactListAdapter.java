@@ -2,6 +2,8 @@ package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import net.mobindustry.telegram.utils.Utils;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.Date;
+import java.util.Locale;
 
 public class ContactListAdapter extends ArrayAdapter<TdApi.User> {
 
@@ -37,7 +40,7 @@ public class ContactListAdapter extends ArrayAdapter<TdApi.User> {
         TextView lastSeen = (TextView) convertView.findViewById(R.id.lastSeen);
 
         TdApi.User item = getItem(position);
-
+        TdApi.UserStatus status = item.status;
         int sdk = android.os.Build.VERSION.SDK_INT;
         if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
             icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.contact_list_item_icon_size, -item.id));
@@ -48,7 +51,7 @@ public class ContactListAdapter extends ArrayAdapter<TdApi.User> {
         icon.setText(Utils.getInitials(item.firstName, item.lastName));
 
         firstLastName.setText(item.firstName + " " + item.lastName);
-        lastSeen.setText("lastSeen"); //todo set lastSeen
+        lastSeen.setText(Utils.getUserStatusString(status));
 
         return convertView;
     }

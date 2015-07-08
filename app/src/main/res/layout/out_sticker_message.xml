@@ -27,7 +27,9 @@
                 android:paddingLeft="@dimen/padding_3dp"
                 android:textColor="#ffd0d0d0"
                 android:textSize="@dimen/message_time_text_size"
-                android:background="#877c7c7c"/>
+                android:background="#877c7c7c"
+                android:layout_margin="@dimen/margin_3dp"
+                />
 
         </LinearLayout>
     </FrameLayout>
