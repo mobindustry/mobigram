@@ -6,10 +6,8 @@ import android.content.res.Resources;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -82,18 +80,18 @@ public class Utils {
     }
 
     public static void fileLoader(final int id, final ImageView view) {
-            new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                @Override
-                public void onApiResult(BaseHandler output) {
-                    if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                        ImageLoaderHelper.displayImage(String.valueOf(id), view);
-                    }
+        new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+                if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                    ImageLoaderHelper.displayImage(String.valueOf(id), view);
                 }
-            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        }
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
 
-    public static void hideKeyboard(EditText e){
-        InputMethodManager imm = (InputMethodManager)e.getContext().getSystemService(
+    public static void hideKeyboard(EditText e) {
+        InputMethodManager imm = (InputMethodManager) e.getContext().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(e.getWindowToken(), 0);
     }
@@ -107,10 +105,9 @@ public class Utils {
         return metrics.density;
     }
 
-    public static String getUserStatusString (TdApi.UserStatus status) {
+    public static String getUserStatusString(TdApi.UserStatus status) {
         Context context = DataHolder.getContext();
         Locale.setDefault(Locale.US);
-
         String lastSeenString = "";
 
         switch (status.getConstructor()) {
@@ -135,10 +132,7 @@ public class Utils {
         }
         return lastSeenString;
     }
-
-
-
-    }
+}
 
 
 

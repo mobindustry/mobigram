@@ -6,10 +6,10 @@ import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
-public class LogHandler extends BaseHandler<TdApi.TLObject> {
-    public static final int HANDLER_ID = Const.LOG_HANDLER_ID;
+public class StickerHandler extends BaseHandler<TdApi.Stickers> {
+    public static final int HANDLER_ID = Const.STICKER_HANDLER_ID;
     @Override
-    public TdApi.TLObject resultHandler(TdApi.TLObject object) {
+    public TdApi.Stickers resultHandler(TdApi.TLObject object) {
         Log.i("Log", "Log handler: " + object);
         return null;
     }

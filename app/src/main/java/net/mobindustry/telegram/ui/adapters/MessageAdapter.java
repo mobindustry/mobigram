@@ -22,9 +22,6 @@ import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
-import net.mobindustry.telegram.utils.emoji.DpCalculator;
-import net.mobindustry.telegram.utils.emoji.Emoji;
-import net.mobindustry.telegram.utils.emoji.EmojiParser;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -211,7 +208,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             map.setLayoutParams(layoutParams);
 
             ImageLoaderHelper.displayImage(url, map);
-
             layout.addView(map);
         }
         if (item.message instanceof TdApi.MessageSticker) {
@@ -221,7 +217,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 300);
             stickerImage.setLayoutParams(layoutParams);
-
             Utils.fileCheckerAndLoader(sticker.sticker, stickerImage);
             layout.addView(stickerImage);
         }
