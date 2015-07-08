@@ -88,8 +88,12 @@ public class CreateGalleryThumbs extends Service {
                     int idxIsPrivate = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.IS_PRIVATE);
                     images.setIsPrivate(cursor.getString(idxIsPrivate));
                     if (images.getData() != null) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(images.getData());
-                        if (bitmap!=null) {
+                        final BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inJustDecodeBounds = true;
+                        BitmapFactory.decodeFile(images.getData(),options);
+                        int height=options.outHeight;
+                        int width=options.outWidth;
+                        if (height >0 && width>0) {
                             listImagesMediaStore.add(images);
                         }
                     } else {

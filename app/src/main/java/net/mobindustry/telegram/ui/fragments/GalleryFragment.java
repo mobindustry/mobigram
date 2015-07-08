@@ -306,10 +306,7 @@ public class GalleryFragment extends Fragment {
                 int idxIsPrivate = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.IS_PRIVATE);
                 images.setIsPrivate(cursor.getString(idxIsPrivate));
                 if (images.getData() != null){
-                    Bitmap bitmap = BitmapFactory.decodeFile(images.getData());
-                    if (bitmap!=null) {
                         listImagesMediaStore.add(images);
-                    }
                 } else {
                     cursor.moveToNext();
                 }
