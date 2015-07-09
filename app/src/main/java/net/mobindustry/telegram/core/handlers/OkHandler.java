@@ -7,7 +7,7 @@ import net.mobindustry.telegram.utils.Const;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 public class OkHandler extends BaseHandler<TdApi.Ok> {
-    public static final int HANDLER_ID = Const.LOG_HANDLER_ID;
+    public static final int HANDLER_ID = Const.OK_HANDLER_ID;
     @Override
     public TdApi.Ok resultHandler(TdApi.TLObject object) {
         Log.i("Log", "Log handler: " + object);
