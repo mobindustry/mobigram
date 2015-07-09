@@ -123,7 +123,6 @@ public class CreateGalleryThumbs extends Service {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             //Convert bitmap to byte array
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, THUMBSIZE, THUMBSIZE);

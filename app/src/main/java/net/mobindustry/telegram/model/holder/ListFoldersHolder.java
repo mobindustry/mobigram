@@ -12,6 +12,24 @@ public class ListFoldersHolder {
     private static int checkQuantity=0;
     private static List<FolderCustomGallery>listFolders;
     private static List<String>listForSending;
+    private static String nameHolder;
+    private static int currentSelectedPhoto;
+
+    public static int getCurrentSelectedPhoto() {
+        return currentSelectedPhoto;
+    }
+
+    public static void setCurrentSelectedPhoto(int currentSelectedPhoto) {
+        ListFoldersHolder.currentSelectedPhoto = currentSelectedPhoto;
+    }
+
+    public static String getNameHolder() {
+        return nameHolder;
+    }
+
+    public static void setNameHolder(String nameHolder) {
+        ListFoldersHolder.nameHolder = nameHolder;
+    }
 
     public static List<String> getListForSending() {
         return listForSending;

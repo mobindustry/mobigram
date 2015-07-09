@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <include
-        layout="@layout/toolbar_gallery_fragment"
+        layout="@layout/toolbar_folder_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -31,7 +31,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:orientation="horizontal">
 
         <FrameLayout
@@ -60,9 +60,10 @@
             android:id="@+id/buttonSendFolder">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:text="@string/text_send"
                 android:textColor="@color/text_color_gallery_fragment" />
 
@@ -70,12 +71,11 @@
                 android:id="@+id/numberPhotosAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_45dp"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
+                android:layout_marginLeft="@dimen/margin_45dp"
                 android:textColor="@color/text_color_gallery_fragment"
-                tools:text="14"
-                android:layout_marginStart="@dimen/margin_30dp"/>
+                tools:text="14" />
         </FrameLayout>
 
     </LinearLayout>

@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,11 +11,13 @@ import android.widget.FrameLayout;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.fragments.ChooseFileFragment;
+import net.mobindustry.telegram.ui.fragments.FolderFragment;
 import net.mobindustry.telegram.ui.fragments.GalleryFragment;
 import net.mobindustry.telegram.ui.fragments.LocationFragment;
 import net.mobindustry.telegram.ui.fragments.NewMessageFragment;
 import net.mobindustry.telegram.ui.fragments.SelectedMapFragment;
 import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.FolderCustomGallery;
 
 public class TransparentActivity extends AppCompatActivity {
 
@@ -64,6 +67,18 @@ public class TransparentActivity extends AppCompatActivity {
                 break;
         }
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        int choice = getIntent().getIntExtra("choice", 0);
+        if (choice == Const.SELECTED_FOLDER_FRAGMENT) {
+            FolderFragment folderFragment = new FolderFragment();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.transparent_content, folderFragment);
+            fragmentTransaction.commit();
+        }
     }
 
     @Override

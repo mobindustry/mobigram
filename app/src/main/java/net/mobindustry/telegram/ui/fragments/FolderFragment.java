@@ -1,10 +1,15 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,10 +19,13 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
+import net.mobindustry.telegram.ui.activity.PhotoViewPagerActivity;
+import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.FolderAdapter;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,21 +34,25 @@ public class FolderFragment extends Fragment {
     private GridView gridView;
     private FolderAdapter folderAdapter;
     private List<FileWithIndicator> listFolders = new ArrayList<>();
-    private ListFoldersHolder listFoldersHolder;
     private TextView numberPhotos;
     private FrameLayout buttonSend;
     private FrameLayout buttonCancel;
+    private Toolbar toolbar;
+    private String nameHolder="";
+    private FragmentTransaction ft;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.folder_fragment, container, false);
-        listFolders=listFoldersHolder.getList();
+        listFolders=ListFoldersHolder.getList();
+        nameHolder=ListFoldersHolder.getNameHolder();
         buttonSend=(FrameLayout)view.findViewById(R.id.buttonSendFolder);
         buttonCancel=(FrameLayout)view.findViewById(R.id.buttonCancelFolder);
         gridView = (GridView) view.findViewById(R.id.gridPhotos);
         numberPhotos=(TextView)view.findViewById(R.id.numberPhotosAll);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar_folder);
         if (Utils.isTablet(getActivity())) {
             if (ListFoldersHolder.getCheckQuantity()!=0){
                 numberPhotos.setVisibility(View.VISIBLE);
@@ -84,6 +96,7 @@ public class FolderFragment extends Fragment {
             public void load() {
                 if (Utils.isTablet(getActivity())) {
                     if (ListFoldersHolder.getCheckQuantity()!=0){
+                        Log.e("Log","TABLET");
                         numberPhotos.setVisibility(View.VISIBLE);
                         int sdk = android.os.Build.VERSION.SDK_INT;
                         if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -114,6 +127,7 @@ public class FolderFragment extends Fragment {
                 }
 
             }
+
         });
 
         if (Utils.isTablet(getActivity())) {
@@ -136,7 +150,9 @@ public class FolderFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                ListFoldersHolder.setCurrentSelectedPhoto(position);
+                Intent intent = new Intent(getActivity(), PhotoViewPagerActivity.class);
+                startActivityForResult(intent, getActivity().RESULT_OK);
             }
         });
 
@@ -151,6 +167,20 @@ public class FolderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
+            }
+        });
+        toolbar.setTitle(nameHolder);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GalleryFragment galleryFragment;
+                galleryFragment = new GalleryFragment();
+                ft = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+                ft.replace(R.id.transparent_content, galleryFragment);
+                ft.commit();
             }
         });
 

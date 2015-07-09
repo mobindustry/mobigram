@@ -3,8 +3,6 @@ package net.mobindustry.telegram.ui.fragments;
 import android.content.ContentResolver;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -60,6 +58,7 @@ public class GalleryFragment extends Fragment {
     private Map<Long, String> mapForCustomThumbs;
     private ProgressBar progressBar;
     private TextView numberPhotos;
+    private Toolbar toolbar;
 
 
     @Nullable
@@ -68,6 +67,7 @@ public class GalleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.gallery_fragment, container, false);
         galleryAdapter = new GalleryAdapter(getActivity());
         gridList = (GridView) view.findViewById(R.id.gridList);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar_gallery);
         findGifs = (FrameLayout) view.findViewById(R.id.findGifs);
         findImages = (FrameLayout) view.findViewById(R.id.findImages);
         buttonCancel = (FrameLayout) view.findViewById(R.id.buttonCancel);
@@ -157,9 +157,6 @@ public class GalleryFragment extends Fragment {
                 galleryAdapter.addAll(ListFoldersHolder.getListFolders());
             }
         }
-
-
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_gallery);
         toolbar.setTitle(R.string.photos);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
@@ -187,10 +184,12 @@ public class GalleryFragment extends Fragment {
         gridList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListFoldersHolder.setList(listFolders.get(position).getPhotosInFolder());
+                ListFoldersHolder.setList(ListFoldersHolder.getListFolders().get(position).getPhotosInFolder());
+                ListFoldersHolder.setNameHolder(ListFoldersHolder.getListFolders().get(position).getName());
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 FolderFragment folderFragment = new FolderFragment();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
                 fragmentTransaction.replace(R.id.transparent_content, folderFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -411,6 +410,7 @@ public class GalleryFragment extends Fragment {
             checkThumbsInFolder();
             getFoldersPath();
             completeListFolders();
+
             return null;
         }
 

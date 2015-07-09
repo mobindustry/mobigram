@@ -53,6 +53,9 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
+        <activity android:name=".ui.activity.PhotoViewPagerActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
+            android:theme="@style/Theme.AppCompat.Translucent" />
 
         <activity
             android:name=".ui.activity.TransparentActivity"
