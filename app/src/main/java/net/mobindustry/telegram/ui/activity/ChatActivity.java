@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.activity;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,6 +61,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private DrawerLayout drawerLayout;
     private ListView drawerList;
     private BroadcastReceiver receiver;
+    private int intentTopMessageId;
 
     private IntentFilter filter = new IntentFilter();
 
@@ -134,10 +137,11 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(Const.NEW_MESSAGE_ACTION)) {
+                if (intent.getAction().equals(Const.NEW_MESSAGE_ACTION) || intent.getAction().equals(Const.NEW_MESSAGE_ACTION_ID)) {
                     MessagesFragment fragment = getMessageFragment();
                     if (fragment != null) {
                         int id = intent.getIntExtra("message_id", 0);
+                        intentTopMessageId = id;
                         long chat_id = intent.getLongExtra("chatId", 0);
                         if (chat_id == fragment.getShownChatId()) {
                             fragment.getChatHistory(chat_id, id, NEW_MESSAGE_LOAD_OFFSET, NEW_MESSAGE_LOAD_LIMIT, Enums.MessageAddType.NEW);
@@ -155,6 +159,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         };
 
         filter.addAction(Const.NEW_MESSAGE_ACTION);
+        filter.addAction(Const.NEW_MESSAGE_ACTION_ID);
         filter.addAction(Const.READ_INBOX_ACTION);
         registerReceiver(receiver, filter);
 
@@ -212,6 +217,15 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         if (savedInstanceState == null) {
             selectItem(0);
         }
+    }
+
+    public long getIntentChatId () {
+        Log.e("Log", "chat " + intentTopMessageId);
+        return getIntent().getLongExtra("chatId", 0);
+    }
+
+    public int getIntentMessageId () {
+        return intentTopMessageId;
     }
 
     public void setHeader(TdApi.User userMe) {

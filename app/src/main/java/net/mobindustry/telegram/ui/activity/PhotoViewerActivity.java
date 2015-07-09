@@ -20,6 +20,8 @@ public class PhotoViewerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_viewer_activity);
 
+        //TODO add backButton
+
         ImageView imageView = (ImageView) findViewById(R.id.photo_image_view);
         PhotoViewAttacher mAttacher;
         mAttacher = new PhotoViewAttacher(imageView);
@@ -31,14 +33,6 @@ public class PhotoViewerActivity extends Activity {
         } else {
             ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + path, imageView);
         }
-
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.transparent_frame_layout);
-        frameLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         mAttacher.update();
     }
 

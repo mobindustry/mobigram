@@ -13,6 +13,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class MessagesFragmentHolder {
 
@@ -23,9 +24,23 @@ public class MessagesFragmentHolder {
     private TdApi.Chat chat;
     private boolean isEmojiCreated = false;
 
+    private static HashMap<Long, Integer> topMessageMap = new HashMap<>();
+
     private Emoji emoji;
 
     private static TdApi.Stickers stickers;
+
+    public static void addToMap(Long chatId, Integer topMessageId) {
+        topMessageMap.put(chatId, topMessageId);
+    }
+
+    public static int getTopMessage(Long chatId) {
+        if(topMessageMap.get(chatId) == null) {
+            return 0;
+        } else {
+            return topMessageMap.get(chatId);
+        }
+    }
 
     public static synchronized MessagesFragmentHolder getInstance() {
         if (instance == null) {

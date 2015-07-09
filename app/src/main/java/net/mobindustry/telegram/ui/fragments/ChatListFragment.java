@@ -22,6 +22,7 @@ import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatsHandler;
 import net.mobindustry.telegram.core.handlers.LogHandler;
 import net.mobindustry.telegram.core.handlers.StickerHandler;
+import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.ChatListAdapter;
 import net.mobindustry.telegram.utils.Const;
@@ -43,19 +44,6 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
                              Bundle savedInstanceState) {
         adapter = new ChatListAdapter(getActivity());
         return inflater.inflate(R.layout.chat_list_fragment, null);
-    }
-
-    public void setChatsList(final TdApi.Chats chats) {
-        if (progressBar != null) {
-            progressBar.setVisibility(View.GONE);
-        }
-        this.chats = chats;
-        adapter.clear();
-        adapter.addAll(chats.chats);
-    }
-
-    public void getChatsList(int offset, int limit) {
-        new ApiClient<>(new TdApi.GetChats(offset, limit), new ChatsHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Override
@@ -92,7 +80,28 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
         if (dualPane) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
+
+        long id = ((ChatActivity) getActivity()).getIntentChatId();
+        if (id != 0) {
+            clickedId = id;
+            int position = getChatPosition(id);
+            showMessages(position);
+         }
     }
+
+    public void setChatsList(final TdApi.Chats chats) {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
+        this.chats = chats;
+        adapter.clear();
+        adapter.addAll(chats.chats);
+    }
+
+    public void getChatsList(int offset, int limit) {
+        new ApiClient<>(new TdApi.GetChats(offset, limit), new ChatsHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
 
     public TdApi.Chat getChat() {
         for (int i = 0; i < chats.chats.length; i++) {
@@ -168,8 +177,8 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
 
     @Override
     public void onApiResult(BaseHandler output) {
-        if (output==null){
-            getChatsList(0,200);
+        if (output == null) {
+            getChatsList(0, 200);
         } else {
             if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
                 setChatsList((TdApi.Chats) output.getResponse());
@@ -181,7 +190,7 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
         int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
             TdApi.Chat chat = adapter.getItem(i);
-            if(chat.id == chatId) {
+            if (chat.id == chatId) {
                 adapter.getItem(i).unreadCount = unread;
                 adapter.getItem(i).lastReadInboxMessageId = lastRead;
             }

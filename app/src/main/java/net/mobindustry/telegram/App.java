@@ -17,7 +17,7 @@ public class App extends Application {
         Fabric.with(this, new Crashlytics());
 
         TG.setDir(getFilesDir().toString());
-        TG.setUpdatesHandler(new UpdatesHandler(this));
+
 
         DataHolder.setContext(this);
     }

@@ -113,7 +113,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     private Emoji emoji;
     private EmojiParser emojiParser;
-    @Nullable private EmojiPopup emojiPopup;
+    @Nullable
+    private EmojiPopup emojiPopup;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -265,6 +266,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -276,6 +278,16 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         emoji = holder.getEmoji();
         emojiParser = new EmojiParser(emoji);
         activity = (ChatActivity) getActivity();
+
+        ChatListFragment fragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
+        chat = fragment.getChat();
+        if(MessagesFragmentHolder.getTopMessage(chat.id) != 0) {
+            topMessageId = MessagesFragmentHolder.getTopMessage(chat.id);
+        } else {
+            topMessageId = chat.topMessage.id;
+        }
+
+        holder.setChat(chat);
 
         input = (EditText) getActivity().findViewById(R.id.message_edit_text);
         input.addTextChangedListener(new TextWatcher() {
@@ -322,11 +334,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             }
         });
 
-        ChatListFragment fragment = (ChatListFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.chat_list);
-        chat = fragment.getChat();
-        topMessageId = chat.topMessage.id;
 
-        holder.setChat(chat);
 
         TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) chat.type; //TODO verify;
         TdApi.User chatUser = privateChatInfo.user;

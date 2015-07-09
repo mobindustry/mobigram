@@ -7,6 +7,7 @@ import android.util.Log;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 import net.mobindustry.telegram.utils.Const;
 
@@ -21,21 +22,27 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
 
     @Override
     public UpdatesHandler resultHandler(TdApi.TLObject object) {
-        //Log.wtf("Log", "UpdateHandler: " + object.toString());
+        Log.wtf("Log", "UpdateHandler: " + object.toString());
         switch (object.getConstructor()) {
             case TdApi.UpdateMessageId.CONSTRUCTOR: {
                 TdApi.UpdateMessageId message = (TdApi.UpdateMessageId) object;
-                Intent intent = new Intent(Const.NEW_MESSAGE_ACTION);
+                Intent intent = new Intent(Const.NEW_MESSAGE_ACTION_ID);
                 intent.putExtra("message_id", message.newId);
                 intent.putExtra("chatId", message.chatId);
+
                 context.sendBroadcast(intent);
                 break;
             }
             case TdApi.UpdateNewMessage.CONSTRUCTOR: {
                 TdApi.UpdateNewMessage message = (TdApi.UpdateNewMessage) object;
+                TdApi.MessageText textMessage = (TdApi.MessageText) message.message.message;
                 Intent intent = new Intent(Const.NEW_MESSAGE_ACTION);
                 intent.putExtra("message_id", message.message.id);
                 intent.putExtra("chatId", message.message.chatId);
+                intent.putExtra("message", textMessage.text);
+
+                MessagesFragmentHolder.addToMap(message.message.chatId, message.message.id);
+
                 context.sendBroadcast(intent);
                 break;
             }
