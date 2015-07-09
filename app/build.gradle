@@ -59,4 +59,5 @@ dependencies {
         transitive = true;
     }
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.github.chrisbanes.photoview:library:1.2.3'
 }

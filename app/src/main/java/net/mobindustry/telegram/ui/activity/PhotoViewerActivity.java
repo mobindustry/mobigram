@@ -11,6 +11,8 @@ import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+
 public class PhotoViewerActivity extends Activity {
 
     @Override
@@ -19,6 +21,8 @@ public class PhotoViewerActivity extends Activity {
         setContentView(R.layout.photo_viewer_activity);
 
         ImageView imageView = (ImageView) findViewById(R.id.photo_image_view);
+        PhotoViewAttacher mAttacher;
+        mAttacher = new PhotoViewAttacher(imageView);
 
         String path = getIntent().getStringExtra("file_path");
         if (path == null) {
@@ -35,6 +39,7 @@ public class PhotoViewerActivity extends Activity {
                 finish();
             }
         });
+        mAttacher.update();
     }
 
     @Override
