@@ -48,7 +48,9 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
+import net.mobindustry.telegram.core.handlers.LogHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
+import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
@@ -82,39 +84,36 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public static final int LEVEL_ARROW = 0;
     private static final long SCALE_UP_DURATION = 80;
     private static final long SCALE_DOWN_DURATION = 80;
-
     private final int FIRST_MESSAGE_LOAD_LIMIT = 60;
     private final int MESSAGE_LOAD_LIMIT = 60;
     private final int MESSAGE_LOAD_OFFSET = 0;
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
+    private int firstVisibleItem = 0;
+    private int loadedMessagesCount = 0;
+    private int topMessageId;
+    private int toScrollLoadMessageId;
 
     public boolean isMessagesLoading = false;
     public boolean needLoad = true;
-
-    private int firstVisibleItem = 0;
-    private int loadedMessagesCount = 0;
 
     private ChatActivity activity;
     private MessageAdapter adapter;
     private AnimatorSet currentAnimation;
     private MessagesFragmentHolder holder;
-
-    private ImageView attach;
-    private ImageView smiles;
-
-    private TdApi.Chat chat;
-
-    private int topMessageId;
-    private int toScrollLoadMessageId;
     private ListView messageListView;
     private ProgressBar progressBar;
     private EditText input;
+    private TextView noMessages;
     private ObservableLinearLayout linearLayout;
+    private ImageView attach;
+    private ImageView smiles;
 
     private Emoji emoji;
     private EmojiParser emojiParser;
     @Nullable
     private EmojiPopup emojiPopup;
+
+    private TdApi.Chat chat;
 
     public static MessagesFragment newInstance(int index) {
         MessagesFragment f = new MessagesFragment();
@@ -125,100 +124,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         return f;
     }
 
-    public long getShownChatId() {
-        return chat.id;
-    }
-
-    public int getShownIndex() {
-        return getArguments().getInt("index", 0);
-    }
-
-    public void setChatHistory(final TdApi.Messages messages) {
-        adapter.setNotifyOnChange(false);
-        for (int i = 0; i < messages.messages.length; i++) {
-            adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
-        }
-        adapter.setNotifyOnChange(true);
-        adapter.notifyDataSetChanged();
-        if (progressBar != null) {
-            progressBar.setVisibility(View.GONE);
-        }
-    }
-
-    public void addNewMessage(final TdApi.Messages messages) {
-        adapter.add(parseEmojiMessages(messages.messages[0]));
-    }
-
-    public void addLatestMessages(final TdApi.Messages messages) {
-        adapter.setNotifyOnChange(false);
-        for (int i = 0; i < messages.messages.length; i++) {
-            adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
-        }
-        adapter.setNotifyOnChange(true);
-    }
-
-    private TdApi.Message parseEmojiMessages(TdApi.Message message1) {
-        TdApi.Message message = message1;
-        if (message.message.getConstructor() == TdApi.MessageText.CONSTRUCTOR) {
-            TdApi.MessageText text = (TdApi.MessageText) message.message;
-            emojiParser.parse(text);
-        }
-        return message;
-    }
-
-    public void getChatHistory(final long id, final int messageId, final int offset, final int limit, final Enums.MessageAddType type) {
-        new ApiClient<>(new TdApi.GetChatHistory(id, messageId, offset, limit), new ChatHistoryHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-                if (output.getHandlerId() == ChatHistoryHandler.HANDLER_ID) {
-                    TdApi.Messages messages = (TdApi.Messages) output.getResponse();
-                    if (messages.messages.length != 0 && chat.id == messages.messages[0].chatId) {
-                        switch (type) {
-                            case ALL:
-                                toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
-                                setChatHistory(messages);
-                                break;
-                            case NEW:
-                                topMessageId = messages.messages[0].id;
-                                addNewMessage(messages);
-                                messageListView.setSelection(adapter.getCount() - 1);
-                                break;
-                            case SCROLL:
-                                toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
-                                loadedMessagesCount = messages.messages.length;
-                                addLatestMessages(messages);
-                                adapter.notifyDataSetChanged();
-                                messageListView.setSelection(loadedMessagesCount + firstVisibleItem);
-                                isMessagesLoading = false;
-                                break;
-                        }
-                    } else if (messages.messages.length == 0) {
-                        needLoad = false;
-                    }
-                }
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public void sendTextMessage(long chatId, String message) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageText(message)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public void sendPhotoMessage(long chatId, String path) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public void sendStickerMessage(long chatId, String path) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageSticker(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        dissmissEmojiPopup();
-    }
-
-    @Override
-    public void onApiResult(BaseHandler output) {
-        if (output.getHandlerId() == MessageHandler.HANDLER_ID) {
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -226,6 +131,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
         View view = inflater.inflate(R.layout.message_fragment, container, false);
         linearLayout = (ObservableLinearLayout) view.findViewById(R.id.observable_layout);
+        noMessages = (TextView) view.findViewById(R.id.no_messages_message);
 
         messageListView = (ListView) view.findViewById(R.id.messageListView);
         messageListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -253,16 +159,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         return view;
     }
 
-    private void setFirstVisibleItem(int firstVisibleItem) {
-        this.firstVisibleItem = firstVisibleItem;
-    }
-
-    @Override
-    public void onDetach() {
-        dissmissEmojiPopup();
-        super.onDetach();
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -279,9 +175,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         emojiParser = new EmojiParser(emoji);
         activity = (ChatActivity) getActivity();
 
-        ChatListFragment fragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
+        final ChatListFragment fragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
         chat = fragment.getChat();
-        if(MessagesFragmentHolder.getTopMessage(chat.id) != 0) {
+        if (MessagesFragmentHolder.getTopMessage(chat.id) != 0) {
             topMessageId = MessagesFragmentHolder.getTopMessage(chat.id);
         } else {
             topMessageId = chat.topMessage.id;
@@ -333,8 +229,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 }
             }
         });
-
-
 
         TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) chat.type; //TODO verify;
         TdApi.User chatUser = privateChatInfo.user;
@@ -412,6 +306,35 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     }
                 });
             }
+            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.clear_history:
+                            Log.e("Log", "ClearChatHistory");
+
+                            new ApiClient<>(new TdApi.DeleteChatHistory(chat.id), new OkHandler(), new ApiClient.OnApiResultHandler() { //todo verify result
+                                @Override
+                                public void onApiResult(BaseHandler output) {
+                                    if (output == null) {
+                                        Log.e("Log", "null");
+                                    }
+                                    fragment.getChatsList(0, 200);
+                                    activity.onBackPressed();
+                                }
+                            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                            break;
+                        case R.id.mute_notification:
+                            Log.e("Log", "MuteNotification");
+                            break;
+                        case R.id.delete_chat:
+                            Log.e("Log", "DeleteChat");
+
+                            break;
+                    }
+                    return false;
+                }
+            });
         }
 
         getChatHistory(chat.id, topMessageId, NEW_MESSAGE_LOAD_OFFSET, FIRST_MESSAGE_LOAD_LIMIT, Enums.MessageAddType.ALL);
@@ -455,6 +378,108 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         });
     }
 
+    public void addNewMessage(final TdApi.Messages messages) {
+        adapter.add(parseEmojiMessages(messages.messages[0]));
+    }
+
+    public void addLatestMessages(final TdApi.Messages messages) {
+        adapter.setNotifyOnChange(false);
+        for (int i = 0; i < messages.messages.length; i++) {
+            adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
+        }
+        adapter.setNotifyOnChange(true);
+    }
+
+    public void setChatHistory(final TdApi.Messages messages) {
+        adapter.setNotifyOnChange(false);
+        for (int i = 0; i < messages.messages.length; i++) {
+            Log.e("Log", messages.messages[i].toString());
+            adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
+        }
+        adapter.setNotifyOnChange(true);
+        adapter.notifyDataSetChanged();
+        noMessages.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void setFirstVisibleItem(int firstVisibleItem) {
+        this.firstVisibleItem = firstVisibleItem;
+    }
+
+    public long getShownChatId() {
+        return chat.id;
+    }
+
+    public int getShownIndex() {
+        return getArguments().getInt("index", 0);
+    }
+
+    public void getChatHistory(final long id, final int messageId, final int offset, final int limit, final Enums.MessageAddType type) {
+        new ApiClient<>(new TdApi.GetChatHistory(id, messageId, offset, limit), new ChatHistoryHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+                if (output == null) {
+                    progressBar.setVisibility(View.GONE);
+                    noMessages.setVisibility(View.VISIBLE);
+                }
+                if (output.getHandlerId() == ChatHistoryHandler.HANDLER_ID) {
+                    TdApi.Messages messages = (TdApi.Messages) output.getResponse();
+                    if (messages.messages.length != 0 && chat.id == messages.messages[0].chatId) {
+                        switch (type) {
+                            case ALL:
+                                toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
+                                setChatHistory(messages);
+                                break;
+                            case NEW:
+                                topMessageId = messages.messages[0].id;
+                                addNewMessage(messages);
+                                messageListView.setSelection(adapter.getCount() - 1);
+                                break;
+                            case SCROLL:
+                                toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
+                                loadedMessagesCount = messages.messages.length;
+                                addLatestMessages(messages);
+                                adapter.notifyDataSetChanged();
+                                messageListView.setSelection(loadedMessagesCount + firstVisibleItem);
+                                isMessagesLoading = false;
+                                break;
+                        }
+                    } else if (messages.messages.length == 0) {
+                        needLoad = false;
+                    }
+                }
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    private TdApi.Message parseEmojiMessages(TdApi.Message message1) {
+        TdApi.Message message = message1;
+        if (message.message.getConstructor() == TdApi.MessageText.CONSTRUCTOR) {
+            TdApi.MessageText text = (TdApi.MessageText) message.message;
+            emojiParser.parse(text);
+        }
+        return message;
+    }
+
+    public void sendTextMessage(long chatId, String message) {
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageText(message)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public void sendPhotoMessage(long chatId, String path) {
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public void sendStickerMessage(long chatId, String path) {
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageSticker(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        dissmissEmojiPopup();
+    }
+
+    @Override
+    public void onApiResult(BaseHandler output) {
+        if (output.getHandlerId() == MessageHandler.HANDLER_ID) {
+        }
+    }
+
     private void animateSendAttachButton(final int level) {
         LevelListDrawable drawable = (LevelListDrawable) attach.getDrawable();
         if (drawable.getLevel() == level) {
@@ -492,6 +517,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             Field[] fields = popupMenu.getClass().getDeclaredFields();
             for (Field field : fields) {
                 if ("mPopup".equals(field.getName())) {
+
                     field.setAccessible(true);
                     Object menuPopupHelper = field.get(popupMenu);
                     Class<?> classPopupHelper = Class.forName(menuPopupHelper
@@ -553,15 +579,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         Log.e("LOG", "FILE" + tempTakePhotoFile);
     }
 
-    private void selectPhoto() {
-        //TODO custom gallery
-        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-            startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI), Const.REQUEST_CODE_SELECT_IMAGE);
-        } else {
-            startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), Const.REQUEST_CODE_SELECT_IMAGE);
-        }
-    }
-
     public static String getPathFromURI(Uri contentUri, Activity activity) {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = activity.managedQuery(contentUri, proj, null, null, null);
@@ -621,7 +638,11 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         }
     }
 
-
+    @Override
+    public void onDetach() {
+        dissmissEmojiPopup();
+        super.onDetach();
+    }
 }
 
 

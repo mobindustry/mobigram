@@ -46,6 +46,7 @@ public class Const {
     public static final int DOWNLOAD_FILE_HANDLER_ID = 707;
     public static final int USER_HANDLER_ID = 708;
     public static final int LOG_HANDLER_ID = 709;
+    public static final int OK_HANDLER_ID = 710;
 
 
     public static final int STICKER_HANDLER_ID = 710;

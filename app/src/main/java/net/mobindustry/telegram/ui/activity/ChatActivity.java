@@ -220,12 +220,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     }
 
     public long getIntentChatId () {
-        Log.e("Log", "chat " + intentTopMessageId);
         return getIntent().getLongExtra("chatId", 0);
-    }
-
-    public int getIntentMessageId () {
-        return intentTopMessageId;
     }
 
     public void setHeader(TdApi.User userMe) {
@@ -392,5 +387,18 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DataHolder.setActive(true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        DataHolder.setActive(false);
+
     }
 }

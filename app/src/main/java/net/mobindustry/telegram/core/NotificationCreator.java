@@ -8,18 +8,17 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.util.Log;
 
+import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.utils.Const;
 
 public class NotificationCreator extends BroadcastReceiver {
 
-    private static int NOTIFY_ID = 696969;
-
     @Override
     public void onReceive(Context context, Intent intent) {
         Notification.Builder builder = new Notification.Builder(context);
 
-        if (intent.getAction().equals(Const.NEW_MESSAGE_ACTION)) {
+        if (!DataHolder.isActive() && intent.getAction().equals(Const.NEW_MESSAGE_ACTION)) {
                 int id = intent.getIntExtra("message_id", 0);
             Log.e("Log", "creator id " + id);
                 long chat_id = intent.getLongExtra("chatId", 0);
@@ -35,17 +34,15 @@ public class NotificationCreator extends BroadcastReceiver {
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setVibrate(new long[]{1000})
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                    .setContentTitle(message)
+                    .setContentTitle("New Message")
                     .setContentText(message)
                     .setContentInfo("info")
                     .setOnlyAlertOnce(true)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true);
-            Notification notification = builder.getNotification();
+            Notification notification = builder.build();
             android.app.NotificationManager notificationManager = (android.app.NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(NOTIFY_ID, notification);
+            notificationManager.notify((int)chat_id, notification);
         }
     }
-
-
 }

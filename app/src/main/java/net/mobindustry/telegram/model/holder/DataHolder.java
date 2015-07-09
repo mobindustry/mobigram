@@ -5,8 +5,8 @@ import android.content.Context;
 public class DataHolder {
 
     private static boolean isLoggedIn = false;
-
     private static Context context;
+    private static boolean active = false;
 
     public static Context getContext() {
         return context;
@@ -22,5 +22,13 @@ public class DataHolder {
 
     public static void setIsLoggedIn(boolean isLoggedIn) {
         DataHolder.isLoggedIn = isLoggedIn;
+    }
+
+    public static void setActive(boolean actv) {
+        active = actv;
+    }
+
+    public static boolean isActive() {
+        return active;
     }
 }

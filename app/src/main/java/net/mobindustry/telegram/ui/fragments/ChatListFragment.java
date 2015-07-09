@@ -102,7 +102,6 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
         new ApiClient<>(new TdApi.GetChats(offset, limit), new ChatsHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
-
     public TdApi.Chat getChat() {
         for (int i = 0; i < chats.chats.length; i++) {
             if (chats.chats[i].id == clickedId) {

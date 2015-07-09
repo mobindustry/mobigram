@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/group"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <include
-        layout="@layout/background" />
+    <include layout="@layout/background" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,21 +16,30 @@
             layout="@layout/toolbar_messages" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <FrameLayout android:layout_width="match_parent"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
                 <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/messages_progress_bar"
                     style="@style/Widget.AppCompat.ProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:id="@+id/no_messages_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    />
+                    android:text="@string/no_messages_here"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
 
                 <ListView
                     android:id="@+id/messageListView"
@@ -40,8 +47,7 @@
                     android:layout_height="match_parent"
                     android:divider="@null"
                     android:stackFromBottom="true"
-                    android:transcriptMode="disabled"
-                    />
+                    android:transcriptMode="disabled" />
             </FrameLayout>
 
             <net.mobindustry.telegram.utils.emoji.ObservableLinearLayout
@@ -50,42 +56,38 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.0001"
                 android:background="#fff"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/smiles"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="5dp"
                     android:layout_gravity="bottom"
-                    android:src="@drawable/ic_send_smile_levels"
-                    android:id="@+id/smiles"
                     android:layout_marginBottom="2dp"
-                    />
+                    android:padding="5dp"
+                    android:src="@drawable/ic_send_smile_levels" />
 
                 <EditText
                     android:id="@+id/message_edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:minHeight="50dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="10"
                     android:hint="Message"
-                    android:textColor="#000"
-                    android:textColorHint="#aaa"
                     android:imeOptions="flagNoExtractUi|actionNone"
                     android:maxLines="4"
-                    />
+                    android:minHeight="50dp"
+                    android:textColor="#000"
+                    android:textColorHint="#aaa" />
 
                 <ImageView
+                    android:id="@+id/attach"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="5dp"
                     android:layout_gravity="bottom"
-                    android:src="@drawable/ic_send_attach_levels"
-                    android:id="@+id/attach"
                     android:layout_marginBottom="2dp"
-                    />
+                    android:padding="5dp"
+                    android:src="@drawable/ic_send_attach_levels" />
 
             </net.mobindustry.telegram.utils.emoji.ObservableLinearLayout>
         </LinearLayout>

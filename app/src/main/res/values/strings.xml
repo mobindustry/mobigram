@@ -56,5 +56,6 @@
     <string name="ls_recently">last seen recently</string>
     <string name="ls_week_ago">last seen a week ago</string>
     <string name="ls_month_ago">last seen a month ago</string>
+    <string name="no_messages_here">No messages here yet...</string>
 
 </resources>
