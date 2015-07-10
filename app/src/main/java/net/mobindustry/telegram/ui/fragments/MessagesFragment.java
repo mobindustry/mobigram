@@ -163,10 +163,12 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        ((ChatActivity)getActivity()).clearSearch();
+
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "PopUp", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "This function coming soon!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -286,11 +288,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
-                        layout.setVisibility(View.VISIBLE);
-                        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-                        fragmentTransaction.remove(MessagesFragment.this).commit();
-                        dissmissEmojiPopup();
+                        destroyFragment(fragmentTransaction);
                     }
                 });
             } else {
@@ -298,11 +296,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
-                        layout.setVisibility(View.VISIBLE);
-                        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-                        fragmentTransaction.remove(MessagesFragment.this).commit();
-                        dissmissEmojiPopup();
+                        destroyFragment(fragmentTransaction);
                     }
                 });
             }
@@ -312,25 +306,25 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     switch (item.getItemId()) {
                         case R.id.clear_history:
                             Log.e("Log", "ClearChatHistory");
-
                             new ApiClient<>(new TdApi.DeleteChatHistory(chat.id), new OkHandler(), new ApiClient.OnApiResultHandler() { //todo verify result
                                 @Override
                                 public void onApiResult(BaseHandler output) {
                                     if (output == null) {
                                         Log.e("Log", "null");
                                     }
-                                    fragment.getChatsList(0, 200);
-                                    activity.onBackPressed();
+                                    Log.e("Log", "History cleared");
+                                    destroyFragment(fragmentTransaction);
+                                    fragment.deleteChatFromAdapter(chat);
                                 }
                             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                             break;
-                        case R.id.mute_notification:
-                            Log.e("Log", "MuteNotification");
-                            break;
-                        case R.id.delete_chat:
-                            Log.e("Log", "DeleteChat");
-
-                            break;
+//                        case R.id.mute_notification:
+//                            Log.e("Log", "MuteNotification");
+//                            break;
+//                        case R.id.delete_chat:
+//                            Log.e("Log", "DeleteChat");
+//
+//                            break;
                     }
                     return false;
                 }
@@ -378,6 +372,14 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         });
     }
 
+    private void destroyFragment(FragmentTransaction fragmentTransaction) {
+        LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
+        layout.setVisibility(View.VISIBLE);
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+        fragmentTransaction.remove(MessagesFragment.this).commit();
+        dissmissEmojiPopup();
+    }
+
     public void addNewMessage(final TdApi.Messages messages) {
         adapter.add(parseEmojiMessages(messages.messages[0]));
     }
@@ -393,7 +395,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void setChatHistory(final TdApi.Messages messages) {
         adapter.setNotifyOnChange(false);
         for (int i = 0; i < messages.messages.length; i++) {
-            Log.e("Log", messages.messages[i].toString());
             adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
         }
         adapter.setNotifyOnChange(true);
@@ -547,7 +548,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 ListFoldersHolder.setCheckQuantity(0);
                                 ListFoldersHolder.setListFolders(null);
                                 ListFoldersHolder.setList(null);
-                                //selectPhoto();
                                 break;
                             case R.id.video:
                                 Toast.makeText(getActivity(),

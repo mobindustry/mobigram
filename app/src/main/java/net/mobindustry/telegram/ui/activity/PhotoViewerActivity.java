@@ -23,8 +23,7 @@ public class PhotoViewerActivity extends Activity {
         //TODO add backButton
 
         ImageView imageView = (ImageView) findViewById(R.id.photo_image_view);
-        PhotoViewAttacher mAttacher;
-        mAttacher = new PhotoViewAttacher(imageView);
+        PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
 
         String path = getIntent().getStringExtra("file_path");
         if (path == null) {

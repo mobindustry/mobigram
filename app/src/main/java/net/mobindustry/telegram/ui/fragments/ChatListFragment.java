@@ -86,7 +86,7 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
             clickedId = id;
             int position = getChatPosition(id);
             showMessages(position);
-         }
+        }
     }
 
     public void setChatsList(final TdApi.Chats chats) {
@@ -122,6 +122,11 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
 
     public void setAdapterFilter(String filter) {
         adapter.getFilter().filter(filter);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void deleteChatFromAdapter(TdApi.Chat chat) {
+        adapter.remove(chat);
     }
 
     @Override
@@ -133,7 +138,6 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
         TdApi.Chat selectedItem = adapter.getItem(pos);
-        //Log.e("Log", selectedItem.toString());
         clickedId = selectedItem.id;
         showMessages(pos);
     }
@@ -144,17 +148,13 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
         FragmentTransaction ft
                 = getFragmentManager().beginTransaction();
         getListView().setItemChecked(index, true);
-        MessagesFragment messagesFragment = (MessagesFragment)
-                getFragmentManager().findFragmentById(R.id.messages);
-        if (messagesFragment == null || messagesFragment.getShownIndex() != index) {
-            messagesFragment = MessagesFragment.newInstance(index);
-            //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-            ft.replace(R.id.messages, messagesFragment);
-            ft.commit();
+        MessagesFragment messagesFragment = MessagesFragment.newInstance(index);
+        //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+        ft.replace(R.id.messages, messagesFragment);
+        ft.commit();
 
-            LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
-            layout.setVisibility(View.GONE);
-        }
+        LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
+        layout.setVisibility(View.GONE);
     }
 
     @Override

@@ -7,11 +7,11 @@
         android:orderInCategory="100"
         android:title="@string/clear_history_menu" />
 
-    <item
-        android:id="@+id/delete_chat"
-        tools:ignore="AppCompatResource"
-        android:title="@string/delete_chat_menu" />
-    <item
-        android:id="@+id/mute_notification"
-        android:title="@string/mute_notification_menu" />
+    <!--<item-->
+        <!--android:id="@+id/delete_chat"-->
+        <!--tools:ignore="AppCompatResource"-->
+        <!--android:title="@string/delete_chat_menu" />-->
+    <!--<item-->
+        <!--android:id="@+id/mute_notification"-->
+        <!--android:title="@string/mute_notification_menu" />-->
 </menu>

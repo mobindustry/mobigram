@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.ui.activity;
 
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +16,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -61,7 +59,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private DrawerLayout drawerLayout;
     private ListView drawerList;
     private BroadcastReceiver receiver;
-    private int intentTopMessageId;
+    private MenuItem itemToCollapse;
 
     private IntentFilter filter = new IntentFilter();
 
@@ -77,6 +75,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     private UserMeHolder holder = UserMeHolder.getInstance();
     private UserMeHolder userMeHolder;
+    private ChatListFragment chatListFragment;
 
     public void logOut() {
         Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
@@ -141,7 +140,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                     MessagesFragment fragment = getMessageFragment();
                     if (fragment != null) {
                         int id = intent.getIntExtra("message_id", 0);
-                        intentTopMessageId = id;
                         long chat_id = intent.getLongExtra("chatId", 0);
                         if (chat_id == fragment.getShownChatId()) {
                             fragment.getChatHistory(chat_id, id, NEW_MESSAGE_LOAD_OFFSET, NEW_MESSAGE_LOAD_LIMIT, Enums.MessageAddType.NEW);
@@ -163,7 +161,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         filter.addAction(Const.READ_INBOX_ACTION);
         registerReceiver(receiver, filter);
 
-        ChatListFragment chatListFragment = new ChatListFragment();
+        chatListFragment = new ChatListFragment();
         FragmentTransaction ft
                 = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.chat_list, chatListFragment);
@@ -287,14 +285,13 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+
         switch (item.getItemId()) {
             case R.id.action_search:
                 final SearchView sv = new SearchView(getSupportActionBar().getThemedContext());
                 MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
                 MenuItemCompat.setActionView(item, sv);
-
-                fragmentManager = getSupportFragmentManager();
-                final ChatListFragment chatListFragment = (ChatListFragment) fragmentManager.findFragmentById(R.id.chat_list);
+                itemToCollapse = item;
 
                 sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
@@ -316,6 +313,13 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void clearSearch(){
+        if(itemToCollapse != null) {
+            chatListFragment.setAdapterFilter("");
+            MenuItemCompat.collapseActionView(itemToCollapse);
         }
     }
 

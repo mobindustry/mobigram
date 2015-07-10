@@ -35,14 +35,19 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
             }
             case TdApi.UpdateNewMessage.CONSTRUCTOR: {
                 TdApi.UpdateNewMessage message = (TdApi.UpdateNewMessage) object;
-                TdApi.MessageText textMessage = (TdApi.MessageText) message.message.message;
-                Intent intent = new Intent(Const.NEW_MESSAGE_ACTION);
+
+                Intent intent = null;
+                intent = new Intent(Const.NEW_MESSAGE_ACTION);
+
                 intent.putExtra("message_id", message.message.id);
                 intent.putExtra("chatId", message.message.chatId);
-                intent.putExtra("message", textMessage.text);
+
+                if (message.getConstructor() == TdApi.MessageText.CONSTRUCTOR) {
+                    TdApi.MessageText textMessage = (TdApi.MessageText) message.message.message;
+                    intent.putExtra("message", textMessage.text);
+                }
 
                 MessagesFragmentHolder.addToMap(message.message.chatId, message.message.id);
-
                 context.sendBroadcast(intent);
                 break;
             }
