@@ -94,12 +94,11 @@ public class FolderFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 10000) {
+        if (requestCode == 10000 && resultCode == getActivity().RESULT_OK) {
             int choice = data.getIntExtra("choice", 0);
             if (choice == Const.SEND_FOLDER_FRAGMENT) {
                 getActivity().finish();
             }
-
         }
     }
 
