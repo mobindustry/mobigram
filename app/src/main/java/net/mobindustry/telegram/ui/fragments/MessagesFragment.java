@@ -163,7 +163,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ((ChatActivity)getActivity()).clearSearch();
+        ((ChatActivity) getActivity()).clearSearch();
 
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -232,50 +232,75 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             }
         });
 
-        TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) chat.type; //TODO verify;
-        TdApi.User chatUser = privateChatInfo.user;
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
-
             TextView icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
             TextView name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
             TextView lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
 
-            TdApi.UserStatus status = chatUser.status;
-            name.setText(chatUser.firstName + " " + chatUser.lastName);
-            lastSeenText.setText(Utils.getUserStatusString(status));
-
             final RoundedImageView imageIcon = (RoundedImageView) getActivity().findViewById(R.id.toolbar_image_icon);
 
-            if (chatUser.photoBig instanceof TdApi.FileEmpty) {
-                final TdApi.FileEmpty file = (TdApi.FileEmpty) chatUser.photoBig;
-                if (file.id != 0) {
-                    new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                        @Override
-                        public void onApiResult(BaseHandler output) {
-                            if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                                imageIcon.setVisibility(View.VISIBLE);
-                                ImageLoaderHelper.displayImageList(String.valueOf(file.id), imageIcon);
-                            }
-                        }
-                    }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                } else {
-                    icon.setVisibility(View.VISIBLE);
+            String title = "";
+            TdApi.File file = null;
+            long chatId = chat.id;
 
-                    int sdk = android.os.Build.VERSION.SDK_INT;
-                    if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatUser.id));
+            String userFirstName = "";
+            String userLastName = "";
+
+            if (chat.type.getConstructor() == TdApi.PrivateChatInfo.CONSTRUCTOR) {
+                TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) chat.type;
+                TdApi.User chatUser = privateChatInfo.user;
+                title = chatUser.firstName + " " + chatUser.lastName;
+                TdApi.UserStatus status = chatUser.status;
+                lastSeenText.setText(Utils.getUserStatusString(status));
+                file = chatUser.photoBig;
+                userFirstName = privateChatInfo.user.firstName;
+                userLastName = privateChatInfo.user.lastName;
+            }
+            if (chat.type.getConstructor() == TdApi.GroupChatInfo.CONSTRUCTOR) {
+                TdApi.GroupChatInfo groupChatInfo = (TdApi.GroupChatInfo) chat.type;
+                title = groupChatInfo.groupChat.title;
+                file = groupChatInfo.groupChat.photoBig;
+                userFirstName = groupChatInfo.groupChat.title;
+                userLastName = "";
+            }
+            if (file != null) {
+                if (file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
+                    final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+                    if (fileEmpty.id != 0) {
+                        new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                            @Override
+                            public void onApiResult(BaseHandler output) {
+                                if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                                    imageIcon.setVisibility(View.VISIBLE);
+                                    ImageLoaderHelper.displayImageList(String.valueOf(fileEmpty.id), imageIcon);
+                                }
+                            }
+                        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                     } else {
-                        icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatUser.id));
+                        icon.setVisibility(View.VISIBLE);
+
+                        int sdk = android.os.Build.VERSION.SDK_INT;
+                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                        } else {
+                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                        }
+                        icon.setText(Utils.getInitials(userFirstName, userLastName));
                     }
-                    icon.setText(Utils.getInitials(chatUser.firstName, chatUser.lastName));
+                }
+                if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                    imageIcon.setVisibility(View.VISIBLE);
+                    TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+                    ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, imageIcon);
                 }
             }
-            if (chatUser.photoBig instanceof TdApi.FileLocal) {
-                imageIcon.setVisibility(View.VISIBLE);
-                TdApi.FileLocal file = (TdApi.FileLocal) chatUser.photoBig;
-                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + file.path, imageIcon);
+
+            if (title != null) {
+                name.setText(title);
+            } else {
+                name.setText("Title error"); //todo verify
             }
 
             toolbar.inflateMenu(R.menu.message_menu);

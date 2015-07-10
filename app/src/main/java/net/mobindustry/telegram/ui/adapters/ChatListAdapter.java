@@ -58,7 +58,6 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         TdApi.Chat item = getItem(position);
         TdApi.ChatInfo info = item.type;
 
-        TdApi.PrivateChatInfo privateChatInfo = null;
         TdApi.MessageText text = null;
         TdApi.Message message = item.topMessage;
 
@@ -99,10 +98,26 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
             }
         }
 
-        if (info instanceof TdApi.PrivateChatInfo) { //TODO verify;
-            privateChatInfo = (TdApi.PrivateChatInfo) info;
+        TdApi.File file = null;
+        long chatId = item.id;
+
+        String userFirstName = "";
+        String userLastName = "";
+
+        if (info.getConstructor() == TdApi.PrivateChatInfo.CONSTRUCTOR) {
+            TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) info;
+            TdApi.User chatUser = privateChatInfo.user;
+            TdApi.UserStatus status = chatUser.status;
+            file = chatUser.photoBig;
+            userFirstName = privateChatInfo.user.firstName;
+            userLastName = privateChatInfo.user.lastName;
         }
-        TdApi.User user = privateChatInfo.user;
+        if (info.getConstructor() == TdApi.GroupChatInfo.CONSTRUCTOR) {
+            TdApi.GroupChatInfo groupChatInfo = (TdApi.GroupChatInfo) info;
+            file = groupChatInfo.groupChat.photoBig;
+            userFirstName = groupChatInfo.groupChat.title;
+            userLastName = "";
+        }
 
         if (item.unreadCount != 0) {
             notify.setText(String.valueOf(item.unreadCount));
@@ -117,33 +132,38 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
             notify.setText("");
         }
 
-        if (user.photoBig instanceof TdApi.FileEmpty) {
-            final TdApi.FileEmpty file = (TdApi.FileEmpty) user.photoBig;
-            if (file.id != 0) {
-                new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                    @Override
-                    public void onApiResult(BaseHandler output) {
-                        if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                            ImageLoaderHelper.displayImageList(String.valueOf(file.id), imageIcon);
+        if (file != null) {
+            if (file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
+                final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+                if (fileEmpty.id != 0) {
+                    new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                        @Override
+                        public void onApiResult(BaseHandler output) {
+                            if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                                ImageLoaderHelper.displayImageList(String.valueOf(fileEmpty.id), imageIcon);
+                            }
                         }
-                    }
-                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-            } else {
-                int sdk = android.os.Build.VERSION.SDK_INT;
-                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.chat_list_item_icon_size, -user.id));
+                    }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                 } else {
-                    icon.setBackground(Utils.getShapeDrawable(R.dimen.chat_list_item_icon_size, -user.id));
-                }
-                icon.setText(Utils.getInitials(user.firstName, user.lastName));
-            }
+                    icon.setVisibility(View.VISIBLE);
 
-        } else if (user.photoBig instanceof TdApi.FileLocal) {
-            TdApi.FileLocal file = (TdApi.FileLocal) user.photoBig;
-            ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + file.path, imageIcon);
+                    int sdk = android.os.Build.VERSION.SDK_INT;
+                    if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                    } else {
+                        icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                    }
+                    icon.setText(Utils.getInitials(userFirstName, userLastName));
+                }
+            }
+            if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                imageIcon.setVisibility(View.VISIBLE);
+                TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, imageIcon);
+            }
         }
 
-        firstLastName.setText(user.firstName + " " + user.lastName);
+        firstLastName.setText(userFirstName + " " + userLastName);
         time.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
 
         return convertView;
