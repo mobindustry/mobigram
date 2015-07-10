@@ -22,6 +22,7 @@ import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.activity.PhotoViewPagerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.FolderAdapter;
+import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.Utils;
 
@@ -33,12 +34,11 @@ public class FolderFragment extends Fragment {
 
     private GridView gridView;
     private FolderAdapter folderAdapter;
-    private List<FileWithIndicator> listFolders = new ArrayList<>();
     private TextView numberPhotos;
     private FrameLayout buttonSend;
     private FrameLayout buttonCancel;
     private Toolbar toolbar;
-    private String nameHolder="";
+    private String nameHolder = "";
     private FragmentTransaction ft;
 
 
@@ -46,21 +46,23 @@ public class FolderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.folder_fragment, container, false);
-        listFolders=ListFoldersHolder.getList();
-        nameHolder=ListFoldersHolder.getNameHolder();
-        buttonSend=(FrameLayout)view.findViewById(R.id.buttonSendFolder);
-        buttonCancel=(FrameLayout)view.findViewById(R.id.buttonCancelFolder);
+        nameHolder = ListFoldersHolder.getNameHolder();
+        buttonSend = (FrameLayout) view.findViewById(R.id.buttonSendFolder);
+        buttonCancel = (FrameLayout) view.findViewById(R.id.buttonCancelFolder);
         gridView = (GridView) view.findViewById(R.id.gridPhotos);
-        numberPhotos=(TextView)view.findViewById(R.id.numberPhotosAll);
+        numberPhotos = (TextView) view.findViewById(R.id.numberPhotosAll);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_folder);
         if (Utils.isTablet(getActivity())) {
-            if (ListFoldersHolder.getCheckQuantity()!=0){
+            if (ListFoldersHolder.getCheckQuantity() != 0) {
                 numberPhotos.setVisibility(View.VISIBLE);
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
+                params.leftMargin = 65;
+                numberPhotos.setLayoutParams(params);
                 int sdk = android.os.Build.VERSION.SDK_INT;
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
                 } else {
-                    numberPhotos.setBackground(Utils.getShapeDrawable(40,  getActivity().getResources().getColor(R.color.message_notify)));
+                    numberPhotos.setBackground(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
                 }
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
@@ -68,13 +70,16 @@ public class FolderFragment extends Fragment {
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
-            if (ListFoldersHolder.getCheckQuantity()!=0){
+            if (ListFoldersHolder.getCheckQuantity() != 0) {
                 numberPhotos.setVisibility(View.VISIBLE);
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
+                params.leftMargin = 60;
+                numberPhotos.setLayoutParams(params);
                 int sdk = android.os.Build.VERSION.SDK_INT;
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                 } else {
-                    numberPhotos.setBackground(Utils.getShapeDrawable(60,  getActivity().getResources().getColor(R.color.message_notify)));
+                    numberPhotos.setBackground(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                 }
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
@@ -86,7 +91,17 @@ public class FolderFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10000) {
+            int choice = data.getIntExtra("choice", 0);
+            if (choice == Const.SEND_FOLDER_FRAGMENT) {
+                getActivity().finish();
+            }
 
+        }
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -95,14 +110,17 @@ public class FolderFragment extends Fragment {
             @Override
             public void load() {
                 if (Utils.isTablet(getActivity())) {
-                    if (ListFoldersHolder.getCheckQuantity()!=0){
-                        Log.e("Log","TABLET");
+                    if (ListFoldersHolder.getCheckQuantity() != 0) {
+                        Log.e("Log", "TABLET");
                         numberPhotos.setVisibility(View.VISIBLE);
+                        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
+                        params.leftMargin = 65;
+                        numberPhotos.setLayoutParams(params);
                         int sdk = android.os.Build.VERSION.SDK_INT;
                         if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                             numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
                         } else {
-                            numberPhotos.setBackground(Utils.getShapeDrawable(40,  getActivity().getResources().getColor(R.color.message_notify)));
+                            numberPhotos.setBackground(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
                         }
 
                         numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
@@ -110,13 +128,16 @@ public class FolderFragment extends Fragment {
                         numberPhotos.setVisibility(View.GONE);
                     }
                 } else {
-                    if (ListFoldersHolder.getCheckQuantity()!=0){
+                    if (ListFoldersHolder.getCheckQuantity() != 0) {
                         numberPhotos.setVisibility(View.VISIBLE);
+                        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
+                        params.leftMargin = 60;
+                        numberPhotos.setLayoutParams(params);
                         int sdk = android.os.Build.VERSION.SDK_INT;
                         if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                             numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                         } else {
-                            numberPhotos.setBackground(Utils.getShapeDrawable(60,  getActivity().getResources().getColor(R.color.message_notify)));
+                            numberPhotos.setBackground(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                         }
 
                         numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
@@ -125,7 +146,6 @@ public class FolderFragment extends Fragment {
                     }
 
                 }
-
             }
 
         });
@@ -133,39 +153,46 @@ public class FolderFragment extends Fragment {
         if (Utils.isTablet(getActivity())) {
             adjustGridViewPort();
             folderAdapter.clear();
-            folderAdapter.addAll(listFolders);
+            folderAdapter.addAll(ListFoldersHolder.getList());
         }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
             adjustGridViewLand();
             folderAdapter.clear();
-            folderAdapter.addAll(listFolders);
+            folderAdapter.addAll(ListFoldersHolder.getList());
         } else {
             adjustGridViewPort();
             folderAdapter.clear();
-            folderAdapter.addAll(listFolders);
+            folderAdapter.addAll(ListFoldersHolder.getList());
         }
         folderAdapter.clear();
-        folderAdapter.addAll(listFolders);
+        folderAdapter.addAll(ListFoldersHolder.getList());
         gridView.setAdapter(folderAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListFoldersHolder.setCurrentSelectedPhoto(position);
                 Intent intent = new Intent(getActivity(), PhotoViewPagerActivity.class);
-                startActivityForResult(intent, getActivity().RESULT_OK);
+                startActivityForResult(intent, 10000);
             }
         });
 
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO give files list
+                if (ListFoldersHolder.getListForSending() != null) {
+                    for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
+                        ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(), ListFoldersHolder.getListForSending().get(i));
+                    }
+                    ListFoldersHolder.setListForSending(null);
+                    getActivity().finish();
+                }
             }
         });
 
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ListFoldersHolder.setListForSending(null);
                 getActivity().finish();
             }
         });
@@ -205,16 +232,16 @@ public class FolderFragment extends Fragment {
         if (Utils.isTablet(getActivity())) {
             adjustGridViewPort();
             folderAdapter.clear();
-            folderAdapter.addAll(listFolders);
+            folderAdapter.addAll(ListFoldersHolder.getList());
         }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
             adjustGridViewLand();
             folderAdapter.clear();
-            folderAdapter.addAll(listFolders);
+            folderAdapter.addAll(ListFoldersHolder.getList());
         } else {
             adjustGridViewPort();
             folderAdapter.clear();
-            folderAdapter.addAll(listFolders);
+            folderAdapter.addAll(ListFoldersHolder.getList());
         }
 
     }

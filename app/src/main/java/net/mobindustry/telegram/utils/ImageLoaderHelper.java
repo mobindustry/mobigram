@@ -99,7 +99,7 @@ public class ImageLoaderHelper {
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .bitmapConfig(Bitmap.Config.ARGB_4444)
-                .showImageOnLoading(R.drawable.image_placeholder)
+                .showImageOnLoading(R.drawable.ic_netelegram_placeholder)
                 .build();
         imageLoader.displayImage(url, imageView, options);
     }

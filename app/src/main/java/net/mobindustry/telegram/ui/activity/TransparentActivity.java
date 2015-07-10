@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.ui.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +10,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.fragments.ChooseFileFragment;
 import net.mobindustry.telegram.ui.fragments.FolderFragment;
@@ -18,6 +22,8 @@ import net.mobindustry.telegram.ui.fragments.NewMessageFragment;
 import net.mobindustry.telegram.ui.fragments.SelectedMapFragment;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
+
+import org.drinkless.td.libcore.telegram.TdApi;
 
 public class TransparentActivity extends AppCompatActivity {
 
@@ -67,6 +73,15 @@ public class TransparentActivity extends AppCompatActivity {
                 break;
         }
         fragmentTransaction.commit();
+    }
+
+    public void sendPhotoMessage(long chatId, String path) {
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Override

@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
+import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.FileWithIndicator;
@@ -108,6 +109,9 @@ public class GalleryFragment extends Fragment {
         if (Utils.isTablet(getActivity())) {
             if (ListFoldersHolder.getCheckQuantity()!=0){
                 numberPhotos.setVisibility(View.VISIBLE);
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
+                params.leftMargin = 65;
+                numberPhotos.setLayoutParams(params);
                 int sdk = android.os.Build.VERSION.SDK_INT;
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
@@ -122,6 +126,9 @@ public class GalleryFragment extends Fragment {
         } else {
             if (ListFoldersHolder.getCheckQuantity()!=0){
                 numberPhotos.setVisibility(View.VISIBLE);
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
+                params.leftMargin = 60;
+                numberPhotos.setLayoutParams(params);
                 int sdk = android.os.Build.VERSION.SDK_INT;
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
@@ -133,7 +140,6 @@ public class GalleryFragment extends Fragment {
             } else {
                 numberPhotos.setVisibility(View.GONE);
             }
-
         }
         if (ListFoldersHolder.getListFolders() == null) {
             AsyncMediaStore asyncMediaStore = new AsyncMediaStore();
@@ -167,6 +173,27 @@ public class GalleryFragment extends Fragment {
             }
         });
 
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+                ListFoldersHolder.setListForSending(null);
+            }
+        });
+
+        buttonSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ListFoldersHolder.getListForSending() != null) {
+                    for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
+                        ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(), ListFoldersHolder.getListForSending().get(i));
+                    }
+                    ListFoldersHolder.setListForSending(null);
+                    getActivity().finish();
+                }
+            }
+        });
+
         findGifs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,19 +223,6 @@ public class GalleryFragment extends Fragment {
             }
         });
 
-        buttonSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("Log", "Button send");
-            }
-        });
-
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("Log", "Button cancel");
-            }
-        });
 
     }
 

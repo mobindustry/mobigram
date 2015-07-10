@@ -14,6 +14,15 @@ public class ListFoldersHolder {
     private static List<String>listForSending;
     private static String nameHolder;
     private static int currentSelectedPhoto;
+    private static long chatID;
+
+    public static long getChatID() {
+        return chatID;
+    }
+
+    public static void setChatID(long chatID) {
+        ListFoldersHolder.chatID = chatID;
+    }
 
     public static int getCurrentSelectedPhoto() {
         return currentSelectedPhoto;

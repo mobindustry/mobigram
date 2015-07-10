@@ -33,6 +33,7 @@ public class Const {
     public static final int GALLERY_FRAGMENT = 203;
     public static final int SELECTED_MAP_FRAGMENT = 204;
     public static final int SELECTED_FOLDER_FRAGMENT = 205;
+    public static final int SEND_FOLDER_FRAGMENT = 206;
 
     public static final int CHAT_NOT_FOUND = 1001;
 

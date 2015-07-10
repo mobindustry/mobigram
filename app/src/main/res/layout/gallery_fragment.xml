@@ -166,7 +166,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
-                android:layout_marginLeft="@dimen/margin_45dp"
                 android:textColor="@color/text_color_gallery_fragment"
                 tools:text="14" />
         </FrameLayout>

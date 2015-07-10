@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar_photo"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/toolbar_height"
+    android:background="@color/background_action_bar">
+
+    <ImageView
+        android:id="@+id/photoBig"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center|right"
+        android:layout_margin="@dimen/margin_5dp"
+        android:src="@drawable/ic_attach_photo_in_folder" />
+
+</android.support.v7.widget.Toolbar>
