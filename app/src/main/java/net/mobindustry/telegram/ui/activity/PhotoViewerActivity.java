@@ -21,6 +21,7 @@ public class PhotoViewerActivity extends Activity {
         setContentView(R.layout.photo_viewer_activity);
 
         //TODO add backButton
+        //TODO fix photo scale
 
         ImageView imageView = (ImageView) findViewById(R.id.photo_image_view);
         PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
