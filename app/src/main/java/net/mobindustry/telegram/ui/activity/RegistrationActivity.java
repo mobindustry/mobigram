@@ -108,6 +108,8 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.registration_activity);
+
         new ApiClient<>(new TdApi.AuthGetState(), new GetStateHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 
         InfoRegistration holder = InfoRegistration.getInstance();
@@ -121,8 +123,6 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setContentView(R.layout.registration_activity);
-
     }
 
     public CountryObject getCountryObject() {

@@ -51,7 +51,9 @@
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
             android:name=".ui.activity.RegistrationActivity"
-            android:windowSoftInputMode="adjustUnspecified">
+            android:windowSoftInputMode="adjustUnspecified"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
+            >
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>

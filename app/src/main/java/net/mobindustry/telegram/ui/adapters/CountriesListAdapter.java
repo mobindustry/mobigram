@@ -13,12 +13,10 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class CountriesListAdapter extends BaseAdapter implements StickyListHeadersAdapter, Serializable {
 
-    private Activity activity;
     private ListCountryObject listCountryObject;
     private LayoutInflater inflater;
 
     public CountriesListAdapter(Activity activity, ListCountryObject listCountryObject) {
-        this.activity = activity;
         this.listCountryObject = listCountryObject;
         inflater = LayoutInflater.from(activity);
     }
