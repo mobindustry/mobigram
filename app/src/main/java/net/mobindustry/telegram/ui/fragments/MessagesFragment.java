@@ -21,7 +21,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -48,7 +47,6 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
-import net.mobindustry.telegram.core.handlers.LogHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.model.Enums;
@@ -61,12 +59,11 @@ import net.mobindustry.telegram.ui.adapters.MessageAdapter;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
-import net.mobindustry.telegram.utils.emoji.DpCalculator;
-import net.mobindustry.telegram.utils.emoji.Emoji;
-import net.mobindustry.telegram.utils.emoji.EmojiKeyboardView;
-import net.mobindustry.telegram.utils.emoji.EmojiParser;
-import net.mobindustry.telegram.utils.emoji.EmojiPopup;
-import net.mobindustry.telegram.utils.emoji.ObservableLinearLayout;
+import net.mobindustry.telegram.ui.emoji.Emoji;
+import net.mobindustry.telegram.ui.emoji.EmojiKeyboardView;
+import net.mobindustry.telegram.ui.emoji.EmojiParser;
+import net.mobindustry.telegram.ui.emoji.EmojiPopup;
+import net.mobindustry.telegram.ui.emoji.ObservableLinearLayout;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -74,7 +71,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Locale;
 
 public class MessagesFragment extends Fragment implements Serializable, ApiClient.OnApiResultHandler {
 

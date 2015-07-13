@@ -6,7 +6,7 @@
  * Copyright Nikolai Kudashov, 2013.
  */
 
-package net.mobindustry.telegram.utils.emoji;
+package net.mobindustry.telegram.ui.emoji;
 
 import android.content.Context;
 import android.graphics.Point;

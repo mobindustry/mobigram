@@ -1,8 +1,7 @@
-package net.mobindustry.telegram.utils.emoji;
+package net.mobindustry.telegram.ui.emoji;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.google.android.gms.playlog.internal.LogEvent;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
@@ -100,7 +98,6 @@ public class EmojiKeyboardView extends LinearLayout {
         @Override
         public GridView instantiateItem(ViewGroup container, int position) {
             if (position == 0) {
-                //todo cleanup
 
                 final long[] longs = recentIds;
                 GridView gridPage = createGridPage(container, position, new EmojiPageAdapter(longs), R.dimen.emoji_size);

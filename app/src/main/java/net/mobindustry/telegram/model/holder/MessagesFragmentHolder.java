@@ -5,8 +5,8 @@ import android.util.Log;
 
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.Utils;
-import net.mobindustry.telegram.utils.emoji.DpCalculator;
-import net.mobindustry.telegram.utils.emoji.Emoji;
+import net.mobindustry.telegram.ui.emoji.DpCalculator;
+import net.mobindustry.telegram.ui.emoji.Emoji;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 

@@ -1,4 +1,4 @@
-package net.mobindustry.telegram.utils.emoji;
+package net.mobindustry.telegram.ui.emoji;
 
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 
@@ -10,6 +10,8 @@ import java.util.List;
 
 public class Stickers {
     private List<TdApi.Sticker> ss = new ArrayList<>();
+
+    //TODO find a way to show stickers on Android <4.2
 
     public Stickers() {
 

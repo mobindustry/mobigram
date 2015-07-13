@@ -7,7 +7,11 @@ import java.util.TreeMap;
 
 public class DownloadFileHolder {
 
-    private static Map<Integer, String> map = new TreeMap<>();
+    private static Map<Integer, String> map = new TreeMap<>(); //TODO find a problem with showing downloaded images
+
+    public static void removeItem(int id) {
+        map.remove(id);
+    }
 
     public static void addFile(TdApi.UpdateFile file) {
         map.put(file.fileId, file.path);

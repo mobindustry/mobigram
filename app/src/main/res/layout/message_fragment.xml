@@ -50,7 +50,7 @@
                     android:transcriptMode="disabled" />
             </FrameLayout>
 
-            <net.mobindustry.telegram.utils.emoji.ObservableLinearLayout
+            <net.mobindustry.telegram.ui.emoji.ObservableLinearLayout
                 android:id="@+id/observable_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                     android:padding="5dp"
                     android:src="@drawable/ic_send_attach_levels" />
 
-            </net.mobindustry.telegram.utils.emoji.ObservableLinearLayout>
+            </net.mobindustry.telegram.ui.emoji.ObservableLinearLayout>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

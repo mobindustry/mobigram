@@ -175,7 +175,6 @@ public class Client implements Runnable {
         queryQueue = new LinkedBlockingQueue<>();
         currentId = 0L;
 
-        //TODO: SparseArray?
         handlers = new HashMap<>();
         if (updatesHandler != null) {
             handlers.put(0L, updatesHandler);

@@ -1900,6 +1900,7 @@ public class TdApi {
         public int height;
         public PhotoSize thumb;
         public File sticker;
+        public File pngSticker;
 
         public Sticker() {
         }

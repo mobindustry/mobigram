@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<net.mobindustry.telegram.utils.emoji.EmojiKeyboardView xmlns:android="http://schemas.android.com/apk/res/android"
+<net.mobindustry.telegram.ui.emoji.EmojiKeyboardView xmlns:android="http://schemas.android.com/apk/res/android"
                                         xmlns:app="http://schemas.android.com/apk/res-auto"
                                         android:orientation="vertical"
                                         android:layout_width="match_parent"
@@ -18,7 +18,6 @@
                 android:background="@color/tab_divider"
                 android:layout_gravity="bottom"
                 />
-        <!--todo eliminate divider as a view-->
 
         <LinearLayout
                 android:id="@+id/tabs"
@@ -65,4 +64,4 @@
             android:layout_height="match_parent"
             />
 
-</net.mobindustry.telegram.utils.emoji.EmojiKeyboardView>
+</net.mobindustry.telegram.ui.emoji.EmojiKeyboardView>

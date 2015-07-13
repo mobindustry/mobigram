@@ -3,7 +3,6 @@ package net.mobindustry.telegram.ui.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,8 @@ import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
-import net.mobindustry.telegram.utils.emoji.DpCalculator;
-import net.mobindustry.telegram.utils.emoji.Emoji;
-import net.mobindustry.telegram.utils.emoji.EmojiParser;
+import net.mobindustry.telegram.ui.emoji.Emoji;
+import net.mobindustry.telegram.ui.emoji.EmojiParser;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -39,6 +37,8 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         emoji = MessagesFragmentHolder.getInstance().getEmoji();
         emojiParser = new EmojiParser(emoji);
     }
+
+    //TODO correct show avatar,
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

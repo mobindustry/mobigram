@@ -1,4 +1,4 @@
-package net.mobindustry.telegram.utils.emoji;
+package net.mobindustry.telegram.ui.emoji;
 
 public class DpCalculator {
     public final float density;

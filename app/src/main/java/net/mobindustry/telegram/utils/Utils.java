@@ -16,6 +16,7 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
+import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.model.holder.DataHolder;
 
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -64,10 +65,10 @@ public class Utils {
         if (file instanceof TdApi.FileEmpty) {
             final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
 
-            new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+            new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
                 @Override
                 public void onApiResult(BaseHandler output) {
-                    if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                    if (output.getHandlerId() == OkHandler.HANDLER_ID) {
                         ImageLoaderHelper.displayImage(String.valueOf(fileEmpty.id), view);
                     }
                 }

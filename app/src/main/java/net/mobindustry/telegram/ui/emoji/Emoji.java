@@ -6,7 +6,7 @@
  * Copyright Nikolai Kudashov, 2013.
  */
 
-package net.mobindustry.telegram.utils.emoji;
+package net.mobindustry.telegram.ui.emoji;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -126,7 +126,6 @@ public class Emoji {
 
             dispatchPageLoaded(page, bitmap);
 
-            //todo do this only once
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(maskedFile));
         } catch (Throwable x) {
             Log.e("Emoji", "Error loading emoji", x);

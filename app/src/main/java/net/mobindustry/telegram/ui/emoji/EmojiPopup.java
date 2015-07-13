@@ -1,4 +1,4 @@
-package net.mobindustry.telegram.utils.emoji;
+package net.mobindustry.telegram.ui.emoji;
 
 import android.app.Activity;
 import android.content.Context;
