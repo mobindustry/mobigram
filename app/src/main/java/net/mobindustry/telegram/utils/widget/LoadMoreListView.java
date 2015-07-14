@@ -47,7 +47,7 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
 	// private TextView mLabLoadMore;
 	private ProgressBar mProgressBarLoadMore;
 
-	// Listener to process load more items when user reaches the end of the list
+	// Listener to process loadMore more items when user reaches the end of the list
 	private OnLoadMoreListener mOnLoadMoreListener;
 	// To know if the list is loading more items
 	private boolean mIsLoadingMore = false;
@@ -180,7 +180,7 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
 
 	/**
 	 * Interface definition for a callback to be invoked when list reaches the
-	 * last item (the user load more items in the list)
+	 * last item (the user loadMore more items in the list)
 	 */
 	public interface OnLoadMoreListener {
 		/**

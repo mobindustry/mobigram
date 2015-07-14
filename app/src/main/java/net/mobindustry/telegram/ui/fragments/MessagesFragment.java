@@ -141,13 +141,30 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 setFirstVisibleItem(firstVisibleItem);
             }
         });
-        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), new MessageAdapter.LoadMore() {
+        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), new MessageAdapter.Loader() {
             @Override
-            public void load() {
+            public void loadMore() {
                 if (needLoad && !isMessagesLoading) {
                     getChatHistory(chat.id, toScrollLoadMessageId, MESSAGE_LOAD_OFFSET, MESSAGE_LOAD_LIMIT, Enums.MessageAddType.SCROLL);
                     isMessagesLoading = true;
                 }
+            }
+
+            @Override
+            public void loadDocument(int id, String mime) {
+                Utils.fileLoader(id);
+            }
+
+            @Override
+            public void openDocument(String path, String mime) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse(path), mime);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Log.e("Log", "Бабах!!!");
+                }
+                //startActivityForResult(intent, ExplorerActivity.FILE_CLOSED_SUCCESSFULLY);
             }
         });
         messageListView.setAdapter(adapter);

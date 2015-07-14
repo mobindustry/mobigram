@@ -35,7 +35,7 @@ public class PullAndLoadListView extends PullToRefreshListView {
 		initComponent(context);
 	}
 
-	// Listener to process load more items when user reaches the end of the list
+	// Listener to process loadMore more items when user reaches the end of the list
 	private OnLoadMoreListener mOnLoadMoreListener;
 	// To know if the list is loading more items
 	private boolean mIsLoadingMore = false;
@@ -85,7 +85,7 @@ public class PullAndLoadListView extends PullToRefreshListView {
 			int visibleItemCount, int totalItemCount) {
 		super.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
 
-		// if need a list to load more items
+		// if need a list to loadMore more items
 		if (mOnLoadMoreListener != null) {
 
 			if (visibleItemCount == totalItemCount) {
@@ -124,7 +124,7 @@ public class PullAndLoadListView extends PullToRefreshListView {
 
 	/**
 	 * Interface definition for a callback to be invoked when list reaches the
-	 * last item (the user load more items in the list)
+	 * last item (the user loadMore more items in the list)
 	 */
 	public interface OnLoadMoreListener {
 		/**

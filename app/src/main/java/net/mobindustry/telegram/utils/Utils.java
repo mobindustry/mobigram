@@ -67,7 +67,7 @@ public class Utils {
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    public static void fileCheckerAndLoader(final TdApi.File file, final ImageView view) {
+    public static void photoFileCheckerAndLoader(final TdApi.File file, final ImageView view) {
         if (file instanceof TdApi.FileEmpty) {
             final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
 
@@ -112,12 +112,23 @@ public class Utils {
         }
     }
 
-    public static void fileLoader(final int id, final ImageView view) {
+    public static void photoFileLoader(final int id, final ImageView view) {
         new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
             @Override
             public void onApiResult(BaseHandler output) {
                 if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
                     ImageLoaderHelper.displayImage(String.valueOf(id), view);
+                }
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public static void fileLoader(final int id) {
+        new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+                if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                    Log.e("Log", "File " + id + " loaded.");
                 }
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);

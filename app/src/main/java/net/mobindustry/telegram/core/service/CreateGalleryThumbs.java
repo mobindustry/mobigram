@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -106,7 +107,7 @@ public class CreateGalleryThumbs extends Service {
         }
 
         private void createThumbsFolder() {
-            String path = getApplicationContext().getFilesDir().getAbsolutePath() + File.separator + "thumb";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "NeTelegram" + File.separator + "thumb";
             File myDirectory = new File(path, "gallery");
             if (!myDirectory.exists()) {
                 myDirectory.mkdirs();

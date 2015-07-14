@@ -262,7 +262,7 @@ public class EmojiKeyboardView extends LinearLayout {
         private void onBindVH(final VH vh, int position) {
             final TdApi.Sticker s = getItem(position);
             TdApi.File file = s.sticker;
-            Utils.fileCheckerAndLoader(file, vh.img);
+            Utils.photoFileCheckerAndLoader(file, vh.img);
             vh.o = s;
         }
     }

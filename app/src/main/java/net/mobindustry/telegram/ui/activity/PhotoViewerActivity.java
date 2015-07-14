@@ -2,8 +2,6 @@ package net.mobindustry.telegram.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import net.mobindustry.telegram.R;
@@ -29,7 +27,7 @@ public class PhotoViewerActivity extends Activity {
         String path = getIntent().getStringExtra("file_path");
         if (path == null) {
             int id = getIntent().getIntExtra("file_id", 0);
-            Utils.fileLoader(id, imageView);
+            Utils.photoFileLoader(id, imageView);
         } else {
             ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + path, imageView);
         }

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,13 +35,13 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
     private View.OnClickListener onClickListener;
 
-    private LoadMore loadMore;
+    private Loader loader;
 
-    public MessageAdapter(final Context context, long myId, LoadMore loadMore) {
+    public MessageAdapter(final Context context, long myId, final Loader loader) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
         this.myId = myId;
-        this.loadMore = loadMore;
+        this.loader = loader;
 
         //TODO receive audio, video, documents, contact messages...
 
@@ -58,10 +57,19 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     case TdApi.MessageContact.CONSTRUCTOR:
                         TdApi.MessageContact contact = (TdApi.MessageContact) message.message;
                         break;
-                    case TdApi.MessageDocument.CONSTRUCTOR:
+                    case TdApi.MessageDocument.CONSTRUCTOR: {
                         TdApi.MessageDocument document = (TdApi.MessageDocument) message.message;
+                        TdApi.File file = document.document.document;
+                        if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                            TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+                            loader.openDocument(fileLocal.path, document.document.mimeType);
+                        } else {
+                            TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+                            loader.loadDocument(fileEmpty.id, document.document.mimeType);
+                        }
                         break;
-                    case TdApi.MessageGeoPoint.CONSTRUCTOR:
+                    }
+                    case TdApi.MessageGeoPoint.CONSTRUCTOR: {
                         TdApi.MessageGeoPoint geoPoint = (TdApi.MessageGeoPoint) message.message;
                         if (!MessagesFragmentHolder.isMapCalled()) {
                             MessagesFragmentHolder.mapCalled();
@@ -72,7 +80,8 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                             context.startActivity(intentMap);
                         }
                         break;
-                    case TdApi.MessagePhoto.CONSTRUCTOR:
+                    }
+                    case TdApi.MessagePhoto.CONSTRUCTOR: {
                         TdApi.MessagePhoto photo = (TdApi.MessagePhoto) message.message;
                         TdApi.File file = photo.photo.photos[photo.photo.photos.length - 1].photo;
                         Intent intent = new Intent(context, PhotoViewerActivity.class);
@@ -87,6 +96,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                         context.startActivity(intent);
                         ((ChatActivity) context).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
+                    }
                     case TdApi.MessageVideo.CONSTRUCTOR:
                         TdApi.MessageVideo video = (TdApi.MessageVideo) message.message;
                         break;
@@ -127,7 +137,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (position == Const.LIST_PRELOAD_POSITION) {
-            loadMore.load();
+            loader.loadMore();
         }
 
         if (convertView == null) {
@@ -168,7 +178,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[i].width, messagePhoto.photo.photos[i].height);
                     photo.setLayoutParams(layoutParams);
 
-                    Utils.fileCheckerAndLoader(messagePhoto.photo.photos[i].photo, photo);
+                    Utils.photoFileCheckerAndLoader(messagePhoto.photo.photos[i].photo, photo);
                 }
             }
             layout.addView(photo);
@@ -247,7 +257,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 300);
             stickerImage.setLayoutParams(layoutParams);
-            Utils.fileCheckerAndLoader(sticker.sticker, stickerImage);
+            Utils.photoFileCheckerAndLoader(sticker.sticker, stickerImage);
             layout.addView(stickerImage);
         }
         if (item.message instanceof TdApi.MessageVideo) {
@@ -341,7 +351,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         return convertView;
     }
 
-    public interface LoadMore {
-        void load();
+    public interface Loader {
+        void loadMore();
+        void loadDocument(int id, String mime);
+        void openDocument(String path, String mime);
     }
 }

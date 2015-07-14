@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
+import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 
@@ -73,9 +74,9 @@ public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
 
         if (galleryFolder != null) {
             if (!galleryFolder.getThumbPhoto().equals("")){
-                ImageLoaderHelper.displayImageList("file://" + galleryFolder.getThumbPhoto(), photo);
+                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + galleryFolder.getThumbPhoto(), photo);
             } else {
-                ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFile().getAbsolutePath(), photo);
+                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + galleryFolder.getFile().getAbsolutePath(), photo);
             }
 
         }
