@@ -6,7 +6,7 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/msg_in_photo">
+        android:background="@drawable/document">
 
         <FrameLayout
             android:id="@+id/in_content"

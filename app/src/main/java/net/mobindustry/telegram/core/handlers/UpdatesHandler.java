@@ -8,6 +8,7 @@ import android.util.Log;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
+import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 import net.mobindustry.telegram.utils.Const;
 
@@ -36,9 +37,7 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
             case TdApi.UpdateNewMessage.CONSTRUCTOR: {
                 TdApi.UpdateNewMessage message = (TdApi.UpdateNewMessage) object;
 
-                Intent intent = null;
-                intent = new Intent(Const.NEW_MESSAGE_ACTION);
-
+                Intent intent = new Intent(Const.NEW_MESSAGE_ACTION);
                 intent.putExtra("message_id", message.message.id);
                 intent.putExtra("chatId", message.message.chatId);
 
@@ -51,7 +50,7 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
                 context.sendBroadcast(intent);
                 break;
             }
-            case TdApi.UpdateChatReadInbox.CONSTRUCTOR:
+            case TdApi.UpdateChatReadInbox.CONSTRUCTOR: {
                 TdApi.UpdateChatReadInbox update = (TdApi.UpdateChatReadInbox) object;
                 Intent intent = new Intent(Const.READ_INBOX_ACTION);
                 intent.putExtra("chat_id", update.chatId);
@@ -59,11 +58,18 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
                 intent.putExtra("last_read", update.lastRead);
                 context.sendBroadcast(intent);
                 break;
+            }
             case TdApi.UpdateChatReadOutbox.CONSTRUCTOR:
                 break;
-            case TdApi.UpdateFile.CONSTRUCTOR: {
+            case TdApi.UpdateFile.CONSTRUCTOR:
                 TdApi.UpdateFile file = (TdApi.UpdateFile) object;
                 DownloadFileHolder.addFile(file);
+                break;
+            case TdApi.UpdateUserName.CONSTRUCTOR: {
+                TdApi.UpdateUserName userName = (TdApi.UpdateUserName) object;
+                Intent intent = new Intent(Const.UPDATE_USER_ACTION);
+                intent.putExtra("user_id", userName.userId);
+                context.sendBroadcast(intent);
                 break;
             }
         }

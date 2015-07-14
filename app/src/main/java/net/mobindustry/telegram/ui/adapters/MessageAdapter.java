@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -187,10 +188,17 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(contact);
         }
         if (item.message instanceof TdApi.MessageDocument) {
-            //Log.i("Message", "Document " + item.message);
-            TextView document = new TextView(getContext());
-            document.setText("Document");
+            Log.e("Message", "Document " + item.message);
 
+            TdApi.MessageDocument doc = (TdApi.MessageDocument) item.message;
+            TdApi.File file = doc.document.thumb.photo;
+            View document = inflater.inflate(R.layout.document_view_layout, null);
+            ImageView icon = (ImageView) document.findViewById(R.id.document_icon);
+            TextView name = (TextView) document.findViewById(R.id.document_name);
+            TextView size = (TextView) document.findViewById(R.id.document_size);
+            Utils.fileCheckerAndLoader(file, icon);
+            name.setText(doc.document.fileName);
+            size.setText("size");
             layout.addView(document);
         }
         if (item.message instanceof TdApi.MessageGeoPoint) {

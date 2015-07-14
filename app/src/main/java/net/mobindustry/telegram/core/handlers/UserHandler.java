@@ -4,7 +4,7 @@ import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
-public class UserMeHandler extends BaseHandler<TdApi.User>{
+public class UserHandler extends BaseHandler<TdApi.User>{
 
     public static final int HANDLER_ID = Const.USER_HANDLER_ID;
     @Override

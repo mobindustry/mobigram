@@ -36,12 +36,12 @@ import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.StickerHandler;
 import net.mobindustry.telegram.core.handlers.StickersHandler;
-import net.mobindustry.telegram.core.handlers.UserMeHandler;
+import net.mobindustry.telegram.core.handlers.UserHandler;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
-import net.mobindustry.telegram.model.holder.UserMeHolder;
+import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
 import net.mobindustry.telegram.ui.fragments.ChatListFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
@@ -73,8 +73,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     private NavigationDrawerAdapter adapter;
 
-    private UserMeHolder holder = UserMeHolder.getInstance();
-    private UserMeHolder userMeHolder;
+    private UserInfoHolder holder = UserInfoHolder.getInstance();
+    private UserInfoHolder userInfoHolder;
     private ChatListFragment chatListFragment;
 
     public void logOut() {
@@ -99,7 +99,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     }
 
     public void getUserMe() {
-        new ApiClient<>(new TdApi.GetMe(), new UserMeHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        new ApiClient<>(new TdApi.GetMe(), new UserHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public void getStickers() {
@@ -108,12 +108,12 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     @Override
     public void onApiResult(BaseHandler output) {
-        if (output==null){
+        if (output == null) {
             getUserMe();
         } else {
-            if (output.getHandlerId() == UserMeHandler.HANDLER_ID) {
-                userMeHolder.setUser((TdApi.User) output.getResponse());
-                setHeader(userMeHolder.getUser());
+            if (output.getHandlerId() == UserHandler.HANDLER_ID) {
+                userInfoHolder.setUser((TdApi.User) output.getResponse());
+                setHeader(userInfoHolder.getUser());
             }
         }
 
@@ -153,12 +153,22 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                     int lastRead = intent.getIntExtra("last_read", 0);
                     getChatListFragment().update(chatId, unread, lastRead);
                 }
+                if (intent.getAction().equals(Const.UPDATE_USER_ACTION)) {
+                    int userId = intent.getIntExtra("user_id", 0);
+                    new ApiClient<>(new TdApi.GetUser(userId), new UserHandler(), new ApiClient.OnApiResultHandler() {
+                        @Override
+                        public void onApiResult(BaseHandler output) {
+                            UserInfoHolder.addUser((TdApi.User) output.getResponse());
+                        }
+                    });
+                }
             }
         };
 
         filter.addAction(Const.NEW_MESSAGE_ACTION);
         filter.addAction(Const.NEW_MESSAGE_ACTION_ID);
         filter.addAction(Const.READ_INBOX_ACTION);
+        filter.addAction(Const.UPDATE_USER_ACTION);
         registerReceiver(receiver, filter);
 
         chatListFragment = new ChatListFragment();
@@ -180,11 +190,11 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         List<NavigationItem> drawerItemsList = new ArrayList<>();
         drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
 
-        userMeHolder = UserMeHolder.getInstance();
-        if (userMeHolder.getUser() == null) {
+        userInfoHolder = UserInfoHolder.getInstance();
+        if (userInfoHolder.getUser() == null) {
             getUserMe();
         } else {
-            setHeader(userMeHolder.getUser());
+            setHeader(userInfoHolder.getUser());
         }
 
         getStickers();
@@ -217,7 +227,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         }
     }
 
-    public long getIntentChatId () {
+    public long getIntentChatId() {
         return getIntent().getLongExtra("chatId", 0);
     }
 
@@ -316,8 +326,8 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         }
     }
 
-    public void clearSearch(){
-        if(itemToCollapse != null) {
+    public void clearSearch() {
+        if (itemToCollapse != null) {
             chatListFragment.setAdapterFilter("");
             MenuItemCompat.collapseActionView(itemToCollapse);
         }

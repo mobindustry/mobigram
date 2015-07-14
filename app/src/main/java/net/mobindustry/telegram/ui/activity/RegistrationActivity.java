@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
@@ -20,9 +19,9 @@ import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.core.handlers.ErrorHandler;
 import net.mobindustry.telegram.core.handlers.GetStateHandler;
-import net.mobindustry.telegram.core.handlers.UserMeHandler;
+import net.mobindustry.telegram.core.handlers.UserHandler;
 import net.mobindustry.telegram.model.holder.InfoRegistration;
-import net.mobindustry.telegram.model.holder.UserMeHolder;
+import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.YourNameFragment;
@@ -48,8 +47,8 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
             new ErrorHandler(getSupportFragmentManager(), output.getError());
         }
 
-        if (output.getHandlerId() == UserMeHandler.HANDLER_ID) {
-            UserMeHolder holder = UserMeHolder.getInstance();
+        if (output.getHandlerId() == UserHandler.HANDLER_ID) {
+            UserInfoHolder holder = UserInfoHolder.getInstance();
             holder.setUser((TdApi.User) output.getResponse());
         }
 
@@ -64,7 +63,7 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationUserPhone);
             }
             if (handler.getResponse() == Enums.StatesEnum.OK) {
-                new ApiClient<>(new TdApi.GetMe(), new UserMeHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                new ApiClient<>(new TdApi.GetMe(), new UserHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                 Intent intent = new Intent(RegistrationActivity.this, ChatActivity.class);
                 startActivity(intent);
                 finish();
