@@ -8,9 +8,13 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.os.AsyncTask;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
@@ -18,9 +22,11 @@ import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.model.holder.DataHolder;
+import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -80,6 +86,32 @@ public class Utils {
         }
     }
 
+    public static void gifFileCheckerAndLoader(final TdApi.File file, final ImageView view) {
+        if (file instanceof TdApi.FileEmpty) {
+            final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+
+            new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
+                @Override
+                public void onApiResult(BaseHandler output) {
+                    if (output.getHandlerId() == OkHandler.HANDLER_ID) {
+                        String path;
+                        do {
+                            path = DownloadFileHolder.getUpdatedFilePath(fileEmpty.id);
+                            if (path != null) {
+                                break;
+                            }
+                        } while (path == null);
+                        Glide.with(DataHolder.getContext()).load(path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
+                    }
+                }
+            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        }
+        if (file instanceof TdApi.FileLocal) {
+            TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+            Glide.with(DataHolder.getContext()).load(fileLocal.path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
+        }
+    }
+
     public static void fileLoader(final int id, final ImageView view) {
         new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
             @Override
@@ -132,6 +164,32 @@ public class Utils {
                 break;
         }
         return lastSeenString;
+    }
+
+    public static String formatFileSize(long size) {
+        String hrSize = null;
+
+        double b = size;
+        double mByte = 1024.0;
+        double k = size / mByte;
+        double m = ((size / mByte) / mByte);
+        double g = (((size / mByte) / mByte) / mByte);
+        double t = ((((size / mByte) / mByte) / mByte) / mByte);
+
+        DecimalFormat dec = new DecimalFormat("0.00");
+
+        if (t > 1) {
+            hrSize = dec.format(t).concat(" TB");
+        } else if (g > 1) {
+            hrSize = dec.format(g).concat(" GB");
+        } else if (m > 1) {
+            hrSize = dec.format(m).concat(" MB");
+        } else if (k > 1) {
+            hrSize = dec.format(k).concat(" KB");
+        } else {
+            hrSize = dec.format(b).concat(" B");
+        }
+        return hrSize;
     }
 }
 

@@ -188,18 +188,38 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(contact);
         }
         if (item.message instanceof TdApi.MessageDocument) {
-            Log.e("Message", "Document " + item.message);
+            //Log.e("Message", "Document " + item.message);
 
             TdApi.MessageDocument doc = (TdApi.MessageDocument) item.message;
-            TdApi.File file = doc.document.thumb.photo;
-            View document = inflater.inflate(R.layout.document_view_layout, null);
-            ImageView icon = (ImageView) document.findViewById(R.id.document_icon);
-            TextView name = (TextView) document.findViewById(R.id.document_name);
-            TextView size = (TextView) document.findViewById(R.id.document_size);
-            Utils.fileCheckerAndLoader(file, icon);
-            name.setText(doc.document.fileName);
-            size.setText("size");
-            layout.addView(document);
+            if(doc.document.mimeType.contains("gif")) {
+                View gifView = inflater.inflate(R.layout.gif_view_layout, null);
+                ImageView icon = (ImageView) gifView.findViewById(R.id.document_icon);
+                TdApi.File documentFile = doc.document.document;
+                Utils.gifFileCheckerAndLoader(documentFile, icon);
+                layout.addView(gifView);
+            } else {
+                View document = inflater.inflate(R.layout.document_view_layout, null);
+
+                ImageView icon = (ImageView) document.findViewById(R.id.document_icon);
+
+                TextView name = (TextView) document.findViewById(R.id.document_name);
+                TextView size = (TextView) document.findViewById(R.id.document_size);
+
+                String type = doc.document.mimeType;
+                Log.e("Log", type);
+
+                name.setText(doc.document.fileName);
+                if (doc.document.document.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
+                    TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) doc.document.document;
+                    size.setText(Utils.formatFileSize(fileEmpty.size));
+                } else {
+                    TdApi.FileLocal fileLocal = (TdApi.FileLocal) doc.document.document;
+                    size.setText(Utils.formatFileSize(fileLocal.size));
+                }
+
+
+                layout.addView(document);
+            }
         }
         if (item.message instanceof TdApi.MessageGeoPoint) {
             TdApi.MessageGeoPoint point = (TdApi.MessageGeoPoint) item.message;
@@ -237,7 +257,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             if (messageVideo.video.thumb.photo instanceof TdApi.FileLocal) {
                 TdApi.FileLocal file = (TdApi.FileLocal) messageVideo.video.thumb.photo;
                 ImageView video = new ImageView(getContext());
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT);
                 video.setLayoutParams(layoutParams);
                 video.setImageURI(Uri.parse(file.path));
                 layout.addView(video);

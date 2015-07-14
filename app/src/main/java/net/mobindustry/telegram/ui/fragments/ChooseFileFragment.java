@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.Utils;
 
 import java.text.DecimalFormat;
 
@@ -49,7 +50,7 @@ public class ChooseFileFragment extends Fragment {
         TextView pathToNeTelegram = (TextView) getActivity().findViewById(R.id.path_to_ne_telegram_directory);
 
         pathToNeTelegram.setText(Const.PATH_TO_GALLERY);
-        infoDeviceMemory.setText("Free " + formatFileSize(getAvailableMemory()) + " of " + formatFileSize(getMaxMemory()));
+        infoDeviceMemory.setText("Free " + Utils.formatFileSize(getAvailableMemory()) + " of " + Utils.formatFileSize(getMaxMemory()));
     }
 
     public long getAvailableMemory() {
@@ -62,29 +63,5 @@ public class ChooseFileFragment extends Fragment {
         return stat.getBlockCountLong() * stat.getBlockSizeLong();
     }
 
-    public static String formatFileSize(long size) {
-        String hrSize = null;
 
-        double b = size;
-        double mByte = 1024.0;
-        double k = size / mByte;
-        double m = ((size / mByte) / mByte);
-        double g = (((size / mByte) / mByte) / mByte);
-        double t = ((((size / mByte) / mByte) / mByte) / mByte);
-
-        DecimalFormat dec = new DecimalFormat("0.00");
-
-        if (t > 1) {
-            hrSize = dec.format(t).concat(" TB");
-        } else if (g > 1) {
-            hrSize = dec.format(g).concat(" GB");
-        } else if (m > 1) {
-            hrSize = dec.format(m).concat(" MB");
-        } else if (k > 1) {
-            hrSize = dec.format(k).concat(" KB");
-        } else {
-            hrSize = dec.format(b).concat(" Bytes");
-        }
-        return hrSize;
-    }
 }

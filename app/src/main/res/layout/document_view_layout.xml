@@ -6,7 +6,7 @@
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="90dp">
 
         <ProgressBar
             android:id="@+id/download_document_progress_bar"
@@ -17,14 +17,15 @@
             />
 
         <ImageView
+            android:src="@drawable/photoload"
+            android:scaleType="fitCenter"
             android:id="@+id/document_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:background="@drawable/document"
-            android:padding="5dp"
             />
+
     </FrameLayout>
 
     <LinearLayout
@@ -33,27 +34,26 @@
         android:minWidth="150dp"
         android:orientation="vertical"
         android:layout_margin="3dp"
-
         >
 
         <TextView
             android:id="@+id/document_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="#000"
+            android:maxWidth="250dp"
+            android:paddingEnd="10dp"
             />
 
         <TextView
             android:id="@+id/document_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="#000"
+            android:textSize="14sp"
+            android:textColor="#ff0087ff"
+
             />
 
-
     </LinearLayout>
-
-
 </LinearLayout>

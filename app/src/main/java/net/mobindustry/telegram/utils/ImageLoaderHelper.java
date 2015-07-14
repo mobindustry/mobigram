@@ -36,7 +36,6 @@ public class ImageLoaderHelper {
                     int id = Integer.parseInt(imageUri);
                     path = DownloadFileHolder.getUpdatedFilePath(id);
                     if (path != null) {
-                        DownloadFileHolder.removeItem(id);
                         break;
                     }
                 } while (path == null);

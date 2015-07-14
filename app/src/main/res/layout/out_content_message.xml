@@ -25,7 +25,7 @@
                 android:id="@+id/out_content_msg_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/padding_3dp"
+                android:padding="@dimen/padding_3dp"
                 android:textColor="#ffd0d0d0"
                 android:textSize="@dimen/message_time_text_size"
                 android:background="#877c7c7c"
