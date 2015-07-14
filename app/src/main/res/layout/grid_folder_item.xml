@@ -29,7 +29,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:layout_gravity="center"
             android:layout_margin="@dimen/margin_15dp"
             android:src="@drawable/ic_attach_photo_in_folder" />
 

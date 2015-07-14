@@ -42,4 +42,9 @@
     <color name="tab_divider">#ff0fff0e</color>
     <color name="bg_tab_selected">#ff74c8ff</color>
 
+    <color name="dark_slate_gray">#2F4F4F</color>
+    <color name="gray_2">#AFAFAF</color>
+    <color name="gray_1">#C0C0C0</color>
+    <color name="black">#000000</color>
+
 </resources>

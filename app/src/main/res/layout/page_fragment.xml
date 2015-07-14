@@ -5,13 +5,12 @@
     android:background="@color/background_activity"
     >
     <net.mobindustry.telegram.utils.AspectRatioImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:id="@+id/itemFromFragment"
         android:layout_gravity="center"
         android:scaleType="fitCenter"
         android:layout_margin="3dp"
         />
-
 </FrameLayout>

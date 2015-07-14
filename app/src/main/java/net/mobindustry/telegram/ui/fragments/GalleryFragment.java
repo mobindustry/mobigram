@@ -197,7 +197,12 @@ public class GalleryFragment extends Fragment {
         findGifs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO find gifs
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                GifFragment gifFragment = new GifFragment();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+                fragmentTransaction.replace(R.id.transparent_content, gifFragment);
+                fragmentTransaction.commit();
             }
         });
 

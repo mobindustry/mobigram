@@ -61,6 +61,8 @@ public class Const {
     public static final String CLIENT_ID_FOR_FOURSQUARE = "ABDMITGWDOMKIGHTWRU25XKIS2MJ3IPJQOEMZ5CVTRR0H05I";
     public static final String CLIENT_SECRET_FOR_FOURSQUARE = "XHS2CWCC5VD23MP1W2120RMUUYZJXFTCHK4A5KA3JAEZRFRG";
     public static final String URL_FOR_FOURSQUARE = "https://api.foursquare.com";
+    public static final String API_KEY_GIF = "dc6zaTOxFJmzC";
+    public static final String URL_GIF = "http://api.giphy.com";
 
     public static final String READ_INBOX_ACTION = "net.mobindustry.telegram.message_read_action";
     public static final String NEW_MESSAGE_ACTION_ID = "net.mobindustry.telegram.new_message_action_id";

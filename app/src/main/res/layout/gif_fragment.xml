@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <include
+        layout="@layout/toolbar_gif_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:background="@color/background_activity">
+
+        <net.mobindustry.telegram.utils.widget.LoadMoreListView
+            android:id="@+id/loadMoreList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_activity"
+            android:gravity="center">
+        </net.mobindustry.telegram.utils.widget.LoadMoreListView>
+        <ProgressBar
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/gif_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_gravity="center"
+            />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_marginRight="0.5dp"
+            android:background="@drawable/send_cancel_buttons_selector"
+            android:id="@+id/buttonCancelGif">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/text_cancel"
+                android:textColor="@color/text_color_gallery_fragment" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="0.5dp"
+            android:layout_weight="1"
+            android:background="@drawable/send_cancel_buttons_selector"
+            android:id="@+id/buttonSendGif">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/text_send"
+                android:textColor="@color/text_color_gallery_fragment" />
+
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@color/text_color_gallery_fragment"
+                tools:text="14" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
