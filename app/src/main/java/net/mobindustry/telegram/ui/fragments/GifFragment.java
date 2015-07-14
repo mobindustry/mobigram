@@ -110,7 +110,7 @@ public class GifFragment extends Fragment {
         });
 
         toolbar.setNavigationIcon(R.drawable.ic_back);
-        toolbar.inflateMenu(R.menu.main);
+        toolbar.inflateMenu(R.menu.search_gif);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
