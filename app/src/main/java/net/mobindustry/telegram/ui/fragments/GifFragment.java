@@ -45,6 +45,7 @@ public class GifFragment extends Fragment {
     private int page = 0;
     private Toolbar toolbar;
     private FragmentTransaction fragmentTransaction;
+    private String search;
 
     @Nullable
     @Override
@@ -53,8 +54,6 @@ public class GifFragment extends Fragment {
         gifsList = (LoadMoreListView) view.findViewById(R.id.loadMoreList);
         progressBar = (ProgressBar) view.findViewById(R.id.gif_progress_bar);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_gif);
-        LoadGifs loadGifs = new LoadGifs();
-        loadGifs.execute();
         return view;
     }
 
@@ -74,7 +73,7 @@ public class GifFragment extends Fragment {
                             AndroidHttpClient httpClient = new AndroidHttpClient(Const.URL_GIF);
                             httpClient.setMaxRetries(5);
                             ParameterMap param = httpClient.newParams()
-                                    .add("q", "funny cat")
+                                    .add("q", search)
                                     .add("api_key", Const.API_KEY_GIF)
                                     .add("offset", String.valueOf(page));
                             HttpResponse httpResponse = httpClient.get("/v1/gifs/search", param);
@@ -120,13 +119,15 @@ public class GifFragment extends Fragment {
                 sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
-                        Log.e("Log", " " + query);
-                        return false;
+                        search=query;
+                        LoadGifs loadGifs = new LoadGifs();
+                        loadGifs.execute();
+                        return true;
                     }
 
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        Log.e("Log", " " + newText);
+                        Log.e("Log", "onQueryTextChange " + newText);
                         return false;
                     }
                 });
@@ -159,7 +160,7 @@ public class GifFragment extends Fragment {
                 AndroidHttpClient httpClient = new AndroidHttpClient(Const.URL_GIF);
                 httpClient.setMaxRetries(5);
                 ParameterMap param = httpClient.newParams()
-                        .add("q", "cat")
+                        .add("q", search)
                         .add("api_key", Const.API_KEY_GIF)
                         .add("offset", String.valueOf(page));
                 HttpResponse httpResponse = httpClient.get("/v1/gifs/search", param);
