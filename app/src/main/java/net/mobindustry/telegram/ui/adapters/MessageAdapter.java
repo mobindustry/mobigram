@@ -64,6 +64,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                             v.findViewById(R.id.gif_blend).setVisibility(View.GONE);
                             TdApi.File documentFile = document.document.document;
                             ImageView icon = (ImageView) v.findViewById(R.id.document_icon);
+                            icon.setImageBitmap(null);
                             Utils.gifFileCheckerAndLoader(documentFile, icon);
                         } else {
                             TdApi.File file = document.document.document;
@@ -210,7 +211,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
             TdApi.MessageDocument doc = (TdApi.MessageDocument) item.message;
             if(doc.document.mimeType.contains("gif")) {
-                View gifView = inflater.inflate(R.layout.gif_view_layout, null);
+                View gifView = inflater.inflate(R.layout.gif_document_view_layout, null);
                 ImageView icon = (ImageView) gifView.findViewById(R.id.document_icon);
                 TdApi.File documentFile = doc.document.thumb.photo;
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(doc.document.thumb.width * 3, doc.document.thumb.height * 3);
@@ -221,7 +222,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 View document = inflater.inflate(R.layout.document_view_layout, null);
                 TextView name = (TextView) document.findViewById(R.id.document_name);
                 TextView size = (TextView) document.findViewById(R.id.document_size);
-                String type = doc.document.mimeType;
                 name.setText(doc.document.fileName);
                 if (doc.document.document.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
                     TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) doc.document.document;

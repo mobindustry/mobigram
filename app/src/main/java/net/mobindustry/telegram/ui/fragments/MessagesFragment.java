@@ -151,8 +151,15 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             }
 
             @Override
-            public void loadDocument(int id, String mime) {
-                Utils.fileLoader(id);
+            public void loadDocument(final int id, final String mime) {
+                new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                    @Override
+                    public void onApiResult(BaseHandler output) {
+                        if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                            openDocument(DownloadFileHolder.getUpdatedFilePath(id), mime);
+                        }
+                    }
+                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
             }
 
             @Override
@@ -164,7 +171,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 } catch (Exception e) {
                     Log.e("Log", "Бабах!!!");
                 }
-                //startActivityForResult(intent, ExplorerActivity.FILE_CLOSED_SUCCESSFULLY);
             }
         });
         messageListView.setAdapter(adapter);
