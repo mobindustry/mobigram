@@ -5,22 +5,35 @@
     android:orientation="horizontal">
 
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <ProgressBar
-            android:id="@+id/download_document_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/document_icon"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            />
+
+        <FrameLayout
+            android:id="@+id/gif_blend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#aa090909"
+            >
+
+        </FrameLayout>
+
+        <ImageView
+            android:src="@drawable/photoload"
+            android:scaleType="fitCenter"
+            android:id="@+id/document_load_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             />
+
     </FrameLayout>
+
 </LinearLayout>

@@ -59,13 +59,21 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                         break;
                     case TdApi.MessageDocument.CONSTRUCTOR: {
                         TdApi.MessageDocument document = (TdApi.MessageDocument) message.message;
-                        TdApi.File file = document.document.document;
-                        if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
-                            TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
-                            loader.openDocument(fileLocal.path, document.document.mimeType);
+                        if(document.document.mimeType.contains("gif")) {
+                            v.findViewById(R.id.document_load_icon).setVisibility(View.GONE);
+                            v.findViewById(R.id.gif_blend).setVisibility(View.GONE);
+                            TdApi.File documentFile = document.document.document;
+                            ImageView icon = (ImageView) v.findViewById(R.id.document_icon);
+                            Utils.gifFileCheckerAndLoader(documentFile, icon);
                         } else {
-                            TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-                            loader.loadDocument(fileEmpty.id, document.document.mimeType);
+                            TdApi.File file = document.document.document;
+                            if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                                TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+                                loader.openDocument(fileLocal.path, document.document.mimeType);
+                            } else {
+                                TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+                                loader.loadDocument(fileEmpty.id, document.document.mimeType);
+                            }
                         }
                         break;
                     }
@@ -198,26 +206,22 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(contact);
         }
         if (item.message instanceof TdApi.MessageDocument) {
-            //Log.e("Message", "Document " + item.message);
+            Log.e("Message", "Document " + item.message);
 
             TdApi.MessageDocument doc = (TdApi.MessageDocument) item.message;
             if(doc.document.mimeType.contains("gif")) {
                 View gifView = inflater.inflate(R.layout.gif_view_layout, null);
                 ImageView icon = (ImageView) gifView.findViewById(R.id.document_icon);
-                TdApi.File documentFile = doc.document.document;
-                Utils.gifFileCheckerAndLoader(documentFile, icon);
+                TdApi.File documentFile = doc.document.thumb.photo;
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(doc.document.thumb.width * 3, doc.document.thumb.height * 3);
+                icon.setLayoutParams(params);
+                Utils.photoFileCheckerAndLoader(documentFile, icon);
                 layout.addView(gifView);
             } else {
                 View document = inflater.inflate(R.layout.document_view_layout, null);
-
-                ImageView icon = (ImageView) document.findViewById(R.id.document_icon);
-
                 TextView name = (TextView) document.findViewById(R.id.document_name);
                 TextView size = (TextView) document.findViewById(R.id.document_size);
-
                 String type = doc.document.mimeType;
-                Log.e("Log", type);
-
                 name.setText(doc.document.fileName);
                 if (doc.document.document.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
                     TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) doc.document.document;
@@ -226,8 +230,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     TdApi.FileLocal fileLocal = (TdApi.FileLocal) doc.document.document;
                     size.setText(Utils.formatFileSize(fileLocal.size));
                 }
-
-
                 layout.addView(document);
             }
         }

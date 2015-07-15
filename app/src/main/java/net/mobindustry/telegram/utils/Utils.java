@@ -89,7 +89,6 @@ public class Utils {
     public static void gifFileCheckerAndLoader(final TdApi.File file, final ImageView view) {
         if (file instanceof TdApi.FileEmpty) {
             final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-
             new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
                 @Override
                 public void onApiResult(BaseHandler output) {

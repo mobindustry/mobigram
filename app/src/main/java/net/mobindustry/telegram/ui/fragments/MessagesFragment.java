@@ -313,7 +313,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             if (title != null) {
                 name.setText(title);
             } else {
-                name.setText("Title error"); //todo verify
+                name.setText("Title error");
             }
 
             toolbar.inflateMenu(R.menu.message_menu);
@@ -344,7 +344,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     switch (item.getItemId()) {
                         case R.id.clear_history:
                             Log.e("Log", "ClearChatHistory");
-                            new ApiClient<>(new TdApi.DeleteChatHistory(chat.id), new OkHandler(), new ApiClient.OnApiResultHandler() { //todo verify result
+                            new ApiClient<>(new TdApi.DeleteChatHistory(chat.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
                                 @Override
                                 public void onApiResult(BaseHandler output) {
                                     if (output == null) {
