@@ -20,7 +20,7 @@ public class NotificationCreator extends BroadcastReceiver {
 
         if (!DataHolder.isActive() && intent.getAction().equals(Const.NEW_MESSAGE_ACTION)) {
                 int id = intent.getIntExtra("message_id", 0);
-            Log.e("Log", "creator id " + id);
+            Log.e("Log", "Notification creator id " + id);
                 long chat_id = intent.getLongExtra("chatId", 0);
                 String message = intent.getStringExtra("message");
             Intent messageIntent = new Intent(context, ChatActivity.class);
