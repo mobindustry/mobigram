@@ -29,12 +29,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SendGif extends Service {
+    private long id;
 
     private ExecutorService executorService;
 
     public void onCreate() {
         super.onCreate();
         Log.e("Log", "Service Gif start");
+        id=ListFoldersHolder.getChatID();
         executorService = Executors.newFixedThreadPool(1);
     }
 
@@ -127,7 +129,7 @@ public class SendGif extends Service {
         public void run() {
             for (int i = 0; i < ListFoldersHolder.getListGif().size(); i++) {
                 String link = downloadFromUrl(ListFoldersHolder.getListGif().get(i));
-                sendGifMessage(ListFoldersHolder.getChatID(), link);
+                sendGifMessage(id, link);
             }
             stopSelf();
         }

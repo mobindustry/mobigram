@@ -82,9 +82,6 @@ public class GifAdapter extends ArrayAdapter<GiphyObject> implements Serializabl
         }
 
         ImageLoaderHelper.displayImageList(giphyObject.getPath(), image);
-        //todo
-        //Glide.with(convertView.getContext()).load(giphyObject.getPath()).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(new ImageView(getContext()));
-        //Glide.getPhotoCacheDir(getContext());
         return convertView;
     }
 }

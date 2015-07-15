@@ -586,7 +586,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 makePhoto();
                                 break;
                             case R.id.gallery:
-                                if (ListFoldersHolder.getChatID()==0){
                                     Intent intentGallery = new Intent(getActivity(), TransparentActivity.class);
                                     intentGallery.putExtra("choice", Const.GALLERY_FRAGMENT);
                                     startActivityForResult(intentGallery, 1);
@@ -594,7 +593,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                     ListFoldersHolder.setListFolders(null);
                                     ListFoldersHolder.setList(null);
                                     ListFoldersHolder.setChatID(getShownChatId());
-                                }
                                 break;
                             case R.id.video:
                                 Toast.makeText(getActivity(),
