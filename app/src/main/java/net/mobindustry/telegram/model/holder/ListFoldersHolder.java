@@ -2,6 +2,8 @@ package net.mobindustry.telegram.model.holder;
 
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
+import net.mobindustry.telegram.utils.GiphyObject;
+import net.mobindustry.telegram.utils.MediaGallery;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,10 +13,28 @@ public class ListFoldersHolder {
     private static List<FileWithIndicator>list=new ArrayList<>();
     private static int checkQuantity=0;
     private static List<FolderCustomGallery>listFolders;
-    private static List<String>listForSending;
+    private static List<MediaGallery>listForSending;
     private static String nameHolder;
     private static int currentSelectedPhoto;
     private static long chatID;
+    private static List<GiphyObject> giphyObjectList;
+    private static List<String>listGif;
+
+    public static List<String> getListGif() {
+        return listGif;
+    }
+
+    public static void setListGif(List<String> listGif) {
+        ListFoldersHolder.listGif = listGif;
+    }
+
+    public static List<GiphyObject> getGiphyObjectList() {
+        return giphyObjectList;
+    }
+
+    public static void setGiphyObjectList(List<GiphyObject> giphyObjectList) {
+        ListFoldersHolder.giphyObjectList = giphyObjectList;
+    }
 
     public static long getChatID() {
         return chatID;
@@ -40,11 +60,11 @@ public class ListFoldersHolder {
         ListFoldersHolder.nameHolder = nameHolder;
     }
 
-    public static List<String> getListForSending() {
+    public static List<MediaGallery> getListForSending() {
         return listForSending;
     }
 
-    public static void setListForSending(List<String> listForSending) {
+    public static void setListForSending(List<MediaGallery> listForSending) {
         ListFoldersHolder.listForSending = listForSending;
     }
 

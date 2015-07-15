@@ -13,6 +13,8 @@
 
     <style name="AppTheme.SearchView" parent="Widget.AppCompat.SearchView">
         <item name="closeIcon">@drawable/ic_close_white</item>
+        <item name="queryBackground">@drawable/abc_textfield_search_material</item>
+        <item name="submitBackground">@drawable/abc_textfield_search_material</item>
     </style>
 
     <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.Light.NoActionBar">

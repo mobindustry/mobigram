@@ -34,6 +34,7 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
+import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.core.handlers.StickerHandler;
 import net.mobindustry.telegram.core.handlers.StickersHandler;
 import net.mobindustry.telegram.core.handlers.UserHandler;
@@ -415,4 +416,14 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         DataHolder.setActive(false);
 
     }
+
+    public void sendGiphyMessage(long chatId, String path) {
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageDocument(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
 }

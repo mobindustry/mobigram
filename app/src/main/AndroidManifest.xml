@@ -28,6 +28,9 @@
             android:name=".core.service.CreateGalleryThumbs"
             android:exported="false"/>
         <service
+            android:name=".core.service.SendGif"
+            android:exported="false"/>
+        <service
             android:name=".core.service.NotificationsService"
             android:exported="false"/>
 

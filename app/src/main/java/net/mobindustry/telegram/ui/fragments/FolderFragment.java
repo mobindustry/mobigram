@@ -24,6 +24,7 @@ import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.FolderAdapter;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.FileWithIndicator;
+import net.mobindustry.telegram.utils.ImagesObject;
 import net.mobindustry.telegram.utils.Utils;
 
 import java.io.Serializable;
@@ -180,7 +181,11 @@ public class FolderFragment extends Fragment {
             public void onClick(View v) {
                 if (ListFoldersHolder.getListForSending() != null) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
-                        ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(), ListFoldersHolder.getListForSending().get(i));
+                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject){
+                            ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(),
+                                    ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
+
+                        }
                     }
                     ListFoldersHolder.setListForSending(null);
                     getActivity().finish();

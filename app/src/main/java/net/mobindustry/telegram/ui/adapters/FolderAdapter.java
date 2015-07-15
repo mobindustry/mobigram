@@ -13,6 +13,8 @@ import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
+import net.mobindustry.telegram.utils.ImagesObject;
+import net.mobindustry.telegram.utils.MediaGallery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,6 @@ public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
     private LayoutInflater inflater;
     private ImageView photo;
     private View.OnClickListener clickListener;
-    private List<String>listForHolder=new ArrayList<>();
 
 
     public FolderAdapter(Context context, final LoadPhotos loadPhotos) {
@@ -34,15 +35,24 @@ public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
                 FileWithIndicator galleryFolder = (FileWithIndicator) v.getTag();
                 if (galleryFolder.isCheck()) {
                     galleryFolder.setCheck(false);
-                    listForHolder.remove(galleryFolder.getFile().getAbsolutePath());
-                    ListFoldersHolder.setListForSending(listForHolder);
+                    for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
+                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject){
+                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().equals(galleryFolder.getFile().getAbsolutePath())){
+                                ListFoldersHolder.getListForSending().remove(ListFoldersHolder.getListForSending().get(i));
+                            }
+                        }
+                    }
                     ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getCheckQuantity() - 1);
                     loadPhotos.load();
                 } else {
                     if (ListFoldersHolder.getCheckQuantity()<10){
                         galleryFolder.setCheck(true);
-                        listForHolder.add(galleryFolder.getFile().getAbsolutePath());
-                        ListFoldersHolder.setListForSending(listForHolder);
+                        ImagesObject imagesObject=new ImagesObject();
+                        imagesObject.setPath(galleryFolder.getFile().getAbsolutePath());
+                        if (ListFoldersHolder.getListForSending()==null){
+                            ListFoldersHolder.setListForSending(new ArrayList<MediaGallery>());
+                        }
+                        ListFoldersHolder.getListForSending().add(imagesObject);
                         ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getCheckQuantity() + 1);
                         loadPhotos.load();
                     }

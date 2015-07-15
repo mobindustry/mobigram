@@ -84,6 +84,7 @@ public class TransparentActivity extends AppCompatActivity {
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

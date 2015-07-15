@@ -26,6 +26,8 @@ import net.mobindustry.telegram.ui.fragments.FolderFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 import net.mobindustry.telegram.ui.fragments.PageFragment;
 import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.ImagesObject;
+import net.mobindustry.telegram.utils.MediaGallery;
 import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -44,7 +46,6 @@ public class PhotoViewPagerActivity extends FragmentActivity {
     private int photoNumber;
     private FrameLayout send;
     private FrameLayout cancel;
-    private List<String> listForHolder = new ArrayList<>();
 
     public int getPhotoNumber() {
         return photoNumber;
@@ -93,7 +94,10 @@ public class PhotoViewPagerActivity extends FragmentActivity {
             public void onClick(View v) {
                 if (ListFoldersHolder.getListForSending() != null) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
-                        sendPhotoMessage(ListFoldersHolder.getChatID(), ListFoldersHolder.getListForSending().get(i));
+                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
+                            sendPhotoMessage(ListFoldersHolder.getChatID(), ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
+                        }
+
                     }
                     Intent intent = new Intent();
                     intent.putExtra("choice", Const.SEND_FOLDER_FRAGMENT);
@@ -190,15 +194,18 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                 if (!ListFoldersHolder.getList().get(getPhotoNumber()).isCheck()) {
                     image.setImageResource(R.drawable.ic_attach_check);
                     ListFoldersHolder.getList().get(getPhotoNumber()).setCheck(true);
-                    //listForHolder.remove(ListFoldersHolder.getList().get(getPhotoNumber()).getFile().getAbsolutePath());
                     if (ListFoldersHolder.getListForSending() == null) {
-                        ListFoldersHolder.setListForSending(new ArrayList<String>());
+                        ListFoldersHolder.setListForSending(new ArrayList<MediaGallery>());
                         String path = ListFoldersHolder.getList().get(getPhotoNumber()).getFile().getAbsolutePath();
-                        ListFoldersHolder.getListForSending().add(path);
+                        ImagesObject imagesObject = new ImagesObject();
+                        imagesObject.setPath(path);
+                        ListFoldersHolder.getListForSending().add(imagesObject);
                     } else {
                         String path = ListFoldersHolder.getList().get(getPhotoNumber()).getFile().getAbsolutePath();
-                        List<String> list = ListFoldersHolder.getListForSending();
-                        list.add(path);
+                        List<MediaGallery> list = ListFoldersHolder.getListForSending();
+                        ImagesObject imagesObject = new ImagesObject();
+                        imagesObject.setPath(path);
+                        list.add(imagesObject);
                         ListFoldersHolder.setListForSending(list);
                     }
                     ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getListForSending().size());
@@ -207,14 +214,25 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                         image.setImageResource(R.drawable.ic_circle);
                         ListFoldersHolder.getList().get(getPhotoNumber()).setCheck(false);
                         if (ListFoldersHolder.getListForSending() == null) {
-                            ListFoldersHolder.setListForSending(new ArrayList<String>());
+                            ListFoldersHolder.setListForSending(new ArrayList<MediaGallery>());
                             String path = ListFoldersHolder.getList().get(getPhotoNumber()).getFile().getAbsolutePath();
-                            ListFoldersHolder.getListForSending().remove(path);
+                            for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
+                                if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
+                                    if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().equals(path)) {
+                                        ListFoldersHolder.getListForSending().remove(ListFoldersHolder.getListForSending().get(i));
+                                    }
+                                }
+                            }
+
                         } else {
                             String path = ListFoldersHolder.getList().get(getPhotoNumber()).getFile().getAbsolutePath();
-                            List<String> list = ListFoldersHolder.getListForSending();
-                            list.remove(path);
-                            ListFoldersHolder.setListForSending(list);
+                            for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
+                                if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
+                                    if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().equals(path)) {
+                                        ListFoldersHolder.getListForSending().remove(ListFoldersHolder.getListForSending().get(i));
+                                    }
+                                }
+                            }
                         }
                         ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getListForSending().size());
                     }
