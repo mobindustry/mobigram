@@ -55,6 +55,9 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         final ImageView imageIcon = (ImageView) convertView.findViewById(R.id.message_icon_image);
 
+        imageIcon.setImageBitmap(null);
+        lastMessage.setText("");
+
         TdApi.Chat item = getItem(position);
         TdApi.ChatInfo info = item.type;
 

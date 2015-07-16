@@ -152,7 +152,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                     long chatId = intent.getLongExtra("chat_id", 0);
                     int unread = intent.getIntExtra("unread_count", 0);
                     int lastRead = intent.getIntExtra("last_read", 0);
-                    getChatListFragment().update(chatId, unread, lastRead);
+                    getChatListFragment().updateChat(chatId, unread, lastRead);
                 }
                 if (intent.getAction().equals(Const.UPDATE_USER_ACTION)) {
                     int userId = intent.getIntExtra("user_id", 0);

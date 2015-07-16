@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,10 @@ import com.melnykov.fab.FloatingActionButton;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.ChatHandler;
 import net.mobindustry.telegram.core.handlers.ChatsHandler;
 import net.mobindustry.telegram.core.handlers.LogHandler;
+import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.core.handlers.StickerHandler;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
@@ -29,7 +32,7 @@ import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
-public class ChatListFragment extends ListFragment implements ApiClient.OnApiResultHandler {
+public class ChatListFragment extends ListFragment{
 
     boolean dualPane;
     int currentCheckPosition = 0;
@@ -99,7 +102,18 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     }
 
     public void getChatsList(int offset, int limit) {
-        new ApiClient<>(new TdApi.GetChats(offset, limit), new ChatsHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        new ApiClient<>(new TdApi.GetChats(offset, limit), new ChatsHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+                if (output == null) {
+                    getChatsList(0, 200);
+                } else {
+                    if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
+                        setChatsList((TdApi.Chats) output.getResponse());
+                    }
+                }
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public TdApi.Chat getChat() {
@@ -123,10 +137,6 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
     public void setAdapterFilter(String filter) {
         adapter.getFilter().filter(filter);
         adapter.notifyDataSetChanged();
-    }
-
-    public void deleteChatFromAdapter(TdApi.Chat chat) {
-        adapter.remove(chat);
     }
 
     @Override
@@ -157,39 +167,45 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
         layout.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Const.REQUEST_CODE_NEW_MESSAGE && resultCode == Activity.RESULT_OK) {
-            long resultId = data.getLongExtra("id", 0);
-            openChat(resultId);
-        }
-    }
-
     public void openChat(long resultId) {
         clickedId = resultId;
         int position = getChatPosition(resultId);
         if (position == Const.CHAT_NOT_FOUND) {
-            Toast.makeText(getActivity(), "You have no chat with this contact. " +
-                    "Open a new chat with a contact in the development mode.", Toast.LENGTH_LONG).show();
-
+            newPrivateChat(resultId);
         } else {
             showMessages(position);
         }
     }
 
-    @Override
-    public void onApiResult(BaseHandler output) {
-        if (output == null) {
-            getChatsList(0, 200);
-        } else {
-            if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
-                setChatsList((TdApi.Chats) output.getResponse());
+    private void newPrivateChat(long userId) {
+        new ApiClient<>(new TdApi.CreatePrivateChat((int) userId), new OkHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
             }
-        }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        new ApiClient<>(new TdApi.GetChat(userId), new ChatHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+                if(output.getHandlerId() == ChatHandler.HANDLER_ID) {
+                    TdApi.Chat chat = (TdApi.Chat) output.getResponse();
+                    clickedId = chat.id;
+                    addChatToChatsArray(chat);
+                    adapter.clear();
+                    adapter.addAll(chats.chats);
+                    showMessages(adapter.getPosition(chat));
+                }
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
-    public void update(long chatId, int unread, int lastRead) {
+    private void addChatToChatsArray(TdApi.Chat chat) {
+        TdApi.Chat[] newChatArray = new TdApi.Chat[chats.chats.length + 1];
+        newChatArray[0] = chat;
+        System.arraycopy(chats.chats, 0, newChatArray, 1, chats.chats.length);
+        chats = new TdApi.Chats(newChatArray);
+    }
+
+    public void updateChat(long chatId, int unread, int lastRead) {
         int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
             TdApi.Chat chat = adapter.getItem(i);
@@ -199,5 +215,14 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Const.REQUEST_CODE_NEW_MESSAGE && resultCode == Activity.RESULT_OK) {
+            long resultId = data.getLongExtra("id", 0);
+            openChat(resultId);
+        }
     }
 }

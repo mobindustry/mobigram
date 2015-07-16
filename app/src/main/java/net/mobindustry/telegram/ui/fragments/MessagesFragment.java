@@ -45,6 +45,7 @@ import com.soundcloud.android.crop.Crop;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.ChatHandler;
 import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
@@ -330,7 +331,17 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                     }
                                     Log.e("Log", "History cleared");
                                     destroyFragment(fragmentTransaction);
-                                    fragment.deleteChatFromAdapter(chat);
+                                    fragment.getChatsList(0, 200);
+                                }
+                            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                            new ApiClient<>(new TdApi.GetChat(chat.id), new ChatHandler(), new ApiClient.OnApiResultHandler() {
+                                @Override
+                                public void onApiResult(BaseHandler output) {
+                                    if(output.getHandlerId() == ChatHandler.HANDLER_ID) {
+                                        TdApi.Chat chat = (TdApi.Chat) output.getResponse();
+                                        Log.e("Log", chat.toString());
+
+                                    }
                                 }
                             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                             break;
@@ -409,6 +420,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     public void setChatHistory(final TdApi.Messages messages) {
+        noMessages.setVisibility(View.GONE);
         adapter.setNotifyOnChange(false);
         for (int i = 0; i < messages.messages.length; i++) {
             adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
@@ -427,21 +439,17 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         return chat.id;
     }
 
-    public int getShownIndex() {
-        return getArguments().getInt("index", 0);
-    }
-
     public void getChatHistory(final long id, final int messageId, final int offset, final int limit, final Enums.MessageAddType type) {
         new ApiClient<>(new TdApi.GetChatHistory(id, messageId, offset, limit), new ChatHistoryHandler(), new ApiClient.OnApiResultHandler() {
             @Override
             public void onApiResult(BaseHandler output) {
-                if (output == null) {
-                    progressBar.setVisibility(View.GONE);
-                    noMessages.setVisibility(View.VISIBLE);
-                }
                 if (output.getHandlerId() == ChatHistoryHandler.HANDLER_ID) {
                     TdApi.Messages messages = (TdApi.Messages) output.getResponse();
-                    if (messages.messages.length != 0 && chat.id == messages.messages[0].chatId) {
+                    if(messages == null) {
+                        progressBar.setVisibility(View.GONE);
+                        noMessages.setVisibility(View.VISIBLE);
+                    } else if (messages.messages.length != 0 && chat.id == messages.messages[0].chatId) {
+                        noMessages.setVisibility(View.GONE);
                         switch (type) {
                             case ALL:
                                 toScrollLoadMessageId = messages.messages[messages.messages.length - 1].id;
@@ -470,12 +478,11 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     private TdApi.Message parseEmojiMessages(TdApi.Message message1) {
-        TdApi.Message message = message1;
-        if (message.message.getConstructor() == TdApi.MessageText.CONSTRUCTOR) {
-            TdApi.MessageText text = (TdApi.MessageText) message.message;
+        if (message1.message.getConstructor() == TdApi.MessageText.CONSTRUCTOR) {
+            TdApi.MessageText text = (TdApi.MessageText) message1.message;
             emojiParser.parse(text);
         }
-        return message;
+        return message1;
     }
 
     public void sendTextMessage(long chatId, String message) {
