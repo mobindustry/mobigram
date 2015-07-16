@@ -18,6 +18,7 @@ import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 public class ImageLoaderHelper {
 
@@ -37,6 +38,11 @@ public class ImageLoaderHelper {
                     path = DownloadFileHolder.getUpdatedFilePath(id);
                     if (path != null) {
                         break;
+                    }
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(250);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 } while (path == null);
                 return super.getStream(Const.IMAGE_LOADER_PATH_PREFIX + path, extra);

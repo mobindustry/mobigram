@@ -8,50 +8,47 @@
         android:layout_width="wrap_content"
         android:layout_height="90dp">
 
-        <ProgressBar
-            android:id="@+id/download_document_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            />
-
         <ImageView
-            android:src="@drawable/photoload"
-            android:scaleType="fitCenter"
             android:id="@+id/document_icon"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            />
+            android:scaleType="fitCenter"
+            android:src="@drawable/photoload" />
+
+        <ProgressBar
+            android:id="@+id/download_document_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="150dp"
-        android:orientation="vertical"
         android:layout_margin="3dp"
-        >
+        android:minWidth="150dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/document_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="#000"
             android:maxWidth="250dp"
-            android:paddingEnd="10dp"
-            />
+            android:paddingRight="10dp"
+            android:textColor="#000"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/document_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
             android:textColor="#ff0087ff"
+            android:textSize="14sp"
 
             />
 

@@ -10,6 +10,7 @@ import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -29,6 +30,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
 
@@ -98,6 +100,11 @@ public class Utils {
                             path = DownloadFileHolder.getUpdatedFilePath(fileEmpty.id);
                             if (path != null) {
                                 break;
+                            }
+                            try {
+                                TimeUnit.MILLISECONDS.sleep(250);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
                         } while (path == null);
                         Glide.with(DataHolder.getContext()).load(path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
@@ -200,6 +207,15 @@ public class Utils {
             hrSize = dec.format(b).concat(" B");
         }
         return hrSize;
+    }
+
+    public static String getMimeType(String url) {
+        String type = null;
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (extension != null) {
+            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+        return type;
     }
 }
 

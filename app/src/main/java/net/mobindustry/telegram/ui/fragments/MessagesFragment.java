@@ -71,6 +71,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 
 public class MessagesFragment extends Fragment implements Serializable, ApiClient.OnApiResultHandler {
 
@@ -91,6 +92,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     public boolean isMessagesLoading = false;
     public boolean needLoad = true;
+
 
     private ChatActivity activity;
     private MessageAdapter adapter;
@@ -141,38 +143,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 setFirstVisibleItem(firstVisibleItem);
             }
         });
-        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), new MessageAdapter.Loader() {
-            @Override
-            public void loadMore() {
-                if (needLoad && !isMessagesLoading) {
-                    getChatHistory(chat.id, toScrollLoadMessageId, MESSAGE_LOAD_OFFSET, MESSAGE_LOAD_LIMIT, Enums.MessageAddType.SCROLL);
-                    isMessagesLoading = true;
-                }
-            }
-
-            @Override
-            public void loadDocument(final int id, final String mime) {
-                new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                    @Override
-                    public void onApiResult(BaseHandler output) {
-                        if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                            openDocument(DownloadFileHolder.getUpdatedFilePath(id), mime);
-                        }
-                    }
-                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-            }
-
-            @Override
-            public void openDocument(String path, String mime) {
-                try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(path), mime);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    Log.e("Log", "Бабах!!!");
-                }
-            }
-        });
+        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), loader);
         messageListView.setAdapter(adapter);
         progressBar = (ProgressBar) view.findViewById(R.id.messages_progress_bar);
         return view;
@@ -586,13 +557,13 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 makePhoto();
                                 break;
                             case R.id.gallery:
-                                    Intent intentGallery = new Intent(getActivity(), TransparentActivity.class);
-                                    intentGallery.putExtra("choice", Const.GALLERY_FRAGMENT);
-                                    startActivityForResult(intentGallery, 1);
-                                    ListFoldersHolder.setCheckQuantity(0);
-                                    ListFoldersHolder.setListFolders(null);
-                                    ListFoldersHolder.setList(null);
-                                    ListFoldersHolder.setChatID(getShownChatId());
+                                Intent intentGallery = new Intent(getActivity(), TransparentActivity.class);
+                                intentGallery.putExtra("choice", Const.GALLERY_FRAGMENT);
+                                startActivityForResult(intentGallery, 1);
+                                ListFoldersHolder.setCheckQuantity(0);
+                                ListFoldersHolder.setListFolders(null);
+                                ListFoldersHolder.setList(null);
+                                ListFoldersHolder.setChatID(getShownChatId());
                                 break;
                             case R.id.video:
                                 Toast.makeText(getActivity(),
@@ -688,6 +659,74 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         dissmissEmojiPopup();
         super.onDetach();
     }
+
+    private MessageAdapter.Loader loader = new MessageAdapter.Loader() {
+        @Override
+        public void loadMore() {
+            if (needLoad && !isMessagesLoading) {
+                getChatHistory(chat.id, toScrollLoadMessageId, MESSAGE_LOAD_OFFSET, MESSAGE_LOAD_LIMIT, Enums.MessageAddType.SCROLL);
+                isMessagesLoading = true;
+            }
+        }
+
+        @Override
+        public void loadFile(final int id, final View v) {
+            new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                @Override
+                public void onApiResult(BaseHandler output) {
+                    if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                        DownloadFileHandler handler = (DownloadFileHandler) output;
+                        if (handler.getResponse().getConstructor() == TdApi.Ok.CONSTRUCTOR) {
+                            Runnable runnable = new Runnable() {
+                                public void run() {
+                                    String path;
+                                    do {
+                                        path = DownloadFileHolder.getUpdatedFilePath(id);
+                                        try {
+                                            TimeUnit.MILLISECONDS.sleep(250);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        if (path != null) {
+                                            final String finalPath = path;
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                public void run() {
+                                                    Toast.makeText(getActivity(), "File loaded.", Toast.LENGTH_SHORT).show();
+                                                    openFile(finalPath, v);
+                                                                                                    }
+                                            });
+                                            break;
+                                        }
+                                    } while (path == null);
+                                }
+                            };
+                            new Thread(runnable).start();
+                        }
+                    }
+                }
+            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        }
+
+        @Override
+        public void openFile(String path, View v) {
+            v.setVisibility(View.GONE);
+
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(path), Utils.getMimeType(path));
+                startActivity(intent);
+            } catch (Exception e) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    File file = new File(path);
+                    String dir = file.getParent();
+                    intent.setDataAndType(Uri.parse(dir), "resource/folder");
+                    startActivity(intent);
+                } catch (Exception e1) {
+                    Toast.makeText(getActivity(), "On your device no programs to open a file of this type. The file is saved to the address " + path, Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    };
+
 }
-
-

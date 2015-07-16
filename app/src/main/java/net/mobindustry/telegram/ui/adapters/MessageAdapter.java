@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
@@ -44,6 +45,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         this.loader = loader;
 
         //TODO receive audio, video, documents, contact messages...
+        //TODO onToolbarUserInfo click open user info
 
         onClickListener = new View.OnClickListener() {
             @Override
@@ -53,13 +55,15 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 switch (message.message.getConstructor()) {
                     case TdApi.MessageAudio.CONSTRUCTOR:
                         TdApi.MessageAudio audio = (TdApi.MessageAudio) message.message;
+
                         break;
                     case TdApi.MessageContact.CONSTRUCTOR:
                         TdApi.MessageContact contact = (TdApi.MessageContact) message.message;
+                        //Nothing to do...
                         break;
                     case TdApi.MessageDocument.CONSTRUCTOR: {
                         TdApi.MessageDocument document = (TdApi.MessageDocument) message.message;
-                        if(document.document.mimeType.contains("gif")) {
+                        if (document.document.mimeType.contains("gif")) {
                             v.findViewById(R.id.document_load_icon).setVisibility(View.GONE);
                             v.findViewById(R.id.gif_blend).setVisibility(View.GONE);
                             TdApi.File documentFile = document.document.document;
@@ -67,13 +71,15 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                             icon.setImageBitmap(null);
                             Utils.gifFileCheckerAndLoader(documentFile, icon);
                         } else {
+                            ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.download_document_progress_bar);
+                            progressBar.setVisibility(View.VISIBLE);
                             TdApi.File file = document.document.document;
                             if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
                                 TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
-                                loader.openDocument(fileLocal.path, document.document.mimeType);
+                                loader.openFile(fileLocal.path, progressBar);
                             } else {
                                 TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-                                loader.loadDocument(fileEmpty.id, document.document.mimeType);
+                                loader.loadFile(fileEmpty.id, progressBar);
                             }
                         }
                         break;
@@ -108,6 +114,16 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     }
                     case TdApi.MessageVideo.CONSTRUCTOR:
                         TdApi.MessageVideo video = (TdApi.MessageVideo) message.message;
+                        ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.download_video_progress_bar);
+                        progressBar.setVisibility(View.VISIBLE);
+                        TdApi.File file = video.video.video;
+                        if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                            TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+                            loader.openFile(fileLocal.path, progressBar);
+                        } else {
+                            TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+                            loader.loadFile(fileEmpty.id, progressBar);
+                        }
                         break;
                 }
             }
@@ -173,15 +189,11 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
 
         TdApi.Message item = getItem(position);
-
         FrameLayout layout = new FrameLayout(getContext());
 
         if (item.message instanceof TdApi.MessagePhoto) {
-
             TdApi.MessagePhoto messagePhoto = (TdApi.MessagePhoto) item.message;
-
             final ImageView photo = new ImageView(getContext());
-
             for (int i = 0; i < messagePhoto.photo.photos.length; i++) {
                 if (messagePhoto.photo.photos[i].type.equals("m")) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[i].width, messagePhoto.photo.photos[i].height);
@@ -200,17 +212,31 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(audio);
         }
         if (item.message instanceof TdApi.MessageContact) {
-            //Log.i("Message", "Contact " + item.message);
-            TextView contact = new TextView(getContext());
-            contact.setText("Contact");
+            Log.i("Message", "Contact " + item.message);
+            TdApi.MessageContact contact = (TdApi.MessageContact) item.message;
 
-            layout.addView(contact);
+            View contactView = inflater.inflate(R.layout.contact_message, null);
+            TextView name = (TextView) contactView.findViewById(R.id.contact_message_name);
+            TextView phone = (TextView) contactView.findViewById(R.id.contact_message_phone);
+            TextView icon = (TextView) contactView.findViewById(R.id.contackt_message_icon);
+
+            int sdk = android.os.Build.VERSION.SDK_INT;
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -contact.userId));
+            } else {
+                icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -contact.userId));
+            }
+            icon.setText(Utils.getInitials(contact.firstName, contact.lastName));
+            phone.setText(contact.phoneNumber);
+            name.setText(contact.firstName + " " + contact.lastName);
+
+            layout.addView(contactView);
         }
         if (item.message instanceof TdApi.MessageDocument) {
-            Log.e("Message", "Document " + item.message);
+            //Log.e("Message", "Document " + item.message);
 
             TdApi.MessageDocument doc = (TdApi.MessageDocument) item.message;
-            if(doc.document.mimeType.contains("gif")) {
+            if (doc.document.mimeType.contains("gif")) {
                 View gifView = inflater.inflate(R.layout.gif_document_view_layout, null);
                 ImageView icon = (ImageView) gifView.findViewById(R.id.document_icon);
                 TdApi.File documentFile = doc.document.thumb.photo;
@@ -219,18 +245,21 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 Utils.photoFileCheckerAndLoader(documentFile, icon);
                 layout.addView(gifView);
             } else {
-                View document = inflater.inflate(R.layout.document_view_layout, null);
-                TextView name = (TextView) document.findViewById(R.id.document_name);
-                TextView size = (TextView) document.findViewById(R.id.document_size);
-                name.setText(doc.document.fileName);
-                if (doc.document.document.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
-                    TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) doc.document.document;
-                    size.setText(Utils.formatFileSize(fileEmpty.size));
-                } else {
+                View view = inflater.inflate(R.layout.document_view_layout, null);
+                ImageView icon = (ImageView) view.findViewById(R.id.document_icon);
+                TextView name = (TextView) view.findViewById(R.id.document_name);
+                TextView size = (TextView) view.findViewById(R.id.document_size);
+                if (doc.document.document.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
                     TdApi.FileLocal fileLocal = (TdApi.FileLocal) doc.document.document;
                     size.setText(Utils.formatFileSize(fileLocal.size));
+                    icon.setImageResource(R.drawable.photocheck);
+                } else {
+                    TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) doc.document.document;
+                    size.setText(Utils.formatFileSize(fileEmpty.size));
+                    icon.setImageResource(R.drawable.photoload);
                 }
-                layout.addView(document);
+                name.setText(doc.document.fileName);
+                layout.addView(view);
             }
         }
         if (item.message instanceof TdApi.MessageGeoPoint) {
@@ -263,17 +292,31 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(stickerImage);
         }
         if (item.message instanceof TdApi.MessageVideo) {
-            //Log.i("Message", "Video " + item.message);
+            Log.e("Message", "Video " + item.message);
 
             TdApi.MessageVideo messageVideo = (TdApi.MessageVideo) item.message;
-            if (messageVideo.video.thumb.photo instanceof TdApi.FileLocal) {
-                TdApi.FileLocal file = (TdApi.FileLocal) messageVideo.video.thumb.photo;
-                ImageView video = new ImageView(getContext());
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT);
-                video.setLayoutParams(layoutParams);
-                video.setImageURI(Uri.parse(file.path));
-                layout.addView(video);
+            View view = inflater.inflate(R.layout.video_message_view, null);
+            ImageView icon = (ImageView) view.findViewById(R.id.video_icon);
+            ImageView loadIcon = (ImageView) view.findViewById(R.id.video_load_icon);
+
+            TdApi.File file = messageVideo.video.thumb.photo;
+            TdApi.PhotoSize photo = messageVideo.video.thumb;
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(photo.width * 3, photo.height * 3);
+            icon.setLayoutParams(params);
+            if (messageVideo.video.video.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                loadIcon.setImageResource(R.drawable.photocheck);
+            } else {
+                loadIcon.setImageResource(R.drawable.photoload);
             }
+            if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+                icon.setImageURI(Uri.parse(fileLocal.path));
+            } else {
+                TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+                Utils.photoFileLoader(fileEmpty.id, icon);
+
+            }
+            layout.addView(view);
         }
         if (item.message instanceof TdApi.MessageUnsupported) {
             Log.i("Message", "Unsupported " + item.message);
@@ -355,7 +398,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
     public interface Loader {
         void loadMore();
-        void loadDocument(int id, String mime);
-        void openDocument(String path, String mime);
+        void loadFile(int id, View v);
+        void openFile(String path, View v);
     }
 }
