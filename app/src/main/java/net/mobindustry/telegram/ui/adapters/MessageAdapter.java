@@ -59,7 +59,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                         break;
                     case TdApi.MessageContact.CONSTRUCTOR:
                         TdApi.MessageContact contact = (TdApi.MessageContact) message.message;
-                        //Nothing to do...
+
                         break;
                     case TdApi.MessageDocument.CONSTRUCTOR: {
                         TdApi.MessageDocument document = (TdApi.MessageDocument) message.message;

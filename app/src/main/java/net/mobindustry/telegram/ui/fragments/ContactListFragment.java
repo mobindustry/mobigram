@@ -20,7 +20,7 @@ import net.mobindustry.telegram.ui.adapters.ContactListAdapter;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
-public class NewMessageFragment extends Fragment {
+public class ContactListFragment extends Fragment {
 
     private TdApi.Contacts contacts;
     private ContactListAdapter adapter;

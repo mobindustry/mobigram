@@ -18,10 +18,9 @@ import net.mobindustry.telegram.ui.fragments.ChooseFileFragment;
 import net.mobindustry.telegram.ui.fragments.FolderFragment;
 import net.mobindustry.telegram.ui.fragments.GalleryFragment;
 import net.mobindustry.telegram.ui.fragments.LocationFragment;
-import net.mobindustry.telegram.ui.fragments.NewMessageFragment;
+import net.mobindustry.telegram.ui.fragments.ContactListFragment;
 import net.mobindustry.telegram.ui.fragments.SelectedMapFragment;
 import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.FolderCustomGallery;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -48,8 +47,8 @@ public class TransparentActivity extends AppCompatActivity {
 
         switch (choice) {
             case Const.NEW_MESSAGE_FRAGMENT:
-                NewMessageFragment newMessageFragment = new NewMessageFragment();
-                fragmentTransaction.replace(R.id.transparent_content, newMessageFragment);
+                ContactListFragment contactListFragment = new ContactListFragment();
+                fragmentTransaction.replace(R.id.transparent_content, contactListFragment);
                 break;
             case Const.FILE_CHOOSE_FRAGMENT:
                 ChooseFileFragment chooseFileFragment = new ChooseFileFragment();
