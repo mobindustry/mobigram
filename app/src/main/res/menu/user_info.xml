@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <item
+        android:id="@+id/share_user"
+        android:title="@string/share_user_menu_text" />
+    <item
+        android:id="@+id/delete_user"
+        android:title="@string/delete_user_menu_text" />
+    <item
+        android:id="@+id/block_user"
+        android:title="@string/block_user_menu_text" />
+</menu>

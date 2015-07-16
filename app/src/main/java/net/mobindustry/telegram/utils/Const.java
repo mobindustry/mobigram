@@ -34,6 +34,8 @@ public class Const {
     public static final int SELECTED_MAP_FRAGMENT = 204;
     public static final int SELECTED_FOLDER_FRAGMENT = 205;
     public static final int SEND_FOLDER_FRAGMENT = 206;
+    public static final int USER_INFO_FRAGMENT = 207;
+
 
     public static final int CHAT_NOT_FOUND = 1001;
 
@@ -46,15 +48,14 @@ public class Const {
     public static final int CHAT_HISTORY_HANDLER_ID = 706;
     public static final int DOWNLOAD_FILE_HANDLER_ID = 707;
     public static final int USER_HANDLER_ID = 708;
-    public static final int LOG_HANDLER_ID = 709;
+    public static final int USER_FULL_HANDLER_ID = 709;
     public static final int OK_HANDLER_ID = 710;
     public static final int CHAT_HANDLER_ID = 711;
-
+    public static final int GROUP_CHAT_FULL_HANDLER_ID = 712;
 
     public static final int STICKER_HANDLER_ID = 710;
 
     public static final int LIST_PRELOAD_POSITION = 30;
-    public static final int LIST_UPDATE_POSITION = 10;
 
     public static final int CHATS_LIST_OFFSET = 0;
     public static final int CHATS_LIST_LIMIT = 200;

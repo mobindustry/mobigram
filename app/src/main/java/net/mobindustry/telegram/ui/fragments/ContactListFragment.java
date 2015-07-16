@@ -24,11 +24,12 @@ public class ContactListFragment extends Fragment {
 
     private TdApi.Contacts contacts;
     private ContactListAdapter adapter;
+    private String destination;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.new_message_fragment, container, false);
+        return inflater.inflate(R.layout.contact_list_fragment, container, false);
     }
 
     public void getContacts() {
@@ -68,11 +69,20 @@ public class ContactListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ChatListFragment.class);
+                Intent intent;
+                if(destination.equals("chatList")) {
+                    intent = new Intent(getActivity(), ChatListFragment.class);
+                } else {
+                    intent = new Intent(getActivity(), UserInfoFragment.class);
+                }
                 intent.putExtra("id", (long) adapter.getItem(position).id);
                 getActivity().setResult(Activity.RESULT_OK, intent);
                 getActivity().finish();
             }
         });
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 }

@@ -6,14 +6,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -22,9 +20,7 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatHandler;
 import net.mobindustry.telegram.core.handlers.ChatsHandler;
-import net.mobindustry.telegram.core.handlers.LogHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
-import net.mobindustry.telegram.core.handlers.StickerHandler;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.ChatListAdapter;
@@ -68,7 +64,7 @@ public class ChatListFragment extends ListFragment{
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), TransparentActivity.class);
                 intent.putExtra("choice", Const.NEW_MESSAGE_FRAGMENT);
-
+                intent.putExtra("destination", "chatList");
                 startActivityForResult(intent, Const.REQUEST_CODE_NEW_MESSAGE);
             }
         });

@@ -6,4 +6,9 @@
     <dimen name="toolbar_height">64dp</dimen>
 
     <dimen name="splash_screen_text_size">70sp</dimen>
+    <dimen name="user_info_icon_size">60dp</dimen>
+    <dimen name="user_info_icon_text_size">28sp</dimen>
+    <dimen name="user_info_name_text_size">20sp</dimen>
+    <dimen name="user_info_last_seen_text_size">18sp</dimen>
+    <dimen name="user_info_toolbar_height">130dp</dimen>
 </resources>

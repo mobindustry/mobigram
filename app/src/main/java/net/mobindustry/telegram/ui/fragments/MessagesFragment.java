@@ -107,6 +107,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private ObservableLinearLayout linearLayout;
     private ImageView attach;
     private ImageView smiles;
+    private LinearLayout userInfoLayout;
 
     private Emoji emoji;
     private EmojiParser emojiParser;
@@ -132,6 +133,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         View view = inflater.inflate(R.layout.message_fragment, container, false);
         linearLayout = (ObservableLinearLayout) view.findViewById(R.id.observable_layout);
         noMessages = (TextView) view.findViewById(R.id.no_messages_message);
+        userInfoLayout = (LinearLayout) view.findViewById(R.id.user_info_layout);
 
         messageListView = (ListView) view.findViewById(R.id.messageListView);
         messageListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -178,6 +180,22 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         }
 
         holder.setChat(chat);
+
+        userInfoLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TransparentActivity.class);
+                intent.putExtra("choice", Const.USER_INFO_FRAGMENT);
+                intent.putExtra("chat_id", getShownChatId());
+                if (chat.type.getConstructor() == TdApi.PrivateChatInfo.CONSTRUCTOR) {
+                    intent.putExtra("type", "private");
+                }
+                if (chat.type.getConstructor() == TdApi.GroupChatInfo.CONSTRUCTOR) {
+                    intent.putExtra("type", "group");
+                }
+                startActivity(intent);
+            }
+        });
 
         input = (EditText) getActivity().findViewById(R.id.message_edit_text);
         input.addTextChangedListener(new TextWatcher() {

@@ -63,5 +63,8 @@
     <string name="pull_to_refresh_refreshing_label">Loading...</string>
     <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
     <string name="text_no_result">No result</string>
+    <string name="share_user_menu_text">Share</string>
+    <string name="delete_user_menu_text">Delete</string>
+    <string name="block_user_menu_text">Block</string>
 
 </resources>

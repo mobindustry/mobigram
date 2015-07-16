@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_activity"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <include
+            android:id="@+id/userInfoToolbar"
+            layout="@layout/toolbar_user_info"
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/write_message_icon"
+            android:background="@drawable/write_message_background"
+            android:padding="15dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginRight="25dp"
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/user_info_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </FrameLayout>
+
+
+</LinearLayout>

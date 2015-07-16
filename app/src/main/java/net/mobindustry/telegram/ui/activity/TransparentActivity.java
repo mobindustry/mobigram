@@ -20,6 +20,7 @@ import net.mobindustry.telegram.ui.fragments.GalleryFragment;
 import net.mobindustry.telegram.ui.fragments.LocationFragment;
 import net.mobindustry.telegram.ui.fragments.ContactListFragment;
 import net.mobindustry.telegram.ui.fragments.SelectedMapFragment;
+import net.mobindustry.telegram.ui.fragments.UserInfoFragment;
 import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -47,8 +48,10 @@ public class TransparentActivity extends AppCompatActivity {
 
         switch (choice) {
             case Const.NEW_MESSAGE_FRAGMENT:
+                String destination = getIntent().getStringExtra("destination");
                 ContactListFragment contactListFragment = new ContactListFragment();
                 fragmentTransaction.replace(R.id.transparent_content, contactListFragment);
+                contactListFragment.setDestination(destination);
                 break;
             case Const.FILE_CHOOSE_FRAGMENT:
                 ChooseFileFragment chooseFileFragment = new ChooseFileFragment();
@@ -69,6 +72,13 @@ public class TransparentActivity extends AppCompatActivity {
                 double lng = getIntent().getDoubleExtra("lng", 0.0);
                 selectedMapFragment.setUserLocation(lng, lat);
 
+                break;
+            case Const.USER_INFO_FRAGMENT:
+                long chatId = getIntent().getLongExtra("chat_id", 0);
+                String type = getIntent().getStringExtra("type");
+                UserInfoFragment userInfoFragment = new UserInfoFragment();
+                fragmentTransaction.replace(R.id.transparent_content, userInfoFragment);
+                userInfoFragment.setInfo(chatId, type);
                 break;
         }
         fragmentTransaction.commit();
