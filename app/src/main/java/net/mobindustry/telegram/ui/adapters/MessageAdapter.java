@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,6 +21,8 @@ import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.PhotoViewerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
+import net.mobindustry.telegram.ui.fragments.ChatListFragment;
+import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
@@ -59,7 +62,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                         break;
                     case TdApi.MessageContact.CONSTRUCTOR:
                         TdApi.MessageContact contact = (TdApi.MessageContact) message.message;
-
+                        loader.openContact(contact.userId);
                         break;
                     case TdApi.MessageDocument.CONSTRUCTOR: {
                         TdApi.MessageDocument document = (TdApi.MessageDocument) message.message;
@@ -400,5 +403,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         void loadMore();
         void loadFile(int id, View v);
         void openFile(String path, View v);
+        void openContact(long id);
     }
 }

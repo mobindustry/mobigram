@@ -95,6 +95,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
 
     private ChatActivity activity;
+    private ChatListFragment fragment;
     private MessageAdapter adapter;
     private AnimatorSet currentAnimation;
     private MessagesFragmentHolder holder;
@@ -167,7 +168,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         emojiParser = new EmojiParser(emoji);
         activity = (ChatActivity) getActivity();
 
-        final ChatListFragment fragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
+        fragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
         chat = fragment.getChat();
         if (MessagesFragmentHolder.getTopMessage(chat.id) != 0) {
             topMessageId = MessagesFragmentHolder.getTopMessage(chat.id);
@@ -610,7 +611,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO && resultCode == getActivity().RESULT_OK) {
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             Uri contentUri = Uri.fromFile(holder.getTempPhotoFile());
@@ -726,6 +726,11 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     Toast.makeText(getActivity(), "On your device no programs to open a file of this type. The file is saved to the address " + path, Toast.LENGTH_LONG).show();
                 }
             }
+        }
+
+        @Override
+        public void openContact(long id) {
+            fragment.openChat(id);
         }
     };
 

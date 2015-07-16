@@ -162,15 +162,19 @@ public class ChatListFragment extends ListFragment implements ApiClient.OnApiRes
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.REQUEST_CODE_NEW_MESSAGE && resultCode == Activity.RESULT_OK) {
             long resultId = data.getLongExtra("id", 0);
-            clickedId = resultId;
-            int position = getChatPosition(resultId);
-            if (position == Const.CHAT_NOT_FOUND) {
-                Toast.makeText(getActivity(), "You have no chat with this contact. " +
-                        "Open a new chat with a contact in the development mode.", Toast.LENGTH_LONG).show();
-                //TODO Start new chat;
-            } else {
-                showMessages(position);
-            }
+            openChat(resultId);
+        }
+    }
+
+    public void openChat(long resultId) {
+        clickedId = resultId;
+        int position = getChatPosition(resultId);
+        if (position == Const.CHAT_NOT_FOUND) {
+            Toast.makeText(getActivity(), "You have no chat with this contact. " +
+                    "Open a new chat with a contact in the development mode.", Toast.LENGTH_LONG).show();
+
+        } else {
+            showMessages(position);
         }
     }
 
