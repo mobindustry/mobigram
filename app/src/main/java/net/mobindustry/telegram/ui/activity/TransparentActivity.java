@@ -47,7 +47,7 @@ public class TransparentActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (choice) {
-            case Const.NEW_MESSAGE_FRAGMENT:
+            case Const.CONTACT_LIST_FRAGMENT:
                 String destination = getIntent().getStringExtra("destination");
                 ContactListFragment contactListFragment = new ContactListFragment();
                 fragmentTransaction.replace(R.id.transparent_content, contactListFragment);
@@ -92,7 +92,6 @@ public class TransparentActivity extends AppCompatActivity {
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -17,6 +17,7 @@
             />
 
         <ImageView
+            android:id="@+id/write_message_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/write_message_icon"
@@ -28,13 +29,14 @@
 
     </FrameLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/user_info_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
 
-    </FrameLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

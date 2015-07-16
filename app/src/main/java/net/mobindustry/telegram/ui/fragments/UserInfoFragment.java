@@ -11,7 +11,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -19,7 +20,6 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.ChatHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.GroupChatFullHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
@@ -39,7 +39,8 @@ public class UserInfoFragment extends Fragment {
     private TextView name;
     private TextView lastSeenText;
     private RoundedImageView imageIcon;
-    private FrameLayout content;
+    private LinearLayout content;
+    private ImageView writeMessage;
     private TdApi.User user;
     private TdApi.GroupChatFull groupChatFull;
 
@@ -51,7 +52,8 @@ public class UserInfoFragment extends Fragment {
         name = (TextView) view.findViewById(R.id.toolbar_user_info_text_name);
         lastSeenText = (TextView) view.findViewById(R.id.toolbar_text_user_info_last_seen);
         imageIcon = (RoundedImageView) view.findViewById(R.id.toolbar_user_info_image_icon);
-        content = (FrameLayout) view.findViewById(R.id.user_info_content);
+        content = (LinearLayout) view.findViewById(R.id.user_info_content);
+        writeMessage = (ImageView) view.findViewById(R.id.write_message_button);
         return view;
     }
 
@@ -65,6 +67,13 @@ public class UserInfoFragment extends Fragment {
             getChatFull();
         }
 
+        writeMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.userInfoToolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
         toolbar.inflateMenu(R.menu.user_info);
@@ -74,7 +83,7 @@ public class UserInfoFragment extends Fragment {
                 switch (item.getItemId()) {
                     case R.id.share_user:
                         Intent intent = new Intent(getActivity(), TransparentActivity.class);
-                        intent.putExtra("choice", Const.NEW_MESSAGE_FRAGMENT);
+                        intent.putExtra("choice", Const.CONTACT_LIST_FRAGMENT);
                         intent.putExtra("destination", "userInfo");
                         startActivityForResult(intent, Const.REQUEST_CODE_NEW_MESSAGE);
                         break;
@@ -181,6 +190,15 @@ public class UserInfoFragment extends Fragment {
                 TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
                 ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, imageIcon);
             }
+        }
+
+        View userPhoneNumbeView = View.inflate(getActivity(), R.layout.user_phone_layout, null);
+        ((TextView)userPhoneNumbeView.findViewById(R.id.user_phone_number)).setText(user.phoneNumber);
+        content.addView(userPhoneNumbeView);
+        if(!user.username.equals("")) {
+            View userNickname = View.inflate(getActivity(), R.layout.user_nickname_layout, null);
+            ((TextView)userNickname.findViewById(R.id.user_nickname)).setText("@" + user.username);
+            content.addView(userNickname);
         }
     }
 

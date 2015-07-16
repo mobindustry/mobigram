@@ -63,7 +63,7 @@ public class ChatListFragment extends ListFragment{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), TransparentActivity.class);
-                intent.putExtra("choice", Const.NEW_MESSAGE_FRAGMENT);
+                intent.putExtra("choice", Const.CONTACT_LIST_FRAGMENT);
                 intent.putExtra("destination", "chatList");
                 startActivityForResult(intent, Const.REQUEST_CODE_NEW_MESSAGE);
             }
