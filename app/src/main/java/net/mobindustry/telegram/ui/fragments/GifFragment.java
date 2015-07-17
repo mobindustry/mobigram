@@ -1,12 +1,9 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.app.SearchManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,19 +12,15 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.turbomanage.httpclient.HttpResponse;
@@ -35,39 +28,21 @@ import com.turbomanage.httpclient.ParameterMap;
 import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.core.ApiClient;
-import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.MessageHandler;
-import net.mobindustry.telegram.core.service.CreateGalleryThumbs;
 import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.Gif.Giphy;
 import net.mobindustry.telegram.model.Gif.GiphyInfo;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
-import net.mobindustry.telegram.ui.activity.ChatActivity;
+import net.mobindustry.telegram.ui.activity.PhotoViewerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.GifAdapter;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.GiphyObject;
 import net.mobindustry.telegram.utils.ImagesObject;
+import net.mobindustry.telegram.utils.Utils;
 import net.mobindustry.telegram.utils.widget.LoadMoreListView;
 
-import org.apache.http.util.ByteArrayBuffer;
-import org.drinkless.td.libcore.telegram.TdApi;
-
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -82,6 +57,8 @@ public class GifFragment extends Fragment {
     private String search;
     private TextView textNoResult;
     private FrameLayout send;
+    private TextView number;
+    private FrameLayout cancel;
 
     @Nullable
     @Override
@@ -92,12 +69,62 @@ public class GifFragment extends Fragment {
         textNoResult = (TextView) view.findViewById(R.id.gif_no_result);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_gif);
         send = (FrameLayout) view.findViewById(R.id.buttonSendGif);
+        number = (TextView) view.findViewById(R.id.numberGif);
+        cancel = (FrameLayout) view.findViewById(R.id.buttonCancelGif);
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if (Utils.isTablet(getActivity())) {
+            if (ListFoldersHolder.getCheckQuantity() != 0) {
+                Log.e("Log", "TABLET");
+                number.setVisibility(View.VISIBLE);
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
+                params.leftMargin = 65;
+                number.setLayoutParams(params);
+                int sdk = Build.VERSION.SDK_INT;
+                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                    number.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                } else {
+                    number.setBackground(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                }
+
+                number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+            } else {
+                number.setVisibility(View.GONE);
+            }
+        } else {
+            if (ListFoldersHolder.getCheckQuantity() != 0) {
+                number.setVisibility(View.VISIBLE);
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
+                params.leftMargin = 60;
+                number.setLayoutParams(params);
+                int sdk = Build.VERSION.SDK_INT;
+                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                    number.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
+                } else {
+                    number.setBackground(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
+                }
+
+                number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+            } else {
+                number.setVisibility(View.GONE);
+            }
+
+        }
+
+        gifsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), PhotoViewerActivity.class);
+                intent.putExtra("file_path", giphyObjectList.get(position).getPath());
+                intent.putExtra("gif", 1);
+                getActivity().startActivity(intent);
+            }
+        });
 
         gifsList.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
@@ -142,7 +169,6 @@ public class GifFragment extends Fragment {
                             giphyObject.setPath(info.getImages().getOriginal().getUrl());
                             giphyObjectList.add(giphyObject);
                         }
-                        ListFoldersHolder.setGiphyObjectList(giphyObjectList);
                         gifsList.deferNotifyDataSetChanged();
                         gifsList.onLoadMoreComplete();
                     }
@@ -176,6 +202,14 @@ public class GifFragment extends Fragment {
             }
         });
 
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ListFoldersHolder.setListForSending(null);
+                getActivity().finish();
+            }
+        });
+
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.inflateMenu(R.menu.search_gif);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -187,6 +221,9 @@ public class GifFragment extends Fragment {
                 sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
+                        if (gifAdapter != null) {
+                            gifAdapter.clear();
+                        }
                         search = query;
                         LoadGifs loadGifs = new LoadGifs();
                         loadGifs.execute();
@@ -265,9 +302,58 @@ public class GifFragment extends Fragment {
                     giphyObject.setPath(info.getImages().getOriginal().getUrl());
                     giphyObjectList.add(giphyObject);
                 }
-                gifAdapter = new GifAdapter(getActivity(), giphyObjectList);
+                gifAdapter = new GifAdapter(getActivity(), giphyObjectList, new GifAdapter.LoadGif() {
+                    @Override
+                    public void load() {
+                        InputMethodManager imm = (InputMethodManager) getActivity()
+                                .getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                        if (Utils.isTablet(getActivity())) {
+                            if (ListFoldersHolder.getCheckQuantity() != 0) {
+                                Log.e("Log", "TABLET");
+                                number.setVisibility(View.VISIBLE);
+                                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
+                                params.leftMargin = 65;
+                                number.setLayoutParams(params);
+                                int sdk = Build.VERSION.SDK_INT;
+                                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                                    number.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                                } else {
+                                    number.setBackground(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                                }
+
+                                number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+                            } else {
+                                number.setVisibility(View.GONE);
+                            }
+                        } else {
+                            if (ListFoldersHolder.getCheckQuantity() != 0) {
+                                number.setVisibility(View.VISIBLE);
+                                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
+                                params.leftMargin = 60;
+                                number.setLayoutParams(params);
+                                int sdk = Build.VERSION.SDK_INT;
+                                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                                    if (imm.isAcceptingText()) {
+                                        number.setBackgroundDrawable(Utils.getShapeDrawable(50, getActivity().getResources().getColor(R.color.message_notify)));
+                                    } else {
+                                        number.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
+                                    }
+                                } else {
+                                    if (imm.isAcceptingText()) {
+                                        number.setBackgroundDrawable(Utils.getShapeDrawable(50, getActivity().getResources().getColor(R.color.message_notify)));
+                                    } else {
+                                        number.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
+                                    }                                }
+
+                                number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+                            } else {
+                                number.setVisibility(View.GONE);
+                            }
+
+                        }
+                    }
+                });
                 gifsList.setAdapter(gifAdapter);
-                ListFoldersHolder.setGiphyObjectList(giphyObjectList);
             } else {
                 textNoResult.setVisibility(View.VISIBLE);
             }

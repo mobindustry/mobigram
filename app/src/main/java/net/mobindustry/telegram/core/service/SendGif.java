@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,7 +35,7 @@ public class SendGif extends Service {
     public void onCreate() {
         super.onCreate();
         Log.e("Log", "Service Gif start");
-        id=ListFoldersHolder.getChatID();
+        id = ListFoldersHolder.getChatID();
         executorService = Executors.newFixedThreadPool(1);
     }
 
@@ -50,12 +49,12 @@ public class SendGif extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        CreateGif myRun = new CreateGif();
+        CreateGifAndImages myRun = new CreateGifAndImages();
         executorService.execute(myRun);
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public String downloadFromUrl(final String DownloadUrl) {
+    public String downloadFromUrlGif(final String DownloadUrl) {
         String link = "";
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
@@ -102,12 +101,71 @@ public class SendGif extends Service {
             Log.e("DownloadManager", "download ready in" + ((System.currentTimeMillis() - startTime) / 1000) + " sec");
             link = file.getAbsolutePath();
 
+
         } catch (IOException e) {
             Log.e("DownloadManager", "Error: " + e);
         }
 
         return link;
     }
+
+    public String downloadFromUrlImages(final String DownloadUrl) {
+        String link = "";
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+            String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
+            File root = android.os.Environment.getExternalStorageDirectory();
+
+            File dir = new File(root.getAbsolutePath() + "/NeTelegram");
+            if (dir.exists() == false) {
+                dir.mkdirs();
+            }
+
+            URL url = new URL(DownloadUrl); //you can write here any link
+            File file = new File(dir, fileName);
+
+            long startTime = System.currentTimeMillis();
+            Log.e("DownloadManager", "download begining");
+            Log.e("DownloadManager", "download url:" + url);
+            Log.e("DownloadManager", "downloaded file name:" + fileName);
+
+           /* Open a connection to that URL. */
+            URLConnection ucon = url.openConnection();
+
+           /*
+            * Define InputStreams to read from the URLConnection.
+            */
+            InputStream is = ucon.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(is);
+
+           /*
+            * Read bytes to the Buffer until there is nothing more to read(-1).
+            */
+            ByteArrayBuffer baf = new ByteArrayBuffer(5000);
+            int current = 0;
+            while ((current = bis.read()) != -1) {
+                baf.append((byte) current);
+            }
+
+
+           /* Convert the Bytes read to a String. */
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(baf.toByteArray());
+            fos.flush();
+            fos.close();
+            Log.e("DownloadManager", "download ready in" + ((System.currentTimeMillis() - startTime) / 1000) + " sec");
+            if (file.canRead()){
+                Log.e("Log", "CAN READ ");
+            }
+            link = file.getAbsolutePath();
+
+        } catch (IOException e) {
+            Log.e("DownloadManager", "Error: " + e);
+        }
+
+        return link;
+    }
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -123,13 +181,31 @@ public class SendGif extends Service {
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
+    public void sendPhotoMessage(long chatId, String path) {
+        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
 
-    class CreateGif implements Runnable {
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+
+    class CreateGifAndImages implements Runnable {
 
         public void run() {
-            for (int i = 0; i < ListFoldersHolder.getListGif().size(); i++) {
-                String link = downloadFromUrl(ListFoldersHolder.getListGif().get(i));
-                sendGifMessage(id, link);
+            if (ListFoldersHolder.getListGif() != null) {
+                for (int i = 0; i < ListFoldersHolder.getListGif().size(); i++) {
+                    String link = downloadFromUrlGif(ListFoldersHolder.getListGif().get(i));
+                    sendGifMessage(id, link);
+                }
+            }
+            if (ListFoldersHolder.getListImages() != null) {
+                for (int i = 0; i < ListFoldersHolder.getListImages().size(); i++) {
+                    String link = downloadFromUrlImages(ListFoldersHolder.getListImages().get(i));
+                    Log.e("Log", "Link send "+link);
+                    sendPhotoMessage(id, link);
+                }
             }
             stopSelf();
         }

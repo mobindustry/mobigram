@@ -206,6 +206,7 @@ public class GalleryFragment extends Fragment {
                 GifFragment gifFragment = new GifFragment();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
                 fragmentTransaction.replace(R.id.transparent_content, gifFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -213,7 +214,13 @@ public class GalleryFragment extends Fragment {
         findImages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO find images
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                ImagesFragment imagesFragment = new ImagesFragment();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+                fragmentTransaction.replace(R.id.transparent_content, imagesFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
@@ -240,11 +247,13 @@ public class GalleryFragment extends Fragment {
         String path = Const.PATH_TO_THUMBS_GALLERY;
         List<File> files = getListFiles(new File(path));
         if (files.size() > 0) {
+            Log.e("Log","SIZE "+files.size());
             for (int i = 0; i < files.size(); i++) {
                 Long idForMap = Long.valueOf(separateName(files.get(i).getAbsolutePath()));
                 String pathForMap = files.get(i).getAbsolutePath();
                 mapForCustomThumbs.put(idForMap, pathForMap);
             }
+            Log.e("Log","SIZE MAP"+mapForCustomThumbs.size());
         }
 
     }
@@ -441,26 +450,26 @@ public class GalleryFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             ListFoldersHolder.setListFolders(listFolders);
-            if (Utils.isTablet(getActivity())) {
-                progressBar.setVisibility(View.GONE);
-                adjustGridViewPort();
-                galleryAdapter.clear();
-                galleryAdapter.addAll(listFolders);
+            if (getActivity()!=null){
+                if (Utils.isTablet(getActivity())) {
+                    progressBar.setVisibility(View.GONE);
+                    adjustGridViewPort();
+                    galleryAdapter.clear();
+                    galleryAdapter.addAll(listFolders);
+                }
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+                    progressBar.setVisibility(View.GONE);
+                    adjustGridViewLand();
+                    galleryAdapter.clear();
+                    galleryAdapter.addAll(listFolders);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    adjustGridViewPort();
+                    galleryAdapter.clear();
+                    galleryAdapter.addAll(listFolders);
+                }
             }
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
-                progressBar.setVisibility(View.GONE);
-                adjustGridViewLand();
-                galleryAdapter.clear();
-                galleryAdapter.addAll(listFolders);
-            } else {
-                progressBar.setVisibility(View.GONE);
-                adjustGridViewPort();
-                galleryAdapter.clear();
-                galleryAdapter.addAll(listFolders);
-            }
-
         }
-
     }
 }
 

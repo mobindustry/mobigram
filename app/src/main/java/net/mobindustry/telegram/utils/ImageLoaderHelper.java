@@ -52,6 +52,7 @@ public class ImageLoaderHelper {
         }
     }
 
+
     private static ImageLoader imageLoader = initImageLoader();
     private static DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
             .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
@@ -85,6 +86,7 @@ public class ImageLoaderHelper {
         return imageLoader;
     }
 
+
     public static void displayImage(final String url, final ImageView imageView) {
         imageLoader.displayImage(url, imageView, defaultOptionsFadeIn);
     }
@@ -110,5 +112,7 @@ public class ImageLoaderHelper {
                 .build();
         imageLoader.displayImage(url, imageView, options);
     }
+
+
 
 }

@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.model.holder;
 
+import net.mobindustry.telegram.model.Flickr.PhotosFlickr;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
 import net.mobindustry.telegram.utils.GiphyObject;
@@ -10,15 +11,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListFoldersHolder {
-    private static List<FileWithIndicator>list=new ArrayList<>();
-    private static int checkQuantity=0;
-    private static List<FolderCustomGallery>listFolders;
-    private static List<MediaGallery>listForSending;
+    private static List<FileWithIndicator> list = new ArrayList<>();
+    private static int checkQuantity = 0;
+    private static List<FolderCustomGallery> listFolders;
+    private static List<MediaGallery> listForSending;
     private static String nameHolder;
     private static int currentSelectedPhoto;
     private static long chatID;
-    private static List<GiphyObject> giphyObjectList;
-    private static List<String>listGif;
+    private static List<String> listGif;
+    private static List<String> listImages;
+    private static PhotosFlickr holderPhotosFlickr;
+
+    public static PhotosFlickr getHolderPhotosFlickr() {
+        return holderPhotosFlickr;
+    }
+
+    public static void setHolderPhotosFlickr(PhotosFlickr holderPhotosFlickr) {
+        ListFoldersHolder.holderPhotosFlickr = holderPhotosFlickr;
+    }
+
+    public static List<String> getListImages() {
+        return listImages;
+    }
+
+    public static void setListImages(List<String> listImages) {
+        ListFoldersHolder.listImages = listImages;
+    }
 
     public static List<String> getListGif() {
         return listGif;
@@ -26,14 +44,6 @@ public class ListFoldersHolder {
 
     public static void setListGif(List<String> listGif) {
         ListFoldersHolder.listGif = listGif;
-    }
-
-    public static List<GiphyObject> getGiphyObjectList() {
-        return giphyObjectList;
-    }
-
-    public static void setGiphyObjectList(List<GiphyObject> giphyObjectList) {
-        ListFoldersHolder.giphyObjectList = giphyObjectList;
     }
 
     public static long getChatID() {

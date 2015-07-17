@@ -28,7 +28,7 @@ public class GifAdapter extends ArrayAdapter<GiphyObject> implements Serializabl
     private View.OnClickListener clickListener;
 
 
-    public GifAdapter(Context context, List<GiphyObject> objects) {
+    public GifAdapter(Context context, List<GiphyObject> objects, final LoadGif loadGif) {
         super(context, 0, objects);
         inflater = LayoutInflater.from(context);
 
@@ -45,15 +45,17 @@ public class GifAdapter extends ArrayAdapter<GiphyObject> implements Serializabl
                             }
                         }
                     }
-                    ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getCheckQuantity() + 1);
+                    ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getListForSending().size());
+                    loadGif.load();
                 } else {
                     if (ListFoldersHolder.getCheckQuantity() < 10) {
                         giphyObject.setCheck(true);
-                        if (ListFoldersHolder.getListForSending()==null){
+                        if (ListFoldersHolder.getListForSending() == null) {
                             ListFoldersHolder.setListForSending(new ArrayList<MediaGallery>());
                         }
                         ListFoldersHolder.getListForSending().add(giphyObject);
-                        ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getCheckQuantity() + 1);
+                        ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getListForSending().size());
+                        loadGif.load();
                     }
                 }
                 notifyDataSetChanged();
@@ -61,6 +63,7 @@ public class GifAdapter extends ArrayAdapter<GiphyObject> implements Serializabl
             }
         };
     }
+
 
 
     @Override
@@ -72,8 +75,8 @@ public class GifAdapter extends ArrayAdapter<GiphyObject> implements Serializabl
         ImageView check = (ImageView) convertView.findViewById(R.id.check);
 
         ImageView image = (ImageView) convertView.findViewById(R.id.imageGif);
-        image.setOnClickListener(clickListener);
-        image.setTag(giphyObject);
+        check.setOnClickListener(clickListener);
+        check.setTag(giphyObject);
 
         if (giphyObject.isCheck()) {
             check.setImageResource(R.drawable.ic_attach_check);
@@ -81,7 +84,12 @@ public class GifAdapter extends ArrayAdapter<GiphyObject> implements Serializabl
             check.setImageResource(R.drawable.ic_circle);
         }
 
-        ImageLoaderHelper.displayImageList(giphyObject.getPath(), image);
+        Glide.with(getContext()).load(giphyObject.getPath()).asBitmap().into(image);
+        //ImageLoaderHelper.displayImageList(giphyObject.getPath(), image);
         return convertView;
+    }
+
+    public interface LoadGif {
+        void load();
     }
 }

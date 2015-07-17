@@ -7,39 +7,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
+
         <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:indeterminate="true"
-            />
+            android:indeterminate="true" />
 
         <ImageView
-            android:id="@+id/imageGif"
+            android:id="@+id/imageFlickr"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:padding="10dp"
-            android:scaleType="centerCrop"
             android:layout_centerInParent="true"
-            />
+            android:padding="10dp"
+            android:scaleType="centerCrop" />
 
         <View
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:layout_alignLeft="@+id/imageGif"
-            android:layout_alignTop="@+id/imageGif"
-            android:background="@drawable/rect"
-            android:layout_centerInParent="true"/>
+            android:layout_alignLeft="@+id/imageFlickr"
+            android:layout_alignTop="@+id/imageFlickr"
+            android:layout_centerInParent="true"
+            android:background="@drawable/rect" />
 
         <ImageView
-            android:id="@+id/check"
+            android:id="@+id/checkFlickr"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignRight="@+id/imageGif"
+            android:layout_alignRight="@+id/imageFlickr"
             android:layout_margin="@dimen/margin_15dp"
-            android:src="@drawable/ic_attach_photo_in_folder"
-            />
-
+            android:src="@drawable/ic_attach_photo_in_folder" />
     </RelativeLayout>
 </FrameLayout>
