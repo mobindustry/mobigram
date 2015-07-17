@@ -237,7 +237,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(audio);
         }
         if (item.message instanceof TdApi.MessageContact) {
-            Log.i("Message", "Contact " + item.message);
+            //Log.i("Message", "Contact " + item.message);
             TdApi.MessageContact contact = (TdApi.MessageContact) item.message;
 
             View contactView = inflater.inflate(R.layout.contact_message, null);
@@ -258,15 +258,13 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(contactView);
         }
         if (item.message instanceof TdApi.MessageDocument) {
-            Log.e("Message", "Document " + item.message);
+            //Log.e("Message", "Document " + item.message);
 
             TdApi.MessageDocument doc = (TdApi.MessageDocument) item.message;
             if (doc.document.mimeType.contains("gif")) {
                 View gifView = inflater.inflate(R.layout.gif_document_view_layout, null);
                 ImageView icon = (ImageView) gifView.findViewById(R.id.document_icon);
                 TdApi.File documentFile = doc.document.document;
-//                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(doc.document.thumb.width * 3, doc.document.thumb.height * 3);
-//                icon.setLayoutParams(params);
                 Utils.photoFileCheckerAndLoader(documentFile, icon);
                 layout.addView(gifView);
             } else {

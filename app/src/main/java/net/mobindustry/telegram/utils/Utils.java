@@ -72,14 +72,11 @@ public class Utils {
     }
 
     public static void photoFileCheckerAndLoader(final TdApi.File file, final ImageView view) {
-        Log.e("Log", "File to string " + file.toString());
 
         if (file instanceof TdApi.FileLocal) {
-            Log.e("Log", "FileLocal photo ok");
             TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
             ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, view);
         } else if (file instanceof TdApi.FileEmpty) {
-            Log.e("Log", "FileEmpty photo ok");
             final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
             if (DownloadFileHolder.getUpdatedFilePath(fileEmpty.id) != null) {
                 ImageLoaderHelper.displayImage(String.valueOf(fileEmpty.id), view);
@@ -98,12 +95,10 @@ public class Utils {
 
     public static void gifFileCheckerAndLoader(final TdApi.File file, final ImageView view) {
         if (file instanceof TdApi.FileLocal) {
-            Log.e("Log", "FileLocal gif ok");
 
             TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
             Glide.with(DataHolder.getContext()).load(fileLocal.path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
         } else if (file instanceof TdApi.FileEmpty) {
-            Log.e("Log", "FileEmpty gif ok");
             final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
             if (DownloadFileHolder.getUpdatedFilePath(fileEmpty.id) != null) {
                 Glide.with(DataHolder.getContext()).load(DownloadFileHolder.getUpdatedFilePath(fileEmpty.id)).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
