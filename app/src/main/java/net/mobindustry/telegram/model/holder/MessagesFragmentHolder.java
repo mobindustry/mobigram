@@ -23,6 +23,7 @@ public class MessagesFragmentHolder {
     private static File neTelegramDirectory;
     private File tempPhotoFile;
     private TdApi.Chat chat;
+    private static TdApi.Chats chats;
     private boolean isEmojiCreated = false;
 
     private static HashMap<Long, Integer> topMessageMap = new HashMap<>();
@@ -123,5 +124,13 @@ public class MessagesFragmentHolder {
 
     public static void setStickers(TdApi.Stickers stickers1) {
         stickers = stickers1;
+    }
+
+    public static TdApi.Chats getChats() {
+        return chats;
+    }
+
+    public static void setChats(TdApi.Chats chats) {
+        MessagesFragmentHolder.chats = chats;
     }
 }

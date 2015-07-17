@@ -69,8 +69,6 @@ public class Const {
     public static final String READ_INBOX_ACTION = "net.mobindustry.telegram.message_read_action";
     public static final String NEW_MESSAGE_ACTION_ID = "net.mobindustry.telegram.new_message_action_id";
     public static final String NEW_MESSAGE_ACTION = "net.mobindustry.telegram.new_message_action";
-    public static final String UPDATE_USER_ACTION = "net.mobindustry.telegram.update_user_action";
-
 
     public static final String IMAGE_LOADER_PATH_PREFIX = "file://";
 

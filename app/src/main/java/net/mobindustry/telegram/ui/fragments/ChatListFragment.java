@@ -21,6 +21,7 @@ import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatHandler;
 import net.mobindustry.telegram.core.handlers.ChatsHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
@@ -89,11 +90,12 @@ public class ChatListFragment extends ListFragment{
         }
     }
 
-    public void setChatsList(final TdApi.Chats chats) {
+    public void setChatsList(final TdApi.Chats chats1) {
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
         }
-        this.chats = chats;
+        chats = chats1;
+        MessagesFragmentHolder.setChats(chats);
         adapter.clear();
         adapter.addAll(chats.chats);
     }
@@ -115,6 +117,9 @@ public class ChatListFragment extends ListFragment{
     }
 
     public TdApi.Chat getChat() {
+        if (chats == null) {
+            chats = MessagesFragmentHolder.getChats();
+        }
         for (int i = 0; i < chats.chats.length; i++) {
             if (chats.chats[i].id == clickedId) {
                 return chats.chats[i];
@@ -124,6 +129,9 @@ public class ChatListFragment extends ListFragment{
     }
 
     public int getChatPosition(long id) {
+        if (chats == null) {
+            chats = MessagesFragmentHolder.getChats();
+        }
         for (int i = 0; i < chats.chats.length; i++) {
             if (chats.chats[i].id == id) {
                 return i;

@@ -273,6 +273,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 TdApi.GroupChatInfo groupChatInfo = (TdApi.GroupChatInfo) chat.type;
                 title = groupChatInfo.groupChat.title;
                 file = groupChatInfo.groupChat.photoBig;
+                lastSeenText.setText(groupChatInfo.groupChat.participantsCount + " members");
                 userFirstName = groupChatInfo.groupChat.title;
                 userLastName = "";
             }

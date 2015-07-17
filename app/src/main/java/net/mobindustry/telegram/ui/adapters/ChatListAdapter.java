@@ -105,8 +105,6 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         TdApi.File file = null;
         long chatId = item.id;
-        Log.e("Log", String.valueOf(chatId));
-
         String userFirstName = "";
         String userLastName = "";
 

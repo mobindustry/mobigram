@@ -154,22 +154,12 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                     int lastRead = intent.getIntExtra("last_read", 0);
                     getChatListFragment().updateChat(chatId, unread, lastRead);
                 }
-                if (intent.getAction().equals(Const.UPDATE_USER_ACTION)) {
-                    int userId = intent.getIntExtra("user_id", 0);
-                    new ApiClient<>(new TdApi.GetUser(userId), new UserHandler(), new ApiClient.OnApiResultHandler() {
-                        @Override
-                        public void onApiResult(BaseHandler output) {
-                            UserInfoHolder.addUser((TdApi.User) output.getResponse());
-                        }
-                    });
-                }
             }
         };
 
         filter.addAction(Const.NEW_MESSAGE_ACTION);
         filter.addAction(Const.NEW_MESSAGE_ACTION_ID);
         filter.addAction(Const.READ_INBOX_ACTION);
-        filter.addAction(Const.UPDATE_USER_ACTION);
         registerReceiver(receiver, filter);
 
         chatListFragment = new ChatListFragment();

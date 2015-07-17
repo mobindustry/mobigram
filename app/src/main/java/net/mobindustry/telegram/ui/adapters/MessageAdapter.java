@@ -218,7 +218,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 if (messagePhoto.photo.photos[i].type.equals("m")) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[i].width, messagePhoto.photo.photos[i].height);
                     photo.setLayoutParams(layoutParams);
-
                     Utils.photoFileCheckerAndLoader(messagePhoto.photo.photos[i].photo, photo);
                 }
             }

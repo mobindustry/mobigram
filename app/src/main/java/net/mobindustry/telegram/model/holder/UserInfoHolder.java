@@ -38,10 +38,6 @@ public class UserInfoHolder {
         this.user = user;
     }
 
-    public static void addUser(TdApi.User user) {
-        map.put(user.id, user);
-    }
-
     public static void addUsersToMap(TdApi.Chats chats) {
         for (int i = 0; i < chats.chats.length; i++) {
             if(chats.chats[i].type.getConstructor() != TdApi.GroupChatInfo.CONSTRUCTOR) {

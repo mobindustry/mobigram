@@ -65,13 +65,6 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
                 TdApi.UpdateFile file = (TdApi.UpdateFile) object;
                 DownloadFileHolder.addFile(file);
                 break;
-            case TdApi.UpdateUserName.CONSTRUCTOR: {
-                TdApi.UpdateUserName userName = (TdApi.UpdateUserName) object;
-                Intent intent = new Intent(Const.UPDATE_USER_ACTION);
-                intent.putExtra("user_id", userName.userId);
-                context.sendBroadcast(intent);
-                break;
-            }
         }
         return null;
     }

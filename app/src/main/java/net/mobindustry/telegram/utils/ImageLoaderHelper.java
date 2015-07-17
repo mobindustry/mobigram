@@ -32,8 +32,8 @@ public class ImageLoaderHelper {
         public InputStream getStream(String imageUri, Object extra) throws IOException {
 
             if (!imageUri.contains("/")) {
-                String path;
-                do {
+                String path = null;
+                for (int i = 0; i < 50; i++) {
                     int id = Integer.parseInt(imageUri);
                     path = DownloadFileHolder.getUpdatedFilePath(id);
                     if (path != null) {
@@ -44,7 +44,7 @@ public class ImageLoaderHelper {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                } while (path == null);
+                }
                 return super.getStream(Const.IMAGE_LOADER_PATH_PREFIX + path, extra);
             } else {
                 return super.getStream(imageUri, extra);

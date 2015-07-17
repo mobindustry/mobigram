@@ -95,8 +95,8 @@ public class Utils {
                 @Override
                 public void onApiResult(BaseHandler output) {
                     if (output.getHandlerId() == OkHandler.HANDLER_ID) {
-                        String path;
-                        do {
+                        String path = null;
+                        for (int i = 0; i < 50; i++) {
                             path = DownloadFileHolder.getUpdatedFilePath(fileEmpty.id);
                             if (path != null) {
                                 break;
@@ -106,7 +106,7 @@ public class Utils {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                        } while (path == null);
+                        }
                         Glide.with(DataHolder.getContext()).load(path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
                     }
                 }
@@ -124,17 +124,6 @@ public class Utils {
             public void onApiResult(BaseHandler output) {
                 if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
                     ImageLoaderHelper.displayImage(String.valueOf(id), view);
-                }
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public static void fileLoader(final int id) {
-        new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-                if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                    Log.e("Log", "File " + id + " loaded.");
                 }
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
