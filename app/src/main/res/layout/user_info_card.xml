@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:orientation="horizontal"
+    android:layout_marginLeft="20dp">
+
+    <TextView
+        android:id="@+id/user_info_icon"
+        android:layout_width="@dimen/user_info_icon_size"
+        android:layout_height="@dimen/user_info_icon_size"
+        android:layout_margin="@dimen/margin_5dp"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:textSize="@dimen/user_info_icon_text_size"
+        android:visibility="gone" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/user_info_image_icon"
+        android:layout_width="@dimen/user_info_icon_size"
+        android:layout_height="@dimen/user_info_icon_size"
+        android:layout_margin="@dimen/margin_5dp"
+        android:visibility="gone"
+        app:riv_corner_radius="1dp"
+        app:riv_oval="true"
+        app:riv_tile_mode="repeat" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/margin_3dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/user_info_text_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="@dimen/user_info_name_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_user_info_last_seen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="@dimen/user_info_last_seen_text_size" />
+    </LinearLayout>
+</LinearLayout>

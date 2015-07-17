@@ -9,10 +9,12 @@ import android.os.AsyncTask;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -70,51 +72,63 @@ public class Utils {
     }
 
     public static void photoFileCheckerAndLoader(final TdApi.File file, final ImageView view) {
-        if (file instanceof TdApi.FileEmpty) {
-            final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+        Log.e("Log", "File to string " + file.toString());
 
-            new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
-                @Override
-                public void onApiResult(BaseHandler output) {
-                    if (output.getHandlerId() == OkHandler.HANDLER_ID) {
-                        ImageLoaderHelper.displayImage(String.valueOf(fileEmpty.id), view);
-                    }
-                }
-            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        }
         if (file instanceof TdApi.FileLocal) {
+            Log.e("Log", "FileLocal photo ok");
             TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
             ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, view);
+        } else if (file instanceof TdApi.FileEmpty) {
+            Log.e("Log", "FileEmpty photo ok");
+            final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+            if (DownloadFileHolder.getUpdatedFilePath(fileEmpty.id) != null) {
+                ImageLoaderHelper.displayImage(String.valueOf(fileEmpty.id), view);
+            } else {
+                new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
+                    @Override
+                    public void onApiResult(BaseHandler output) {
+                        if (output.getHandlerId() == OkHandler.HANDLER_ID) {
+                            ImageLoaderHelper.displayImage(String.valueOf(fileEmpty.id), view);
+                        }
+                    }
+                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            }
         }
     }
 
     public static void gifFileCheckerAndLoader(final TdApi.File file, final ImageView view) {
-        if (file instanceof TdApi.FileEmpty) {
-            final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-            new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
-                @Override
-                public void onApiResult(BaseHandler output) {
-                    if (output.getHandlerId() == OkHandler.HANDLER_ID) {
-                        String path = null;
-                        for (int i = 0; i < 50; i++) {
-                            path = DownloadFileHolder.getUpdatedFilePath(fileEmpty.id);
-                            if (path != null) {
-                                break;
-                            }
-                            try {
-                                TimeUnit.MILLISECONDS.sleep(250);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        Glide.with(DataHolder.getContext()).load(path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
-                    }
-                }
-            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        }
         if (file instanceof TdApi.FileLocal) {
+            Log.e("Log", "FileLocal gif ok");
+
             TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
             Glide.with(DataHolder.getContext()).load(fileLocal.path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
+        } else if (file instanceof TdApi.FileEmpty) {
+            Log.e("Log", "FileEmpty gif ok");
+            final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+            if (DownloadFileHolder.getUpdatedFilePath(fileEmpty.id) != null) {
+                Glide.with(DataHolder.getContext()).load(DownloadFileHolder.getUpdatedFilePath(fileEmpty.id)).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
+            } else {
+                new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
+                    @Override
+                    public void onApiResult(BaseHandler output) {
+                        if (output.getHandlerId() == OkHandler.HANDLER_ID) {
+                            String path = null;
+                            for (int i = 0; i < 50; i++) {
+                                path = DownloadFileHolder.getUpdatedFilePath(fileEmpty.id);
+                                if (path != null) {
+                                    break;
+                                }
+                                try {
+                                    TimeUnit.MILLISECONDS.sleep(250);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            Glide.with(DataHolder.getContext()).load(path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
+                        }
+                    }
+                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            }
         }
     }
 
@@ -205,6 +219,48 @@ public class Utils {
             type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
         }
         return type;
+    }
+
+    public static void setIcon(TdApi.File file, int chatId, String firstName, String lastName, final ImageView iconImage, TextView icon) {
+        if (file != null) {
+            if (file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
+                final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+                if (fileEmpty.id != 0) {
+                    new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                        @Override
+                        public void onApiResult(BaseHandler output) {
+                            if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                                iconImage.setVisibility(View.VISIBLE);
+                                ImageLoaderHelper.displayImageList(String.valueOf(fileEmpty.id), iconImage);
+                            }
+                        }
+                    }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                } else {
+                    icon.setVisibility(View.VISIBLE);
+
+                    int sdk = android.os.Build.VERSION.SDK_INT;
+                    if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        if(chatId < 0) {
+                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, chatId));
+                        } else {
+                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatId));
+                        }
+                    } else {
+                        if(chatId < 0) {
+                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, chatId));
+                        } else {
+                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatId));
+                        }
+                    }
+                    icon.setText(Utils.getInitials(firstName, lastName));
+                }
+            }
+            if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                iconImage.setVisibility(View.VISIBLE);
+                TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, iconImage);
+            }
+        }
     }
 }
 

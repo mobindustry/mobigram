@@ -12,7 +12,6 @@ public class DownloadFileHolder {
     private static Map<Integer, String> map = new TreeMap<>(); //TODO find a problem with showing downloaded images
 
     public static void addFile(TdApi.UpdateFile file) {
-
         map.put(file.fileId, file.path);
     }
 

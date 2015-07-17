@@ -11,7 +11,7 @@ public class OkHandler extends BaseHandler<TdApi.Ok> {
     @Override
     public TdApi.Ok resultHandler(TdApi.TLObject object) {
         Log.i("Log", "Log handler: " + object);
-        return null;
+        return (TdApi.Ok) object;
     }
 
     @Override

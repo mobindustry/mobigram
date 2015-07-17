@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -45,7 +46,6 @@ public class UserInfoFragment extends Fragment {
     private LinearLayout content;
     private ImageView writeMessage;
     private TdApi.User user;
-    private TdApi.GroupChatFull groupChatFull;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -140,10 +140,6 @@ public class UserInfoFragment extends Fragment {
     }
 
     private void setGroupChatFullInfo(TdApi.GroupChatFull groupChatFull) {
-        Log.e("Log", groupChatFull.toString());
-        TextView text = new TextView(getActivity());
-        text.setText("Displays this information is coming soon");
-        content.addView(text);
         long chatId = groupChatFull.groupChat.id;
 
         name.setText(groupChatFull.groupChat.title);
@@ -151,52 +147,28 @@ public class UserInfoFragment extends Fragment {
         lastSeenText.setText(groupChatFull.groupChat.participantsCount + " members");
         TdApi.File file = groupChatFull.groupChat.photoBig;
 
-        if (file != null) {
-            if (file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
-                final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-                if (fileEmpty.id != 0) {
-                    new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                        @Override
-                        public void onApiResult(BaseHandler output) {
-                            if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                                imageIcon.setVisibility(View.VISIBLE);
-                                ImageLoaderHelper.displayImageList(String.valueOf(fileEmpty.id), imageIcon);
-                            }
-                        }
-                    }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                } else {
-                    icon.setVisibility(View.VISIBLE);
-
-                    int sdk = android.os.Build.VERSION.SDK_INT;
-                    if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        if(chatId < 0) {
-                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) chatId));
-                        } else {
-                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
-                        }
-                    } else {
-                        if(chatId < 0) {
-                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) chatId));
-                        } else {
-                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
-                        }
-                    }
-                    icon.setText(Utils.getInitials(groupChatFull.groupChat.title, ""));
-                }
-            }
-            if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
-                imageIcon.setVisibility(View.VISIBLE);
-                TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
-                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, imageIcon);
-            }
-        }
+        Utils.setIcon(file, (int) chatId, groupChatFull.groupChat.title, "", imageIcon, icon);
 
         List<TdApi.User> list = new ArrayList<>();
         for (int i = 0; i < groupChatFull.participants.length; i++) {
             list.add(groupChatFull.participants[i].user);
         }
 
-        Log.e("Log", list.toString());
+        for (int i = 0; i < list.size(); i++) {
+            TdApi.User user = list.get(i);
+            View itemView = View.inflate(getActivity(), R.layout.user_info_card, null);
+            ImageView imageIcon = (ImageView) itemView.findViewById(R.id.user_info_image_icon);
+            TextView icon = (TextView) itemView.findViewById(R.id.user_info_icon);
+            TextView name = (TextView) itemView.findViewById(R.id.user_info_text_name);
+            TextView lastSeen = (TextView) itemView.findViewById(R.id.text_user_info_last_seen);
+
+            TdApi.File fileImage = user.photoBig;
+            Utils.setIcon(fileImage, user.id, user.firstName, user.lastName, imageIcon, icon);
+            name.setText(user.firstName + " " + user.lastName);
+            TdApi.UserStatus status = user.status;
+            lastSeen.setText(Utils.getUserStatusString(status));
+            content.addView(itemView);
+        }
     }
 
     private void setUserFullInfo(TdApi.UserFull userFullInfo) {
@@ -207,37 +179,7 @@ public class UserInfoFragment extends Fragment {
         name.setText(userFullInfo.realFirstName + " " + userFullInfo.realLastName);
         lastSeenText.setText(Utils.getUserStatusString(status));
 
-        if (file != null) {
-            if (file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
-                final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-                if (fileEmpty.id != 0) {
-                    new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                        @Override
-                        public void onApiResult(BaseHandler output) {
-                            if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                                imageIcon.setVisibility(View.VISIBLE);
-                                ImageLoaderHelper.displayImageList(String.valueOf(fileEmpty.id), imageIcon);
-                            }
-                        }
-                    }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                } else {
-                    icon.setVisibility(View.VISIBLE);
-
-                    int sdk = android.os.Build.VERSION.SDK_INT;
-                    if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -user.id));
-                    } else {
-                        icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -user.id));
-                    }
-                    icon.setText(Utils.getInitials(userFullInfo.realFirstName, userFullInfo.realLastName));
-                }
-            }
-            if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
-                imageIcon.setVisibility(View.VISIBLE);
-                TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
-                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, imageIcon);
-            }
-        }
+        Utils.setIcon(file, user.id, user.firstName, user.lastName, imageIcon, icon);
 
         View userPhoneNumberView = View.inflate(getActivity(), R.layout.user_phone_layout, null);
         ((TextView)userPhoneNumberView.findViewById(R.id.user_phone_number)).setText(user.phoneNumber);

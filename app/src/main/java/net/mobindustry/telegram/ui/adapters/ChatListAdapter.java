@@ -135,45 +135,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
             notify.setText("");
         }
 
-        if (file != null) {
-            if (file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
-                final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-                if (fileEmpty.id != 0) {
-                    new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                        @Override
-                        public void onApiResult(BaseHandler output) {
-                            if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                                ImageLoaderHelper.displayImageList(String.valueOf(fileEmpty.id), imageIcon);
-                            }
-                        }
-                    }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                } else {
-                    icon.setVisibility(View.VISIBLE);
-
-                    int sdk = android.os.Build.VERSION.SDK_INT;
-                    if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        if(chatId < 0) {
-                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) chatId));
-                        } else {
-                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
-                        }
-
-                    } else {
-                        if(chatId < 0) {
-                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) chatId));
-                        } else {
-                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
-                        }
-                    }
-                    icon.setText(Utils.getInitials(userFirstName, userLastName));
-                }
-            }
-            if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
-                imageIcon.setVisibility(View.VISIBLE);
-                TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
-                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, imageIcon);
-            }
-        }
+        Utils.setIcon(file, (int) chatId, userFirstName, userLastName, imageIcon, icon);
 
         firstLastName.setText(userFirstName + " " + userLastName);
         time.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));

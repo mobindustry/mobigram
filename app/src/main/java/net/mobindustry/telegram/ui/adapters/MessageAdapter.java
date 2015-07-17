@@ -214,8 +214,14 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         if (item.message instanceof TdApi.MessagePhoto) {
             TdApi.MessagePhoto messagePhoto = (TdApi.MessagePhoto) item.message;
             final ImageView photo = new ImageView(getContext());
+            String photoSize;
+            if(havePhotoSizeM(messagePhoto.photo.photos)) {
+                photoSize = "m";
+            } else {
+                photoSize = "s";
+            }
             for (int i = 0; i < messagePhoto.photo.photos.length; i++) {
-                if (messagePhoto.photo.photos[i].type.equals("m")) {
+                if (messagePhoto.photo.photos[i].type.equals(photoSize)) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[i].width, messagePhoto.photo.photos[i].height);
                     photo.setLayoutParams(layoutParams);
                     Utils.photoFileCheckerAndLoader(messagePhoto.photo.photos[i].photo, photo);
@@ -252,15 +258,15 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(contactView);
         }
         if (item.message instanceof TdApi.MessageDocument) {
-            //Log.e("Message", "Document " + item.message);
+            Log.e("Message", "Document " + item.message);
 
             TdApi.MessageDocument doc = (TdApi.MessageDocument) item.message;
             if (doc.document.mimeType.contains("gif")) {
                 View gifView = inflater.inflate(R.layout.gif_document_view_layout, null);
                 ImageView icon = (ImageView) gifView.findViewById(R.id.document_icon);
-                TdApi.File documentFile = doc.document.thumb.photo;
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(doc.document.thumb.width * 3, doc.document.thumb.height * 3);
-                icon.setLayoutParams(params);
+                TdApi.File documentFile = doc.document.document;
+//                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(doc.document.thumb.width * 3, doc.document.thumb.height * 3);
+//                icon.setLayoutParams(params);
                 Utils.photoFileCheckerAndLoader(documentFile, icon);
                 layout.addView(gifView);
             } else {
@@ -332,8 +338,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 icon.setImageURI(Uri.parse(fileLocal.path));
             } else {
                 TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-                Utils.photoFileLoader(fileEmpty.id, icon);
-
+                Utils.photoFileCheckerAndLoader(fileEmpty, icon);
             }
             layout.addView(view);
         }
@@ -413,6 +418,15 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 break;
         }
         return convertView;
+    }
+
+    private boolean havePhotoSizeM(TdApi.PhotoSize[] sizes) {
+        for (int i = 0; i < sizes.length; i++) {
+            if (sizes[i].type.equals("m")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public interface Loader {

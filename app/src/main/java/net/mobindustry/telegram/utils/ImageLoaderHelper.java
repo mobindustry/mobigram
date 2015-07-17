@@ -33,8 +33,8 @@ public class ImageLoaderHelper {
 
             if (!imageUri.contains("/")) {
                 String path = null;
+                int id = Integer.parseInt(imageUri);
                 for (int i = 0; i < 50; i++) {
-                    int id = Integer.parseInt(imageUri);
                     path = DownloadFileHolder.getUpdatedFilePath(id);
                     if (path != null) {
                         break;

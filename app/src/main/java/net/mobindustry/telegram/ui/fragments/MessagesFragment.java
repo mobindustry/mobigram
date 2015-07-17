@@ -277,46 +277,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 userFirstName = groupChatInfo.groupChat.title;
                 userLastName = "";
             }
-            if (file != null) {
-                if (file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
-                    final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-                    if (fileEmpty.id != 0) {
-                        new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                            @Override
-                            public void onApiResult(BaseHandler output) {
-                                if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                                    imageIcon.setVisibility(View.VISIBLE);
-                                    ImageLoaderHelper.displayImageList(String.valueOf(fileEmpty.id), imageIcon);
-                                }
-                            }
-                        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                    } else {
-                        icon.setVisibility(View.VISIBLE);
 
-                        int sdk = android.os.Build.VERSION.SDK_INT;
-                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                            if(chatId < 0) {
-                                icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) chatId));
-                            } else {
-                                icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
-                            }
-
-                        } else {
-                            if(chatId < 0) {
-                                icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) chatId));
-                            } else {
-                                icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
-                            }
-                        }
-                        icon.setText(Utils.getInitials(userFirstName, userLastName));
-                    }
-                }
-                if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
-                    imageIcon.setVisibility(View.VISIBLE);
-                    TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
-                    ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, imageIcon);
-                }
-            }
+            Utils.setIcon(file, (int) chatId, userFirstName, userLastName, imageIcon, icon);
 
             if (title != null) {
                 name.setText(title);
@@ -706,11 +668,11 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
         @Override
         public void loadFile(final int id, final View v) {
-            new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+            new ApiClient<>(new TdApi.DownloadFile(id), new OkHandler(), new ApiClient.OnApiResultHandler() {
                 @Override
                 public void onApiResult(BaseHandler output) {
-                    if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                        DownloadFileHandler handler = (DownloadFileHandler) output;
+                    if (output.getHandlerId() == OkHandler.HANDLER_ID) {
+                        OkHandler handler = (OkHandler) output;
                         if (handler.getResponse().getConstructor() == TdApi.Ok.CONSTRUCTOR) {
                             Runnable runnable = new Runnable() {
                                 public void run() {
@@ -728,7 +690,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                                 public void run() {
                                                     Toast.makeText(getActivity(), "File loaded.", Toast.LENGTH_SHORT).show();
                                                     openFile(finalPath, v);
-                                                                                                    }
+                                                }
                                             });
                                             break;
                                         }
@@ -745,7 +707,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         @Override
         public void openFile(String path, View v) {
             v.setVisibility(View.GONE);
-
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.parse(path), Utils.getMimeType(path));
