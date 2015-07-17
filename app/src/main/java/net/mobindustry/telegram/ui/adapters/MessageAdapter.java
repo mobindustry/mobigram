@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.ui.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,11 +17,10 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
+import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.PhotoViewerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
-import net.mobindustry.telegram.ui.fragments.ChatListFragment;
-import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
@@ -36,19 +34,20 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
     private final LayoutInflater inflater;
     private int typeCount = 6;
     private long myId;
+    private TdApi.ChatInfo info;
 
     private View.OnClickListener onClickListener;
 
     private Loader loader;
 
-    public MessageAdapter(final Context context, long myId, final Loader loader) {
+    public MessageAdapter(final Context context, long myId, final Loader loader, TdApi.ChatInfo info) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
         this.myId = myId;
         this.loader = loader;
+        this.info = info;
 
-        //TODO receive audio, video, documents, contact messages...
-        //TODO onToolbarUserInfo click open user info
+        //TODO receive audio...
 
         onClickListener = new View.OnClickListener() {
             @Override
@@ -193,6 +192,24 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
         TdApi.Message item = getItem(position);
         FrameLayout layout = new FrameLayout(getContext());
+
+        if(info.getConstructor() == TdApi.GroupChatInfo.CONSTRUCTOR &&
+                (getItemViewType(position) != Const.OUT_MESSAGE && getItemViewType(position)
+                        != Const.OUT_CONTENT_MESSAGE && getItemViewType(position) != Const.OUT_STICKER)) {
+            FrameLayout base_layout = (FrameLayout) convertView.findViewById(R.id.base_layout);
+            base_layout.removeAllViews();
+
+            View textView = View.inflate(getContext(), R.layout.chat_user_name_layout, null);
+            TdApi.User user = UserInfoHolder.getUser(item.fromId);
+            if(user != null) {
+                String name = user.firstName + " " + user.lastName;
+                ((TextView)textView.findViewById(R.id.chat_user_name_text_view)).setText(name);
+
+            } else {
+                ((TextView)textView.findViewById(R.id.chat_user_name_text_view)).setText("ID: " + item.fromId);
+            }
+            base_layout.addView(textView);
+        }
 
         if (item.message instanceof TdApi.MessagePhoto) {
             TdApi.MessagePhoto messagePhoto = (TdApi.MessagePhoto) item.message;

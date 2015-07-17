@@ -3,6 +3,7 @@ package net.mobindustry.telegram.ui.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
+import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
@@ -38,7 +40,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         emojiParser = new EmojiParser(emoji);
     }
 
-    //TODO correct show avatar,
+    //TODO correct show avatar
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -103,6 +105,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         TdApi.File file = null;
         long chatId = item.id;
+        Log.e("Log", String.valueOf(chatId));
 
         String userFirstName = "";
         String userLastName = "";
@@ -110,7 +113,6 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         if (info.getConstructor() == TdApi.PrivateChatInfo.CONSTRUCTOR) {
             TdApi.PrivateChatInfo privateChatInfo = (TdApi.PrivateChatInfo) info;
             TdApi.User chatUser = privateChatInfo.user;
-            TdApi.UserStatus status = chatUser.status;
             file = chatUser.photoBig;
             userFirstName = privateChatInfo.user.firstName;
             userLastName = privateChatInfo.user.lastName;
@@ -152,9 +154,18 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
                     int sdk = android.os.Build.VERSION.SDK_INT;
                     if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                        if(chatId < 0) {
+                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) chatId));
+                        } else {
+                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                        }
+
                     } else {
-                        icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                        if(chatId < 0) {
+                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) chatId));
+                        } else {
+                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                        }
                     }
                     icon.setText(Utils.getInitials(userFirstName, userLastName));
                 }

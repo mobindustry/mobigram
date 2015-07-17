@@ -21,6 +21,7 @@ import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatHandler;
 import net.mobindustry.telegram.core.handlers.ChatsHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
+import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.ChatListAdapter;
@@ -106,6 +107,7 @@ public class ChatListFragment extends ListFragment{
                 } else {
                     if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
                         setChatsList((TdApi.Chats) output.getResponse());
+                        UserInfoHolder.addUsersToMap(chats);
                     }
                 }
             }

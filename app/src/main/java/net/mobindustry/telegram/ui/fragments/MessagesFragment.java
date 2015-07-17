@@ -147,9 +147,12 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 setFirstVisibleItem(firstVisibleItem);
             }
         });
-        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), loader);
-        messageListView.setAdapter(adapter);
+        activity = (ChatActivity) getActivity();
         progressBar = (ProgressBar) view.findViewById(R.id.messages_progress_bar);
+        fragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
+        chat = fragment.getChat();
+        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), loader, chat.type);
+        messageListView.setAdapter(adapter);
         return view;
     }
 
@@ -157,7 +160,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ((ChatActivity) getActivity()).clearSearch();
+        activity.clearSearch();
 
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -169,10 +172,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         holder = MessagesFragmentHolder.getInstance();
         emoji = holder.getEmoji();
         emojiParser = new EmojiParser(emoji);
-        activity = (ChatActivity) getActivity();
 
-        fragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
-        chat = fragment.getChat();
+
         if (MessagesFragmentHolder.getTopMessage(chat.id) != 0) {
             topMessageId = MessagesFragmentHolder.getTopMessage(chat.id);
         } else {
@@ -293,9 +294,18 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
                         int sdk = android.os.Build.VERSION.SDK_INT;
                         if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                            if(chatId < 0) {
+                                icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) chatId));
+                            } else {
+                                icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                            }
+
                         } else {
-                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                            if(chatId < 0) {
+                                icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) chatId));
+                            } else {
+                                icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, (int) -chatId));
+                            }
                         }
                         icon.setText(Utils.getInitials(userFirstName, userLastName));
                     }
@@ -340,7 +350,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.clear_history:
-                            Log.e("Log", "ClearChatHistory");
                             new ApiClient<>(new TdApi.DeleteChatHistory(chat.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
                                 @Override
                                 public void onApiResult(BaseHandler output) {
