@@ -17,7 +17,8 @@ public class PhotoFlickr implements Parcelable {
     private String farm;
     private boolean check;
     private String link;
-    private String sendLink;
+    private String sendLinkLarge;
+
 
 
     public PhotoFlickr() {
@@ -35,12 +36,12 @@ public class PhotoFlickr implements Parcelable {
 
     }
 
-    public String getSendLink() {
-        return sendLink;
+    public String getSendLinkLarge() {
+        return sendLinkLarge;
     }
 
-    public void setSendLink(String sendLink) {
-        this.sendLink = sendLink;
+    public void setSendLinkLarge(String sendLinkLarge) {
+        this.sendLinkLarge = sendLinkLarge;
     }
 
     public String getLink() {

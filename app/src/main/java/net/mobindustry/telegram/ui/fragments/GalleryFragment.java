@@ -111,13 +111,13 @@ public class GalleryFragment extends Fragment {
             if (ListFoldersHolder.getCheckQuantity()!=0){
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                params.leftMargin = 65;
+                params.leftMargin = 50;
                 numberPhotos.setLayoutParams(params);
                 int sdk = android.os.Build.VERSION.SDK_INT;
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                    numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 } else {
-                    numberPhotos.setBackground(Utils.getShapeDrawable(40,  getActivity().getResources().getColor(R.color.message_notify)));
+                    numberPhotos.setBackground(Utils.getShapeDrawable(35,  getActivity().getResources().getColor(R.color.message_notify)));
                 }
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));

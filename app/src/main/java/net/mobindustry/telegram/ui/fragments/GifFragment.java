@@ -312,13 +312,13 @@ public class GifFragment extends Fragment {
                                 Log.e("Log", "TABLET");
                                 number.setVisibility(View.VISIBLE);
                                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
-                                params.leftMargin = 65;
+                                params.leftMargin = 50;
                                 number.setLayoutParams(params);
                                 int sdk = Build.VERSION.SDK_INT;
                                 if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
-                                    number.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                                    number.setBackgroundDrawable(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                                 } else {
-                                    number.setBackground(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                                    number.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                                 }
 
                                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));

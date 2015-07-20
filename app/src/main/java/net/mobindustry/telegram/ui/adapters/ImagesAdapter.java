@@ -49,7 +49,7 @@ public class ImagesAdapter extends ArrayAdapter<PhotoFlickr>  {
                     if (ListFoldersHolder.getCheckQuantity()<10){
                         photoFlickr.setCheck(true);
                         ImagesObject imagesObject=new ImagesObject();
-                        imagesObject.setPath(photoFlickr.getLink());
+                        imagesObject.setPath(photoFlickr.getSendLinkLarge());
                         if (ListFoldersHolder.getListForSending()==null){
                             ListFoldersHolder.setListForSending(new ArrayList<MediaGallery>());
                         }
@@ -85,12 +85,12 @@ public class ImagesAdapter extends ArrayAdapter<PhotoFlickr>  {
         String link="http://farm"+photoFlickr.getFarm()
                 +".staticflickr.com/"+photoFlickr.getServer()
                 +"/"+photoFlickr.getPhotoId()+"_"+photoFlickr.getSecret()+"_m.jpg";
-        String sendLink="http://farm"+photoFlickr.getFarm()
+        String sendLinkLarge="http://farm"+photoFlickr.getFarm()
                 +".staticflickr.com/"+photoFlickr.getServer()
-                +"/"+photoFlickr.getPhotoId()+"_"+photoFlickr.getSecret()+".jpg";
+                +"/"+photoFlickr.getPhotoId()+"_"+photoFlickr.getSecret()+"_b.jpg";
         Log.e("log", "LINL THUMB " + link);
         photoFlickr.setLink(link);
-        photoFlickr.setSendLink(sendLink);
+        photoFlickr.setSendLinkLarge(sendLinkLarge);
         ImageLoaderHelper.displayImageList(link, photo);
         return convertView;
     }

@@ -72,6 +72,7 @@
         <activity
             android:name=".ui.activity.TransparentActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan"
             android:theme="@style/Theme.AppCompat.Translucent"
             >
             <intent-filter>
