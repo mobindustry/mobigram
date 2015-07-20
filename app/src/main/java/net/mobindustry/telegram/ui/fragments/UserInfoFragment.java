@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -21,13 +21,11 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.GroupChatFullHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.core.handlers.UserFullHandler;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -64,42 +62,45 @@ public class UserInfoFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (type.equals("private")) {
-            getUserFull();
-        } else {
-            getChatFull();
-        }
-
-        writeMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
-
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.userInfoToolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
-        toolbar.inflateMenu(R.menu.user_info);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.share_user:
-                        Intent intent = new Intent(getActivity(), TransparentActivity.class);
-                        intent.putExtra("choice", Const.CONTACT_LIST_FRAGMENT);
-                        intent.putExtra("destination", "userInfo");
-                        startActivityForResult(intent, Const.REQUEST_CODE_NEW_MESSAGE);
-                        break;
-                    case R.id.block_user:
-                        Log.e("Log", "Block user");
-                        break;
-                    case R.id.delete_user:
-                        Log.e("Log", "Delete user");
-                        break;
+
+        if (type.equals("private")) {
+            toolbar.inflateMenu(R.menu.user_info);
+            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.share_user:
+                            Intent intent = new Intent(getActivity(), TransparentActivity.class);
+                            intent.putExtra("choice", Const.CONTACT_LIST_FRAGMENT);
+                            intent.putExtra("destination", "userInfo");
+                            startActivityForResult(intent, Const.REQUEST_CODE_NEW_MESSAGE);
+                            break;
+                        case R.id.block_user:
+                            Log.e("Log", "Block user");
+                            break;
+                        case R.id.delete_user:
+                            Log.e("Log", "Delete user");
+                            break;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+            writeMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), MessagesFragment.class);
+                    intent.putExtra("id", (long) user.id);
+                    getActivity().setResult(Activity.RESULT_OK, intent);
+                    getActivity().finish();
+                }
+            });
+            getUserFull();
+        } else {
+            writeMessage.setVisibility(View.GONE);
+            getChatFull();
+        }
 
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -155,7 +156,7 @@ public class UserInfoFragment extends Fragment {
         }
 
         for (int i = 0; i < list.size(); i++) {
-            TdApi.User user = list.get(i);
+            final TdApi.User user = list.get(i);
             View itemView = View.inflate(getActivity(), R.layout.user_info_card, null);
             ImageView imageIcon = (ImageView) itemView.findViewById(R.id.user_info_image_icon);
             TextView icon = (TextView) itemView.findViewById(R.id.user_info_icon);
@@ -167,6 +168,17 @@ public class UserInfoFragment extends Fragment {
             name.setText(user.firstName + " " + user.lastName);
             TdApi.UserStatus status = user.status;
             lastSeen.setText(Utils.getUserStatusString(status));
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UserInfoFragment userInfoFragment = new UserInfoFragment();
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.transparent_content, userInfoFragment);
+                    userInfoFragment.setInfo((long) user.id, "private");
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            });
             content.addView(itemView);
         }
     }
@@ -182,11 +194,11 @@ public class UserInfoFragment extends Fragment {
         Utils.setIcon(file, user.id, user.firstName, user.lastName, imageIcon, icon);
 
         View userPhoneNumberView = View.inflate(getActivity(), R.layout.user_phone_layout, null);
-        ((TextView)userPhoneNumberView.findViewById(R.id.user_phone_number)).setText(user.phoneNumber);
+        ((TextView) userPhoneNumberView.findViewById(R.id.user_phone_number)).setText(user.phoneNumber);
         content.addView(userPhoneNumberView);
-        if(!user.username.equals("")) {
+        if (!user.username.equals("")) {
             View userNickname = View.inflate(getActivity(), R.layout.user_nickname_layout, null);
-            ((TextView)userNickname.findViewById(R.id.user_nickname)).setText("@" + user.username);
+            ((TextView) userNickname.findViewById(R.id.user_nickname)).setText("@" + user.username);
             content.addView(userNickname);
         }
     }

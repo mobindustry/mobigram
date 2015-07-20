@@ -194,7 +194,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 if (chat.type.getConstructor() == TdApi.GroupChatInfo.CONSTRUCTOR) {
                     intent.putExtra("type", "group");
                 }
-                startActivity(intent);
+                startActivityForResult(intent, Const.REQUEST_CODE_NEW_MESSAGE);
             }
         });
 
@@ -629,6 +629,10 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "File not found", Toast.LENGTH_LONG).show();
             }
+        }
+        if (requestCode == Const.REQUEST_CODE_NEW_MESSAGE && resultCode == Activity.RESULT_OK) {
+            long resultId = data.getLongExtra("id", 0);
+            fragment.openChat(resultId);
         }
     }
 
