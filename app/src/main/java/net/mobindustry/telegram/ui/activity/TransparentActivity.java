@@ -19,6 +19,7 @@ import net.mobindustry.telegram.ui.fragments.FolderFragment;
 import net.mobindustry.telegram.ui.fragments.GalleryFragment;
 import net.mobindustry.telegram.ui.fragments.LocationFragment;
 import net.mobindustry.telegram.ui.fragments.ContactListFragment;
+import net.mobindustry.telegram.ui.fragments.SelectChatFragment;
 import net.mobindustry.telegram.ui.fragments.SelectedMapFragment;
 import net.mobindustry.telegram.ui.fragments.UserInfoFragment;
 import net.mobindustry.telegram.utils.Const;
@@ -47,39 +48,49 @@ public class TransparentActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (choice) {
-            case Const.CONTACT_LIST_FRAGMENT:
+            case Const.CONTACT_LIST_FRAGMENT: {
                 String destination = getIntent().getStringExtra("destination");
                 ContactListFragment contactListFragment = new ContactListFragment();
                 fragmentTransaction.replace(R.id.transparent_content, contactListFragment);
                 contactListFragment.setDestination(destination);
                 break;
-            case Const.FILE_CHOOSE_FRAGMENT:
+            }
+            case Const.FILE_CHOOSE_FRAGMENT: {
                 ChooseFileFragment chooseFileFragment = new ChooseFileFragment();
                 fragmentTransaction.replace(R.id.transparent_content, chooseFileFragment);
                 break;
-            case Const.MAP_FRAGMENT:
+            }
+            case Const.MAP_FRAGMENT: {
                 LocationFragment locationFragment = new LocationFragment();
                 fragmentTransaction.replace(R.id.transparent_content, locationFragment);
                 break;
-            case Const.GALLERY_FRAGMENT:
+            }
+            case Const.GALLERY_FRAGMENT: {
                 GalleryFragment galleryFragment = new GalleryFragment();
                 fragmentTransaction.replace(R.id.transparent_content, galleryFragment);
                 break;
-            case Const.SELECTED_MAP_FRAGMENT:
+            }
+            case Const.SELECTED_MAP_FRAGMENT: {
                 SelectedMapFragment selectedMapFragment = new SelectedMapFragment();
                 fragmentTransaction.replace(R.id.transparent_content, selectedMapFragment);
                 double lat = getIntent().getDoubleExtra("lat", 0.0);
                 double lng = getIntent().getDoubleExtra("lng", 0.0);
                 selectedMapFragment.setUserLocation(lng, lat);
-
                 break;
-            case Const.USER_INFO_FRAGMENT:
+            }
+            case Const.USER_INFO_FRAGMENT: {
                 long chatId = getIntent().getLongExtra("chat_id", 0);
                 String type = getIntent().getStringExtra("type");
                 UserInfoFragment userInfoFragment = new UserInfoFragment();
                 fragmentTransaction.replace(R.id.transparent_content, userInfoFragment);
                 userInfoFragment.setInfo(chatId, type);
                 break;
+            }
+            case Const.SELECT_CHAT: {
+                SelectChatFragment selectChatFragment = new SelectChatFragment();
+                fragmentTransaction.replace(R.id.transparent_content, selectChatFragment);
+                break;
+            }
         }
         fragmentTransaction.commit();
     }

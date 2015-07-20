@@ -334,7 +334,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(stickerImage);
         }
         if (item.message instanceof TdApi.MessageVideo) {
-            Log.e("Message", "Video " + item.message);
+            //Log.e("Message", "Video " + item.message);
 
             TdApi.MessageVideo messageVideo = (TdApi.MessageVideo) item.message;
             View view = inflater.inflate(R.layout.video_message_view, null);
@@ -360,7 +360,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(view);
         }
         if (item.message instanceof TdApi.MessageUnsupported) {
-            Log.i("Message", "Unsupported " + item.message);
+            //Log.i("Message", "Unsupported " + item.message);
             TextView unsupported = new TextView(getContext());
             unsupported.setText("Unsupported");
 

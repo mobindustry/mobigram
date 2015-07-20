@@ -49,7 +49,6 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatHandler;
 import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
-import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.model.Enums;
@@ -60,7 +59,6 @@ import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
 import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
 import net.mobindustry.telegram.ui.emoji.Emoji;
 import net.mobindustry.telegram.ui.emoji.EmojiKeyboardView;
@@ -89,7 +87,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private final int MESSAGE_LOAD_OFFSET = 0;
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
     private final int FORWARD_CONTEXT_ITEM = 101010;
-    private final int REPLY_CONTEXT_ITEM = 202020;
     private final int DELETE_CONTEXT_ITEM = 303030;
     private int firstVisibleItem = 0;
     private int loadedMessagesCount = 0;
@@ -166,8 +163,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         super.onActivityCreated(savedInstanceState);
 
         activity.clearSearch();
-
         registerForContextMenu(messageListView);
+
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -255,8 +252,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 }
             }
         });
-
-
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
         if (toolbar != null) {
@@ -427,7 +422,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         noMessages.setVisibility(View.GONE);
         adapter.setNotifyOnChange(false);
         for (int i = 0; i < messages.messages.length; i++) {
-            Log.e("Log", messages.messages[i].toString());
             adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
         }
         adapter.setNotifyOnChange(true);
@@ -661,6 +655,15 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             long resultId = data.getLongExtra("id", 0);
             fragment.openChat(resultId);
         }
+        if (requestCode == Const.REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT && resultCode == Activity.RESULT_OK) {
+            final long id = data.getLongExtra("id", 0);
+            fragment.openChat(id);
+            new ApiClient<>(new TdApi.ForwardMessages(id, getShownChatId(), new int[]{itemForContextMenu.id}), new ChatHistoryHandler(), new ApiClient.OnApiResultHandler() {
+                @Override
+                public void onApiResult(BaseHandler output) {
+                }
+            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        }
     }
 
     public boolean dissmissEmojiPopup() {
@@ -772,14 +775,15 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case FORWARD_CONTEXT_ITEM:
-                Log.e("Log", "101010");
+                Intent intent = new Intent(getActivity(), TransparentActivity.class);
+                intent.putExtra("choice", Const.SELECT_CHAT);
+                startActivityForResult(intent, Const.REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT);
                 break;
             case DELETE_CONTEXT_ITEM:
                 new ApiClient<>(new TdApi.DeleteMessages(getShownChatId(), new int[]{itemForContextMenu.id}), new OkHandler(), new ApiClient.OnApiResultHandler() {
                     @Override
                     public void onApiResult(BaseHandler output) {
                         adapter.remove(itemForContextMenu);
-                        itemForContextMenu = null;
                     }
                 }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                 break;

@@ -44,6 +44,8 @@
     <string name="text_test_netelegram">NeTelegram - jkdksafkfsmskjsa</string>
     <string name="text_test_number">100000</string>
     <string name="new_message_fragment_title">New message</string>
+    <string name="select_chat_fragment_title">Select chat</string>
+
     <string name="text_web_search">web search</string>
     <string name="text_find_images">FIND IMAGES</string>
     <string name="text_find_gifs">FIND GIFS</string>

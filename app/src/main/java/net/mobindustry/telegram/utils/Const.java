@@ -17,6 +17,7 @@ public class Const {
 
     public static final int REQUEST_CODE_TAKE_PHOTO = 101;
     public static final int REQUEST_CODE_SELECT_IMAGE = 102;
+    public static final int REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT = 103;
     public static final int REQUEST_CODE_NEW_MESSAGE = 110;
     public static final int CROP_REQUEST_CODE = 111;
 
@@ -35,6 +36,7 @@ public class Const {
     public static final int SELECTED_FOLDER_FRAGMENT = 205;
     public static final int SEND_FOLDER_FRAGMENT = 206;
     public static final int USER_INFO_FRAGMENT = 207;
+    public static final int SELECT_CHAT = 208;
 
 
     public static final int CHAT_NOT_FOUND = 1001;
