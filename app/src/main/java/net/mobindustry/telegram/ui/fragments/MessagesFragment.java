@@ -595,13 +595,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
     public void openFolder()
     {
-        File file = new File(Environment.getExternalStorageDirectory(),
-                "myFolder");
-
-        Log.d("path", file.toString());
-
+        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath());
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setDataAndType(Uri.fromFile(file), "*/*");
+        intent.setDataAndType(uri, "*/*");
         startActivity(intent);
     }
 
