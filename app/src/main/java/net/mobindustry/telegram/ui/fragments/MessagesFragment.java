@@ -97,7 +97,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public boolean isMessagesLoading = false;
     public boolean needLoad = true;
 
-
     private ChatActivity activity;
     private ChatListFragment fragment;
     private MessageAdapter adapter;
@@ -176,7 +175,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         messageListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                return false;
+                //TODO selected files list for send...
+                //TODO add replace toolbar...
+                return true;
             }
         });
 

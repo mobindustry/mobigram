@@ -47,7 +47,9 @@
                     android:layout_height="match_parent"
                     android:divider="@null"
                     android:stackFromBottom="true"
-                    android:transcriptMode="disabled" />
+                    android:transcriptMode="disabled"
+                    android:choiceMode="multipleChoice"
+                    />
             </FrameLayout>
 
             <net.mobindustry.telegram.ui.emoji.ObservableLinearLayout
