@@ -95,7 +95,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private int topMessageId;
     private int toScrollLoadMessageId;
     private TdApi.Message itemForContextMenu;
-    private int itemForContextMenuPosition;
 
     public boolean isMessagesLoading = false;
     public boolean needLoad = true;
@@ -172,7 +171,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 itemForContextMenu = adapter.getItem(position);
-                itemForContextMenuPosition = position;
                 view.showContextMenu();
             }
         });
@@ -428,6 +426,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         noMessages.setVisibility(View.GONE);
         adapter.setNotifyOnChange(false);
         for (int i = 0; i < messages.messages.length; i++) {
+            Log.e("Log", messages.messages[i].toString());
             adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
         }
         adapter.setNotifyOnChange(true);
@@ -753,7 +752,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                     ContextMenu.ContextMenuInfo menuInfo) {
         menu.setHeaderTitle("Message");
         menu.add(0, FORWARD_CONTEXT_ITEM, 0, "Forward");
-        menu.add(0, REPLY_CONTEXT_ITEM, 0, "Reply");
         menu.add(0, DELETE_CONTEXT_ITEM, 0, "Delete");
     }
 
@@ -763,14 +761,12 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             case FORWARD_CONTEXT_ITEM:
                 Log.e("Log", "101010");
                 break;
-            case REPLY_CONTEXT_ITEM:
-                Log.e("Log", "202020");
-                break;
             case DELETE_CONTEXT_ITEM:
                 new ApiClient<>(new TdApi.DeleteMessages(getShownChatId(), new int[]{itemForContextMenu.id}), new OkHandler(), new ApiClient.OnApiResultHandler() {
                     @Override
                     public void onApiResult(BaseHandler output) {
                         adapter.remove(itemForContextMenu);
+                        itemForContextMenu = null;
                     }
                 }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                 break;

@@ -191,7 +191,26 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
 
         TdApi.Message item = getItem(position);
+
         FrameLayout layout = new FrameLayout(getContext());
+
+        if (item.forwardFromId != 0) {
+            FrameLayout forwarded_from = (FrameLayout) convertView.findViewById(R.id.forwarded_from_layout);
+            forwarded_from.removeAllViews();
+
+            View textView = View.inflate(getContext(), R.layout.chat_user_name_layout, null);
+            TdApi.User user = UserInfoHolder.getUser(item.forwardFromId);
+            TextView forwardedFromName = ((TextView)textView.findViewById(R.id.chat_user_name_text_view));
+            forwardedFromName.setTextColor(getContext().getResources().getColor(R.color.content_text_color));
+            if(user != null) {
+                String name = "Forwarded message \nFrom " + user.firstName + " " + user.lastName;
+                forwardedFromName.setText(name);
+            } else {
+                String name = "Forwarded message \nFrom ID: " + item.forwardFromId;
+                forwardedFromName.setText(name);
+            }
+            forwarded_from.addView(textView);
+        }
 
         if(info.getConstructor() == TdApi.GroupChatInfo.CONSTRUCTOR &&
                 (getItemViewType(position) != Const.OUT_MESSAGE && getItemViewType(position)

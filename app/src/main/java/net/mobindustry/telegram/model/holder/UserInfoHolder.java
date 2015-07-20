@@ -36,6 +36,7 @@ public class UserInfoHolder {
 
     public void setUser(TdApi.User user) {
         this.user = user;
+        map.put(user.id, user);
     }
 
     public static void addUsersToMap(TdApi.Chats chats) {
