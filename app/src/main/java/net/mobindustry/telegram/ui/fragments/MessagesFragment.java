@@ -12,6 +12,7 @@ import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -582,9 +583,10 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                         "video", Toast.LENGTH_LONG).show();
                                 break;
                             case R.id.file:
-                                Intent intent = new Intent(getActivity(), TransparentActivity.class);
-                                intent.putExtra("choice", Const.FILE_CHOOSE_FRAGMENT);
-                                startActivityForResult(intent, 1);
+                                //Intent intent = new Intent(getActivity(), TransparentActivity.class);
+                                //intent.putExtra("choice", Const.FILE_CHOOSE_FRAGMENT);
+                                //startActivityForResult(intent, 1);
+                                openFolder();
                                 break;
                             case R.id.location:
                                 Intent intentLoc = new Intent(getActivity(), TransparentActivity.class);
@@ -596,6 +598,17 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     }
                 });
         popupMenu.show();
+    }
+    public void openFolder()
+    {
+        File file = new File(Environment.getExternalStorageDirectory(),
+                "myFolder");
+
+        Log.d("path", file.toString());
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setDataAndType(Uri.fromFile(file), "*/*");
+        startActivity(intent);
     }
 
     private void makePhoto() {
