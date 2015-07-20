@@ -22,6 +22,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -86,10 +87,15 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private final int MESSAGE_LOAD_LIMIT = 60;
     private final int MESSAGE_LOAD_OFFSET = 0;
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
+    private final int FORWARD_CONTEXT_ITEM = 101010;
+    private final int REPLY_CONTEXT_ITEM = 202020;
+    private final int DELETE_CONTEXT_ITEM = 303030;
     private int firstVisibleItem = 0;
     private int loadedMessagesCount = 0;
     private int topMessageId;
     private int toScrollLoadMessageId;
+    private TdApi.Message itemForContextMenu;
+    private int itemForContextMenuPosition;
 
     public boolean isMessagesLoading = false;
     public boolean needLoad = true;
@@ -121,7 +127,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         Bundle args = new Bundle();
         args.putInt("index", index);
         f.setArguments(args);
-
         return f;
     }
 
@@ -162,17 +167,26 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
         activity.clearSearch();
 
+        registerForContextMenu(messageListView);
         messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "This function coming soon!", Toast.LENGTH_SHORT).show();
+                itemForContextMenu = adapter.getItem(position);
+                itemForContextMenuPosition = position;
+                view.showContextMenu();
+            }
+        });
+
+        messageListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return false;
             }
         });
 
         holder = MessagesFragmentHolder.getInstance();
         emoji = holder.getEmoji();
         emojiParser = new EmojiParser(emoji);
-
 
         if (MessagesFragmentHolder.getTopMessage(chat.id) != 0) {
             topMessageId = MessagesFragmentHolder.getTopMessage(chat.id);
@@ -242,6 +256,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 }
             }
         });
+
 
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messageFragmentToolbar);
@@ -734,4 +749,32 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         }
     };
 
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        menu.setHeaderTitle("Message");
+        menu.add(0, FORWARD_CONTEXT_ITEM, 0, "Forward");
+        menu.add(0, REPLY_CONTEXT_ITEM, 0, "Reply");
+        menu.add(0, DELETE_CONTEXT_ITEM, 0, "Delete");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case FORWARD_CONTEXT_ITEM:
+                Log.e("Log", "101010");
+                break;
+            case REPLY_CONTEXT_ITEM:
+                Log.e("Log", "202020");
+                break;
+            case DELETE_CONTEXT_ITEM:
+                new ApiClient<>(new TdApi.DeleteMessages(getShownChatId(), new int[]{itemForContextMenu.id}), new OkHandler(), new ApiClient.OnApiResultHandler() {
+                    @Override
+                    public void onApiResult(BaseHandler output) {
+                        adapter.remove(itemForContextMenu);
+                    }
+                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
 }
