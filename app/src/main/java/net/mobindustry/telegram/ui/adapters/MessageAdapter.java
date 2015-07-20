@@ -200,9 +200,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
             View textView = View.inflate(getContext(), R.layout.chat_user_name_layout, null);
             TdApi.User user = UserInfoHolder.getUser(item.forwardFromId);
-            TextView forwardedFromName = ((TextView)textView.findViewById(R.id.chat_user_name_text_view));
+            TextView forwardedFromName = ((TextView) textView.findViewById(R.id.chat_user_name_text_view));
             forwardedFromName.setTextColor(getContext().getResources().getColor(R.color.content_text_color));
-            if(user != null) {
+            if (user != null) {
                 String name = "Forwarded message \nFrom " + user.firstName + " " + user.lastName;
                 forwardedFromName.setText(name);
             } else {
@@ -212,7 +212,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             forwarded_from.addView(textView);
         }
 
-        if(info.getConstructor() == TdApi.GroupChatInfo.CONSTRUCTOR &&
+        if (info.getConstructor() == TdApi.GroupChatInfo.CONSTRUCTOR &&
                 (getItemViewType(position) != Const.OUT_MESSAGE && getItemViewType(position)
                         != Const.OUT_CONTENT_MESSAGE && getItemViewType(position) != Const.OUT_STICKER)) {
             FrameLayout base_layout = (FrameLayout) convertView.findViewById(R.id.base_layout);
@@ -220,12 +220,12 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
             View textView = View.inflate(getContext(), R.layout.chat_user_name_layout, null);
             TdApi.User user = UserInfoHolder.getUser(item.fromId);
-            if(user != null) {
+            if (user != null) {
                 String name = user.firstName + " " + user.lastName;
-                ((TextView)textView.findViewById(R.id.chat_user_name_text_view)).setText(name);
+                ((TextView) textView.findViewById(R.id.chat_user_name_text_view)).setText(name);
 
             } else {
-                ((TextView)textView.findViewById(R.id.chat_user_name_text_view)).setText("ID: " + item.fromId);
+                ((TextView) textView.findViewById(R.id.chat_user_name_text_view)).setText("ID: " + item.fromId);
             }
             base_layout.addView(textView);
         }
@@ -234,7 +234,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             TdApi.MessagePhoto messagePhoto = (TdApi.MessagePhoto) item.message;
             final ImageView photo = new ImageView(getContext());
             String photoSize;
-            if(havePhotoSizeM(messagePhoto.photo.photos)) {
+            if (havePhotoSizeM(messagePhoto.photo.photos)) {
                 photoSize = "m";
             } else {
                 photoSize = "s";
@@ -281,8 +281,13 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
             TdApi.MessageDocument doc = (TdApi.MessageDocument) item.message;
             if (doc.document.mimeType.contains("gif")) {
+                TdApi.PhotoSize thumb = doc.document.thumb;
                 View gifView = inflater.inflate(R.layout.gif_document_view_layout, null);
                 ImageView icon = (ImageView) gifView.findViewById(R.id.document_icon);
+                if (thumb.width != 0) {
+                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(thumb.width * 3, thumb.height * 3);
+                    icon.setLayoutParams(layoutParams);
+                }
                 TdApi.File documentFile = doc.document.document;
                 Utils.photoFileCheckerAndLoader(documentFile, icon);
                 layout.addView(gifView);
@@ -448,8 +453,11 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
     public interface Loader {
         void loadMore();
+
         void loadFile(int id, View v);
+
         void openFile(String path, View v);
+
         void openContact(long id);
     }
 }
