@@ -152,7 +152,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DownloadFileHolder.clearList();
 
         View view = inflater.inflate(R.layout.message_fragment, container, false);
         linearLayout = (ObservableLinearLayout) view.findViewById(R.id.observable_layout);
