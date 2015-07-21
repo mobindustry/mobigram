@@ -29,8 +29,8 @@ import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.service.SendGif;
-import net.mobindustry.telegram.model.Gif.Giphy;
-import net.mobindustry.telegram.model.Gif.GiphyInfo;
+import net.mobindustry.telegram.model.gif.Giphy;
+import net.mobindustry.telegram.model.gif.GiphyInfo;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.activity.PhotoViewerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;

@@ -1,12 +1,10 @@
 package net.mobindustry.telegram.model.holder;
 
-import net.mobindustry.telegram.model.Flickr.PhotosFlickr;
+import net.mobindustry.telegram.model.flickr.PhotosFlickr;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
-import net.mobindustry.telegram.utils.GiphyObject;
 import net.mobindustry.telegram.utils.MediaGallery;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -8,14 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.model.Gif.GiphyInfo;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
-import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.GiphyObject;
-import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.MediaGallery;
 
 import java.io.Serializable;

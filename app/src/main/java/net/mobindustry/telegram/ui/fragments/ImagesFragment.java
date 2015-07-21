@@ -23,8 +23,8 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.service.SendGif;
-import net.mobindustry.telegram.model.Flickr.PhotosFlickr;
-import net.mobindustry.telegram.model.Flickr.XmlReader;
+import net.mobindustry.telegram.model.flickr.PhotosFlickr;
+import net.mobindustry.telegram.model.flickr.XmlReader;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.ImagesAdapter;

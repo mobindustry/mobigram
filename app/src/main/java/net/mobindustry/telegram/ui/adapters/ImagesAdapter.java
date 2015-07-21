@@ -8,13 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.model.Flickr.PhotoFlickr;
+import net.mobindustry.telegram.model.flickr.PhotoFlickr;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
-import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.ImagesObject;
 import net.mobindustry.telegram.utils.MediaGallery;
