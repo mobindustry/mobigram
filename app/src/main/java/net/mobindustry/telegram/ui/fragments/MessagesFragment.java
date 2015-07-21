@@ -4,19 +4,31 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -58,7 +70,10 @@ import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyUnregistered;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogDoNotHaveFileManager;
 import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.FilePathUtil;
 import net.mobindustry.telegram.utils.Utils;
 import net.mobindustry.telegram.ui.emoji.Emoji;
 import net.mobindustry.telegram.ui.emoji.EmojiKeyboardView;
@@ -72,6 +87,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MessagesFragment extends Fragment implements Serializable, ApiClient.OnApiResultHandler {
@@ -337,7 +354,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                             new ApiClient<>(new TdApi.GetChat(chat.id), new ChatHandler(), new ApiClient.OnApiResultHandler() {
                                 @Override
                                 public void onApiResult(BaseHandler output) {
-                                    if(output.getHandlerId() == ChatHandler.HANDLER_ID) {
+                                    if (output.getHandlerId() == ChatHandler.HANDLER_ID) {
                                         TdApi.Chat chat = (TdApi.Chat) output.getResponse();
                                         Log.e("Log", chat.toString());
 
@@ -445,7 +462,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             public void onApiResult(BaseHandler output) {
                 if (output.getHandlerId() == ChatHistoryHandler.HANDLER_ID) {
                     TdApi.Messages messages = (TdApi.Messages) output.getResponse();
-                    if(messages == null) {
+                    if (messages == null) {
                         progressBar.setVisibility(View.GONE);
                         noMessages.setVisibility(View.VISIBLE);
                     } else if (messages.messages.length != 0 && chat.id == messages.messages[0].chatId) {
@@ -563,6 +580,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                         switch (item.getItemId()) {
                             case R.id.take_photo:
                                 makePhoto();
+                                Log.e("LOG", "PHOTO " + holder.getTempPhotoFile().getAbsolutePath());
                                 break;
                             case R.id.gallery:
                                 Intent intentGallery = new Intent(getActivity(), TransparentActivity.class);
@@ -574,8 +592,12 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 ListFoldersHolder.setChatID(getShownChatId());
                                 break;
                             case R.id.video:
-                                Toast.makeText(getActivity(),
-                                        "video", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                                File fileUri = holder.getNewTempVideoFile();
+                                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(fileUri));
+                                startActivityForResult(intent, Const.REQUEST_CODE_MAKE_VIDEO);
+                                Log.e("LOG", "VIDEO " + holder.getTempVideoFile().getAbsolutePath());
                                 break;
                             case R.id.file:
                                 //Intent intent = new Intent(getActivity(), TransparentActivity.class);
@@ -594,12 +616,46 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 });
         popupMenu.show();
     }
-    public void openFolder()
-    {
+
+    public void openFolder() {
         Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath());
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setDataAndType(uri, "*/*");
-        startActivity(intent);
+        final PackageManager pm = getActivity().getPackageManager();
+        List<ResolveInfo> resolveInfoList = pm.queryIntentActivities(intent, 0);
+        for (int i = 0; i < resolveInfoList.size(); i++) {
+            if (resolveInfoList.get(i).activityInfo.name.contains("ESContent")) {
+                String packageName = resolveInfoList.get(i).activityInfo.packageName;
+                Intent intentES = new Intent();
+                intentES.setDataAndType(uri, "*/*");
+                intentES.setComponent(new ComponentName(packageName, resolveInfoList.get(i).activityInfo.name));
+                intentES.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intentES, Const.REQUEST_CODE_TAKE_FILE);
+                break;
+            }
+            if (resolveInfoList.get(i).activityInfo.name.contains("FileManager")) {
+                String packageName = resolveInfoList.get(i).activityInfo.packageName;
+                Intent intentFileManager = new Intent();
+                intentFileManager.setDataAndType(uri, "*/*");
+                intentFileManager.setComponent(new ComponentName(packageName, resolveInfoList.get(i).activityInfo.name));
+                intentFileManager.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intentFileManager, Const.REQUEST_CODE_TAKE_FILE);
+                break;
+            }
+            if (resolveInfoList.get(i).activityInfo.name.contains("gallery")) {
+                String packageName = resolveInfoList.get(i).activityInfo.packageName;
+                Intent intentGallery = new Intent();
+                intentGallery.setDataAndType(uri, "*/*");
+                intentGallery.setComponent(new ComponentName(packageName, resolveInfoList.get(i).activityInfo.name));
+                intentGallery.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intentGallery, Const.REQUEST_CODE_TAKE_FILE);
+                break;
+            }
+
+        }
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        DialogDoNotHaveFileManager dialogDoNotHaveFileManager = new DialogDoNotHaveFileManager();
+        dialogDoNotHaveFileManager.show(fragmentManager, "NO FILE MANAGER");
     }
 
     private void makePhoto() {
@@ -623,9 +679,19 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         return holder.getTempPhotoFile().getPath();
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Const.REQUEST_CODE_MAKE_VIDEO && resultCode == getActivity().RESULT_OK) {
+            Log.e("LOG", "YES");
+            new ApiClient<>(new TdApi.SendMessage(getShownChatId(), new TdApi.InputMessageVideo(holder.getTempVideoFile().getAbsolutePath())), new MessageHandler(), new ApiClient.OnApiResultHandler() {
+                @Override
+                public void onApiResult(BaseHandler output) {
+
+                }
+            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        }
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO && resultCode == getActivity().RESULT_OK) {
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             Uri contentUri = Uri.fromFile(holder.getTempPhotoFile());
@@ -633,6 +699,18 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             getActivity().sendBroadcast(mediaScanIntent);
             Uri external = Uri.fromFile(holder.getTempPhotoFile());
             Crop.of(external, external).start(getActivity(), Const.CROP_REQUEST_CODE);
+        }
+
+        if (requestCode == Const.REQUEST_CODE_TAKE_FILE && resultCode == getActivity().RESULT_OK) {
+            Uri uri = data.getData();
+            String path = FilePathUtil.getPath(getActivity(), uri);
+            Log.e("LOG", "PATH " + path);
+            new ApiClient<>(new TdApi.SendMessage(getShownChatId(), new TdApi.InputMessageDocument(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
+                @Override
+                public void onApiResult(BaseHandler output) {
+
+                }
+            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         }
 
         if (requestCode == Const.REQUEST_CODE_SELECT_IMAGE && resultCode == getActivity().RESULT_OK) {

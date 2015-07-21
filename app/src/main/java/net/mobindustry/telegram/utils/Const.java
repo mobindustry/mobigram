@@ -18,12 +18,16 @@ public class Const {
     public static final int REQUEST_CODE_TAKE_PHOTO = 101;
     public static final int REQUEST_CODE_SELECT_IMAGE = 102;
     public static final int REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT = 103;
+    public static final int REQUEST_CODE_TAKE_FILE = 104;
+    public static final int REQUEST_CODE_MAKE_VIDEO = 105;
     public static final int REQUEST_CODE_NEW_MESSAGE = 110;
     public static final int CROP_REQUEST_CODE = 111;
 
     public static final String PATH_TO_GALLERY = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "NeTelegram";
     public static final String PATH_TO_THUMBS_GALLERY = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "NeTelegram"
             + File.separator + "thumb" + File.separator + "gallery";
+    public static final String PATH_TO_VIDEO_GALLERY = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "NeTelegram";
+
 
     public static final String DATE_TIME_PHOTO_PATTERN = "yyyyMMdd_HHmmss";
     public static final String TIME_PATTERN = "HH:mm";

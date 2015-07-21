@@ -22,6 +22,7 @@ public class MessagesFragmentHolder {
     private static boolean isMapCalled = false;
     private static File neTelegramDirectory;
     private File tempPhotoFile;
+    private File tempVideoFile;
     private TdApi.Chat chat;
     private static TdApi.Chats chats;
     private boolean isEmojiCreated = false;
@@ -83,10 +84,20 @@ public class MessagesFragmentHolder {
         }
     }
 
+    private File getOutputMediaFileVideo() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Const.DATE_TIME_PHOTO_PATTERN);
+        String fileName = "MOV_" + dateFormat.format(new Date()) + ".mp4";
+        return new File(neTelegramDirectory, fileName);
+    }
+
     private File getOutputMediaFile() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(Const.DATE_TIME_PHOTO_PATTERN);
         String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
         return new File(neTelegramDirectory, fileName);
+    }
+
+    public File getTempVideoFile() {
+        return tempVideoFile;
     }
 
     public File getTempPhotoFile() {
@@ -96,6 +107,11 @@ public class MessagesFragmentHolder {
     public File getNewTempPhotoFile() {
         tempPhotoFile = getOutputMediaFile();
         return tempPhotoFile;
+    }
+
+    public File getNewTempVideoFile() {
+        tempVideoFile = getOutputMediaFileVideo();
+        return tempVideoFile;
     }
 
     public TdApi.Chat getChat() {
