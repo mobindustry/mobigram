@@ -354,19 +354,23 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
             TdApi.File file = messageVideo.video.thumb.photo;
             TdApi.PhotoSize photo = messageVideo.video.thumb;
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(photo.width * 3, photo.height * 3);
-            icon.setLayoutParams(params);
-            if (messageVideo.video.video.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
-                loadIcon.setImageResource(R.drawable.photocheck);
-            } else {
-                loadIcon.setImageResource(R.drawable.photoload);
-            }
             if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(photo.width * 3, photo.height * 3);
+                icon.setLayoutParams(params);
                 TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
                 icon.setImageURI(Uri.parse(fileLocal.path));
             } else {
                 TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-                Utils.photoFileCheckerAndLoader(fileEmpty, icon);
+                if(fileEmpty.id == 0) {
+                    icon.setImageResource(R.drawable.ic_netelegram_placeholder);
+                } else {
+                    Utils.photoFileCheckerAndLoader(fileEmpty, icon);
+                }
+            }
+            if (messageVideo.video.video.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                loadIcon.setImageResource(R.drawable.photocheck);
+            } else {
+                loadIcon.setImageResource(R.drawable.photoload);
             }
             layout.addView(view);
         }
