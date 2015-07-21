@@ -623,25 +623,23 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 intentES.setComponent(new ComponentName(packageName, resolveInfoList.get(i).activityInfo.name));
                 intentES.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intentES, Const.REQUEST_CODE_TAKE_FILE);
-                break;
-            }
-            if (resolveInfoList.get(i).activityInfo.name.contains("FileManager")) {
+                return;
+            } else if (resolveInfoList.get(i).activityInfo.name.contains("FileManager")) {
                 String packageName = resolveInfoList.get(i).activityInfo.packageName;
                 Intent intentFileManager = new Intent();
                 intentFileManager.setDataAndType(uri, "*/*");
                 intentFileManager.setComponent(new ComponentName(packageName, resolveInfoList.get(i).activityInfo.name));
                 intentFileManager.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intentFileManager, Const.REQUEST_CODE_TAKE_FILE);
-                break;
-            }
-            if (resolveInfoList.get(i).activityInfo.name.contains("gallery")) {
+                return;
+            } else if (resolveInfoList.get(i).activityInfo.name.contains("gallery")) {
                 String packageName = resolveInfoList.get(i).activityInfo.packageName;
                 Intent intentGallery = new Intent();
                 intentGallery.setDataAndType(uri, "*/*");
                 intentGallery.setComponent(new ComponentName(packageName, resolveInfoList.get(i).activityInfo.name));
                 intentGallery.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intentGallery, Const.REQUEST_CODE_TAKE_FILE);
-                break;
+                return;
             }
 
         }
