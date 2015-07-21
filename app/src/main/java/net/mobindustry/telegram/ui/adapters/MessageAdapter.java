@@ -197,9 +197,11 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
 
         FrameLayout layout = new FrameLayout(getContext());
+        FrameLayout forwarded_from = (FrameLayout) convertView.findViewById(R.id.forwarded_from_layout);
+        forwarded_from.removeAllViews();
 
         if (item.forwardFromId != 0) {
-            FrameLayout forwarded_from = (FrameLayout) convertView.findViewById(R.id.forwarded_from_layout);
+            forwarded_from = (FrameLayout) convertView.findViewById(R.id.forwarded_from_layout);
             forwarded_from.removeAllViews();
 
             View textView = View.inflate(getContext(), R.layout.chat_user_name_layout, null);
