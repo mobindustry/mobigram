@@ -11,9 +11,21 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/messageFragmentToolbar"
-            layout="@layout/toolbar_messages" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/messageFragmentToolbar"
+                layout="@layout/toolbar_messages" />
+
+            <include
+                android:visibility="gone"
+                android:id="@+id/messages_selected_toolbar"
+                layout="@layout/selection_toolbar"
+                />
+        </FrameLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

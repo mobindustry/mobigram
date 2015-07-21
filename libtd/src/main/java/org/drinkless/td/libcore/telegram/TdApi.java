@@ -864,6 +864,7 @@ public class TdApi {
         public long chatId;
         public int date;
         public MessageContent message;
+        public boolean selected;
 
         public Message() {
         }

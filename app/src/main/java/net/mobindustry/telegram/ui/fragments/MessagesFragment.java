@@ -87,6 +87,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -104,15 +106,18 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private final int MESSAGE_LOAD_OFFSET = 0;
     private final int NEW_MESSAGE_LOAD_OFFSET = -1;
     private final int FORWARD_CONTEXT_ITEM = 101010;
-    private final int DELETE_CONTEXT_ITEM = 303030;
+    private final int DELETE_CONTEXT_ITEM = 202020;
     private int firstVisibleItem = 0;
     private int loadedMessagesCount = 0;
     private int topMessageId;
     private int toScrollLoadMessageId;
-    private TdApi.Message itemForContextMenu;
+    private int selectedCount = 0;
+    private List<TdApi.Message> selectedItemsList;
 
     public boolean isMessagesLoading = false;
     public boolean needLoad = true;
+    private boolean itemClicked = true;
+    private boolean itemLongClicked = false;
 
     private ChatActivity activity;
     private ChatListFragment fragment;
@@ -127,6 +132,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private ImageView attach;
     private ImageView smiles;
     private LinearLayout userInfoLayout;
+    private TextView selectionCount;
 
     private Emoji emoji;
     private EmojiParser emojiParser;
@@ -152,7 +158,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         linearLayout = (ObservableLinearLayout) view.findViewById(R.id.observable_layout);
         noMessages = (TextView) view.findViewById(R.id.no_messages_message);
         userInfoLayout = (LinearLayout) view.findViewById(R.id.user_info_layout);
-
         messageListView = (ListView) view.findViewById(R.id.messageListView);
         messageListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -180,24 +185,11 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
         activity.clearSearch();
         registerForContextMenu(messageListView);
+        selectedItemsList = new ArrayList<>();
 
-        messageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                itemForContextMenu = adapter.getItem(position);
-                view.showContextMenu();
-            }
-        });
+        messageListView.setOnItemClickListener(onItemClickListener);
 
-        messageListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO selected messages list for send...
-                //TODO add replace toolbar...
-                return true;
-            }
-        });
-
+        messageListView.setOnItemLongClickListener(onItemLongClickListener);
         holder = MessagesFragmentHolder.getInstance();
         emoji = holder.getEmoji();
         emojiParser = new EmojiParser(emoji);
@@ -733,11 +725,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         if (requestCode == Const.REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT && resultCode == Activity.RESULT_OK) {
             final long id = data.getLongExtra("id", 0);
             fragment.openChat(id);
-            new ApiClient<>(new TdApi.ForwardMessages(id, getShownChatId(), new int[]{itemForContextMenu.id}), new ChatHistoryHandler(), new ApiClient.OnApiResultHandler() {
-                @Override
-                public void onApiResult(BaseHandler output) {
-                }
-            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            forwardMessages(id);
         }
     }
 
@@ -839,8 +827,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         }
     };
 
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         menu.setHeaderTitle("Message");
         menu.add(0, FORWARD_CONTEXT_ITEM, 0, "Forward");
         menu.add(0, DELETE_CONTEXT_ITEM, 0, "Delete");
@@ -855,14 +842,152 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 startActivityForResult(intent, Const.REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT);
                 break;
             case DELETE_CONTEXT_ITEM:
-                new ApiClient<>(new TdApi.DeleteMessages(getShownChatId(), new int[]{itemForContextMenu.id}), new OkHandler(), new ApiClient.OnApiResultHandler() {
-                    @Override
-                    public void onApiResult(BaseHandler output) {
-                        adapter.remove(itemForContextMenu);
-                    }
-                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                deleteMessages();
                 break;
         }
         return super.onContextItemSelected(item);
     }
+
+    private void forwardMessages(long id) {
+        int[] toForwardMessagesId = getMessagesId();
+        new ApiClient<>(new TdApi.ForwardMessages(id, getShownChatId(), toForwardMessagesId), new ChatHistoryHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+                selectedItemsList.clear();
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    private void deleteMessages() {
+        int[] toDeleteMessagesId = getMessagesId();
+        new ApiClient<>(new TdApi.DeleteMessages(getShownChatId(), toDeleteMessagesId), new OkHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+                for (int i = 0; i < selectedItemsList.size(); i++) {
+                    adapter.remove(selectedItemsList.get(i));
+                    selectedItemsList.clear();
+                }
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    private int[] getMessagesId() {
+        int[] toDeleteMessagesId = new int[selectedItemsList.size()];
+        for (int i = 0; i < toDeleteMessagesId.length; i++) {
+            toDeleteMessagesId[i] = selectedItemsList.get(i).id;
+        }
+        return toDeleteMessagesId;
+    }
+
+    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            itemClicked = false;
+            if (!itemLongClicked) {
+                selectedItemsList.add(adapter.getItem(position));
+                view.showContextMenu();
+            } else {
+                if (adapter.getItem(position).selected) {
+                    selectedCount--;
+                } else {
+                    selectedCount++;
+                }
+                adapter.getItem(position).selected = !adapter.getItem(position).selected;
+                adapter.notifyDataSetChanged();
+                selectionCount.setText(String.valueOf(selectedCount));
+            }
+            itemClicked = true;
+        }
+    };
+
+    private AdapterView.OnItemLongClickListener onItemLongClickListener = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            if (itemClicked) {
+                itemLongClicked = true;
+                if (adapter.getItem(position).selected) {
+                    selectedCount--;
+                } else {
+                    selectedCount++;
+                }
+                adapter.getItem(position).selected = !adapter.getItem(position).selected;
+                adapter.notifyDataSetChanged();
+
+                final Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.messages_selected_toolbar);
+                ImageView forward = (ImageView) getActivity().findViewById(R.id.forward_button);
+                ImageView delete = (ImageView) getActivity().findViewById(R.id.delete_button);
+                selectionCount = (TextView) getActivity().findViewById(R.id.selection_count);
+
+                toolbar.setVisibility(View.VISIBLE);
+
+                toolbar.setNavigationIcon(R.drawable.ic_ab_back_grey);
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toolbar.setVisibility(View.GONE);
+                        itemLongClicked = false;
+                        itemClicked = true;
+                        selectedCount = 0;
+                        for (int i = 0; i < adapter.getCount(); i++) {
+                            adapter.getItem(i).selected = false;
+                        }
+                        selectedItemsList.clear();
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                forward.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (selectedCount != 0) {
+                            toolbar.setVisibility(View.GONE);
+                            itemLongClicked = false;
+                            itemClicked = true;
+                            adapter.getCount();
+                            for (int i = 0; i < adapter.getCount(); i++) {
+                                if (adapter.getItem(i).selected) {
+                                    selectedItemsList.add(adapter.getItem(i));
+                                    adapter.getItem(i).selected = false;
+                                }
+                            }
+                            Intent intent = new Intent(getActivity(), TransparentActivity.class);
+                            intent.putExtra("choice", Const.SELECT_CHAT);
+                            startActivityForResult(intent, Const.REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT);
+                            adapter.notifyDataSetChanged();
+                            selectedCount = 0;
+                        } else {
+                            toolbar.setVisibility(View.GONE);
+                            itemLongClicked = false;
+                            itemClicked = true;
+                        }
+                    }
+                });
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (selectedCount != 0) {
+                            toolbar.setVisibility(View.GONE);
+                            itemLongClicked = false;
+                            itemClicked = true;
+                            for (int i = 0; i < adapter.getCount(); i++) {
+                                if (adapter.getItem(i).selected) {
+                                    selectedItemsList.add(adapter.getItem(i));
+                                    adapter.getItem(i).selected = false;
+                                }
+                            }
+                            deleteMessages();
+                            adapter.notifyDataSetChanged();
+                            selectedCount = 0;
+                        } else {
+                            toolbar.setVisibility(View.GONE);
+                            itemLongClicked = false;
+                            itemClicked = true;
+                        }
+                    }
+                });
+                selectionCount.setText(String.valueOf(selectedCount));
+                return true;
+            }
+            return false;
+        }
+    };
 }

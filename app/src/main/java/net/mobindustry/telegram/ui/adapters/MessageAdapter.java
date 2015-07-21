@@ -189,8 +189,12 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     break;
             }
         }
-
         TdApi.Message item = getItem(position);
+        if(item.selected) {
+            convertView.setBackgroundResource(R.drawable.msg_selected);
+        } else {
+            convertView.setBackground(null);
+        }
 
         FrameLayout layout = new FrameLayout(getContext());
 
