@@ -75,12 +75,12 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
                 finish();
             }
             if (handler.getResponse() == Enums.StatesEnum.WaitSetCode) {
-                Fragment receiverCodeFragment = new ReceiverCodeFragment();
+                ReceiverCodeFragment receiverCodeFragment = new ReceiverCodeFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, receiverCodeFragment);
                 fragmentTransaction.addToBackStack(null);
             }
             if (handler.getResponse() == Enums.StatesEnum.WaitSetName) {
-                Fragment yourNameFragment = new YourNameFragment();
+                YourNameFragment yourNameFragment = new YourNameFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, yourNameFragment);
             }
             fragmentTransaction.commit();
@@ -187,9 +187,8 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
                 } catch (IOException e) {
                     // do nothing
                 }
+                holder.setTextFileFromAssets(textFileFromAssets);
                 listCountryObject = new ListCountryObject(textFileFromAssets);
-                holder.setListConst(new ListCountryObject(textFileFromAssets).getListCountries());
-                holder.setListTmp(new ListCountryObject(textFileFromAssets).getListCountries());
                 holder.setListCountryObject(listCountryObject);
                 setCountryName();
                 Fragment registrationUserPhone = new RegistrationMainFragment();

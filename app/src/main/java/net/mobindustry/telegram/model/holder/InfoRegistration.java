@@ -19,9 +19,7 @@ public class InfoRegistration {
     private CountryObject countryObject;
     private ListCountryObject listCountryObject;
     private String phoneForServer="";
-    private List<CountryObject>listConst;
-    private List<CountryObject>listTmp;
-
+    private String textFileFromAssets="";
 
     public static synchronized InfoRegistration getInstance() {
         if (instance == null) {
@@ -33,20 +31,12 @@ public class InfoRegistration {
     private InfoRegistration() {
     }
 
-    public List<CountryObject> getListConst() {
-        return listConst;
+    public String getTextFileFromAssets() {
+        return textFileFromAssets;
     }
 
-    public void setListConst(List<CountryObject> listConst) {
-        this.listConst = listConst;
-    }
-
-    public List<CountryObject> getListTmp() {
-        return listTmp;
-    }
-
-    public void setListTmp(List<CountryObject> listTmp) {
-        this.listTmp = listTmp;
+    public void setTextFileFromAssets(String textFileFromAssets) {
+        this.textFileFromAssets = textFileFromAssets;
     }
 
     public String getPhoneForServer() {

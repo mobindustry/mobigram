@@ -27,6 +27,7 @@
         android:id="@+id/code_from_user"
         android:inputType="phone"
         android:imeOptions="actionDone"
+        android:textColor="@color/text_color"
         />
     <TextView
         android:visibility="gone"

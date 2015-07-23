@@ -47,7 +47,7 @@ public class ChooseCountryList extends Fragment implements Serializable {
         super.onActivityCreated(savedInstanceState);
         final InfoRegistration infoRegistration = InfoRegistration.getInstance();
         countries = infoRegistration.getListCountryObject();
-        final CountriesListAdapter countriesListAdapter = new CountriesListAdapter(getActivity());
+        final CountriesListAdapter countriesListAdapter = new CountriesListAdapter(getActivity(),countries);
         Log.e("LOG", "PHONE " + infoRegistration.getPhone());
         Log.e("LOG", "SIZE " + infoRegistration.getListCountryObject().getListCountries().size());
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -98,11 +98,11 @@ public class ChooseCountryList extends Fragment implements Serializable {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("Log", "OBJ " + view.getTag().toString());
                 fragmentTransaction = getFragmentManager().beginTransaction();
                 registrationMainFragment = new RegistrationMainFragment();
-
-                CountryObject countryObject = infoRegistration.getListTmp().get(position);
+                CountryObject countryObject =countries.getListTmp().get(position);
+                Log.e("Log", "Size " + countries.getListTmp().size());
+                Log.e("Log", "Name " + countries.getListTmp().get(position));
                 infoRegistration.setCountryObject(null);
                 infoRegistration.setCountryObject(countryObject);
                 infoRegistration.setCountryName(countryObject.getCountryName());
