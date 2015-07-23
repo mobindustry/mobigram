@@ -44,6 +44,8 @@ public class SendGif extends Service {
         ListFoldersHolder.setChatID(0);
         Log.e("Log", "chat ID=" + ListFoldersHolder.getChatID());
         ListFoldersHolder.setListGif(null);
+        ListFoldersHolder.setListImages(null);
+        ListFoldersHolder.setListForSending(null);
         super.onDestroy();
     }
 

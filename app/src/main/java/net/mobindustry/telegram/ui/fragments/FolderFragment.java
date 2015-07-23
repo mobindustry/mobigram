@@ -18,12 +18,14 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.activity.PhotoViewPagerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.FolderAdapter;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.FileWithIndicator;
+import net.mobindustry.telegram.utils.GiphyObject;
 import net.mobindustry.telegram.utils.ImagesObject;
 import net.mobindustry.telegram.utils.Utils;
 
@@ -53,17 +55,23 @@ public class FolderFragment extends Fragment {
         gridView = (GridView) view.findViewById(R.id.gridPhotos);
         numberPhotos = (TextView) view.findViewById(R.id.numberPhotosAll);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_folder);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         if (Utils.isTablet(getActivity())) {
             if (ListFoldersHolder.getCheckQuantity() != 0) {
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                params.leftMargin = 65;
+                params.leftMargin = 50;
                 numberPhotos.setLayoutParams(params);
                 int sdk = android.os.Build.VERSION.SDK_INT;
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                    numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 } else {
-                    numberPhotos.setBackground(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                    numberPhotos.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 }
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
@@ -89,38 +97,21 @@ public class FolderFragment extends Fragment {
             }
 
         }
-        return view;
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 10000 && resultCode == getActivity().RESULT_OK) {
-            int choice = data.getIntExtra("choice", 0);
-            if (choice == Const.SEND_FOLDER_FRAGMENT) {
-                getActivity().finish();
-            }
-        }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         folderAdapter = new FolderAdapter(getActivity(), new FolderAdapter.LoadPhotos() {
             @Override
             public void load() {
                 if (Utils.isTablet(getActivity())) {
                     if (ListFoldersHolder.getCheckQuantity() != 0) {
-                        Log.e("Log", "TABLET");
                         numberPhotos.setVisibility(View.VISIBLE);
                         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                        params.leftMargin = 65;
+                        params.leftMargin = 50;
                         numberPhotos.setLayoutParams(params);
                         int sdk = android.os.Build.VERSION.SDK_INT;
                         if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                            numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                            numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                         } else {
-                            numberPhotos.setBackground(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                            numberPhotos.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                         }
 
                         numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
@@ -144,7 +135,6 @@ public class FolderFragment extends Fragment {
                     } else {
                         numberPhotos.setVisibility(View.GONE);
                     }
-
                 }
             }
 
@@ -172,7 +162,8 @@ public class FolderFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListFoldersHolder.setCurrentSelectedPhoto(position);
                 Intent intent = new Intent(getActivity(), PhotoViewPagerActivity.class);
-                startActivityForResult(intent, 10000);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -181,13 +172,27 @@ public class FolderFragment extends Fragment {
             public void onClick(View v) {
                 if (ListFoldersHolder.getListForSending() != null) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
-                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject){
-                            ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(),
-                                    ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
-
+                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
+                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
+                                String linkImage = ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath();
+                                if (ListFoldersHolder.getListImages() == null) {
+                                    ListFoldersHolder.setListImages(new ArrayList<String>());
+                                }
+                                ListFoldersHolder.getListImages().add(linkImage);
+                            } else {
+                                ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(),
+                                        ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
+                            }
+                        }
+                        if (ListFoldersHolder.getListForSending().get(i) instanceof GiphyObject) {
+                            if (ListFoldersHolder.getListGif() == null) {
+                                ListFoldersHolder.setListGif(new ArrayList<String>());
+                            }
+                            String link = ((GiphyObject) ListFoldersHolder.getListForSending().get(i)).getPath();
+                            ListFoldersHolder.getListGif().add(link);
                         }
                     }
-                    ListFoldersHolder.setListForSending(null);
+                    getActivity().startService(new Intent(getActivity(), SendGif.class));
                     getActivity().finish();
                 }
             }

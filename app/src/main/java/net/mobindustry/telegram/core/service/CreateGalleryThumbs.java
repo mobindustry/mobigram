@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImagesFromMediaStore;
@@ -41,6 +42,9 @@ public class CreateGalleryThumbs extends Service {
         super.onCreate();
         Log.e("Log", "Service start");
         executorService = Executors.newFixedThreadPool(1);
+        ListFoldersHolder.setListForSending(null);
+        ListFoldersHolder.setListImages(null);
+        ListFoldersHolder.setListGif(null);
     }
 
     public void onDestroy() {

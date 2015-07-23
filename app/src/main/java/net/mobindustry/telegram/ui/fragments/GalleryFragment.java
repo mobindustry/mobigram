@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
@@ -24,12 +25,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
+import net.mobindustry.telegram.utils.GiphyObject;
 import net.mobindustry.telegram.utils.ImagesFromMediaStore;
 import net.mobindustry.telegram.utils.ImagesObject;
 import net.mobindustry.telegram.utils.Utils;
@@ -187,12 +190,27 @@ public class GalleryFragment extends Fragment {
             public void onClick(View v) {
                 if (ListFoldersHolder.getListForSending() != null) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
-                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject){
-                            ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(),
-                                    ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
+                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
+                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
+                                String linkImage = ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath();
+                                if (ListFoldersHolder.getListImages() == null) {
+                                    ListFoldersHolder.setListImages(new ArrayList<String>());
+                                }
+                                ListFoldersHolder.getListImages().add(linkImage);
+                            } else {
+                                ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(),
+                                        ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
+                            }
+                        }
+                        if (ListFoldersHolder.getListForSending().get(i) instanceof GiphyObject) {
+                            if (ListFoldersHolder.getListGif() == null) {
+                                ListFoldersHolder.setListGif(new ArrayList<String>());
+                            }
+                            String link = ((GiphyObject) ListFoldersHolder.getListForSending().get(i)).getPath();
+                            ListFoldersHolder.getListGif().add(link);
                         }
                     }
-                    ListFoldersHolder.setListForSending(null);
+                    getActivity().startService(new Intent(getActivity(), SendGif.class));
                     getActivity().finish();
                 }
             }

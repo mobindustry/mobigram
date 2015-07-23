@@ -128,11 +128,9 @@ public class ImagesFragment extends Fragment {
                             ListFoldersHolder.getListGif().add(link);
                         }
                     }
-
+                    getActivity().startService(new Intent(getActivity(), SendGif.class));
+                    getActivity().finish();
                 }
-                getActivity().startService(new Intent(getActivity(), SendGif.class));
-                ListFoldersHolder.setListForSending(null);
-                getActivity().finish();
             }
         });
 

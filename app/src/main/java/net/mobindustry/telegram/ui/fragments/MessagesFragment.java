@@ -580,6 +580,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 ListFoldersHolder.setCheckQuantity(0);
                                 ListFoldersHolder.setListFolders(null);
                                 ListFoldersHolder.setList(null);
+                                ListFoldersHolder.setListForSending(null);
+                                ListFoldersHolder.setListGif(null);
+                                ListFoldersHolder.setListImages(null);
                                 ListFoldersHolder.setChatID(getShownChatId());
                                 break;
                             case R.id.video:

@@ -123,6 +123,7 @@ public class GifFragment extends Fragment {
                 intent.putExtra("file_path", giphyObjectList.get(position).getPath());
                 intent.putExtra("gif", 1);
                 getActivity().startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -182,9 +183,16 @@ public class GifFragment extends Fragment {
                 if (ListFoldersHolder.getListForSending() != null) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
                         if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
-                            ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(),
-                                    ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
-
+                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
+                                String linkImage = ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath();
+                                if (ListFoldersHolder.getListImages() == null) {
+                                    ListFoldersHolder.setListImages(new ArrayList<String>());
+                                }
+                                ListFoldersHolder.getListImages().add(linkImage);
+                            } else {
+                                ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(),
+                                        ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
+                            }
                         }
                         if (ListFoldersHolder.getListForSending().get(i) instanceof GiphyObject) {
                             if (ListFoldersHolder.getListGif() == null) {
@@ -194,11 +202,10 @@ public class GifFragment extends Fragment {
                             ListFoldersHolder.getListGif().add(link);
                         }
                     }
-
+                    getActivity().startService(new Intent(getActivity(), SendGif.class));
+                    getActivity().finish();
                 }
-                getActivity().startService(new Intent(getActivity(), SendGif.class));
-                ListFoldersHolder.setListForSending(null);
-                getActivity().finish();
+
             }
         });
 

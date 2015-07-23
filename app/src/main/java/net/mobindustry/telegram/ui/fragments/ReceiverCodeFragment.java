@@ -38,8 +38,8 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         final InfoRegistration infoRegistration = InfoRegistration.getInstance();
+        infoRegistration.setPhone("");
 
         activity = (RegistrationActivity) getActivity();
 

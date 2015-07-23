@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -70,6 +71,11 @@ public class TransparentActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.transparent_content, galleryFragment);
                 break;
             }
+            case Const.SELECTED_FOLDER_FRAGMENT: {
+                FolderFragment folderFragment = new FolderFragment();
+                fragmentTransaction.replace(R.id.transparent_content, folderFragment);
+                break;
+            }
             case Const.SELECTED_MAP_FRAGMENT: {
                 SelectedMapFragment selectedMapFragment = new SelectedMapFragment();
                 fragmentTransaction.replace(R.id.transparent_content, selectedMapFragment);
@@ -105,10 +111,22 @@ public class TransparentActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().findFragmentById(R.id.transparent_content) instanceof FolderFragment){
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            GalleryFragment galleryFragment = new GalleryFragment();
+            fragmentTransaction.replace(R.id.transparent_content, galleryFragment);
+            fragmentTransaction.commit();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         int choice = getIntent().getIntExtra("choice", 0);
-        if (choice == Const.SELECTED_FOLDER_FRAGMENT) {
+        if (choice == 1312309183) {
             FolderFragment folderFragment = new FolderFragment();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.transparent_content, folderFragment);

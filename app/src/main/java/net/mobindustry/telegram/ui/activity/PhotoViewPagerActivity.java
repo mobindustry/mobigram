@@ -21,11 +21,13 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
+import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.fragments.FolderFragment;
 import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 import net.mobindustry.telegram.ui.fragments.PageFragment;
 import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.GiphyObject;
 import net.mobindustry.telegram.utils.ImagesObject;
 import net.mobindustry.telegram.utils.MediaGallery;
 import net.mobindustry.telegram.utils.Utils;
@@ -59,6 +61,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
     public void onBackPressed() {
         Intent intent = new Intent(PhotoViewPagerActivity.this, TransparentActivity.class);
         intent.putExtra("choice", Const.SELECTED_FOLDER_FRAGMENT);
+        startActivity(intent);
         finish();
     }
 
@@ -95,14 +98,30 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                 if (ListFoldersHolder.getListForSending() != null) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
                         if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
-                            sendPhotoMessage(ListFoldersHolder.getChatID(), ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
+                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
+                                String linkImage = ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath();
+                                if (ListFoldersHolder.getListImages() == null) {
+                                    ListFoldersHolder.setListImages(new ArrayList<String>());
+                                }
+                                ListFoldersHolder.getListImages().add(linkImage);
+                            } else {
+                                sendPhotoMessage(ListFoldersHolder.getChatID(),
+                                        ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
+                            }
+                        }
+                        if (ListFoldersHolder.getListForSending().get(i) instanceof GiphyObject) {
+                            if (ListFoldersHolder.getListGif() == null) {
+                                ListFoldersHolder.setListGif(new ArrayList<String>());
+                            }
+                            String link = ((GiphyObject) ListFoldersHolder.getListForSending().get(i)).getPath();
+                            ListFoldersHolder.getListGif().add(link);
                         }
 
                     }
                     Intent intent = new Intent();
                     intent.putExtra("choice", Const.SEND_FOLDER_FRAGMENT);
                     setResult(RESULT_OK, intent);
-                    ListFoldersHolder.setListForSending(null);
+                    startService(new Intent(PhotoViewPagerActivity.this, SendGif.class));
                     finish();
                 }
             }
@@ -184,6 +203,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PhotoViewPagerActivity.this, TransparentActivity.class);
                 intent.putExtra("choice", Const.SELECTED_FOLDER_FRAGMENT);
+                startActivity(intent);
                 finish();
             }
         });

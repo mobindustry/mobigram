@@ -4,7 +4,6 @@
         <item name="android:windowNoTitle">true</item>
         <item name="colorAccent">@color/background_action_bar</item>
         <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
-        <item name="android:textColorPrimary">#fff</item>
         <item name="searchViewStyle">@style/AppTheme.SearchView</item>
     </style>
 
