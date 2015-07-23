@@ -48,9 +48,7 @@ public class RegistrationMainFragment extends Fragment {
     private EditText phone;
     private ChooseCountryList chooseCountryList;
     private FragmentTransaction fragmentTransaction;
-    private ListCountryObject countries;
-    private RegistrationActivity activity;
-    private CountryObject countryObject;
+    private InfoRegistration holder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,39 +68,11 @@ public class RegistrationMainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setRetainInstance(true);
-
+        final InfoRegistration infoRegistration = InfoRegistration.getInstance();
+        holder = InfoRegistration.getInstance();
         chooseCountryList = new ChooseCountryList();
 
-        final InfoRegistration infoRegistration = InfoRegistration.getInstance();
 
-        //Take file countries.txt from assets folder and parse it to String extFileFromAssets.
-        String textFileFromAssets = null;
-        try {
-            InputStream is = getResources().getAssets().open("countries.txt");
-            textFileFromAssets = convertStreamToString(is);
-        } catch (IOException e) {
-            // do nothing
-        }
-
-        countries = new ListCountryObject(textFileFromAssets);
-        activity = (RegistrationActivity) getActivity();
-        activity.setListCountryObject(countries);
-
-        //Set country object from ChooseCountryFragment
-        countryObject = activity.getCountryObject();
-
-        if (countryObject == null && !infoRegistration.getCountryName().isEmpty()) {
-            String name = infoRegistration.getCountryName();
-            List<CountryObject> list = ((RegistrationActivity) getActivity()).getListCountryObject().getListCountries();
-            System.out.println("CountryListSize " + list.size());
-            for (int i = 0; i < list.size(); i++) {
-                CountryObject obj = list.get(i);
-                if (obj.getCountryName().contains(name)) {
-                    System.out.println("Found obj " + obj.toString());
-                    countryObject = obj;
-                }
-            }
-        }
         chooseCountry = (TextView) getActivity().findViewById(R.id.chooseCountry);
         code = (EditText) getActivity().findViewById(R.id.code);
         phone = (EditText) getActivity().findViewById(R.id.phone);
@@ -113,10 +83,10 @@ public class RegistrationMainFragment extends Fragment {
 
         //Check country object from ChooseCountryFragment
 
-        if (countryObject != null) {
-            Log.e("log", "Name " + countryObject.getCountryName());
-            chooseCountry.setText(countryObject.getCountryName());
-            infoRegistration.setCodeCountry(countryObject.getCountryCode());
+        if (holder.getCountryObject() != null) {
+            Log.e("log", "Name " + holder.getCountryObject().getCountryName());
+            chooseCountry.setText(holder.getCountryObject().getCountryName());
+            infoRegistration.setCodeCountry(holder.getCountryObject().getCountryCode());
             code.setText(infoRegistration.getCodeCountry());
         }
         chooseCountry.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +115,8 @@ public class RegistrationMainFragment extends Fragment {
                 phoneNumberForServer = lettersCode + number;
                 infoRegistration.setCodePlusPhone(infoRegistration.getCodeCountry() + " " + infoRegistration.getPhone());
                 Log.e("Log", "PHONE " + phoneNumberForServer);
-                activity.setPhoneForServer(phoneNumberForServer);
+                infoRegistration.setPhoneForServer(phoneNumberForServer);
+                ((RegistrationActivity) getActivity()).setPhoneForServer(infoRegistration.getPhoneForServer());
                 return true;
             }
         });
@@ -162,10 +133,9 @@ public class RegistrationMainFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 codeList.add(String.valueOf(s));
-                List<CountryObject> list = ((RegistrationActivity) getActivity()).getListCountryObject().getListCountries();
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getCountryCode().equals(codeList.get(codeList.size() - 1))) {
-                        infoRegistration.setCountryName(list.get(i).getCountryName());
+                for (int i = 0; i < holder.getListCountryObject().getListCountries().size(); i++) {
+                    if (holder.getListCountryObject().getListCountries().get(i).getCountryCode().equals(codeList.get(codeList.size() - 1))) {
+                        infoRegistration.setCountryName(holder.getListCountryObject().getListCountries().get(i).getCountryName());
                         chooseCountry.setText(infoRegistration.getCountryName());
                         codeList.clear();
                         break;
@@ -204,14 +174,14 @@ public class RegistrationMainFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 phoneList.add(String.valueOf(s));
                 phoneNum = phoneList.get(phoneList.size() - 1);
-                if (countryObject != null) {
-                    lettersCode = countryObject.getCountryStringCode();
+                if (holder.getCountryObject() != null) {
+                    lettersCode = holder.getCountryObject().getCountryStringCode();
                 } else {
-                    for (int i = 0; i < countries.getListCountries().size(); i++) {
-                        if (countries.getListCountries().get(i).getCountryCode().equals(code.getText().toString())) {
-                            activity.setCountryObject(countries.getListCountries().get(i));
-                            countryObject = activity.getCountryObject();
-                            lettersCode = countryObject.getCountryStringCode();
+                    for (int i = 0; i < holder.getListCountryObject().getListCountries().size(); i++) {
+                        if (holder.getListCountryObject().getListCountries().get(i).getCountryCode().equals(code.getText().toString())) {
+                            holder.setCountryObject(null);
+                            holder.setCountryObject(holder.getListCountryObject().getListCountries().get(i));
+                            lettersCode = holder.getCodeCountryLetters();
                         }
                     }
 
@@ -244,7 +214,7 @@ public class RegistrationMainFragment extends Fragment {
                     phoneNumberForServer = lettersCode + number;
                     infoRegistration.setCodePlusPhone(infoRegistration.getCodeCountry() + " " + infoRegistration.getPhone());
                     Log.e("Log", "PHONE " + phoneNumberForServer);
-                    activity.setPhoneForServer(phoneNumberForServer);
+                    infoRegistration.setPhoneForServer(phoneNumberForServer);
 
                     return true;
                 }
@@ -253,23 +223,6 @@ public class RegistrationMainFragment extends Fragment {
         });
     }
 
-    public static String convertStreamToString(InputStream is)
-            throws IOException {
-        Writer writer = new StringWriter();
-
-        char[] buffer = new char[2048];
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
-            }
-        } finally {
-            is.close();
-        }
-        String text = writer.toString();
-        return text;
-    }
 
     private class NumericKeyBoardTransformationMethod extends PasswordTransformationMethod {
         @Override

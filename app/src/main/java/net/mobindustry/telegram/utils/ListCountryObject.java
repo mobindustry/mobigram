@@ -39,6 +39,10 @@ public class ListCountryObject implements Serializable {
         quantityCountriesInSections();
     }
 
+    public void setListCountries(List<CountryObject> listCountries) {
+        this.listCountries = listCountries;
+    }
+
     private List<String> splitRow(String text) {
         //Split string row
         String line = text;

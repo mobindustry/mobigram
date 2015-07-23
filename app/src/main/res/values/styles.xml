@@ -4,6 +4,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="colorAccent">@color/background_action_bar</item>
         <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
+        <item name="android:textColorPrimary">#fff</item>
         <item name="searchViewStyle">@style/AppTheme.SearchView</item>
     </style>
 
@@ -15,6 +16,7 @@
         <item name="closeIcon">@drawable/ic_close_white</item>
         <item name="queryBackground">@drawable/abc_textfield_search_material</item>
         <item name="submitBackground">@drawable/abc_textfield_search_material</item>
+        <item name="navigationIcon">@drawable/ic_back</item>
     </style>
 
     <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.Light.NoActionBar">
@@ -28,8 +30,7 @@
         <item name="searchViewStyle">@style/AppTheme.SearchView</item>
     </style>
 
-    <style name="ToolbarCustom" parent="Base.Widget.AppCompat.SearchView">
-    </style>
+    <style name="ToolbarCustom" parent="Base.Widget.AppCompat.SearchView"></style>
 
     <style name="Theme.AppCompat.Translucent.TranslucentStatusBar" parent="Theme.AppCompat.Translucent">
         <item name="android:windowTranslucentStatus">true</item>

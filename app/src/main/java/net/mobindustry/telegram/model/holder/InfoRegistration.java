@@ -1,15 +1,27 @@
 package net.mobindustry.telegram.model.holder;
 
+import net.mobindustry.telegram.utils.CountryObject;
+import net.mobindustry.telegram.utils.ListCountryObject;
+
+import java.util.List;
+
 public class InfoRegistration {
 
     private static InfoRegistration instance;
 
     private String countryName = "";
     private String codeCountry = "+";
+    private String codeCountryLetters = "";
     private String phone = "";
     private String codePlusPhone="";
     private String firstName="";
     private String lastName="";
+    private CountryObject countryObject;
+    private ListCountryObject listCountryObject;
+    private String phoneForServer="";
+    private List<CountryObject>listConst;
+    private List<CountryObject>listTmp;
+
 
     public static synchronized InfoRegistration getInstance() {
         if (instance == null) {
@@ -19,6 +31,54 @@ public class InfoRegistration {
     }
 
     private InfoRegistration() {
+    }
+
+    public List<CountryObject> getListConst() {
+        return listConst;
+    }
+
+    public void setListConst(List<CountryObject> listConst) {
+        this.listConst = listConst;
+    }
+
+    public List<CountryObject> getListTmp() {
+        return listTmp;
+    }
+
+    public void setListTmp(List<CountryObject> listTmp) {
+        this.listTmp = listTmp;
+    }
+
+    public String getPhoneForServer() {
+        return phoneForServer;
+    }
+
+    public void setPhoneForServer(String phoneForServer) {
+        this.phoneForServer = phoneForServer;
+    }
+
+    public ListCountryObject getListCountryObject() {
+        return listCountryObject;
+    }
+
+    public void setListCountryObject(ListCountryObject listCountryObject) {
+        this.listCountryObject = listCountryObject;
+    }
+
+    public String getCodeCountryLetters() {
+        return codeCountryLetters;
+    }
+
+    public void setCodeCountryLetters(String codeCountryLetters) {
+        this.codeCountryLetters = codeCountryLetters;
+    }
+
+    public CountryObject getCountryObject() {
+        return countryObject;
+    }
+
+    public void setCountryObject(CountryObject countryObject) {
+        this.countryObject = countryObject;
     }
 
     public String getCountryName() {

@@ -1,24 +1,36 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
+
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.utils.ListCountryObject;
+import net.mobindustry.telegram.model.holder.InfoRegistration;
+import net.mobindustry.telegram.utils.CountryObject;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class CountriesListAdapter extends BaseAdapter implements StickyListHeadersAdapter, Serializable {
+public class CountriesListAdapter extends BaseAdapter implements StickyListHeadersAdapter, Serializable, Filterable {
 
-    private ListCountryObject listCountryObject;
+    private List<CountryObject> listCountryObjectListTmp;
+    private List<CountryObject> listCountryObjectConst;
     private LayoutInflater inflater;
 
-    public CountriesListAdapter(Activity activity, ListCountryObject listCountryObject) {
-        this.listCountryObject = listCountryObject;
+    public CountriesListAdapter(Activity activity) {
         inflater = LayoutInflater.from(activity);
+        InfoRegistration holder = InfoRegistration.getInstance();
+        listCountryObjectConst = holder.getListConst();
+        listCountryObjectListTmp = holder.getListTmp();
     }
 
     @Override
@@ -32,24 +44,25 @@ public class CountriesListAdapter extends BaseAdapter implements StickyListHeade
         } else {
             holder = (HeaderViewHolderCountriesList) convertView.getTag();
         }
-        //set header text as first char in name
-        holder.titleLetter.setText(listCountryObject.getListCountries().get(position).getInitialLetter());
+
+        holder.titleLetter.setText(listCountryObjectListTmp.get(position).getInitialLetter());
         return convertView;
     }
 
+
     @Override
     public long getHeaderId(int i) {
-        return listCountryObject.getListCountries().get(i).getInitialLetter().charAt(0);
+        return listCountryObjectListTmp.get(i).getInitialLetter().charAt(0);
     }
 
     @Override
     public int getCount() {
-        return listCountryObject.getListCountries().size();
+        return listCountryObjectListTmp.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listCountryObject.getListCountries().get(position);
+        return listCountryObjectListTmp.get(position);
     }
 
     @Override
@@ -71,10 +84,47 @@ public class CountriesListAdapter extends BaseAdapter implements StickyListHeade
             holder = (ViewHolderCountriesList) convertView.getTag();
         }
 
-        holder.country.setText(listCountryObject.getListCountries().get(position).getCountryName());
-        holder.countryCode.setText(listCountryObject.getListCountries().get(position).getCountryCode());
+        holder.country.setText(listCountryObjectListTmp.get(position).getCountryName());
+        holder.countryCode.setText(listCountryObjectListTmp.get(position).getCountryCode());
 
         return convertView;
+    }
+
+    @Override
+    public Filter getFilter() {
+        Filter filter = new Filter() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                listCountryObjectListTmp = ((List<CountryObject>) results.values);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+
+                FilterResults results = new FilterResults();
+                List<CountryObject> list = new ArrayList<>();
+
+                constraint = constraint.toString().toLowerCase();
+                if (constraint.length() == 0) {
+                    list.addAll(listCountryObjectConst);
+                } else {
+                    for (int i = 0; i < listCountryObjectConst.size(); i++) {
+                        CountryObject country = listCountryObjectConst.get(i);
+                        if (country.getCountryName().toLowerCase().startsWith(constraint.toString())) {
+                            list.add(country);
+                        }
+                    }
+                }
+                results.count = list.size();
+                results.values = list;
+                Log.e("VALUES", results.values.toString());
+                return results;
+            }
+        };
+        return filter;
     }
 
     public class ViewHolderCountriesList {
