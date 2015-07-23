@@ -78,7 +78,7 @@ public class GalleryFragment extends Fragment {
         buttonCancel = (FrameLayout) view.findViewById(R.id.buttonCancel);
         buttonSend = (FrameLayout) view.findViewById(R.id.buttonSend);
         progressBar = (ProgressBar) view.findViewById(R.id.gallery_progress_bar);
-        numberPhotos=(TextView)view.findViewById(R.id.numberPhotos);
+        numberPhotos = (TextView) view.findViewById(R.id.numberPhotos);
         gridList.setAdapter(galleryAdapter);
         adjustGridViewPort();
         return view;
@@ -111,7 +111,7 @@ public class GalleryFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (Utils.isTablet(getActivity())) {
-            if (ListFoldersHolder.getCheckQuantity()!=0){
+            if (ListFoldersHolder.getCheckQuantity() != 0) {
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                 params.leftMargin = 50;
@@ -120,7 +120,7 @@ public class GalleryFragment extends Fragment {
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 } else {
-                    numberPhotos.setBackground(Utils.getShapeDrawable(35,  getActivity().getResources().getColor(R.color.message_notify)));
+                    numberPhotos.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 }
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
@@ -128,7 +128,7 @@ public class GalleryFragment extends Fragment {
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
-            if (ListFoldersHolder.getCheckQuantity()!=0){
+            if (ListFoldersHolder.getCheckQuantity() != 0) {
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                 params.leftMargin = 60;
@@ -137,7 +137,7 @@ public class GalleryFragment extends Fragment {
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                 } else {
-                    numberPhotos.setBackground(Utils.getShapeDrawable(60,  getActivity().getResources().getColor(R.color.message_notify)));
+                    numberPhotos.setBackground(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                 }
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
@@ -170,10 +170,10 @@ public class GalleryFragment extends Fragment {
         toolbar.setTitle(R.string.photos);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return true;
+            public void onClick(View v) {
+                getActivity().finish();
             }
         });
 
@@ -265,13 +265,13 @@ public class GalleryFragment extends Fragment {
         String path = Const.PATH_TO_THUMBS_GALLERY;
         List<File> files = getListFiles(new File(path));
         if (files.size() > 0) {
-            Log.e("Log","SIZE "+files.size());
+            Log.e("Log", "SIZE " + files.size());
             for (int i = 0; i < files.size(); i++) {
                 Long idForMap = Long.valueOf(separateName(files.get(i).getAbsolutePath()));
                 String pathForMap = files.get(i).getAbsolutePath();
                 mapForCustomThumbs.put(idForMap, pathForMap);
             }
-            Log.e("Log","SIZE MAP"+mapForCustomThumbs.size());
+            Log.e("Log", "SIZE MAP" + mapForCustomThumbs.size());
         }
 
     }
@@ -354,8 +354,8 @@ public class GalleryFragment extends Fragment {
                 images.setBucketDisplayName(cursor.getString(idxBucketName));
                 int idxIsPrivate = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.IS_PRIVATE);
                 images.setIsPrivate(cursor.getString(idxIsPrivate));
-                if (images.getData() != null){
-                        listImagesMediaStore.add(images);
+                if (images.getData() != null) {
+                    listImagesMediaStore.add(images);
                 } else {
                     cursor.moveToNext();
                 }
@@ -373,7 +373,7 @@ public class GalleryFragment extends Fragment {
             if (list.get(i).getData().contains((".png")) || list.get(i).getData().contains(".jpeg") || list.get(i).getData().contains(".jpg")) {
                 FileWithIndicator fileWithIndicator = new FileWithIndicator();
                 File file = new File(list.get(i).getData());
-                if (mapForCustomThumbs.get(list.get(i).getId()) != null){
+                if (mapForCustomThumbs.get(list.get(i).getId()) != null) {
                     String thumb = mapForCustomThumbs.get(list.get(i).getId());
                     fileWithIndicator.setThumbPhoto(thumb);
                 } else {
@@ -468,7 +468,7 @@ public class GalleryFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             ListFoldersHolder.setListFolders(listFolders);
-            if (getActivity()!=null){
+            if (getActivity() != null) {
                 if (Utils.isTablet(getActivity())) {
                     progressBar.setVisibility(View.GONE);
                     adjustGridViewPort();
