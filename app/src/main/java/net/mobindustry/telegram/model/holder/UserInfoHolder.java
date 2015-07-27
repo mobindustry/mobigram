@@ -18,7 +18,7 @@ public class UserInfoHolder {
 
     private TdApi.User user;
 
-    private static Map<Integer, TdApi.User> map = new TreeMap<>(); //TODO add users and get
+    private static Map<Integer, TdApi.User> map = new TreeMap<>();
 
     public static synchronized UserInfoHolder getInstance() {
         if (instance == null) {

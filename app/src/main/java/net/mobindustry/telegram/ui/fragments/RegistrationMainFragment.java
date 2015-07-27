@@ -77,6 +77,7 @@ public class RegistrationMainFragment extends Fragment {
         phone.setText(holder.getPhone());
         code.setText(holder.getCodeCountry());
         code.setSelection(holder.getCodeCountry().length());
+        phone.requestFocus();
 
         //Check country object from ChooseCountryFragment
 
@@ -136,9 +137,17 @@ public class RegistrationMainFragment extends Fragment {
                     }
                 }
                 String st = "+";
-                if (s.length() == 0 || s.toString().equals(st)) {
+                if (s.length() == 0) {
+                    code.setText(st);
+                    code.setSelection(1);
+                }
+                if (s.toString().equals(st)) {
                     chooseCountry.setText("");
                     chooseCountry.setHint(R.string.choose_country);
+                }
+
+                if (s.length() == 5) {
+                    phone.requestFocus();
                 }
             }
 
