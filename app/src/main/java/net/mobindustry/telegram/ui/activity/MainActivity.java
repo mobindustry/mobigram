@@ -120,7 +120,7 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
                     startActivity(intent);
                     finish();
                 }
-                break;
+                return;
             }
         }
     }
