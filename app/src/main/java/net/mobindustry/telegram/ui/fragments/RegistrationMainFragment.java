@@ -126,7 +126,7 @@ public class RegistrationMainFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
-            @Override
+            @Override //TODO fix cursor position
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 codeList.add(String.valueOf(s));
                 for (int i = 0; i < holder.getListCountryObject().getListCountries().size(); i++) {
@@ -248,14 +248,6 @@ public class RegistrationMainFragment extends Fragment {
             }
         }
         return false;
-    }
-
-
-    private class NumericKeyBoardTransformationMethod extends PasswordTransformationMethod {
-        @Override
-        public CharSequence getTransformation(CharSequence source, View view) {
-            return source;
-        }
     }
 }
 
