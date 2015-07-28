@@ -148,7 +148,7 @@ public class UserInfoFragment extends Fragment {
         lastSeenText.setText(groupChatFull.groupChat.participantsCount + " members");
         TdApi.File file = groupChatFull.groupChat.photoBig;
 
-        Utils.setIcon(file, (int) chatId, groupChatFull.groupChat.title, "", imageIcon, icon);
+        Utils.setIcon(file, (int) chatId, groupChatFull.groupChat.title, "", imageIcon, icon, getActivity());
 
         List<TdApi.User> list = new ArrayList<>();
         for (int i = 0; i < groupChatFull.participants.length; i++) {
@@ -164,7 +164,7 @@ public class UserInfoFragment extends Fragment {
             TextView lastSeen = (TextView) itemView.findViewById(R.id.text_user_info_last_seen);
 
             TdApi.File fileImage = user.photoBig;
-            Utils.setIcon(fileImage, user.id, user.firstName, user.lastName, imageIcon, icon);
+            Utils.setIcon(fileImage, user.id, user.firstName, user.lastName, imageIcon, icon, getActivity());
             name.setText(user.firstName + " " + user.lastName);
             TdApi.UserStatus status = user.status;
             lastSeen.setText(Utils.getUserStatusString(status));
@@ -191,7 +191,7 @@ public class UserInfoFragment extends Fragment {
         name.setText(userFullInfo.realFirstName + " " + userFullInfo.realLastName);
         lastSeenText.setText(Utils.getUserStatusString(status));
 
-        Utils.setIcon(file, user.id, user.firstName, user.lastName, imageIcon, icon);
+        Utils.setIcon(file, user.id, user.firstName, user.lastName, imageIcon, icon, getActivity());
 
         View userPhoneNumberView = View.inflate(getActivity(), R.layout.user_phone_layout, null);
         ((TextView) userPhoneNumberView.findViewById(R.id.user_phone_number)).setText(user.phoneNumber);

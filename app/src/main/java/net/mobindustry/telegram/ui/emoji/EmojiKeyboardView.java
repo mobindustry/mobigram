@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.emoji;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
@@ -35,9 +36,11 @@ public class EmojiKeyboardView extends LinearLayout {
     private View backspace;
     private final LayoutInflater viewFactory;
     private CallBack callback;
+    private Context context;
 
     public EmojiKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         recent = new RecentSmiles(context.getSharedPreferences("RecentEmoji", Context.MODE_PRIVATE));
         viewFactory = LayoutInflater.from(context);
         emoji = MessagesFragmentHolder.getInstance().getEmoji();
@@ -262,7 +265,7 @@ public class EmojiKeyboardView extends LinearLayout {
         private void onBindVH(final VH vh, int position) {
             final TdApi.Sticker s = getItem(position);
             TdApi.File file = s.sticker;
-            Utils.photoFileCheckerAndLoader(file, vh.img);
+            Utils.photoFileCheckerAndLoader(file, vh.img, (Activity) context);
             vh.o = s;
         }
     }

@@ -296,7 +296,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 userLastName = "";
             }
 
-            Utils.setIcon(file, (int) chatId, userFirstName, userLastName, imageIcon, icon);
+            Utils.setIcon(file, (int) chatId, userFirstName, userLastName, imageIcon, icon, getActivity());
 
             if (title != null) {
                 name.setText(title);
@@ -783,12 +783,14 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                         }
                                         if (path != null) {
                                             final String finalPath = path;
-                                            getActivity().runOnUiThread(new Runnable() {
-                                                public void run() {
-                                                    Toast.makeText(getActivity(), "File loaded.", Toast.LENGTH_SHORT).show();
-                                                    openFile(finalPath, v);
-                                                }
-                                            });
+                                            if (getActivity() != null) {
+                                                getActivity().runOnUiThread(new Runnable() {
+                                                    public void run() {
+                                                        Toast.makeText(getActivity(), "File loaded.", Toast.LENGTH_SHORT).show();
+                                                        openFile(finalPath, v);
+                                                    }
+                                                });
+                                            }
                                             break;
                                         }
                                     } while (path == null);

@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -249,7 +250,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 if (messagePhoto.photo.photos[i].type.equals(photoSize)) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(messagePhoto.photo.photos[i].width, messagePhoto.photo.photos[i].height);
                     photo.setLayoutParams(layoutParams);
-                    Utils.photoFileCheckerAndLoader(messagePhoto.photo.photos[i].photo, photo);
+                    Utils.photoFileCheckerAndLoader(messagePhoto.photo.photos[i].photo, photo, (Activity) getContext());
                 }
             }
             layout.addView(photo);
@@ -295,7 +296,8 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     icon.setLayoutParams(layoutParams);
                 }
                 TdApi.File documentFile = doc.document.document;
-                Utils.photoFileCheckerAndLoader(documentFile, icon);
+                Utils.photoFileCheckerAndLoader(documentFile, icon, (Activity) getContext());
+
                 layout.addView(gifView);
             } else {
                 View view = inflater.inflate(R.layout.document_view_layout, null);
@@ -341,7 +343,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 300);
             stickerImage.setLayoutParams(layoutParams);
-            Utils.photoFileCheckerAndLoader(sticker.sticker, stickerImage);
+            Utils.photoFileCheckerAndLoader(sticker.sticker, stickerImage, (Activity) getContext());
             layout.addView(stickerImage);
         }
         if (item.message instanceof TdApi.MessageVideo) {
@@ -364,7 +366,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 if(fileEmpty.id == 0) {
                     icon.setImageResource(R.drawable.ic_netelegram_placeholder);
                 } else {
-                    Utils.photoFileCheckerAndLoader(fileEmpty, icon);
+                    Utils.photoFileCheckerAndLoader(fileEmpty, icon, (Activity) getContext());
                 }
             }
             if (messageVideo.video.video.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {

@@ -42,12 +42,10 @@ public class PhotoViewerActivity extends Activity {
             PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
             if (path == null) {
                 int id = getIntent().getIntExtra("file_id", 0);
-                Log.e("Log", "Loaded file id " + id);
-                Utils.photoFileLoader(id, imageView);
+                Utils.photoFileLoader(id, imageView, this);
             } else {
-                Glide.with(this).load(path).asBitmap().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
-                Log.e("Log", "Loaded file path " + path);
-                //ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + path, imageView);
+                //Glide.with(this).load(path).asBitmap().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
+                ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + path, imageView);
             }
             mAttacher.update();
         }

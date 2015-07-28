@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -135,7 +136,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
             notify.setText("");
         }
 
-        Utils.setIcon(file, (int) chatId, userFirstName, userLastName, imageIcon, icon);
+        Utils.setIcon(file, (int) chatId, userFirstName, userLastName, imageIcon, icon, (Activity) getContext());
 
         firstLastName.setText(userFirstName + " " + userLastName);
         time.setText(Utils.getDateFormat(Const.TIME_PATTERN).format(date));
