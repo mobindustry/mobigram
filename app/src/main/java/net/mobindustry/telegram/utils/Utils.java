@@ -257,7 +257,7 @@ public class Utils {
             if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
                 iconImage.setVisibility(View.VISIBLE);
                 TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
-                Glide.with(DataHolder.getContext()).load(fileLocal.path).asBitmap().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(iconImage);
+                Glide.with(DataHolder.getContext()).load(fileLocal.path).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).into(iconImage);
                 //ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, iconImage);
             }
         }
