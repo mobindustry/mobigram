@@ -93,7 +93,9 @@ public class RegistrationMainFragment extends Fragment {
         chooseCountry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.getListCountryObject().updateListTmp(holder.getTextFileFromAssets());
+                if (holder.getListCountryObject().getListTmp().size() < holder.getListCountryObject().getListConst().size()) {
+                    holder.getListCountryObject().updateListTmp(holder.getTextFileFromAssets());
+                }
                 fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentContainer, chooseCountryList);
                 fragmentTransaction.addToBackStack(null);
@@ -191,8 +193,8 @@ public class RegistrationMainFragment extends Fragment {
 
                 }
                 String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
-                if (formattedNumber!=null && formattedNumber.length() > phoneNum.length()) {
-                    int result = formattedNumber.length() - phoneNum.length()+1;
+                if (formattedNumber != null && formattedNumber.length() > phoneNum.length()) {
+                    int result = formattedNumber.length() - phoneNum.length() + 1;
                     holder.setCursorPosition(holder.getCursorPosition() + result);
                 } else {
                     if (phoneNum.length() == phone.getSelectionEnd()) {
