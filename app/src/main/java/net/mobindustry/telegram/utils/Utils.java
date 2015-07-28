@@ -132,7 +132,8 @@ public class Utils {
             @Override
             public void onApiResult(BaseHandler output) {
                 if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                    ImageLoaderHelper.displayImage(String.valueOf(id), view);
+                    findLoop(id, view);
+                    //ImageLoaderHelper.displayImage(String.valueOf(id), view);
                 }
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -276,9 +277,5 @@ public class Utils {
                 e.printStackTrace();
             }
         }
-
     }
 }
-
-
-

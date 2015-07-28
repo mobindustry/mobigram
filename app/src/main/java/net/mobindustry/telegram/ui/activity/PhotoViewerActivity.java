@@ -2,6 +2,7 @@ package net.mobindustry.telegram.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -38,14 +39,17 @@ public class PhotoViewerActivity extends Activity {
             imageView.setLayoutParams(layoutParams);
             Glide.with(this).load(path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
         } else {
+            PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
             if (path == null) {
                 int id = getIntent().getIntExtra("file_id", 0);
+                Log.e("Log", "Loaded file id " + id);
                 Utils.photoFileLoader(id, imageView);
             } else {
-                PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
-                ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + path, imageView);
-                mAttacher.update();
+                Glide.with(this).load(path).asBitmap().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
+                Log.e("Log", "Loaded file path " + path);
+                //ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + path, imageView);
             }
+            mAttacher.update();
         }
     }
 

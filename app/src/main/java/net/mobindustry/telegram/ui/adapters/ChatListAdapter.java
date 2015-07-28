@@ -40,8 +40,6 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         emojiParser = new EmojiParser(emoji);
     }
 
-    //TODO correct show avatar
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

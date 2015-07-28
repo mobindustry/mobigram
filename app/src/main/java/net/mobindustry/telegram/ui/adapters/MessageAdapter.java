@@ -99,7 +99,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                     }
                     case TdApi.MessagePhoto.CONSTRUCTOR: {
                         TdApi.MessagePhoto photo = (TdApi.MessagePhoto) message.message;
-                        TdApi.File file = photo.photo.photos[photo.photo.photos.length - 1].photo;
+                        TdApi.File file = findCorrectSizeImageFile(photo);
                         Intent intent = new Intent(context, PhotoViewerActivity.class);
                         if (file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
                             TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
@@ -237,6 +237,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
         if (item.message instanceof TdApi.MessagePhoto) {
             TdApi.MessagePhoto messagePhoto = (TdApi.MessagePhoto) item.message;
+            Log.e("Log", messagePhoto.toString());
             final ImageView photo = new ImageView(getContext());
             String photoSize;
             if (havePhotoSizeM(messagePhoto.photo.photos)) {
@@ -458,6 +459,17 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             }
         }
         return false;
+    }
+
+    private TdApi.File findCorrectSizeImageFile (TdApi.MessagePhoto photo) {
+        for (int i = photo.photo.photos.length - 1; i > 0; i--) {
+            if(photo.photo.photos[i].height > 2048 || photo.photo.photos[i].height > 2048) {
+                continue;
+            } else {
+                return photo.photo.photos[i].photo;
+            }
+        }
+        return photo.photo.photos[0].photo;
     }
 
     public interface Loader {
