@@ -59,6 +59,7 @@ public class GifFragment extends Fragment {
     private FrameLayout send;
     private TextView number;
     private FrameLayout cancel;
+    private SearchView sv;
 
     @Nullable
     @Override
@@ -219,10 +220,10 @@ public class GifFragment extends Fragment {
 
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.inflateMenu(R.menu.search_gif);
+        MenuItemCompat.expandActionView(toolbar.getMenu().findItem(R.id.action_search));
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                SearchView sv = new SearchView(getActivity());
                 MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
                 MenuItemCompat.setActionView(item, sv);
                 sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
