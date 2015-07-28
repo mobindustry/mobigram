@@ -77,7 +77,7 @@ public class GifAdapter extends ArrayAdapter<GiphyObject> implements Serializabl
         if (giphyObject.isCheck()) {
             check.setImageResource(R.drawable.ic_attach_check);
         } else {
-            check.setImageResource(R.drawable.ic_circle);
+            check.setImageResource(R.drawable.circle);
         }
 
         Glide.with(getContext()).load(giphyObject.getPath()).asBitmap().into(image);

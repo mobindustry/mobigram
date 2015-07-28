@@ -38,7 +38,7 @@
             android:layout_height="40dp"
             android:layout_alignRight="@+id/imageGif"
             android:layout_margin="@dimen/margin_15dp"
-            android:src="@drawable/ic_attach_photo_in_folder"
+            android:src="@drawable/circle"
             />
 
     </RelativeLayout>

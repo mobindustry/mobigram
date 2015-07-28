@@ -75,7 +75,7 @@ public class ImagesAdapter extends ArrayAdapter<PhotoFlickr>  {
         if (photoFlickr.isCheck()) {
             check.setImageResource(R.drawable.ic_attach_check);
         } else {
-            check.setImageResource(R.drawable.ic_circle);
+            check.setImageResource(R.drawable.circle);
         }
 
         String link="http://farm"+photoFlickr.getFarm()

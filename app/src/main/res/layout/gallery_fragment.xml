@@ -127,7 +127,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_weight="1.6"
         android:orientation="horizontal">
 
        <FrameLayout
@@ -136,7 +136,7 @@
            android:layout_weight="1"
            android:layout_gravity="center"
            android:background="@drawable/send_cancel_buttons_selector"
-           android:id="@+id/buttonCancel">
+           android:id="@+id/buttonCancelGallery">
 
            <TextView
                android:layout_width="match_parent"
@@ -149,17 +149,19 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="0.5dp"
             android:layout_weight="1"
             android:background="@drawable/send_cancel_buttons_selector"
-            android:id="@+id/buttonSend">
+            android:id="@+id/buttonSendGallery">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_send"
+                android:gravity="center"
                 android:layout_gravity="center"
-                android:textColor="@color/text_color_gallery_fragment"
-                />
+                android:text="@string/text_send"
+                android:textColor="@color/text_color_gallery_fragment" />
+
             <TextView
                 android:id="@+id/numberPhotos"
                 android:layout_width="wrap_content"
@@ -169,6 +171,7 @@
                 android:textColor="@color/text_color_gallery_fragment"
                 tools:text="14" />
         </FrameLayout>
+
 
     </LinearLayout>
 

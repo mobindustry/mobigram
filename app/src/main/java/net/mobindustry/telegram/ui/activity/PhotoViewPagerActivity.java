@@ -127,7 +127,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
             }
         });
         if (!ListFoldersHolder.getList().get(getPhotoNumber()).isCheck()) {
-            image.setImageResource(R.drawable.ic_circle);
+            image.setImageResource(R.drawable.circle);
         } else {
             image.setImageResource(R.drawable.ic_attach_check);
         }
@@ -145,7 +145,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                 setPhotoNumber(position);
                 toolbar.setTitle(positionForUser + " of " + photos);
                 if (!ListFoldersHolder.getList().get(getPhotoNumber()).isCheck()) {
-                    image.setImageResource(R.drawable.ic_circle);
+                    image.setImageResource(R.drawable.circle);
                 } else {
                     image.setImageResource(R.drawable.ic_attach_check);
                 }
@@ -231,7 +231,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                     ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getListForSending().size());
                 } else {
                     if (ListFoldersHolder.getCheckQuantity() < 10) {
-                        image.setImageResource(R.drawable.ic_circle);
+                        image.setImageResource(R.drawable.circle);
                         ListFoldersHolder.getList().get(getPhotoNumber()).setCheck(false);
                         if (ListFoldersHolder.getListForSending() == null) {
                             ListFoldersHolder.setListForSending(new ArrayList<MediaGallery>());

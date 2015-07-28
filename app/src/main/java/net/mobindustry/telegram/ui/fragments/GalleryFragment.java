@@ -75,8 +75,8 @@ public class GalleryFragment extends Fragment {
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_gallery);
         findGifs = (FrameLayout) view.findViewById(R.id.findGifs);
         findImages = (FrameLayout) view.findViewById(R.id.findImages);
-        buttonCancel = (FrameLayout) view.findViewById(R.id.buttonCancel);
-        buttonSend = (FrameLayout) view.findViewById(R.id.buttonSend);
+        buttonCancel = (FrameLayout) view.findViewById(R.id.buttonCancelGallery);
+        buttonSend = (FrameLayout) view.findViewById(R.id.buttonSendGallery);
         progressBar = (ProgressBar) view.findViewById(R.id.gallery_progress_bar);
         numberPhotos = (TextView) view.findViewById(R.id.numberPhotos);
         gridList.setAdapter(galleryAdapter);

@@ -47,6 +47,7 @@ public class ImagesFragment extends Fragment {
     private FrameLayout cancel;
     private Toolbar toolbar;
     public static String FLICKR_URL = "";
+    private SearchView sv;
 
 
     @Nullable
@@ -71,13 +72,13 @@ public class ImagesFragment extends Fragment {
                 Log.e("Log", "TABLET");
                 number.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
-                params.leftMargin = 65;
+                params.leftMargin = 50;
                 number.setLayoutParams(params);
                 int sdk = Build.VERSION.SDK_INT;
                 if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
-                    number.setBackgroundDrawable(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                    number.setBackgroundDrawable(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 } else {
-                    number.setBackground(Utils.getShapeDrawable(40, getActivity().getResources().getColor(R.color.message_notify)));
+                    number.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 }
 
                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
@@ -144,34 +145,31 @@ public class ImagesFragment extends Fragment {
 
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.inflateMenu(R.menu.search_image);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        sv = new SearchView(getActivity());
+        MenuItem menuItem = toolbar.getMenu().findItem(R.id.action_search_images);
+        MenuItemCompat.setShowAsAction(menuItem, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        MenuItemCompat.setActionView(menuItem, sv);
+        MenuItemCompat.expandActionView(menuItem);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                SearchView sv = new SearchView(getActivity());
-                MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-                MenuItemCompat.setActionView(item, sv);
-                sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        if (imagesAdapter != null) {
-                            imagesAdapter.clear();
-                        }
-                        search = query;
-                        FLICKR_URL = "https://www.flickr.com/services/rest/?method=flickr.photos.search&text="
-                                + search
-                                + "&api_key=c8d349e8bc5be538e22c275a9600de25&privacy_filter=1&content_type=1";
-                        doXmlParse();
-                        return true;
-                    }
+            public boolean onQueryTextSubmit(String query) {
+                if (imagesAdapter != null) {
+                    imagesAdapter.clear();
+                }
+                search = query;
+                FLICKR_URL = "https://www.flickr.com/services/rest/?method=flickr.photos.search&text="
+                        + search
+                        + "&api_key=c8d349e8bc5be538e22c275a9600de25&privacy_filter=1&content_type=1";
+                doXmlParse();
+                return true;
+            }
 
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        return false;
-                    }
-                });
+            @Override
+            public boolean onQueryTextChange(String newText) {
                 return false;
             }
         });
+
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,7 +213,7 @@ public class ImagesFragment extends Fragment {
                 super.onPostExecute(photosFlickr);
                 progressBar.setVisibility(View.GONE);
                 if (photosFlickr != null && photosFlickr.getPhotos().size() > 0) {
-                    imagesAdapter = new ImagesAdapter(getActivity(),photosFlickr.getPhotos(), new ImagesAdapter.LoadPhotos() {
+                    imagesAdapter = new ImagesAdapter(getActivity(), photosFlickr.getPhotos(), new ImagesAdapter.LoadPhotos() {
                         @Override
                         public void load() {
                             InputMethodManager imm = (InputMethodManager) getActivity()

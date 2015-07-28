@@ -79,7 +79,7 @@ public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
         if (galleryFolder.isCheck()) {
             image.setImageResource(R.drawable.ic_attach_check);
         } else {
-            image.setImageResource(R.drawable.ic_circle);
+            image.setImageResource(R.drawable.circle);
         }
 
         if (galleryFolder != null) {
