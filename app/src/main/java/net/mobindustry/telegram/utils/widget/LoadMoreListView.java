@@ -187,7 +187,7 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
 		 * Called when the list reaches the last item (the last item is visible
 		 * to the user)
 		 */
-		public void onLoadMore();
+		void onLoadMore();
 	}
 
 }

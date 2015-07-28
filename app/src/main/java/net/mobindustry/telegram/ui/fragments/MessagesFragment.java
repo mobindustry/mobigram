@@ -508,8 +508,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     @Override
     public void onApiResult(BaseHandler output) {
-        if (output.getHandlerId() == MessageHandler.HANDLER_ID) {
-        }
     }
 
     private void animateSendAttachButton(final int level) {

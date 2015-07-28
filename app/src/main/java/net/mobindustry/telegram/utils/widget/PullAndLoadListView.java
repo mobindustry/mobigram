@@ -133,6 +133,6 @@ public class PullAndLoadListView extends PullToRefreshListView {
 		 * {@link PullAndLoadListView #onLoadMoreComplete()} is expected to
 		 * indicate that the loadmore has completed.
 		 */
-		public void onLoadMore();
+		void onLoadMore();
 	}
 }

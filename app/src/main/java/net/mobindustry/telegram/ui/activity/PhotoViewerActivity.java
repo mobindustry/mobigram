@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,10 +27,15 @@ public class PhotoViewerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_viewer_activity);
 
-        //TODO add backButton
-        //TODO fix photo scale
-
         ImageView imageView = (ImageView) findViewById(R.id.photo_image_view);
+        ImageView back = (ImageView) findViewById(R.id.photo_view_back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         String path = getIntent().getStringExtra("file_path");
         gif = getIntent().getIntExtra("gif", 0);

@@ -38,7 +38,6 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
 
     @Override
     public void onApiResult(BaseHandler output) {
-
         if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
             if (((GetStateHandler) output).getResponse() == Enums.StatesEnum.WaitSetPhoneNumber) {
                 stateWaitCode = true;

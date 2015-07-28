@@ -424,7 +424,7 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 		 * A call to {@link PullToRefreshListView #onRefreshComplete()} is
 		 * expected to indicate that the refresh has completed.
 		 */
-		public void onRefresh();
+		void onRefresh();
 	}
 
 }

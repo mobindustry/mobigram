@@ -5,7 +5,6 @@
     android:background="@color/transparent_background"
     android:id="@+id/transparent_frame_layout"
     >
-
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,6 +18,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
+        />
+
+    <ImageView
+        android:id="@+id/photo_view_back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="start"
+        android:layout_margin="@dimen/margin_15dp"
+        android:src="@drawable/ic_back_photo"
         />
 
 </FrameLayout>

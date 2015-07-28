@@ -297,7 +297,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
-                        System.out.println("search query submit " + query);
                         return false;
                     }
 
@@ -406,14 +405,4 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         DataHolder.setActive(false);
 
     }
-
-    public void sendGiphyMessage(long chatId, String path) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageDocument(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
 }
