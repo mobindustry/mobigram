@@ -172,6 +172,9 @@ public class RegistrationMainFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.e("Log","start "+phone.getSelectionStart());
+                Log.e("Log","before "+phone.getSelectionEnd());
+                //holder.setCursorPosition(count);
             }
 
             @Override
@@ -191,16 +194,21 @@ public class RegistrationMainFragment extends Fragment {
 
                 }
                 String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
+                if (phoneNum.length()==phone.getSelectionEnd()){
+                    holder.setCursorPosition(phoneNum.length());
+                } else {
+                    holder.setCursorPosition(phone.getSelectionEnd());
+                }
 
                 phone.removeTextChangedListener(this);
                 if (formattedNumber == null) {
                     holder.setPhone(phoneNum);
                     phone.setText(holder.getPhone());
-                    phone.setSelection(holder.getPhone().length());
+                    phone.setSelection(holder.getCursorPosition());
                 } else {
                     holder.setPhone(formattedNumber);
                     phone.setText(holder.getPhone());
-                    phone.setSelection(holder.getPhone().length());
+                    phone.setSelection(holder.getCursorPosition());
                 }
                 phone.addTextChangedListener(this);
             }

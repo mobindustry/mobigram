@@ -20,6 +20,7 @@ public class InfoRegistration {
     private ListCountryObject listCountryObject;
     private String phoneForServer="";
     private String textFileFromAssets="";
+    private int cursorPosition=0;
 
     public static synchronized InfoRegistration getInstance() {
         if (instance == null) {
@@ -69,6 +70,14 @@ public class InfoRegistration {
 
     public void setCountryObject(CountryObject countryObject) {
         this.countryObject = countryObject;
+    }
+
+    public int getCursorPosition() {
+        return cursorPosition;
+    }
+
+    public void setCursorPosition(int cursorPosition) {
+        this.cursorPosition = cursorPosition;
     }
 
     public String getCountryName() {
