@@ -57,7 +57,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 switch (message.message.getConstructor()) {
                     case TdApi.MessageAudio.CONSTRUCTOR:
                         TdApi.MessageAudio audio = (TdApi.MessageAudio) message.message;
-
                         break;
                     case TdApi.MessageContact.CONSTRUCTOR:
                         TdApi.MessageContact contact = (TdApi.MessageContact) message.message;

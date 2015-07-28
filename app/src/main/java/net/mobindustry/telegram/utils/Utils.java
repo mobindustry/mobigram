@@ -216,7 +216,7 @@ public class Utils {
         return type;
     }
 
-    public static void setIcon(TdApi.File file, int chatId, String firstName, String lastName, final ImageView iconImage, TextView icon) {
+    public static void setIcon(TdApi.File file, int chatId, String firstName, String lastName, final ImageView iconImage, final TextView icon) {
         if (file != null) {
             if (file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
                 final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
@@ -225,8 +225,10 @@ public class Utils {
                         @Override
                         public void onApiResult(BaseHandler output) {
                             if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                                iconImage.setVisibility(View.VISIBLE);
-                                ImageLoaderHelper.displayImageList(String.valueOf(fileEmpty.id), iconImage);
+                                //iconImage.setVisibility(View.VISIBLE);
+                                findLoop(fileEmpty.id, iconImage);
+                                //ImageLoaderHelper.displayImageList(String.valueOf(fileEmpty.id), iconImage);
+                                //TODO Find out what's best
                             }
                         }
                     }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -235,13 +237,13 @@ public class Utils {
 
                     int sdk = android.os.Build.VERSION.SDK_INT;
                     if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        if(chatId < 0) {
+                        if (chatId < 0) {
                             icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, chatId));
                         } else {
                             icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatId));
                         }
                     } else {
-                        if(chatId < 0) {
+                        if (chatId < 0) {
                             icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, chatId));
                         } else {
                             icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatId));
@@ -253,9 +255,28 @@ public class Utils {
             if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
                 iconImage.setVisibility(View.VISIBLE);
                 TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
-                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, iconImage);
+                Glide.with(DataHolder.getContext()).load(fileLocal.path).asBitmap().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(iconImage);
+                //ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + fileLocal.path, iconImage);
             }
         }
+    }
+
+    public static void findLoop(int id, ImageView iconImage) {
+        String path = null;
+        for (int i = 0; i < 50; i++) {
+            path = DownloadFileHolder.getUpdatedFilePath(id);
+            if (path != null) {
+                iconImage.setVisibility(View.VISIBLE);
+                Glide.with(DataHolder.getContext()).load(path).asBitmap().placeholder(R.drawable.image_placeholder).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(iconImage);
+                break;
+            }
+            try {
+                TimeUnit.MILLISECONDS.sleep(250);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
 

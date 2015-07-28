@@ -1,9 +1,9 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -16,11 +16,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.model.holder.InfoRegistration;
+import net.mobindustry.telegram.ui.activity.RegistrationActivity;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogCodeEmpty;
 
 import java.io.Serializable;
-import java.util.concurrent.TimeUnit;
+
 
 public class ReceiverCodeFragment extends Fragment implements Serializable {
 
@@ -71,7 +72,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                activity.setCodeFromServer(codeFromUser.getText().toString());
+                setCode();
                 return true;
             }
         });
@@ -80,25 +81,21 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_DONE && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    activity.setCodeFromServer(codeFromUser.getText().toString());
+                    setCode();
                     return true;
                 }
                 return false;
             }
         });
+    }
 
-        new CountDownTimer(120000, 1000) { // adjust the milli seconds here
-
-            public void onTick(long millisUntilFinished) {
-                countDownTimer.setText("We will call you " + String.format("%d min %d sec",
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
-            }
-
-            public void onFinish() {
-                countDownTimer.setText("Calling you");
-            }
-        }.start();
+    private void setCode() {
+        if(codeFromUser.getText().toString().isEmpty()) {
+            FragmentManager fm = getFragmentManager();
+            DialogCodeEmpty codeEmpty = new DialogCodeEmpty();
+            codeEmpty.show(fm, "CONFIRM_CODE_EMPTY");
+        } else {
+            activity.setCodeFromServer(codeFromUser.getText().toString());
+        }
     }
 }

@@ -68,7 +68,7 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
                 hasAnswer = true;
                 runStartActivity();
             } else {
-                start();
+                startSplash();
             }
         } else {
             textCheckInternet.setVisibility(View.VISIBLE);
@@ -90,7 +90,7 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
         });
     }
 
-    public void start() {
+    public void startSplash() {
         TitanicTextView titanicTextView = (TitanicTextView) findViewById(R.id.titanic_tv);
         Titanic titanic = new Titanic();
         titanic.start(titanicTextView);
@@ -162,7 +162,7 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             textCheckInternet.setVisibility(View.GONE);
-            start();
+            startSplash();
         }
     }
 
