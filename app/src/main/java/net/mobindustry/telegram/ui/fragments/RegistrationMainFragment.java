@@ -172,9 +172,6 @@ public class RegistrationMainFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.e("Log","start "+phone.getSelectionStart());
-                Log.e("Log","before "+phone.getSelectionEnd());
-                //holder.setCursorPosition(count);
             }
 
             @Override
@@ -194,11 +191,17 @@ public class RegistrationMainFragment extends Fragment {
 
                 }
                 String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
-                if (phoneNum.length()==phone.getSelectionEnd()){
-                    holder.setCursorPosition(phoneNum.length());
+                if (formattedNumber!=null && formattedNumber.length() > phoneNum.length()) {
+                    int result = formattedNumber.length() - phoneNum.length()+1;
+                    holder.setCursorPosition(holder.getCursorPosition() + result);
                 } else {
-                    holder.setCursorPosition(phone.getSelectionEnd());
+                    if (phoneNum.length() == phone.getSelectionEnd()) {
+                        holder.setCursorPosition(phoneNum.length());
+                    } else {
+                        holder.setCursorPosition(phone.getSelectionEnd());
+                    }
                 }
+
 
                 phone.removeTextChangedListener(this);
                 if (formattedNumber == null) {
@@ -232,7 +235,7 @@ public class RegistrationMainFragment extends Fragment {
         FragmentManager fm = getFragmentManager();
         String lettersCode = code.getText().toString();
         if (isCodeCorrect(lettersCode)) {
-            if(lettersCode.equals("+")) {
+            if (lettersCode.equals("+")) {
                 DialogPhoneCodeEmpty phoneCodeEmpty = new DialogPhoneCodeEmpty();
                 phoneCodeEmpty.show(fm, "PHONE_CODE_EMPTY");
             } else {
@@ -249,7 +252,7 @@ public class RegistrationMainFragment extends Fragment {
         }
     }
 
-    private boolean isCodeCorrect (String lettersCode) {
+    private boolean isCodeCorrect(String lettersCode) {
         for (int i = 0; i < holder.getListCountryObject().getListCountries().size(); i++) {
             if (holder.getListCountryObject().getListCountries().get(i).getCountryCode().equals(lettersCode)) {
                 return true;
