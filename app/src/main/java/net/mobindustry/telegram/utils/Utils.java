@@ -222,17 +222,21 @@ public class Utils {
             if (file.getConstructor() == TdApi.FileEmpty.CONSTRUCTOR) {
                 final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
                 if (fileEmpty.id != 0) {
-                    new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                        @Override
-                        public void onApiResult(BaseHandler output) {
-                            if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                                //iconImage.setVisibility(View.VISIBLE);
-                                findLoop(fileEmpty.id, iconImage);
-                                //ImageLoaderHelper.displayImageList(String.valueOf(fileEmpty.id), iconImage);
-                                //TODO Find out what's best
+                    if (DownloadFileHolder.getUpdatedFilePath(fileEmpty.id) != null) {
+                        findLoop(fileEmpty.id, iconImage);
+                    } else {
+                        new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
+                            @Override
+                            public void onApiResult(BaseHandler output) {
+                                if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
+                                    //iconImage.setVisibility(View.VISIBLE);
+                                    findLoop(fileEmpty.id, iconImage);
+                                    //ImageLoaderHelper.displayImageList(String.valueOf(fileEmpty.id), iconImage);
+                                    //TODO Find out what's best
+                                }
                             }
-                        }
-                    }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                    }
                 } else {
                     iconImage.setImageDrawable(null);
                     icon.setVisibility(View.VISIBLE);
@@ -269,7 +273,7 @@ public class Utils {
             path = DownloadFileHolder.getUpdatedFilePath(id);
             if (path != null) {
                 iconImage.setVisibility(View.VISIBLE);
-                Glide.with(DataHolder.getContext()).load(path).asBitmap().placeholder(R.drawable.image_placeholder).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(iconImage);
+                Glide.with(DataHolder.getContext()).load(path).asBitmap().placeholder(R.drawable.image_placeholder).diskCacheStrategy(DiskCacheStrategy.NONE).into(iconImage);
                 break;
             }
             try {
