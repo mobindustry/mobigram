@@ -16,7 +16,7 @@ public class UserInfoHolder {
 
     private static UserInfoHolder instance;
 
-    private TdApi.User user;
+    private static TdApi.User user;
 
     private static Map<Integer, TdApi.User> map = new TreeMap<>();
 
@@ -30,13 +30,13 @@ public class UserInfoHolder {
     private UserInfoHolder() {
     }
 
-    public TdApi.User getUser() {
+    public static TdApi.User getUser() {
         return user;
     }
 
-    public void setUser(TdApi.User user) {
-        this.user = user;
-        map.put(user.id, user);
+    public static  void setUser(TdApi.User user1) {
+        user = user1;
+        map.put(user1.id, user1);
     }
 
     public static void addUsersToMap(TdApi.Chats chats) {

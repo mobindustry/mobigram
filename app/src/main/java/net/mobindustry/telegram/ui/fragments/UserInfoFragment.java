@@ -24,6 +24,8 @@ import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.GroupChatFullHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.core.handlers.UserFullHandler;
+import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
+import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.Utils;
@@ -171,12 +173,14 @@ public class UserInfoFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    UserInfoFragment userInfoFragment = new UserInfoFragment();
-                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.transparent_content, userInfoFragment);
-                    userInfoFragment.setInfo((long) user.id, "private");
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    if (user.id != UserInfoHolder.getUser().id) {
+                        UserInfoFragment userInfoFragment = new UserInfoFragment();
+                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.transparent_content, userInfoFragment);
+                        userInfoFragment.setInfo((long) user.id, "private");
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
                 }
             });
             content.addView(itemView);
