@@ -234,6 +234,7 @@ public class Utils {
                         }
                     }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                 } else {
+                    iconImage.setImageDrawable(null);
                     icon.setVisibility(View.VISIBLE);
 
                     int sdk = android.os.Build.VERSION.SDK_INT;
