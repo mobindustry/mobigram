@@ -85,7 +85,6 @@ public class ImageLoaderHelper {
                 .resetViewBeforeLoading(true)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
-                .bitmapConfig(Bitmap.Config.ARGB_4444)
                 .build();
         imageLoader.displayImage(url, imageView, options);
     }
