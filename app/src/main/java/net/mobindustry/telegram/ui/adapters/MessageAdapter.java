@@ -238,7 +238,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
         if (item.message instanceof TdApi.MessagePhoto) {
             TdApi.MessagePhoto messagePhoto = (TdApi.MessagePhoto) item.message;
-            Log.e("Log", messagePhoto.toString());
             final ImageView photo = new ImageView(getContext());
             String photoSize;
             if (havePhotoSizeM(messagePhoto.photo.photos)) {

@@ -128,7 +128,6 @@ public class RegistrationMainFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
-            @Override //TODO fix cursor position
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 codeList.add(String.valueOf(s));
                 for (int i = 0; i < holder.getListCountryObject().getListCountries().size(); i++) {
@@ -190,7 +189,6 @@ public class RegistrationMainFragment extends Fragment {
                             lettersCode = holder.getCodeCountryLetters();
                         }
                     }
-
                 }
                 String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
                 if (formattedNumber != null && formattedNumber.length() > phoneNum.length()) {
@@ -203,7 +201,6 @@ public class RegistrationMainFragment extends Fragment {
                         holder.setCursorPosition(phone.getSelectionEnd());
                     }
                 }
-
 
                 phone.removeTextChangedListener(this);
                 if (formattedNumber == null) {

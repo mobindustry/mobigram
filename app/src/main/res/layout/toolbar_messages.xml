@@ -52,7 +52,6 @@
                 android:id="@+id/toolbar_text_last_seen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:textColor="#fff"
                 android:textSize="@dimen/toolbar_last_seen_text_size" />
 

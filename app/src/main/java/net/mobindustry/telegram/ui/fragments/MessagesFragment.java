@@ -562,8 +562,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             e.printStackTrace();
         }
         popupMenu.getMenuInflater().inflate(R.menu.attach_menu, popupMenu.getMenu());
-        popupMenu
-                .setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
@@ -688,7 +687,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             mediaScanIntent.setData(contentUri);
             getActivity().sendBroadcast(mediaScanIntent);
             Uri external = Uri.fromFile(holder.getTempPhotoFile());
-            Crop.of(external, external).start(getActivity(), Const.CROP_REQUEST_CODE);
+            Crop.of(external, external).asSquare().start(getActivity(), Const.CROP_REQUEST_CODE);
         }
 
         if (requestCode == Const.REQUEST_CODE_TAKE_FILE && resultCode == getActivity().RESULT_OK) {
