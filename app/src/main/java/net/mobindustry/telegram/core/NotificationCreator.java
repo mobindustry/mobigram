@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.core;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,7 +18,7 @@ public class NotificationCreator extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Notification.Builder builder = new Notification.Builder(context);
-
+        //TODO delete notifications
         if (!DataHolder.isActive() && intent.getAction().equals(Const.NEW_MESSAGE_ACTION)) {
                 int id = intent.getIntExtra("message_id", 0);
             Log.e("Log", "Notification creator id " + id);
@@ -41,7 +42,7 @@ public class NotificationCreator extends BroadcastReceiver {
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true);
             Notification notification = builder.build();
-            android.app.NotificationManager notificationManager = (android.app.NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify((int)chat_id, notification);
         }
     }

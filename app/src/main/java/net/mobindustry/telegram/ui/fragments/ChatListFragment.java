@@ -117,7 +117,7 @@ public class ChatListFragment extends ListFragment{
     }
 
     public TdApi.Chat getChat() {
-        if (chats == null) {
+        if (chats == null || chats.chats.length == 0) {
             chats = MessagesFragmentHolder.getChats();
         }
         for (int i = 0; i < chats.chats.length; i++) {
