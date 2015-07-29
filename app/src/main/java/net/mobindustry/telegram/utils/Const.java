@@ -33,7 +33,6 @@ public class Const {
     public static final String TIME_PATTERN = "HH:mm";
 
     public static final int CONTACT_LIST_FRAGMENT = 200;
-    public static final int FILE_CHOOSE_FRAGMENT = 201;
     public static final int MAP_FRAGMENT = 202;
     public static final int GALLERY_FRAGMENT = 203;
     public static final int SELECTED_MAP_FRAGMENT = 204;

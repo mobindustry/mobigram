@@ -4,28 +4,20 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -70,16 +62,15 @@ import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.MessageAdapter;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyUnregistered;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogDoNotHaveFileManager;
-import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.FilePathUtil;
-import net.mobindustry.telegram.utils.Utils;
 import net.mobindustry.telegram.ui.emoji.Emoji;
 import net.mobindustry.telegram.ui.emoji.EmojiKeyboardView;
 import net.mobindustry.telegram.ui.emoji.EmojiParser;
 import net.mobindustry.telegram.ui.emoji.EmojiPopup;
 import net.mobindustry.telegram.ui.emoji.ObservableLinearLayout;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogDoNotHaveFileManager;
+import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.FilePathUtil;
+import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -88,8 +79,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
-import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -337,7 +326,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                     if (output == null) {
                                         Log.e("Log", "null");
                                     }
-                                    Log.e("Log", "History cleared");
                                     destroyFragment(fragmentTransaction);
                                     fragment.getChatsList(0, 200);
                                 }
@@ -347,8 +335,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 public void onApiResult(BaseHandler output) {
                                     if (output.getHandlerId() == ChatHandler.HANDLER_ID) {
                                         TdApi.Chat chat = (TdApi.Chat) output.getResponse();
-                                        Log.e("Log", chat.toString());
-
                                     }
                                 }
                             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -591,9 +577,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 Log.e("LOG", "VIDEO " + holder.getTempVideoFile().getAbsolutePath());
                                 break;
                             case R.id.file:
-                                //Intent intent = new Intent(getActivity(), TransparentActivity.class);
-                                //intent.putExtra("choice", Const.FILE_CHOOSE_FRAGMENT);
-                                //startActivityForResult(intent, 1);
                                 openFolder();
                                 break;
                             case R.id.location:
@@ -709,10 +692,10 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 if (!TextUtils.isEmpty(path)) {
                     sendPhotoMessage(getShownChatId(), path);
                 } else {
-                    Toast.makeText(getActivity(), "File not found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), activity.getString(R.string.file_not_found), Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
-                Toast.makeText(getActivity(), "File not found", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), activity.getString(R.string.file_not_found), Toast.LENGTH_LONG).show();
             }
         }
         if (requestCode == Const.REQUEST_CODE_NEW_MESSAGE && resultCode == Activity.RESULT_OK) {
@@ -783,7 +766,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                             if (getActivity() != null) {
                                                 getActivity().runOnUiThread(new Runnable() {
                                                     public void run() {
-                                                        Toast.makeText(getActivity(), "File loaded.", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(getActivity(), activity.getString(R.string.file_loaded), Toast.LENGTH_SHORT).show();
                                                         openFile(finalPath, v);
                                                     }
                                                 });
@@ -815,7 +798,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     intent.setDataAndType(Uri.parse(dir), "resource/folder");
                     startActivity(intent);
                 } catch (Exception e1) {
-                    Toast.makeText(getActivity(), "On your device no programs to open a file of this type. The file is saved to the address " + path, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), activity.getString(R.string.save_to_message) + path, Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -827,9 +810,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     };
 
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.setHeaderTitle("Message");
-        menu.add(0, FORWARD_CONTEXT_ITEM, 0, "Forward");
-        menu.add(0, DELETE_CONTEXT_ITEM, 0, "Delete");
+        menu.setHeaderTitle(activity.getString(R.string.message_context_menu_header));
+        menu.add(0, FORWARD_CONTEXT_ITEM, 0, activity.getString(R.string.message_context_menu_forward));
+        menu.add(0, DELETE_CONTEXT_ITEM, 0, activity.getString(R.string.message_context_menu_delete));
     }
 
     @Override

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -15,11 +14,10 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
-import net.mobindustry.telegram.ui.fragments.ChooseFileFragment;
+import net.mobindustry.telegram.ui.fragments.ContactListFragment;
 import net.mobindustry.telegram.ui.fragments.FolderFragment;
 import net.mobindustry.telegram.ui.fragments.GalleryFragment;
 import net.mobindustry.telegram.ui.fragments.LocationFragment;
-import net.mobindustry.telegram.ui.fragments.ContactListFragment;
 import net.mobindustry.telegram.ui.fragments.SelectChatFragment;
 import net.mobindustry.telegram.ui.fragments.SelectedMapFragment;
 import net.mobindustry.telegram.ui.fragments.UserInfoFragment;
@@ -54,11 +52,6 @@ public class TransparentActivity extends AppCompatActivity {
                 ContactListFragment contactListFragment = new ContactListFragment();
                 fragmentTransaction.replace(R.id.transparent_content, contactListFragment);
                 contactListFragment.setDestination(destination);
-                break;
-            }
-            case Const.FILE_CHOOSE_FRAGMENT: {
-                ChooseFileFragment chooseFileFragment = new ChooseFileFragment();
-                fragmentTransaction.replace(R.id.transparent_content, chooseFileFragment);
                 break;
             }
             case Const.MAP_FRAGMENT: {

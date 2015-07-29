@@ -66,5 +66,11 @@
     <string name="share_user_menu_text">Share</string>
     <string name="delete_user_menu_text">Delete</string>
     <string name="block_user_menu_text">Block</string>
+    <string name="file_loaded">File loaded.</string>
+    <string name="save_to_message">"On your device no programs to open a file of this type. The file is saved to the address "</string>
+    <string name="message_context_menu_header">Message</string>
+    <string name="message_context_menu_forward">Forward</string>
+    <string name="message_context_menu_delete">Delete</string>
+    <string name="file_not_found">File not found</string>
 
 </resources>
