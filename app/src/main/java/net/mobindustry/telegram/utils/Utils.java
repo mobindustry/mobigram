@@ -260,6 +260,18 @@ public class Utils {
         }
     }
 
+    public static int getSmallestScreenSize(Activity activity){
+        DisplayMetrics dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width=dm.widthPixels;
+        int height=dm.heightPixels;
+        if (width>height){
+            return height;
+        } else {
+            return width;
+        }
+    }
+
     public static void findLoop(final int id, final ImageView iconImage, final Activity activity) {
         Runnable runnable = new Runnable() {
             public void run() {
