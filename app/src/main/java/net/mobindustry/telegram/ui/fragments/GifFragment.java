@@ -160,7 +160,6 @@ public class GifFragment extends Fragment {
                 intent.putExtra("file_path", giphyObjectList.get(position).getPath());
                 intent.putExtra("gif", 1);
                 getActivity().startActivity(intent);
-                getActivity().finish();
             }
         });
 
