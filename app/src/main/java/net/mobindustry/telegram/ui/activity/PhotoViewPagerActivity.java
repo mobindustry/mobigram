@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.ui.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
@@ -48,6 +50,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
     private int photoNumber;
     private FrameLayout send;
     private FrameLayout cancel;
+    private LinearLayout layoutButtons;
 
     public int getPhotoNumber() {
         return photoNumber;
@@ -66,6 +69,22 @@ public class PhotoViewPagerActivity extends FragmentActivity {
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(this)) {
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 2.5f);
+            layoutButtons.setLayoutParams(param);
+        } else {
+            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 1.5f);
+            layoutButtons.setLayoutParams(paramButtons);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_view_pager_activity);
@@ -75,11 +94,24 @@ public class PhotoViewPagerActivity extends FragmentActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_photo);
         image = (ImageView) findViewById(R.id.photoBig);
         numberPhotos = (TextView) findViewById(R.id.numberPhotosInPhoto);
+        layoutButtons=(LinearLayout)findViewById(R.id.layoutButtonsPager);
         pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
         pager.setCurrentItem(ListFoldersHolder.getCurrentSelectedPhoto());
         pager.setOffscreenPageLimit(4);
         setPhotoNumber(ListFoldersHolder.getCurrentSelectedPhoto());
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(this)) {
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 2.5f);
+            layoutButtons.setLayoutParams(param);
+        } else {
+            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 1.5f);
+            layoutButtons.setLayoutParams(paramButtons);
+        }
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

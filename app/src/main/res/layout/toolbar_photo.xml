@@ -12,6 +12,6 @@
         android:layout_alignParentRight="true"
         android:layout_gravity="center|right"
         android:layout_margin="@dimen/margin_5dp"
-        android:src="@drawable/ic_attach_photo_in_folder" />
+        android:src="@drawable/circle" />
 
 </android.support.v7.widget.Toolbar>

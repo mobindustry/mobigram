@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
@@ -43,6 +44,7 @@ public class FolderFragment extends Fragment {
     private Toolbar toolbar;
     private String nameHolder = "";
     private FragmentTransaction ft;
+    private LinearLayout layoutButtons;
 
 
     @Nullable
@@ -55,6 +57,7 @@ public class FolderFragment extends Fragment {
         gridView = (GridView) view.findViewById(R.id.gridPhotos);
         numberPhotos = (TextView) view.findViewById(R.id.numberPhotosAll);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_folder);
+        layoutButtons=(LinearLayout)view.findViewById(R.id.layoutButtonsFolder);
         return view;
     }
 
@@ -146,10 +149,18 @@ public class FolderFragment extends Fragment {
             folderAdapter.addAll(ListFoldersHolder.getList());
         }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 2.5f);
+            layoutButtons.setLayoutParams(param);
             adjustGridViewLand();
             folderAdapter.clear();
             folderAdapter.addAll(ListFoldersHolder.getList());
         } else {
+            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 1.6f);
+            layoutButtons.setLayoutParams(paramButtons);
             adjustGridViewPort();
             folderAdapter.clear();
             folderAdapter.addAll(ListFoldersHolder.getList());
@@ -244,10 +255,18 @@ public class FolderFragment extends Fragment {
             folderAdapter.addAll(ListFoldersHolder.getList());
         }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 2.5f);
+            layoutButtons.setLayoutParams(param);
             adjustGridViewLand();
             folderAdapter.clear();
             folderAdapter.addAll(ListFoldersHolder.getList());
         } else {
+            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 1.6f);
+            layoutButtons.setLayoutParams(paramButtons);
             adjustGridViewPort();
             folderAdapter.clear();
             folderAdapter.addAll(ListFoldersHolder.getList());

@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -48,6 +50,7 @@ public class ImagesFragment extends Fragment {
     private Toolbar toolbar;
     public static String FLICKR_URL = "";
     private SearchView sv;
+    private LinearLayout layoutButtons;
 
 
     @Nullable
@@ -61,7 +64,25 @@ public class ImagesFragment extends Fragment {
         send = (FrameLayout) view.findViewById(R.id.buttonSendImages);
         number = (TextView) view.findViewById(R.id.numberImages);
         cancel = (FrameLayout) view.findViewById(R.id.buttonCancelImages);
+        layoutButtons=(LinearLayout)view.findViewById(R.id.layoutButtonsImages);
         return view;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 0.25f);
+            layoutButtons.setLayoutParams(param);
+        } else {
+            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 0.15f);
+            layoutButtons.setLayoutParams(paramButtons);
+        }
+
     }
 
     @Override
@@ -102,6 +123,17 @@ public class ImagesFragment extends Fragment {
             } else {
                 number.setVisibility(View.GONE);
             }
+        }
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 0.25f);
+            layoutButtons.setLayoutParams(param);
+        } else {
+            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 0.15f);
+            layoutButtons.setLayoutParams(paramButtons);
         }
 
         send.setOnClickListener(new View.OnClickListener() {

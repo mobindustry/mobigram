@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -60,6 +62,7 @@ public class GifFragment extends Fragment {
     private TextView number;
     private FrameLayout cancel;
     private SearchView sv;
+    private LinearLayout layoutButtons;
 
     @Nullable
     @Override
@@ -72,7 +75,25 @@ public class GifFragment extends Fragment {
         send = (FrameLayout) view.findViewById(R.id.buttonSendGif);
         number = (TextView) view.findViewById(R.id.numberGif);
         cancel = (FrameLayout) view.findViewById(R.id.buttonCancelGif);
+        layoutButtons=(LinearLayout)view.findViewById(R.id.layoutButtonsGif);
         return view;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 0.25f);
+            layoutButtons.setLayoutParams(param);
+        } else {
+            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 0.15f);
+            layoutButtons.setLayoutParams(paramButtons);
+        }
+
     }
 
     @Override
@@ -115,6 +136,17 @@ public class GifFragment extends Fragment {
                 number.setVisibility(View.GONE);
             }
 
+        }
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 0.25f);
+            layoutButtons.setLayoutParams(param);
+        } else {
+            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 0.15f);
+            layoutButtons.setLayoutParams(paramButtons);
         }
 
         gifsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

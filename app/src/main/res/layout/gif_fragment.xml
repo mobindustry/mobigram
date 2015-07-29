@@ -50,7 +50,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.15"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/layoutButtonsGif">
 
         <FrameLayout
             android:layout_width="0dp"
