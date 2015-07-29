@@ -57,9 +57,6 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
         Log.e("LOG", "##### Start program #####");
         startService(new Intent(this, CreateGalleryThumbs.class));
 
-        final Intent serviceIntent = new Intent(getApplicationContext(), NotificationsService.class);
-        startService(serviceIntent);
-
         textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
         if (isOnline()) {

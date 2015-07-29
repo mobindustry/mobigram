@@ -21,8 +21,6 @@ public class NotificationsService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        TG.setUpdatesHandler(new UpdatesHandler(this));
-
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationReceiver = new NotificationCreator();
         filter = new IntentFilter();

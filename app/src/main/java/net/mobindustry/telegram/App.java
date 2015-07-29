@@ -20,9 +20,10 @@ public class App extends Application {
     public void onCreate() {
         Fabric.with(this, new Crashlytics());
 
+        TG.setUpdatesHandler(new UpdatesHandler(this));
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             TG.setDir(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "NeTelegram");
-        }
+        } //TODO else!!!
         DataHolder.setContext(this);
     }
 }
