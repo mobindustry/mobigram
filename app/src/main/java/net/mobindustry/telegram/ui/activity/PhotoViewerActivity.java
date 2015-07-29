@@ -1,10 +1,12 @@
 package net.mobindustry.telegram.ui.activity;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +31,15 @@ public class PhotoViewerActivity extends Activity {
 
         ImageView imageView = (ImageView) findViewById(R.id.photo_image_view);
         ImageView back = (ImageView) findViewById(R.id.photo_view_back);
+
+        FrameLayout.LayoutParams params;
+        if (getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) {
+            params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        } else {
+            params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+        imageView.setLayoutParams(params);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
