@@ -56,13 +56,25 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 TdApi.Message message = (TdApi.Message) v.getTag();
 
                 switch (message.message.getConstructor()) {
-                    case TdApi.MessageAudio.CONSTRUCTOR:
+                    case TdApi.MessageAudio.CONSTRUCTOR: {
                         TdApi.MessageAudio audio = (TdApi.MessageAudio) message.message;
+                        ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.download_document_progress_bar);
+                        progressBar.setVisibility(View.VISIBLE);
+                        TdApi.File file = audio.audio.audio;
+                        if (file.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                            TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
+                            loader.openFile(fileLocal.path, progressBar);
+                        } else {
+                            TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
+                            loader.loadFile(fileEmpty.id, progressBar);
+                        }
                         break;
-                    case TdApi.MessageContact.CONSTRUCTOR:
+                    }
+                    case TdApi.MessageContact.CONSTRUCTOR: {
                         TdApi.MessageContact contact = (TdApi.MessageContact) message.message;
                         loader.openContact(contact.userId);
                         break;
+                    }
                     case TdApi.MessageDocument.CONSTRUCTOR: {
                         TdApi.MessageDocument document = (TdApi.MessageDocument) message.message;
                         if (document.document.mimeType.contains("gif")) {
@@ -114,7 +126,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                         ((ChatActivity) context).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     }
-                    case TdApi.MessageVideo.CONSTRUCTOR:
+                    case TdApi.MessageVideo.CONSTRUCTOR: {
                         TdApi.MessageVideo video = (TdApi.MessageVideo) message.message;
                         ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.download_video_progress_bar);
                         progressBar.setVisibility(View.VISIBLE);
@@ -127,6 +139,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                             loader.loadFile(fileEmpty.id, progressBar);
                         }
                         break;
+                    }
                 }
             }
         };
@@ -255,11 +268,25 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(photo);
         }
         if (item.message instanceof TdApi.MessageAudio) {
-            //Log.i("Message", "Audio " + item.message);
-            TextView audio = new TextView(getContext());
-            audio.setText("Audio");
+            Log.i("Message", "Audio " + item.message);
+            TdApi.MessageAudio audio = (TdApi.MessageAudio) item.message;
+            TdApi.Audio file = audio.audio;
 
-            layout.addView(audio);
+            View view = inflater.inflate(R.layout.document_view_layout, null);
+            ImageView icon = (ImageView) view.findViewById(R.id.document_icon);
+            TextView name = (TextView) view.findViewById(R.id.document_name);
+            TextView size = (TextView) view.findViewById(R.id.document_size);
+            if (file.audio.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+                TdApi.FileLocal fileLocal = (TdApi.FileLocal) file.audio;
+                size.setText(Utils.formatFileSize(fileLocal.size));
+                icon.setImageResource(R.drawable.photocheck);
+            } else {
+                TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file.audio;
+                size.setText(Utils.formatFileSize(fileEmpty.size));
+                icon.setImageResource(R.drawable.photoload);
+            }
+            name.setText(file.mimeType + ", duration: " + Utils.getDateFormat(Const.TIME_PATTERN).format(file.duration));
+            layout.addView(view);
         }
         if (item.message instanceof TdApi.MessageContact) {
             //Log.i("Message", "Contact " + item.message);
