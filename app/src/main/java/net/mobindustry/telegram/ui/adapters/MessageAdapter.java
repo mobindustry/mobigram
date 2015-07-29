@@ -268,7 +268,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             layout.addView(photo);
         }
         if (item.message instanceof TdApi.MessageAudio) {
-            Log.i("Message", "Audio " + item.message);
+            //Log.i("Message", "Audio " + item.message);
             TdApi.MessageAudio audio = (TdApi.MessageAudio) item.message;
             TdApi.Audio file = audio.audio;
 
@@ -311,7 +311,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
         if (item.message instanceof TdApi.MessageDocument) {
             //Log.e("Message", "Document " + item.message);
-
             TdApi.MessageDocument doc = (TdApi.MessageDocument) item.message;
             if (doc.document.mimeType.contains("gif")) {
                 TdApi.PhotoSize thumb = doc.document.thumb;
@@ -374,7 +373,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         }
         if (item.message instanceof TdApi.MessageVideo) {
             //Log.e("Message", "Video " + item.message);
-
             TdApi.MessageVideo messageVideo = (TdApi.MessageVideo) item.message;
             View view = inflater.inflate(R.layout.video_message_view, null);
             ImageView icon = (ImageView) view.findViewById(R.id.video_icon);
