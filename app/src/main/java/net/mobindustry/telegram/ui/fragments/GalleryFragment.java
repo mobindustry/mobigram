@@ -129,6 +129,7 @@ public class GalleryFragment extends Fragment {
         galleryAdapter = new GalleryAdapter(getActivity());
         gridList.setAdapter(galleryAdapter);
         if (Utils.isTablet(getActivity())) {
+            Log.e("Log", "Зашель");
             if (ListFoldersHolder.getCheckQuantity() != 0) {
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
