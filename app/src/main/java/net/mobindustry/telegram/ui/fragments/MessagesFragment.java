@@ -533,7 +533,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             Field[] fields = popupMenu.getClass().getDeclaredFields();
             for (Field field : fields) {
                 if ("mPopup".equals(field.getName())) {
-
                     field.setAccessible(true);
                     Object menuPopupHelper = field.get(popupMenu);
                     Class<?> classPopupHelper = Class.forName(menuPopupHelper

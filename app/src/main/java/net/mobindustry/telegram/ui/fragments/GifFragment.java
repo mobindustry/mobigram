@@ -122,7 +122,11 @@ public class GifFragment extends Fragment {
             if (ListFoldersHolder.getCheckQuantity() != 0) {
                 number.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
-                params.leftMargin = 60;
+                if (Utils.getSmallestScreenSize(getActivity()) <= 480) {
+                    params.leftMargin = 10;
+                } else {
+                    params.leftMargin = 60;
+                }
                 number.setLayoutParams(params);
                 int sdk = Build.VERSION.SDK_INT;
                 if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
@@ -369,7 +373,11 @@ public class GifFragment extends Fragment {
                             if (ListFoldersHolder.getCheckQuantity() != 0) {
                                 number.setVisibility(View.VISIBLE);
                                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
-                                params.leftMargin = 60;
+                                if (Utils.getSmallestScreenSize(getActivity()) <= 480) {
+                                    params.leftMargin = 10;
+                                } else {
+                                    params.leftMargin = 60;
+                                }
                                 number.setLayoutParams(params);
                                 int sdk = Build.VERSION.SDK_INT;
                                 if (sdk < Build.VERSION_CODES.JELLY_BEAN) {

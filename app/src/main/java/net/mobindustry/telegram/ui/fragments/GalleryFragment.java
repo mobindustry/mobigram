@@ -81,8 +81,8 @@ public class GalleryFragment extends Fragment {
         buttonSend = (FrameLayout) view.findViewById(R.id.buttonSendGallery);
         progressBar = (ProgressBar) view.findViewById(R.id.gallery_progress_bar);
         numberPhotos = (TextView) view.findViewById(R.id.numberPhotos);
-        layoutButtons=(LinearLayout)view.findViewById(R.id.layoutButtons);
-        layoutFind=(LinearLayout)view.findViewById(R.id.layoutFind);
+        layoutButtons = (LinearLayout) view.findViewById(R.id.layoutButtons);
+        layoutFind = (LinearLayout) view.findViewById(R.id.layoutFind);
         return view;
     }
 
@@ -98,7 +98,7 @@ public class GalleryFragment extends Fragment {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 2.5f);
+                    0, 2.6f);
             layoutFind.setLayoutParams(param);
             layoutButtons.setLayoutParams(param);
             progressBar.setVisibility(View.GONE);
@@ -149,7 +149,11 @@ public class GalleryFragment extends Fragment {
             if (ListFoldersHolder.getCheckQuantity() != 0) {
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                params.leftMargin = 60;
+                if (Utils.getSmallestScreenSize(getActivity()) <= 480) {
+                    params.leftMargin = 10;
+                } else {
+                    params.leftMargin = 60;
+                }
                 numberPhotos.setLayoutParams(params);
                 int sdk = android.os.Build.VERSION.SDK_INT;
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -533,7 +537,6 @@ public class GalleryFragment extends Fragment {
             }
         }
     }
-
 
 
 }

@@ -211,7 +211,11 @@ public class PhotoViewPagerActivity extends FragmentActivity {
             if (ListFoldersHolder.getCheckQuantity() != 0) {
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                params.leftMargin = 60;
+                if (Utils.getSmallestScreenSize(this) <= 480) {
+                    params.leftMargin = 10;
+                } else {
+                    params.leftMargin = 60;
+                }
                 numberPhotos.setLayoutParams(params);
                 int sdk = android.os.Build.VERSION.SDK_INT;
                 if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -311,7 +315,11 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                     if (ListFoldersHolder.getCheckQuantity() != 0) {
                         numberPhotos.setVisibility(View.VISIBLE);
                         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                        params.leftMargin = 60;
+                        if (Utils.getSmallestScreenSize(PhotoViewPagerActivity.this) <= 480) {
+                            params.leftMargin = 10;
+                        } else {
+                            params.leftMargin = 60;
+                        }
                         numberPhotos.setLayoutParams(params);
                         int sdk = android.os.Build.VERSION.SDK_INT;
                         if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
