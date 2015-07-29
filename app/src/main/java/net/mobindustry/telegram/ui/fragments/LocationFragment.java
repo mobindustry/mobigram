@@ -291,9 +291,11 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
             FoursquareListFragment foursquareListFragment;
             foursquareListFragment = new FoursquareListFragment();
             foursquareHolder.setFoursquareVenueList(foursquareVenueList);
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.transparent_content, foursquareListFragment);
-            fragmentTransaction.commit();
+            if (getActivity()!=null){
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.transparent_content, foursquareListFragment);
+                fragmentTransaction.commit();
+            }
         }
     }
 }
