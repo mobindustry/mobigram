@@ -309,8 +309,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
             if (getResources().getConfiguration().orientation
-                    == Configuration.ORIENTATION_PORTRAIT) {
-                toolbar.setNavigationIcon(R.drawable.ic_back);
+                    == Configuration.ORIENTATION_LANDSCAPE && Utils.isTablet(getActivity())) {
+                toolbar.setNavigationIcon(R.drawable.ic_close_white);
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -318,7 +318,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     }
                 });
             } else {
-                toolbar.setNavigationIcon(R.drawable.ic_close_white);
+                toolbar.setNavigationIcon(R.drawable.ic_back);
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -7,9 +7,7 @@
     <color name="background_action_bar">#5b95c2</color>
     <color name="background_activity">#fff</color>
     <color name="blue">#FF33B5E5</color>
-    <color name="background_row_country_list">#fff</color>
     <color name="text_country_list">#000</color>
-    <color name="background_countries_list">#fff0f0f0</color>
     <color name="selected_contact">#ffd8d8d8</color>
     <color name="pressed_contact">#ff74c8ff</color>
     <color name="pressed_choose_country">#33b5e5</color>
@@ -21,10 +19,7 @@
     <color name="button_foursquare">#ff72bff3</color>
     <color name="button_foursquare_pressed">#ff698bc1</color>
     <color name="text_color_gallery_fragment">#fff</color>
-    <color name="background_square_gallery_fragment">#ff40b4f4</color>
-    <color name="background_transparent">#80000000</color>
     <color name="background_search_gif">#ff286879</color>
-    <color name="background_gallery_buttons_pressed">#ff25516b</color>
     <color name="background_gallery_buttons">#ff0d2028</color>
     <color name="wrong_code">#ffff0000</color>
 

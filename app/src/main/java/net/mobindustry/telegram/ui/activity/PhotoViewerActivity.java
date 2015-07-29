@@ -50,7 +50,6 @@ public class PhotoViewerActivity extends Activity {
                 int id = getIntent().getIntExtra("file_id", 0);
                 Utils.photoFileLoader(id, imageView, this);
             } else {
-                //Glide.with(this).load(path).asBitmap().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
                 ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + path, imageView);
             }
             mAttacher.update();
