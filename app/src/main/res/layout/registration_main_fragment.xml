@@ -69,7 +69,8 @@
             android:text="@string/text_user_info"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
-            android:textColor="@color/text_info" />
+            android:textColor="@color/text_info"
+            android:id="@+id/textUserInfo"/>
 
     </LinearLayout>
 

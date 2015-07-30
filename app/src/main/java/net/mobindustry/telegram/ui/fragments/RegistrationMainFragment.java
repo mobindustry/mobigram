@@ -52,6 +52,7 @@ public class RegistrationMainFragment extends Fragment {
     private ChooseCountryList chooseCountryList;
     private FragmentTransaction fragmentTransaction;
     private InfoRegistration holder;
+    private TextView textInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class RegistrationMainFragment extends Fragment {
         chooseCountry = (TextView) getActivity().findViewById(R.id.chooseCountry);
         code = (EditText) getActivity().findViewById(R.id.code);
         phone = (EditText) getActivity().findViewById(R.id.phone);
-
+        textInfo=(TextView) getActivity().findViewById(R.id.textUserInfo);
         phone.setText(holder.getPhone());
         code.setText(holder.getCodeCountry());
         code.setSelection(holder.getCodeCountry().length());
@@ -157,6 +158,11 @@ public class RegistrationMainFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (code.getText().toString().equals("+")){
+                    textInfo.setText("Please confirm your country code and enter your phone number.");
+                } else {
+                    textInfo.setText(R.string.text_user_info);
+                }
             }
         });
 
