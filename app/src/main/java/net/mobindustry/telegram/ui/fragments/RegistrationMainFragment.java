@@ -233,18 +233,16 @@ public class RegistrationMainFragment extends Fragment {
     private void confirmPhone() {
         FragmentManager fm = getFragmentManager();
         String lettersCode = code.getText().toString();
-        if (isCodeCorrect(lettersCode)) {
-            if (lettersCode.equals("+")) {
-                DialogPhoneCodeEmpty phoneCodeEmpty = new DialogPhoneCodeEmpty();
-                phoneCodeEmpty.show(fm, "PHONE_CODE_EMPTY");
-            } else {
-                String number = phone.getText().toString().replaceAll("\\s", "");
-                phoneNumberForServer = lettersCode + number;
-                holder.setCodePlusPhone(phoneNumberForServer);
-                Log.e("Log", "PHONE " + phoneNumberForServer);
-                holder.setPhoneForServer(phoneNumberForServer);
-                ((RegistrationActivity) getActivity()).setPhoneForServer(holder.getPhoneForServer());
-            }
+        if (lettersCode.equals("+")) {
+            DialogPhoneCodeEmpty phoneCodeEmpty = new DialogPhoneCodeEmpty();
+            phoneCodeEmpty.show(fm, "PHONE_CODE_EMPTY");
+        } else if (isCodeCorrect(lettersCode)) {
+            String number = phone.getText().toString().replaceAll("\\s", "");
+            phoneNumberForServer = lettersCode + number;
+            holder.setCodePlusPhone(phoneNumberForServer);
+            Log.e("Log", "PHONE " + phoneNumberForServer);
+            holder.setPhoneForServer(phoneNumberForServer);
+            ((RegistrationActivity) getActivity()).setPhoneForServer(holder.getPhoneForServer());
         } else {
             DialogPhoneCodeInvalid phoneCodeInvalid = new DialogPhoneCodeInvalid();
             phoneCodeInvalid.show(fm, "PHONE_CODE_INVALID");
