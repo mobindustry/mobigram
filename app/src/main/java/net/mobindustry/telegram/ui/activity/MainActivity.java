@@ -53,6 +53,8 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("Log", "onCreate() ");
+
         setContentView(R.layout.main);
         Log.e("LOG", "##### Start program #####");
         startService(new Intent(this, CreateGalleryThumbs.class));
@@ -105,8 +107,8 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         if (splashStart != null && !splashStart.isCancelled()) {
             splashStart.cancel(false);
             finish();

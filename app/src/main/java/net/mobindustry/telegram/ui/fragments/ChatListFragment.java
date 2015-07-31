@@ -223,6 +223,10 @@ public class ChatListFragment extends ListFragment{
         adapter.notifyDataSetChanged();
     }
 
+    public void deleteChat(TdApi.Chat chat) {
+        adapter.remove(chat);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

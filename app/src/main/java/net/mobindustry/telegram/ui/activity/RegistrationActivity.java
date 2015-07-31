@@ -47,6 +47,8 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
     private LocationFromIP location;
     private String code;
     private InfoRegistration holder;
+    boolean activityClosed = false;
+    private LocationAsync locationAsync;
 
     @Override
     public void onApiResult(BaseHandler output) {
@@ -66,7 +68,10 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
             FragmentTransaction fragmentTransaction;
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
             if (handler.getResponse() == Enums.StatesEnum.WaitSetPhoneNumber) {
-                getLocation();
+                locationAsync = new LocationAsync();
+                if (!activityClosed) {
+                    locationAsync.execute();
+                }
             }
             if (handler.getResponse() == Enums.StatesEnum.OK) {
                 new ApiClient<>(new TdApi.GetMe(), new UserHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -83,9 +88,19 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
                 YourNameFragment yourNameFragment = new YourNameFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, yourNameFragment);
             }
-            fragmentTransaction.commit();
-
+            if (!activityClosed) {
+                fragmentTransaction.commit();
+            }
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (locationAsync != null) {
+            locationAsync.cancel(true);
+        }
+        activityClosed = true;
     }
 
     public void setCodeFromServer(String codeFromServer) {
@@ -151,53 +166,50 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
         }
     }
 
-
-    public void getLocation() {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                try {
-                    AndroidHttpClient httpClient = new AndroidHttpClient(Const.IP_API);
-                    httpClient.setMaxRetries(5);
-                    ParameterMap param = httpClient.newParams();
-                    HttpResponse httpResponse = httpClient.get("", param);
-                    if (httpResponse.getBodyAsString() != null) {
-                        return httpResponse.getBodyAsString();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+    public class LocationAsync extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                AndroidHttpClient httpClient = new AndroidHttpClient(Const.IP_API);
+                httpClient.setMaxRetries(5);
+                ParameterMap param = httpClient.newParams();
+                HttpResponse httpResponse = httpClient.get("", param);
+                if (httpResponse.getBodyAsString() != null) {
+                    return httpResponse.getBodyAsString();
                 }
-                return null;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return null;
+        }
 
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                Gson gson = new GsonBuilder().create();
-                location = gson.fromJson(s, LocationFromIP.class);
-                code = location.getCountryCode();
-                holder = InfoRegistration.getInstance();
-                if (code != null) {
-                    holder.setCodeCountryLetters(code);
-                    Log.e("log", "Code Letters " + holder.getCodeCountryLetters());
-                }
-                String textFileFromAssets = null;
-                try {
-                    InputStream is = getResources().getAssets().open("countries.txt");
-                    textFileFromAssets = convertStreamToString(is);
-                } catch (IOException e) {
-                    // do nothing
-                }
-                holder.setTextFileFromAssets(textFileFromAssets);
-                listCountryObject = new ListCountryObject(textFileFromAssets);
-                holder.setListCountryObject(listCountryObject);
-                setCountryName();
-                Fragment registrationUserPhone = new RegistrationMainFragment();
-                FragmentTransaction fragmentTransaction;
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragmentContainer, registrationUserPhone);
-                fragmentTransaction.commit();
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Gson gson = new GsonBuilder().create();
+            location = gson.fromJson(s, LocationFromIP.class);
+            code = location.getCountryCode();
+            holder = InfoRegistration.getInstance();
+            if (code != null) {
+                holder.setCodeCountryLetters(code);
+                Log.e("log", "Code Letters " + holder.getCodeCountryLetters());
             }
-        }.execute();
+            String textFileFromAssets = null;
+            try {
+                InputStream is = getResources().getAssets().open("countries.txt");
+                textFileFromAssets = convertStreamToString(is);
+            } catch (IOException e) {
+                // do nothing
+            }
+            holder.setTextFileFromAssets(textFileFromAssets);
+            listCountryObject = new ListCountryObject(textFileFromAssets);
+            holder.setListCountryObject(listCountryObject);
+            setCountryName();
+            Fragment registrationUserPhone = new RegistrationMainFragment();
+            FragmentTransaction fragmentTransaction;
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragmentContainer, registrationUserPhone);
+            fragmentTransaction.commit();
+        }
     }
 }

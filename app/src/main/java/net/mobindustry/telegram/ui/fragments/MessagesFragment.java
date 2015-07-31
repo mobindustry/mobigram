@@ -109,7 +109,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private boolean itemLongClicked = false;
 
     private ChatActivity activity;
-    private ChatListFragment fragment;
+    private ChatListFragment chatListFragment;
     private MessageAdapter adapter;
     private AnimatorSet currentAnimation;
     private MessagesFragmentHolder holder;
@@ -160,8 +160,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         });
         activity = (ChatActivity) getActivity();
         progressBar = (ProgressBar) view.findViewById(R.id.messages_progress_bar);
-        fragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
-        chat = fragment.getChat();
+        chatListFragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
+        chat = chatListFragment.getChat();
         adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), loader, chat.type);
         messageListView.setAdapter(adapter);
         return view;
@@ -327,15 +327,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                         Log.e("Log", "null");
                                     }
                                     destroyFragment(fragmentTransaction);
-                                    fragment.getChatsList(0, 200);
-                                }
-                            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                            new ApiClient<>(new TdApi.GetChat(chat.id), new ChatHandler(), new ApiClient.OnApiResultHandler() {
-                                @Override
-                                public void onApiResult(BaseHandler output) {
-                                    if (output.getHandlerId() == ChatHandler.HANDLER_ID) {
-                                        TdApi.Chat chat = (TdApi.Chat) output.getResponse();
-                                    }
+                                    //fragment.getChatsList(0, 200);
+                                    chatListFragment.deleteChat(chatListFragment.getChat());
                                 }
                             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                             break;
@@ -699,11 +692,11 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         }
         if (requestCode == Const.REQUEST_CODE_NEW_MESSAGE && resultCode == Activity.RESULT_OK) {
             long resultId = data.getLongExtra("id", 0);
-            fragment.openChat(resultId);
+            chatListFragment.openChat(resultId);
         }
         if (requestCode == Const.REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT && resultCode == Activity.RESULT_OK) {
             final long id = data.getLongExtra("id", 0);
-            fragment.openChat(id);
+            chatListFragment.openChat(id);
             forwardMessages(id);
         }
     }
@@ -804,7 +797,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
         @Override
         public void openContact(long id) {
-            fragment.openChat(id);
+            chatListFragment.openChat(id);
         }
     };
 
