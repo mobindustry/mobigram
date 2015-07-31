@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.utils;
 
-import android.graphics.Bitmap;
 
 import java.io.Serializable;
 import java.util.List;

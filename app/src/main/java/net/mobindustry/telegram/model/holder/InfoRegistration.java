@@ -21,6 +21,8 @@ public class InfoRegistration {
     private String phoneForServer="";
     private String textFileFromAssets="";
     private int cursorPosition=0;
+    private CountryObject countryObjectFromApi;
+
 
     public static synchronized InfoRegistration getInstance() {
         if (instance == null) {
@@ -32,12 +34,22 @@ public class InfoRegistration {
     private InfoRegistration() {
     }
 
+
+
     public String getTextFileFromAssets() {
         return textFileFromAssets;
     }
 
     public void setTextFileFromAssets(String textFileFromAssets) {
         this.textFileFromAssets = textFileFromAssets;
+    }
+
+    public CountryObject getCountryObjectFromApi() {
+        return countryObjectFromApi;
+    }
+
+    public void setCountryObjectFromApi(CountryObject countryObjectFromApi) {
+        this.countryObjectFromApi = countryObjectFromApi;
     }
 
     public String getPhoneForServer() {

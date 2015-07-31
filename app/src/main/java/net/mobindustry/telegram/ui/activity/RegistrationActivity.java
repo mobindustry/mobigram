@@ -146,6 +146,7 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
                 Log.e("log", "CODE STRING " + holder.getCodeCountryLetters());
                 holder.setCountryObject(listCountryObject.getListCountries().get(i));
                 Log.e("log", "OBJ " + holder.getCountryObject());
+                holder.setCountryObjectFromApi(listCountryObject.getListCountries().get(i));
             }
         }
     }

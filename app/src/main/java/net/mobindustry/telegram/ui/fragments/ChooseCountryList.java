@@ -37,6 +37,7 @@ public class ChooseCountryList extends Fragment implements Serializable {
     private FragmentTransaction fragmentTransaction;
     private RegistrationMainFragment registrationMainFragment;
     private ListCountryObject countries;
+    private boolean clickOnListItem=false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choose_country_fragment, container, false);
@@ -64,6 +65,10 @@ public class ChooseCountryList extends Fragment implements Serializable {
                 registrationMainFragment = new RegistrationMainFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationMainFragment);
                 getActivity().getSupportFragmentManager().popBackStack();
+                if (!clickOnListItem){
+                    infoRegistration.setCountryObject(infoRegistration.getCountryObjectFromApi());
+                }
+                clickOnListItem=false;
                 fragmentTransaction.commit();
             }
         });
@@ -114,6 +119,7 @@ public class ChooseCountryList extends Fragment implements Serializable {
                 infoRegistration.setCodeCountryLetters(countryObject.getCountryStringCode());
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationMainFragment);
                 getActivity().getSupportFragmentManager().popBackStack();
+                clickOnListItem=true;
                 fragmentTransaction.commit();
             }
         });
