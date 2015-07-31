@@ -98,9 +98,18 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (splashStart != null && !splashStart.isCancelled()) {
             splashStart.cancel(false);
+            finish();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (splashStart != null && !splashStart.isCancelled()) {
+            splashStart.cancel(false);
+            finish();
         }
     }
 
