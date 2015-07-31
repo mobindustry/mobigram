@@ -199,6 +199,7 @@ public class SendGif extends Service {
             if (ListFoldersHolder.getListGif() != null) {
                 for (int i = 0; i < ListFoldersHolder.getListGif().size(); i++) {
                     String link = downloadFromUrlGif(ListFoldersHolder.getListGif().get(i));
+                    Log.e("Log", "Link Gif "+link);
                     sendGifMessage(id, link);
                 }
             }

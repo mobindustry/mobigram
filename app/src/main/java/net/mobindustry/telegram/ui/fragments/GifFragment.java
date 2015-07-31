@@ -236,6 +236,7 @@ public class GifFragment extends Fragment {
                             }
                             String link = ((GiphyObject) ListFoldersHolder.getListForSending().get(i)).getPath();
                             ListFoldersHolder.getListGif().add(link);
+                            Log.e("Log","Gif "+ListFoldersHolder.getListGif().size());
                         }
                     }
                     getActivity().startService(new Intent(getActivity(), SendGif.class));
@@ -345,6 +346,8 @@ public class GifFragment extends Fragment {
                     giphyObject.setPath(info.getImages().getOriginal().getUrl());
                     giphyObjectList.add(giphyObject);
                 }
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 gifAdapter = new GifAdapter(getActivity(), giphyObjectList, new GifAdapter.LoadGif() {
                     @Override
                     public void load() {

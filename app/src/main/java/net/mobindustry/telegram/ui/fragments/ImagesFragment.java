@@ -249,6 +249,8 @@ public class ImagesFragment extends Fragment {
                 super.onPostExecute(photosFlickr);
                 progressBar.setVisibility(View.GONE);
                 if (photosFlickr != null && photosFlickr.getPhotos().size() > 0) {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                     imagesAdapter = new ImagesAdapter(getActivity(), photosFlickr.getPhotos(), new ImagesAdapter.LoadPhotos() {
                         @Override
                         public void load() {

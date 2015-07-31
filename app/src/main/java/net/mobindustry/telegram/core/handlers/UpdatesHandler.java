@@ -30,7 +30,6 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
                 Intent intent = new Intent(Const.NEW_MESSAGE_ACTION_ID);
                 intent.putExtra("message_id", message.newId);
                 intent.putExtra("chatId", message.chatId);
-
                 context.sendBroadcast(intent);
                 break;
             }

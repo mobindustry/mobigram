@@ -46,10 +46,8 @@ public class PageFragment extends Fragment {
             params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
         tvPage.setLayoutParams(params);
-        PhotoViewAttacher mAttacher = new PhotoViewAttacher(tvPage);
         String path = (String) getArguments().getSerializable("path");
         ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + path, tvPage);
-        mAttacher.update();
         return view;
     }
 
