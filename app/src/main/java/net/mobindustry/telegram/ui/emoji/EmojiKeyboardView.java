@@ -106,7 +106,7 @@ public class EmojiKeyboardView extends LinearLayout {
                 GridView gridPage = createGridPage(container, position, new EmojiPageAdapter(longs), R.dimen.emoji_size);
                 return gridPage;
             } else if (position == getCount() - 1) {
-                final List<TdApi.Sticker> ss = EmojiKeyboardView.this.stickers.getStickers();
+                final List<TdApi.Sticker> ss = stickers.getStickers();
                 GridView res = createGridPage(container, position, new StickerAdapter(ss), R.dimen.sticker_size);
                 res.setVerticalSpacing(calc.dp(16));
                 res.setClipToPadding(false);
@@ -166,7 +166,6 @@ public class EmojiKeyboardView extends LinearLayout {
             Drawable d = emoji.getEmojiBigDrawable(longs[position]);
             holder.img.setImageDrawable(d);
         }
-
 
         @Override
         public int getCount() {
