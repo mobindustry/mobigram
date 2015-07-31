@@ -206,7 +206,12 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         if(item.selected) {
             convertView.setBackgroundResource(R.drawable.msg_selected);
         } else {
-            convertView.setBackground(null);
+            int sdk = android.os.Build.VERSION.SDK_INT;
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                convertView.setBackgroundDrawable(null);
+            } else {
+                convertView.setBackground(null);
+            }
         }
 
         FrameLayout layout = new FrameLayout(getContext());

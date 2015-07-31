@@ -95,7 +95,6 @@ public class ChatListFragment extends ListFragment{
             progressBar.setVisibility(View.GONE);
         }
         chats = chats1;
-        MessagesFragmentHolder.setChats(chats);
         adapter.clear();
         adapter.addAll(chats.chats);
     }
@@ -110,6 +109,7 @@ public class ChatListFragment extends ListFragment{
                     if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
                         setChatsList((TdApi.Chats) output.getResponse());
                         UserInfoHolder.addUsersToMap(chats);
+                        MessagesFragmentHolder.setChats(chats);
                     }
                 }
             }

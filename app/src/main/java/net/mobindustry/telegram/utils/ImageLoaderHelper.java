@@ -36,7 +36,6 @@ public class ImageLoaderHelper {
         }
     }
 
-
     private static ImageLoader imageLoader = initImageLoader();
 
     private static DisplayImageOptions defaultOptionsFadeIn = new DisplayImageOptions.Builder()

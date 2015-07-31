@@ -146,7 +146,7 @@ public class MessagesFragmentHolder {
         return chats;
     }
 
-    public static void setChats(TdApi.Chats chats) {
-        MessagesFragmentHolder.chats = chats;
+    public static void setChats(TdApi.Chats chats1) {
+        chats = chats1;
     }
 }

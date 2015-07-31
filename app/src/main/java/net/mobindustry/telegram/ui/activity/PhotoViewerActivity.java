@@ -19,8 +19,6 @@ import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 import net.mobindustry.telegram.utils.Utils;
 
-import uk.co.senab.photoview.PhotoViewAttacher;
-
 public class PhotoViewerActivity extends Activity {
     int gif = 0;
 
@@ -32,14 +30,14 @@ public class PhotoViewerActivity extends Activity {
         ImageView imageView = (ImageView) findViewById(R.id.photo_image_view);
         ImageView back = (ImageView) findViewById(R.id.photo_view_back);
 
-        FrameLayout.LayoutParams params;
-        if (getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE) {
-            params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        } else {
-            params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        }
-        imageView.setLayoutParams(params);
+//        FrameLayout.LayoutParams params;
+//        if (getResources().getConfiguration().orientation
+//                == Configuration.ORIENTATION_LANDSCAPE) {
+//            params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
+//        } else {
+//            params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+//        }
+//        imageView.setLayoutParams(params);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,14 +54,12 @@ public class PhotoViewerActivity extends Activity {
             imageView.setLayoutParams(layoutParams);
             Glide.with(this).load(path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
         } else {
-            PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
             if (path == null) {
                 int id = getIntent().getIntExtra("file_id", 0);
                 Utils.photoFileLoader(id, imageView, this);
             } else {
                 ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + path, imageView);
             }
-            mAttacher.update();
         }
     }
 
