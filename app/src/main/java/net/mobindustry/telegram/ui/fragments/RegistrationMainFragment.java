@@ -77,11 +77,12 @@ public class RegistrationMainFragment extends Fragment {
         chooseCountry = (TextView) getActivity().findViewById(R.id.chooseCountry);
         code = (EditText) getActivity().findViewById(R.id.code);
         phone = (EditText) getActivity().findViewById(R.id.phone);
-        textInfo=(TextView) getActivity().findViewById(R.id.textUserInfo);
+        textInfo = (TextView) getActivity().findViewById(R.id.textUserInfo);
         phone.setText(holder.getPhone());
         code.setText(holder.getCodeCountry());
         code.setSelection(holder.getCodeCountry().length());
         phone.requestFocus();
+        phone.setText("");
 
         //Check country object from ChooseCountryFragment
 
@@ -103,6 +104,7 @@ public class RegistrationMainFragment extends Fragment {
                 fragmentTransaction.commit();
                 InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(chooseCountry.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                holder.setPhone("");
             }
         });
 
@@ -158,7 +160,7 @@ public class RegistrationMainFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (code.getText().toString().equals("+")){
+                if (code.getText().toString().equals("+")) {
                     textInfo.setText("Please confirm your country code and enter your phone number.");
                 } else {
                     textInfo.setText(R.string.text_user_info);
@@ -197,15 +199,13 @@ public class RegistrationMainFragment extends Fragment {
                     }
                 }
                 String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
-                if (formattedNumber != null && formattedNumber.length() > phoneNum.length()) {
-                    int result = formattedNumber.length() - phoneNum.length() + 1;
-                    holder.setCursorPosition(holder.getCursorPosition() + result);
+                if (formattedNumber != null) {
+                    int result = formattedNumber.length() - phoneNum.length();
+                    Log.e("log", "cursor pos " + phone.getSelectionStart());
+                    Log.e("log", "formattedNumber.length() " + formattedNumber.length());
+                    holder.setCursorPosition(phone.getSelectionStart() + result);
                 } else {
-                    if (phoneNum.length() == phone.getSelectionEnd()) {
-                        holder.setCursorPosition(phoneNum.length());
-                    } else {
-                        holder.setCursorPosition(phone.getSelectionEnd());
-                    }
+                    holder.setCursorPosition(phone.getSelectionStart());
                 }
 
                 phone.removeTextChangedListener(this);

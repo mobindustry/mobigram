@@ -59,6 +59,7 @@
                 android:singleLine="true"
                 android:inputType="phone"
                 android:imeOptions="actionDone"
+                android:maxLength="20"
                 />
         </LinearLayout>
 
