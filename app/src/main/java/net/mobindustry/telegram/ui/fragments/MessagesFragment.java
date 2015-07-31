@@ -326,8 +326,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                         Log.e("Log", "null");
                                     }
                                     destroyFragment(fragmentTransaction);
-                                    //fragment.getChatsList(0, 200);
                                     chatListFragment.deleteChat(chatListFragment.getChat());
+                                    chatListFragment.getChatsList(0, 200);
                                 }
                             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                             break;
