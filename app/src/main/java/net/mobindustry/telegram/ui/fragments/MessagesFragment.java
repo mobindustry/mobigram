@@ -51,7 +51,6 @@ import com.soundcloud.android.crop.Crop;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.ChatHandler;
 import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
@@ -541,45 +540,45 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         }
         popupMenu.getMenuInflater().inflate(R.menu.attach_menu, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.take_photo:
-                                makePhoto();
-                                Log.e("LOG", "PHOTO " + holder.getTempPhotoFile().getAbsolutePath());
-                                break;
-                            case R.id.gallery:
-                                Intent intentGallery = new Intent(getActivity(), TransparentActivity.class);
-                                intentGallery.putExtra("choice", Const.GALLERY_FRAGMENT);
-                                startActivityForResult(intentGallery, 1);
-                                ListFoldersHolder.setCheckQuantity(0);
-                                ListFoldersHolder.setListFolders(null);
-                                ListFoldersHolder.setList(null);
-                                ListFoldersHolder.setListForSending(null);
-                                ListFoldersHolder.setListGif(null);
-                                ListFoldersHolder.setListImages(null);
-                                ListFoldersHolder.setChatID(getShownChatId());
-                                break;
-                            case R.id.video:
-                                Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                                File fileUri = holder.getNewTempVideoFile();
-                                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(fileUri));
-                                startActivityForResult(intent, Const.REQUEST_CODE_MAKE_VIDEO);
-                                Log.e("LOG", "VIDEO " + holder.getTempVideoFile().getAbsolutePath());
-                                break;
-                            case R.id.file:
-                                openFolder();
-                                break;
-                            case R.id.location:
-                                Intent intentLoc = new Intent(getActivity(), TransparentActivity.class);
-                                intentLoc.putExtra("choice", Const.MAP_FRAGMENT);
-                                startActivityForResult(intentLoc, 1);
-                                break;
-                        }
-                        return true;
-                    }
-                });
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.take_photo:
+                        makePhoto();
+                        Log.e("LOG", "PHOTO " + holder.getTempPhotoFile().getAbsolutePath());
+                        break;
+                    case R.id.gallery:
+                        Intent intentGallery = new Intent(getActivity(), TransparentActivity.class);
+                        intentGallery.putExtra("choice", Const.GALLERY_FRAGMENT);
+                        startActivityForResult(intentGallery, 1);
+                        ListFoldersHolder.setCheckQuantity(0);
+                        ListFoldersHolder.setListFolders(null);
+                        ListFoldersHolder.setList(null);
+                        ListFoldersHolder.setListForSending(null);
+                        ListFoldersHolder.setListGif(null);
+                        ListFoldersHolder.setListImages(null);
+                        ListFoldersHolder.setChatID(getShownChatId());
+                        break;
+                    case R.id.video:
+                        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                        File fileUri = holder.getNewTempVideoFile();
+                        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(fileUri));
+                        startActivityForResult(intent, Const.REQUEST_CODE_MAKE_VIDEO);
+                        Log.e("LOG", "VIDEO " + holder.getTempVideoFile().getAbsolutePath());
+                        break;
+                    case R.id.file:
+                        openFolder();
+                        break;
+                    case R.id.location:
+                        Intent intentLoc = new Intent(getActivity(), TransparentActivity.class);
+                        intentLoc.putExtra("choice", Const.MAP_FRAGMENT);
+                        startActivityForResult(intentLoc, 1);
+                        break;
+                }
+                return true;
+            }
+        });
         popupMenu.show();
     }
 
