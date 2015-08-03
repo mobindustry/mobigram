@@ -16,6 +16,7 @@ import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.fragments.ContactListFragment;
 import net.mobindustry.telegram.ui.fragments.FolderFragment;
+import net.mobindustry.telegram.ui.fragments.FoursquareListFragment;
 import net.mobindustry.telegram.ui.fragments.GalleryFragment;
 import net.mobindustry.telegram.ui.fragments.LocationFragment;
 import net.mobindustry.telegram.ui.fragments.SelectChatFragment;
@@ -105,13 +106,20 @@ public class TransparentActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().findFragmentById(R.id.transparent_content) instanceof FolderFragment){
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            GalleryFragment galleryFragment = new GalleryFragment();
-            fragmentTransaction.replace(R.id.transparent_content, galleryFragment);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        if (getSupportFragmentManager().findFragmentById(R.id.transparent_content) instanceof FoursquareListFragment) {
+            LocationFragment locationFragment = new LocationFragment();
+            fragmentTransaction.replace(R.id.transparent_content, locationFragment);
             fragmentTransaction.commit();
         } else {
-            super.onBackPressed();
+            if (getSupportFragmentManager().findFragmentById(R.id.transparent_content) instanceof FolderFragment) {
+                GalleryFragment galleryFragment = new GalleryFragment();
+                fragmentTransaction.replace(R.id.transparent_content, galleryFragment);
+                fragmentTransaction.commit();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 

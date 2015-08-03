@@ -8,9 +8,6 @@ import java.util.List;
 public class InfoRegistration {
 
     private static InfoRegistration instance;
-
-    private String countryName = "";
-    private String codeCountry = "+";
     private String codeCountryLetters = "";
     private String phone = "";
     private String codePlusPhone="";
@@ -21,7 +18,6 @@ public class InfoRegistration {
     private String phoneForServer="";
     private String textFileFromAssets="";
     private int cursorPosition=0;
-    private CountryObject countryObjectFromApi;
 
 
     public static synchronized InfoRegistration getInstance() {
@@ -42,14 +38,6 @@ public class InfoRegistration {
 
     public void setTextFileFromAssets(String textFileFromAssets) {
         this.textFileFromAssets = textFileFromAssets;
-    }
-
-    public CountryObject getCountryObjectFromApi() {
-        return countryObjectFromApi;
-    }
-
-    public void setCountryObjectFromApi(CountryObject countryObjectFromApi) {
-        this.countryObjectFromApi = countryObjectFromApi;
     }
 
     public String getPhoneForServer() {
@@ -90,23 +78,6 @@ public class InfoRegistration {
 
     public void setCursorPosition(int cursorPosition) {
         this.cursorPosition = cursorPosition;
-    }
-
-    public String getCountryName() {
-        return countryName;
-    }
-
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
-    }
-
-    public String getCodeCountry() {
-        return codeCountry;
-    }
-
-    public void setCodeCountry(String codeCountry) {
-
-        this.codeCountry = codeCountry;
     }
 
     public String getPhone() {

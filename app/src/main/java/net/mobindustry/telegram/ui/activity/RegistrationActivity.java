@@ -153,15 +153,7 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
     private void setCountryName() {
         for (int i = 0; i < listCountryObject.getListCountries().size(); i++) {
             if (listCountryObject.getListCountries().get(i).getCountryStringCode().equals(holder.getCodeCountryLetters())) {
-                holder.setCountryName(listCountryObject.getListCountries().get(i).getCountryName());
-                Log.e("log", "NAME " + holder.getCountryName());
-                holder.setCodeCountry(listCountryObject.getListCountries().get(i).getCountryCode());
-                Log.e("log", "CODE " + holder.getCodeCountry());
-                holder.setCodeCountryLetters(listCountryObject.getListCountries().get(i).getCountryStringCode());
-                Log.e("log", "CODE STRING " + holder.getCodeCountryLetters());
                 holder.setCountryObject(listCountryObject.getListCountries().get(i));
-                Log.e("log", "OBJ " + holder.getCountryObject());
-                holder.setCountryObjectFromApi(listCountryObject.getListCountries().get(i));
             }
         }
     }

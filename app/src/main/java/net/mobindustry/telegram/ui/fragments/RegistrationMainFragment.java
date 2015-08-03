@@ -78,19 +78,17 @@ public class RegistrationMainFragment extends Fragment {
         code = (EditText) getActivity().findViewById(R.id.code);
         phone = (EditText) getActivity().findViewById(R.id.phone);
         textInfo = (TextView) getActivity().findViewById(R.id.textUserInfo);
-        phone.setText(holder.getPhone());
-        code.setText(holder.getCodeCountry());
-        code.setSelection(holder.getCodeCountry().length());
-        phone.requestFocus();
-        phone.setText("");
+        //phone.setText("");
 
         //Check country object from ChooseCountryFragment
 
         if (this.holder.getCountryObject() != null) {
             Log.e("log", "Name " + holder.getCountryObject().getCountryName());
             chooseCountry.setText(holder.getCountryObject().getCountryName());
-            holder.setCodeCountry(holder.getCountryObject().getCountryCode());
-            code.setText(holder.getCodeCountry());
+            code.setText(holder.getCountryObject().getCountryCode());
+            code.setSelection(holder.getCountryObject().getCountryCode().length());
+            phone.setText(holder.getPhone());
+            phone.requestFocus();
         }
         chooseCountry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,10 +131,15 @@ public class RegistrationMainFragment extends Fragment {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 codeList.add(String.valueOf(s));
+                String codeNew = "";
+                for (int i = 0; i < codeList.size(); i++) {
+                    codeNew = codeList.get(codeList.size() - 1);
+                }
+                Log.e("Log", "New code " + codeNew);
                 for (int i = 0; i < holder.getListCountryObject().getListCountries().size(); i++) {
                     if (holder.getListCountryObject().getListCountries().get(i).getCountryCode().equals(codeList.get(codeList.size() - 1))) {
-                        holder.setCountryName(holder.getListCountryObject().getListCountries().get(i).getCountryName());
-                        chooseCountry.setText(holder.getCountryName());
+                        holder.setCountryObject(holder.getListCountryObject().getListCountries().get(i));
+                        chooseCountry.setText(holder.getCountryObject().getCountryName());
                         codeList.clear();
                         break;
                     } else {
@@ -151,6 +154,7 @@ public class RegistrationMainFragment extends Fragment {
                 if (s.toString().equals(st)) {
                     chooseCountry.setText("");
                     chooseCountry.setHint(R.string.choose_country);
+                    holder.setCountryObject(null);
                 }
 
                 if (s.length() == 5) {

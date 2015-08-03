@@ -8,6 +8,7 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyInvalid;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyUnregistered;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogCodeUnexpected;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogFirstNameInvalid;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogFloodWait;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogLastNameInvalid;
@@ -31,11 +32,17 @@ public class ErrorHandler {
     public ErrorHandler(FragmentManager fm, TdApi.Error error) {
         this.fm = fm;
         this.error = error;
-
         handle ();
     }
 
     private void handle () {
+        Log.wtf("Log", "UpdateHandler: " + error.toString());
+
+        if ((error.code == 8 && error.text.contains("UNEXPECTED"))) {
+            DialogCodeUnexpected dialogCodeUnexpected = new DialogCodeUnexpected();
+            dialogCodeUnexpected.show(fm, "UNEXPECTED");
+        }
+
         if ((error.code == 400 && error.text.contains("PHONE_NUMBER_INVALID"))) {
             DialogPhoneNumberInvalid dialogPhoneNumberInvalid = new DialogPhoneNumberInvalid();
             dialogPhoneNumberInvalid.show(fm, "PHONE_NUMBER_INVALID");
