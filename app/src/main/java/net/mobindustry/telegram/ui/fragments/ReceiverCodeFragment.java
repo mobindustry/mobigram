@@ -53,7 +53,6 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
         wrongNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                infoRegistration.setPhone("");
                 FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
                 Fragment registrationUserPhone = new RegistrationMainFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationUserPhone);
