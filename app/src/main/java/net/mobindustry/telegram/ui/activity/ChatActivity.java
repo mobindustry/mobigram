@@ -363,7 +363,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Const.CROP_REQUEST_CODE && resultCode == RESULT_OK) {
-            getMessageFragment().sendPhotoMessage(getMessageFragment().getShownChatId(), getMessageFragment().getPhotoPath());
+            getMessageFragment().verifyRotationAndSend();
         }
     }
 

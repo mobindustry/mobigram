@@ -16,8 +16,4 @@ public class DownloadFileHolder {
     public static String getUpdatedFilePath(int id) {
         return map.get(id);
     }
-
-    public static void clearList() {
-        map.clear();
-    }
 }

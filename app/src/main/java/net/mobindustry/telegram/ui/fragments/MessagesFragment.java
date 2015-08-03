@@ -11,7 +11,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.LevelListDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -74,6 +78,9 @@ import net.mobindustry.telegram.utils.Utils;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -638,10 +645,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         return cursor.getString(column_index);
     }
 
-    public String getPhotoPath() {
-        return holder.getTempPhotoFile().getPath();
+    public void verifyRotationAndSend() {
+        sendPhotoMessage(getShownChatId(), holder.getTempPhotoFile().getAbsolutePath());
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -660,8 +666,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             Uri contentUri = Uri.fromFile(holder.getTempPhotoFile());
             mediaScanIntent.setData(contentUri);
             getActivity().sendBroadcast(mediaScanIntent);
-            Uri external = Uri.fromFile(holder.getTempPhotoFile());
-            Crop.of(external, external).asSquare().start(getActivity(), Const.CROP_REQUEST_CODE);
+            Crop.of(contentUri, contentUri).asSquare().start(getActivity(), Const.CROP_REQUEST_CODE);
         }
 
         if (requestCode == Const.REQUEST_CODE_TAKE_FILE && resultCode == getActivity().RESULT_OK) {
@@ -963,4 +968,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             return false;
         }
     };
+
+
 }

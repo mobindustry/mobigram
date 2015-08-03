@@ -18,12 +18,14 @@ import android.widget.LinearLayout;
 import com.astuetz.PagerSlidingTabStrip;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class EmojiKeyboardView extends LinearLayout {
 
@@ -205,7 +207,6 @@ public class EmojiKeyboardView extends LinearLayout {
             img.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e("Log", o.toString());
                     if (o instanceof TdApi.Sticker) {
                         stickerClicked((TdApi.Sticker) o);
 
@@ -220,8 +221,25 @@ public class EmojiKeyboardView extends LinearLayout {
     }
 
     private void stickerClicked(TdApi.Sticker sticker) {
-        TdApi.FileLocal file = (TdApi.FileLocal) sticker.sticker;
-        callback.stickerCLicked(file.path);
+        if(sticker.sticker.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+            TdApi.FileLocal file = (TdApi.FileLocal) sticker.sticker;
+            callback.stickerCLicked(file.path);
+        } else {
+            TdApi.FileEmpty file = (TdApi.FileEmpty) sticker.sticker;
+            String path;
+            for (int i = 0; i < 50; i++) {
+                path = DownloadFileHolder.getUpdatedFilePath(file.id);
+                if (path != null) {
+                    callback.stickerCLicked(path);
+                    break;
+                }
+                try {
+                    TimeUnit.MILLISECONDS.sleep(250);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     class StickerAdapter extends BaseAdapter {
