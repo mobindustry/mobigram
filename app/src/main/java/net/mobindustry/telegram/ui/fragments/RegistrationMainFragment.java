@@ -253,6 +253,7 @@ public class RegistrationMainFragment extends Fragment {
             DialogPhoneCodeInvalid phoneCodeInvalid = new DialogPhoneCodeInvalid();
             phoneCodeInvalid.show(fm, "PHONE_CODE_INVALID");
         }
+
     }
 
     private boolean isCodeCorrect(String lettersCode) {
