@@ -53,12 +53,10 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("Log", "onCreate() ");
-
         setContentView(R.layout.main);
+
         Log.e("LOG", "##### Start program #####");
         startService(new Intent(this, CreateGalleryThumbs.class));
-
         textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
         if (isOnline()) {

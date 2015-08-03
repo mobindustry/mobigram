@@ -23,6 +23,7 @@ public class MessagesFragmentHolder {
     private static File neTelegramDirectory;
     private File tempPhotoFile;
     private File tempVideoFile;
+    public static File tempPhoto;
     private TdApi.Chat chat;
     private static TdApi.Chats chats;
     private boolean isEmojiCreated = false;

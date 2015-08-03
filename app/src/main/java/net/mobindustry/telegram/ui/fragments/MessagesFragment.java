@@ -11,11 +11,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.LevelListDrawable;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,7 +46,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.soundcloud.android.crop.Crop;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
@@ -78,9 +73,6 @@ import net.mobindustry.telegram.utils.Utils;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -334,7 +326,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                     }
                                     destroyFragment(fragmentTransaction);
                                     chatListFragment.deleteChat(chatListFragment.getChat());
-                                    chatListFragment.getChatsList(0, 200);
                                 }
                             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                             break;
@@ -401,6 +392,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     public void addNewMessage(final TdApi.Messages messages) {
+        messageListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         adapter.add(parseEmojiMessages(messages.messages[0]));
     }
 
@@ -422,6 +414,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         adapter.notifyDataSetChanged();
         noMessages.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
+        messageListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
     }
 
     private void setFirstVisibleItem(int firstVisibleItem) {
@@ -438,7 +431,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             public void onApiResult(BaseHandler output) {
                 if (output.getHandlerId() == ChatHistoryHandler.HANDLER_ID) {
                     TdApi.Messages messages = (TdApi.Messages) output.getResponse();
-                    if (messages == null) {
+                    messageListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_DISABLED);
+                    if (messages == null || messages.messages.length == 0) {
                         progressBar.setVisibility(View.GONE);
                         noMessages.setVisibility(View.VISIBLE);
                     } else if (messages.messages.length != 0 && chat.id == messages.messages[0].chatId) {
@@ -645,10 +639,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         return cursor.getString(column_index);
     }
 
-    public void verifyRotationAndSend() {
-        sendPhotoMessage(getShownChatId(), holder.getTempPhotoFile().getAbsolutePath());
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -662,11 +652,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         }
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO && resultCode == getActivity().RESULT_OK) {
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            Uri contentUri = Uri.fromFile(holder.getTempPhotoFile());
-            mediaScanIntent.setData(contentUri);
-            getActivity().sendBroadcast(mediaScanIntent);
-            Crop.of(contentUri, contentUri).asSquare().start(getActivity(), Const.CROP_REQUEST_CODE);
+            sendPhotoMessage(getShownChatId(), holder.getTempPhotoFile().getAbsolutePath());
         }
 
         if (requestCode == Const.REQUEST_CODE_TAKE_FILE && resultCode == getActivity().RESULT_OK) {

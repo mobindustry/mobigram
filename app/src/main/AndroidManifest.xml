@@ -56,7 +56,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.ChatActivity" />
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan"
+            />
         <activity
             android:name=".ui.activity.RegistrationActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"

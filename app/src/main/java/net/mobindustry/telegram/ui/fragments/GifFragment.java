@@ -63,6 +63,7 @@ public class GifFragment extends Fragment {
     private FrameLayout cancel;
     private SearchView sv;
     private LinearLayout layoutButtons;
+    private LoadGifs loadGifs;
 
     @Nullable
     @Override
@@ -270,7 +271,7 @@ public class GifFragment extends Fragment {
                 Log.e("Log", "onQueryTextChange " + query);
 
                 search = query;
-                LoadGifs loadGifs = new LoadGifs();
+                loadGifs = new LoadGifs();
                 loadGifs.execute();
                 return true;
             }
@@ -408,6 +409,14 @@ public class GifFragment extends Fragment {
             } else {
                 textNoResult.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (loadGifs != null) {
+            loadGifs.cancel(true);
         }
     }
 }

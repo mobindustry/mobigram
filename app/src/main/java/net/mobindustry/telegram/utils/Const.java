@@ -23,6 +23,7 @@ public class Const {
     public static final int REQUEST_CODE_NEW_MESSAGE = 110;
     public static final int CROP_REQUEST_CODE = 111;
 
+    public static final String PATH_TO_NETELEGRAM = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "NeTelegram";
     public static final String PATH_TO_GALLERY = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "NeTelegram";
     public static final String PATH_TO_THUMBS_GALLERY = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "NeTelegram"
             + File.separator + "thumb" + File.separator + "gallery";

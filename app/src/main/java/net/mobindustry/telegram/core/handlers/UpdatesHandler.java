@@ -23,7 +23,7 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
 
     @Override
     public UpdatesHandler resultHandler(TdApi.TLObject object) {
-        Log.wtf("Log", "UpdateHandler: " + object.toString());
+       // Log.wtf("Log", "UpdateHandler: " + object.toString());
         switch (object.getConstructor()) {
             case TdApi.UpdateMessageId.CONSTRUCTOR: {
                 TdApi.UpdateMessageId message = (TdApi.UpdateMessageId) object;

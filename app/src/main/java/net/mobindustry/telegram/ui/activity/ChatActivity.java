@@ -52,6 +52,7 @@ import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +80,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private ChatListFragment chatListFragment;
 
     public void logOut() {
+        Utils.deleteRecursive(new File(Const.PATH_TO_NETELEGRAM));
         Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
         DataHolder.setIsLoggedIn(false);
         finish();
@@ -356,15 +358,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == Const.CROP_REQUEST_CODE && resultCode == RESULT_OK) {
-            getMessageFragment().verifyRotationAndSend();
-        }
     }
 
     @Override

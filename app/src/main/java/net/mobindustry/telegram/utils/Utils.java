@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.media.ExifInterface;
 import android.os.AsyncTask;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
@@ -30,6 +35,8 @@ import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -260,12 +267,12 @@ public class Utils {
         }
     }
 
-    public static int getSmallestScreenSize(Activity activity){
+    public static int getSmallestScreenSize(Activity activity) {
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width=dm.widthPixels;
-        int height=dm.heightPixels;
-        if (width>height){
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        if (width > height) {
             return height;
         } else {
             return width;
@@ -298,5 +305,14 @@ public class Utils {
             }
         };
         new Thread(runnable).start();
+    }
+
+    public static void deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory()) {
+            for (File child : fileOrDirectory.listFiles()) {
+                deleteRecursive(child);
+            }
+        }
+        fileOrDirectory.delete();
     }
 }
