@@ -109,7 +109,16 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
         super.onStop();
         if (splashStart != null && !splashStart.isCancelled()) {
             splashStart.cancel(false);
-            finish();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(splashStart.isCancelled()) {
+            splashStart = new SplashStart();
+            splashStart.execute();
+            runStartActivity();
         }
     }
 

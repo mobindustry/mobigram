@@ -15,19 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.Filter;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.ui.activity.RegistrationActivity;
+import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.ui.adapters.CountriesListAdapter;
 import net.mobindustry.telegram.utils.CountryObject;
-import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
@@ -51,11 +46,10 @@ public class ChooseCountryList extends Fragment implements Serializable {
         infoRegistration = InfoRegistration.getInstance();
         countries = infoRegistration.getListCountryObject();
         final CountriesListAdapter countriesListAdapter = new CountriesListAdapter(getActivity(),countries);
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.chose_country_toolbar);
         toolbar.setTitle(R.string.choose_country);
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
         toolbar.setNavigationIcon(R.drawable.ic_back);
-        toolbar.setClickable(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

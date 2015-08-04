@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.ui.activity;
 
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -64,7 +63,6 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
 
         if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
             GetStateHandler handler = (GetStateHandler) output;
-
             FragmentTransaction fragmentTransaction;
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
             if (handler.getResponse() == Enums.StatesEnum.WaitSetPhoneNumber) {

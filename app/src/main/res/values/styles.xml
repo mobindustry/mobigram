@@ -5,6 +5,8 @@
         <item name="colorAccent">@color/background_action_bar</item>
         <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
         <item name="searchViewStyle">@style/AppTheme.SearchView</item>
+        <item name="color">#fff</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
 
     <style name="MyDrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -13,9 +15,10 @@
 
     <style name="AppTheme.SearchView" parent="Widget.AppCompat.SearchView">
         <item name="closeIcon">@drawable/ic_close_white</item>
-        <item name="queryBackground">@drawable/abc_textfield_search_material</item>
-        <item name="submitBackground">@drawable/abc_textfield_search_material</item>
         <item name="navigationIcon">@drawable/ic_back</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:textColor">#fff</item>
     </style>
 
     <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.Light.NoActionBar">
@@ -26,10 +29,15 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
         <item name="android:textColorPrimary">#fff</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
         <item name="searchViewStyle">@style/AppTheme.SearchView</item>
     </style>
 
-    <style name="ToolbarCustom" parent="Base.Widget.AppCompat.SearchView"></style>
+    <style name="WhiteSearchView" parent="customAppTheme">
+        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:textColor">#fff</item>
+    </style>
 
     <style name="Theme.AppCompat.Translucent.TranslucentStatusBar" parent="Theme.AppCompat.Translucent">
         <item name="android:windowTranslucentStatus">true</item>
