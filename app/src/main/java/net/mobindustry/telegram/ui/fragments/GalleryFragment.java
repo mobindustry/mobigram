@@ -128,6 +128,7 @@ public class GalleryFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         galleryAdapter = new GalleryAdapter(getActivity());
         gridList.setAdapter(galleryAdapter);
+
         if (Utils.isTablet(getActivity())) {
             Log.e("Log", "Зашель");
             if (ListFoldersHolder.getCheckQuantity() != 0) {
@@ -144,7 +145,8 @@ public class GalleryFragment extends Fragment {
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
-                buttonSend.setClickable(false);
+                buttonSend.setEnabled(false);
+                Log.e("log", "buttonSend.setClickable(false)");
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
@@ -166,7 +168,7 @@ public class GalleryFragment extends Fragment {
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
-                buttonSend.setClickable(false);
+                buttonSend.setEnabled(false);
                 numberPhotos.setVisibility(View.GONE);
             }
         }
@@ -215,17 +217,10 @@ public class GalleryFragment extends Fragment {
             }
         });
 
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-                ListFoldersHolder.setListForSending(null);
-            }
-        });
-
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("Log", "Listfor sending " + ListFoldersHolder.getListForSending());
                 if (ListFoldersHolder.getListForSending() != null) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
                         if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
@@ -251,6 +246,14 @@ public class GalleryFragment extends Fragment {
                     getActivity().startService(new Intent(getActivity(), SendGif.class));
                     getActivity().finish();
                 }
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+                ListFoldersHolder.setListForSending(null);
             }
         });
 

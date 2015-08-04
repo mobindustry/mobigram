@@ -79,7 +79,7 @@ public class FolderFragment extends Fragment {
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
-                buttonSend.setClickable(false);
+                buttonSend.setEnabled(false);
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
@@ -101,7 +101,7 @@ public class FolderFragment extends Fragment {
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
-                buttonSend.setClickable(false);
+                buttonSend.setEnabled(false);
                 numberPhotos.setVisibility(View.GONE);
             }
 
@@ -147,7 +147,7 @@ public class FolderFragment extends Fragment {
 
                         numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                     } else {
-                        buttonSend.setClickable(false);
+                        buttonSend.setEnabled(false);
                         numberPhotos.setVisibility(View.GONE);
                     }
                 }

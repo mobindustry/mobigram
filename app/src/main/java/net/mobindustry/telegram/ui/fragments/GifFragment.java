@@ -117,7 +117,7 @@ public class GifFragment extends Fragment {
 
                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
-                send.setClickable(false);
+                send.setEnabled(false);
                 number.setVisibility(View.GONE);
             }
         } else {
@@ -139,7 +139,7 @@ public class GifFragment extends Fragment {
 
                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
-                send.setClickable(false);
+                send.setEnabled(false);
                 number.setVisibility(View.GONE);
             }
 
@@ -372,7 +372,7 @@ public class GifFragment extends Fragment {
 
                                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                             } else {
-                                send.setClickable(false);
+                                send.setEnabled(false);
                                 number.setVisibility(View.GONE);
                             }
                         } else {
@@ -402,7 +402,7 @@ public class GifFragment extends Fragment {
 
                                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                             } else {
-                                send.setClickable(false);
+                                send.setEnabled(false);
                                 number.setVisibility(View.GONE);
                             }
 

@@ -204,7 +204,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
-                send.setClickable(false);
+                send.setEnabled(false);
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
@@ -226,7 +226,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
-                send.setClickable(false);
+                send.setEnabled(false);
                 numberPhotos.setVisibility(View.GONE);
             }
         }
@@ -310,7 +310,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
 
                         numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                     } else {
-                        send.setClickable(false);
+                        send.setEnabled(false);
                         numberPhotos.setVisibility(View.GONE);
                     }
                 } else {
@@ -332,7 +332,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
 
                         numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                     } else {
-                        send.setClickable(false);
+                        send.setEnabled(false);
                         numberPhotos.setVisibility(View.GONE);
                     }
                 }
