@@ -233,7 +233,8 @@ public class Utils {
                 final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
                 if (fileEmpty.id != 0) {
                     if (DownloadFileHolder.getUpdatedFilePath(fileEmpty.id) != null) {
-                        findLoop(fileEmpty.id, iconImage, activity);
+                        file = DownloadFileHolder.getUpdatedFile(fileEmpty.id);
+                        ImageLoaderHelper.displayImageWithoutFadeIn(Const.IMAGE_LOADER_PATH_PREFIX + ((TdApi.FileLocal) file).path, iconImage);
                     } else {
                         new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
                             @Override

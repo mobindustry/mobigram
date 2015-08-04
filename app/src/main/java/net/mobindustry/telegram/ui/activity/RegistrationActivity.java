@@ -204,4 +204,11 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
             fragmentTransaction.commit();
         }
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        activityClosed = false;
+        new ApiClient<>(new TdApi.AuthGetState(), new GetStateHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
 }
