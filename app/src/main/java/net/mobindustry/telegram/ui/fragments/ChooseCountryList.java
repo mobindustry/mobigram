@@ -37,6 +37,7 @@ public class ChooseCountryList extends Fragment implements Serializable {
     private FragmentTransaction fragmentTransaction;
     private RegistrationMainFragment registrationMainFragment;
     private ListCountryObject countries;
+    private InfoRegistration infoRegistration;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choose_country_fragment, container, false);
@@ -47,11 +48,9 @@ public class ChooseCountryList extends Fragment implements Serializable {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final InfoRegistration infoRegistration = InfoRegistration.getInstance();
+        infoRegistration = InfoRegistration.getInstance();
         countries = infoRegistration.getListCountryObject();
         final CountriesListAdapter countriesListAdapter = new CountriesListAdapter(getActivity(),countries);
-        Log.e("LOG", "PHONE " + infoRegistration.getPhone());
-        Log.e("LOG", "SIZE " + infoRegistration.getListCountryObject().getListCountries().size());
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.choose_country);
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
@@ -102,16 +101,14 @@ public class ChooseCountryList extends Fragment implements Serializable {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("Log", "Yes ");
                 fragmentTransaction = getFragmentManager().beginTransaction();
                 registrationMainFragment = new RegistrationMainFragment();
                 CountryObject countryObject =countries.getListTmp().get(position);
-                Log.e("Log", "Size " + countries.getListTmp().size());
-                Log.e("Log", "Name " + countries.getListTmp().get(position));
                 infoRegistration.setCountryObject(null);
                 infoRegistration.setCountryObject(countryObject);
                 infoRegistration.setCodeCountryLetters(countryObject.getCountryStringCode());
                 fragmentTransaction.replace(R.id.fragmentContainer, registrationMainFragment);
-                getActivity().getSupportFragmentManager().popBackStack();
                 fragmentTransaction.commit();
             }
         });

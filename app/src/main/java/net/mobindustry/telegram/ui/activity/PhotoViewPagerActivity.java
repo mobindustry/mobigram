@@ -123,7 +123,6 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                 finish();
             }
         });
-
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,6 +204,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
+                send.setClickable(false);
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
@@ -226,6 +226,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
+                send.setClickable(false);
                 numberPhotos.setVisibility(View.GONE);
             }
         }
@@ -309,6 +310,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
 
                         numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                     } else {
+                        send.setClickable(false);
                         numberPhotos.setVisibility(View.GONE);
                     }
                 } else {
@@ -330,6 +332,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
 
                         numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                     } else {
+                        send.setClickable(false);
                         numberPhotos.setVisibility(View.GONE);
                     }
                 }

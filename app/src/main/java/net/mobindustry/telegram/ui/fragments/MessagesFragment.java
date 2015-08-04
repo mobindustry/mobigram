@@ -590,6 +590,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         final PackageManager pm = getActivity().getPackageManager();
         List<ResolveInfo> resolveInfoList = pm.queryIntentActivities(intent, 0);
         for (int i = 0; i < resolveInfoList.size(); i++) {
+            Log.e("LOg", "Name " + resolveInfoList.get(i).activityInfo.name);
             if (resolveInfoList.get(i).activityInfo.name.contains("ESContent")) {
                 String packageName = resolveInfoList.get(i).activityInfo.packageName;
                 Intent intentES = new Intent();

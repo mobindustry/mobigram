@@ -75,5 +75,20 @@
 
     </LinearLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/registration_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_gravity="center"
+            />
+
+    </FrameLayout>
+
 
 </LinearLayout>

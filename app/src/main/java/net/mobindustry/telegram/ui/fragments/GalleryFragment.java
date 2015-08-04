@@ -144,6 +144,7 @@ public class GalleryFragment extends Fragment {
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
+                buttonSend.setClickable(false);
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
@@ -165,6 +166,7 @@ public class GalleryFragment extends Fragment {
 
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
+                buttonSend.setClickable(false);
                 numberPhotos.setVisibility(View.GONE);
             }
         }

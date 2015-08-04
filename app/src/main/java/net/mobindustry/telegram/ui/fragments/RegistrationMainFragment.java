@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
@@ -53,6 +54,7 @@ public class RegistrationMainFragment extends Fragment {
     private FragmentTransaction fragmentTransaction;
     private InfoRegistration holder;
     private TextView textInfo;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,11 +80,12 @@ public class RegistrationMainFragment extends Fragment {
         code = (EditText) getActivity().findViewById(R.id.code);
         phone = (EditText) getActivity().findViewById(R.id.phone);
         textInfo = (TextView) getActivity().findViewById(R.id.textUserInfo);
+        progressBar = (ProgressBar) getActivity().findViewById(R.id.registration_progress_bar);
         //phone.setText("");
 
         //Check country object from ChooseCountryFragment
 
-        if (this.holder.getCountryObject() != null) {
+        if (holder.getCountryObject() != null) {
             Log.e("log", "Name " + holder.getCountryObject().getCountryName());
             chooseCountry.setText(holder.getCountryObject().getCountryName());
             code.setText(holder.getCountryObject().getCountryCode());
@@ -115,6 +118,7 @@ public class RegistrationMainFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                progressBar.setVisibility(View.VISIBLE);
                 confirmPhone();
                 return true;
             }
@@ -123,8 +127,8 @@ public class RegistrationMainFragment extends Fragment {
         // If the user fills country code manually
 
         final List<String> codeList = new ArrayList<>();
-
-        code.addTextChangedListener(new TextWatcher() {
+        codeList.clear();
+        final TextWatcher watcherCode = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -135,7 +139,6 @@ public class RegistrationMainFragment extends Fragment {
                 for (int i = 0; i < codeList.size(); i++) {
                     codeNew = codeList.get(codeList.size() - 1);
                 }
-                Log.e("Log", "New code " + codeNew);
                 for (int i = 0; i < holder.getListCountryObject().getListCountries().size(); i++) {
                     if (holder.getListCountryObject().getListCountries().get(i).getCountryCode().equals(codeList.get(codeList.size() - 1))) {
                         holder.setCountryObject(holder.getListCountryObject().getListCountries().get(i));
@@ -170,7 +173,8 @@ public class RegistrationMainFragment extends Fragment {
                     textInfo.setText(R.string.text_user_info);
                 }
             }
-        });
+        };
+        code.addTextChangedListener(watcherCode);
 
         // The user enters the phone number
 
@@ -232,6 +236,7 @@ public class RegistrationMainFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_DONE &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    progressBar.setVisibility(View.VISIBLE);
                     confirmPhone();
                     return true;
                 }
@@ -257,7 +262,6 @@ public class RegistrationMainFragment extends Fragment {
             DialogPhoneCodeInvalid phoneCodeInvalid = new DialogPhoneCodeInvalid();
             phoneCodeInvalid.show(fm, "PHONE_CODE_INVALID");
         }
-
     }
 
     private boolean isCodeCorrect(String lettersCode) {
