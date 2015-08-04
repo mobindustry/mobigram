@@ -5,7 +5,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.ui.fragments.FoursquareListFragment;
+import net.mobindustry.telegram.ui.fragments.LocationFragment;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
+import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyInvalid;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogAuthKeyUnregistered;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogCodeUnexpected;

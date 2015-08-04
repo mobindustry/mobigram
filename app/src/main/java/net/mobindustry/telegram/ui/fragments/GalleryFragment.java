@@ -131,7 +131,8 @@ public class GalleryFragment extends Fragment {
 
         if (Utils.isTablet(getActivity())) {
             Log.e("Log", "Зашель");
-            if (ListFoldersHolder.getCheckQuantity() != 0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+                buttonSend.setEnabled(true);
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                 params.leftMargin = 50;
@@ -150,7 +151,8 @@ public class GalleryFragment extends Fragment {
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
-            if (ListFoldersHolder.getCheckQuantity() != 0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+                buttonSend.setEnabled(true);
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                 if (Utils.getSmallestScreenSize(getActivity()) <= 480) {
@@ -220,8 +222,7 @@ public class GalleryFragment extends Fragment {
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("Log", "Listfor sending " + ListFoldersHolder.getListForSending());
-                if (ListFoldersHolder.getListForSending() != null) {
+                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size()!=0) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
                         if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
                             if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {

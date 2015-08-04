@@ -31,6 +31,7 @@ import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneCodeEmpty;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneCodeInvalid;
+import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneNumberInvalid;
 import net.mobindustry.telegram.utils.CountryObject;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
@@ -249,6 +250,7 @@ public class RegistrationMainFragment extends Fragment {
         FragmentManager fm = getFragmentManager();
         String lettersCode = code.getText().toString();
         if (lettersCode.equals("+")) {
+            progressBar.setVisibility(View.GONE);
             DialogPhoneCodeEmpty phoneCodeEmpty = new DialogPhoneCodeEmpty();
             phoneCodeEmpty.show(fm, "PHONE_CODE_EMPTY");
         } else if (isCodeCorrect(lettersCode)) {
@@ -258,7 +260,9 @@ public class RegistrationMainFragment extends Fragment {
             Log.e("Log", "PHONE " + phoneNumberForServer);
             holder.setPhoneForServer(phoneNumberForServer);
             ((RegistrationActivity) getActivity()).setPhoneForServer(holder.getPhoneForServer());
+            progressBar.setVisibility(View.GONE);
         } else {
+            progressBar.setVisibility(View.GONE);
             DialogPhoneCodeInvalid phoneCodeInvalid = new DialogPhoneCodeInvalid();
             phoneCodeInvalid.show(fm, "PHONE_CODE_INVALID");
         }

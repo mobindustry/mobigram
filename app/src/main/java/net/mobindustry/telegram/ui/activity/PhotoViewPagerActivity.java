@@ -94,7 +94,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_photo);
         image = (ImageView) findViewById(R.id.photoBig);
         numberPhotos = (TextView) findViewById(R.id.numberPhotosInPhoto);
-        layoutButtons=(LinearLayout)findViewById(R.id.layoutButtonsPager);
+        layoutButtons = (LinearLayout) findViewById(R.id.layoutButtonsPager);
         pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
         pager.setCurrentItem(ListFoldersHolder.getCurrentSelectedPhoto());
@@ -126,7 +126,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ListFoldersHolder.getListForSending() != null) {
+                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
                         if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
                             if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
@@ -190,7 +190,8 @@ public class PhotoViewPagerActivity extends FragmentActivity {
 
         });
         if (Utils.isTablet(this)) {
-            if (ListFoldersHolder.getCheckQuantity() != 0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
+                send.setEnabled(true);
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                 params.leftMargin = 50;
@@ -208,7 +209,8 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
-            if (ListFoldersHolder.getCheckQuantity() != 0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
+                send.setEnabled(true);
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                 if (Utils.getSmallestScreenSize(this) <= 480) {
@@ -280,7 +282,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                                     }
                                 }
                             }
-
+                            ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getListForSending().size());
                         } else {
                             String path = ListFoldersHolder.getList().get(getPhotoNumber()).getFile().getAbsolutePath();
                             for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
@@ -296,7 +298,8 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                 }
 
                 if (Utils.isTablet(PhotoViewPagerActivity.this)) {
-                    if (ListFoldersHolder.getCheckQuantity() != 0) {
+                    if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
+                        send.setEnabled(true);
                         numberPhotos.setVisibility(View.VISIBLE);
                         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                         params.leftMargin = 50;
@@ -314,7 +317,8 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                         numberPhotos.setVisibility(View.GONE);
                     }
                 } else {
-                    if (ListFoldersHolder.getCheckQuantity() != 0) {
+                    if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
+                        send.setEnabled(true);
                         numberPhotos.setVisibility(View.VISIBLE);
                         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                         if (Utils.getSmallestScreenSize(PhotoViewPagerActivity.this) <= 480) {

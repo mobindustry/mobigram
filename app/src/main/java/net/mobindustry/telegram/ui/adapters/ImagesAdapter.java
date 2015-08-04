@@ -18,13 +18,13 @@ import net.mobindustry.telegram.utils.MediaGallery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImagesAdapter extends ArrayAdapter<PhotoFlickr>  {
+public class ImagesAdapter extends ArrayAdapter<PhotoFlickr> {
     private LayoutInflater inflater;
     private View.OnClickListener clickListener;
 
 
-    public ImagesAdapter(Context context, List<PhotoFlickr>list, final LoadPhotos loadPhotos) {
-        super(context, 0,list);
+    public ImagesAdapter(Context context, List<PhotoFlickr> list, final LoadPhotos loadPhotos) {
+        super(context, 0, list);
         inflater = LayoutInflater.from(context);
         clickListener = new View.OnClickListener() {
             @Override
@@ -33,20 +33,22 @@ public class ImagesAdapter extends ArrayAdapter<PhotoFlickr>  {
                 if (photoFlickr.isCheck()) {
                     photoFlickr.setCheck(false);
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
-                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject){
-                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().equals(photoFlickr.getLink())){
+                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
+                            Log.e("Log", "Yes 1");
+                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().equals(photoFlickr.getSendLinkLarge())) {
                                 ListFoldersHolder.getListForSending().remove(ListFoldersHolder.getListForSending().get(i));
+                                Log.e("Log", "SIZE Images adapter " + ListFoldersHolder.getListForSending().size());
                             }
                         }
                     }
                     ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getCheckQuantity() - 1);
                     loadPhotos.load();
                 } else {
-                    if (ListFoldersHolder.getCheckQuantity()<10){
+                    if (ListFoldersHolder.getCheckQuantity() < 10) {
                         photoFlickr.setCheck(true);
-                        ImagesObject imagesObject=new ImagesObject();
+                        ImagesObject imagesObject = new ImagesObject();
                         imagesObject.setPath(photoFlickr.getSendLinkLarge());
-                        if (ListFoldersHolder.getListForSending()==null){
+                        if (ListFoldersHolder.getListForSending() == null) {
                             ListFoldersHolder.setListForSending(new ArrayList<MediaGallery>());
                         }
                         ListFoldersHolder.getListForSending().add(imagesObject);
@@ -78,18 +80,19 @@ public class ImagesAdapter extends ArrayAdapter<PhotoFlickr>  {
             check.setImageResource(R.drawable.circle);
         }
 
-        String link="http://farm"+photoFlickr.getFarm()
-                +".staticflickr.com/"+photoFlickr.getServer()
-                +"/"+photoFlickr.getPhotoId()+"_"+photoFlickr.getSecret()+"_m.jpg";
-        String sendLinkLarge="http://farm"+photoFlickr.getFarm()
-                +".staticflickr.com/"+photoFlickr.getServer()
-                +"/"+photoFlickr.getPhotoId()+"_"+photoFlickr.getSecret()+"_b.jpg";
+        String link = "http://farm" + photoFlickr.getFarm()
+                + ".staticflickr.com/" + photoFlickr.getServer()
+                + "/" + photoFlickr.getPhotoId() + "_" + photoFlickr.getSecret() + "_m.jpg";
+        String sendLinkLarge = "http://farm" + photoFlickr.getFarm()
+                + ".staticflickr.com/" + photoFlickr.getServer()
+                + "/" + photoFlickr.getPhotoId() + "_" + photoFlickr.getSecret() + "_b.jpg";
         Log.e("log", "LINL THUMB " + link);
         photoFlickr.setLink(link);
         photoFlickr.setSendLinkLarge(sendLinkLarge);
         ImageLoaderHelper.displayImageList(link, photo);
         return convertView;
     }
+
     public interface LoadPhotos {
         void load();
     }

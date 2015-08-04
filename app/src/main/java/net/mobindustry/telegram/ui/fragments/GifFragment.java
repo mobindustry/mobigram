@@ -76,7 +76,7 @@ public class GifFragment extends Fragment {
         send = (FrameLayout) view.findViewById(R.id.buttonSendGif);
         number = (TextView) view.findViewById(R.id.numberGif);
         cancel = (FrameLayout) view.findViewById(R.id.buttonCancelGif);
-        layoutButtons=(LinearLayout)view.findViewById(R.id.layoutButtonsGif);
+        layoutButtons = (LinearLayout) view.findViewById(R.id.layoutButtonsGif);
         return view;
     }
 
@@ -102,7 +102,8 @@ public class GifFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         if (Utils.isTablet(getActivity())) {
-            if (ListFoldersHolder.getCheckQuantity() != 0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
+                send.setEnabled(true);
                 Log.e("Log", "TABLET");
                 number.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
@@ -121,7 +122,8 @@ public class GifFragment extends Fragment {
                 number.setVisibility(View.GONE);
             }
         } else {
-            if (ListFoldersHolder.getCheckQuantity() != 0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
+                send.setEnabled(true);
                 number.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                 if (Utils.getSmallestScreenSize(getActivity()) <= 480) {
@@ -219,7 +221,7 @@ public class GifFragment extends Fragment {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ListFoldersHolder.getListForSending() != null) {
+                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() != 0) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
                         if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
                             if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
@@ -239,7 +241,7 @@ public class GifFragment extends Fragment {
                             }
                             String link = ((GiphyObject) ListFoldersHolder.getListForSending().get(i)).getPath();
                             ListFoldersHolder.getListGif().add(link);
-                            Log.e("Log","Gif "+ListFoldersHolder.getListGif().size());
+                            Log.e("Log", "Gif " + ListFoldersHolder.getListGif().size());
                         }
                     }
                     getActivity().startService(new Intent(getActivity(), SendGif.class));
@@ -357,7 +359,8 @@ public class GifFragment extends Fragment {
                         InputMethodManager imm = (InputMethodManager) getActivity()
                                 .getSystemService(getActivity().INPUT_METHOD_SERVICE);
                         if (Utils.isTablet(getActivity())) {
-                            if (ListFoldersHolder.getCheckQuantity() != 0) {
+                            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
+                                send.setEnabled(true);
                                 Log.e("Log", "TABLET");
                                 number.setVisibility(View.VISIBLE);
                                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
@@ -376,7 +379,8 @@ public class GifFragment extends Fragment {
                                 number.setVisibility(View.GONE);
                             }
                         } else {
-                            if (ListFoldersHolder.getCheckQuantity() != 0) {
+                            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
+                                send.setEnabled(true);
                                 number.setVisibility(View.VISIBLE);
                                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                                 if (Utils.getSmallestScreenSize(getActivity()) <= 480) {

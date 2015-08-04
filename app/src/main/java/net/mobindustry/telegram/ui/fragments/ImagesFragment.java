@@ -89,7 +89,8 @@ public class ImagesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (Utils.isTablet(getActivity())) {
-            if (ListFoldersHolder.getCheckQuantity() != 0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+                send.setEnabled(true);
                 Log.e("Log", "TABLET");
                 number.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
@@ -108,7 +109,8 @@ public class ImagesFragment extends Fragment {
                 number.setVisibility(View.GONE);
             }
         } else {
-            if (ListFoldersHolder.getCheckQuantity() != 0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+                send.setEnabled(true);
                 number.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                 if (Utils.getSmallestScreenSize(getActivity()) <= 480) {
@@ -145,7 +147,7 @@ public class ImagesFragment extends Fragment {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ListFoldersHolder.getListForSending() != null) {
+                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size()!=0) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
                         if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
                             if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
@@ -259,7 +261,8 @@ public class ImagesFragment extends Fragment {
                             InputMethodManager imm = (InputMethodManager) getActivity()
                                     .getSystemService(getActivity().INPUT_METHOD_SERVICE);
                             if (Utils.isTablet(getActivity())) {
-                                if (ListFoldersHolder.getCheckQuantity() != 0) {
+                                if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+                                    send.setEnabled(true);
                                     Log.e("Log", "TABLET");
                                     number.setVisibility(View.VISIBLE);
                                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
@@ -278,7 +281,8 @@ public class ImagesFragment extends Fragment {
                                     number.setVisibility(View.GONE);
                                 }
                             } else {
-                                if (ListFoldersHolder.getCheckQuantity() != 0) {
+                                if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+                                    send.setEnabled(true);
                                     number.setVisibility(View.VISIBLE);
                                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                                     if (Utils.getSmallestScreenSize(getActivity()) <= 480) {
