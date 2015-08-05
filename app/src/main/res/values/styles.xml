@@ -43,6 +43,16 @@
         <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
         <item name="android:textColorPrimary">#fff</item>
         <item name="searchViewStyle">@style/AppTheme.SearchView</item>
+
+    </style>
+
+    <style name="Theme.AppCompat.Chat" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="searchViewStyle">@style/AppTheme.SearchView</item>
         <item name="colorControlNormal">?android:attr/textColorPrimary</item>
 
     </style>
