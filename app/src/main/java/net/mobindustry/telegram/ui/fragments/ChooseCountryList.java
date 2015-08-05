@@ -65,8 +65,6 @@ public class ChooseCountryList extends Fragment implements Serializable {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 SearchView sv = new SearchView(getActivity());
-                EditText txtSearch = ((EditText)sv.findViewById(android.support.v7.appcompat.R.id.search_src_text));
-                txtSearch.setTextColor(Color.WHITE);
                 MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
                 MenuItemCompat.setActionView(item, sv);
                 sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
