@@ -353,7 +353,7 @@ public class Utils {
             originalBitmap.recycle();
             originalBitmap = null;
 
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
             fileOutputStream.flush();
             fileOutputStream.close();
             bitmap.recycle();
