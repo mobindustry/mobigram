@@ -37,6 +37,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -316,4 +317,72 @@ public class Utils {
         }
         fileOrDirectory.delete();
     }
+
+    private static void rotateFileImage(int orientationFlag, String filePathFrom) {
+        int angle;
+        switch (orientationFlag) {
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                angle = 180;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                angle = 90;
+
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                angle = 270;
+                break;
+            default:
+                return;
+        }
+
+        BitmapFactory.Options optionBmp = new BitmapFactory.Options();
+        optionBmp.inJustDecodeBounds = false;
+        optionBmp.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        optionBmp.inDither = false;
+        optionBmp.inScaled = false;
+
+        Bitmap originalBitmap = BitmapFactory.decodeFile(filePathFrom, optionBmp);
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+
+        try {
+
+            FileOutputStream fileOutputStream = new FileOutputStream(filePathFrom);
+            Bitmap bitmap = Bitmap.createBitmap(originalBitmap, 0, 0, originalBitmap.getWidth(), originalBitmap.getHeight(), matrix, true);
+            originalBitmap.recycle();
+            originalBitmap = null;
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            bitmap.recycle();
+            bitmap = null;
+        } catch (Exception e) {
+            Log.e("Tag", "rotateFileImage error " + e);
+        }
+    }
+
+    public static File processImage(File tmpFile, ExifInterface originalExif) {
+        //fix orientation
+        int pictureOrientation = -1;
+        try {
+            ExifInterface exif;
+            if(originalExif != null){
+                exif = originalExif;
+            }
+            else{
+                exif = new ExifInterface(tmpFile.getAbsolutePath());
+            }
+
+            pictureOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        } catch (IOException e) {
+            Log.e("Tag", "ExifInterface exception", e);
+        }
+
+        rotateFileImage(pictureOrientation, tmpFile.getAbsolutePath());
+
+        return tmpFile;
+    }
+
 }

@@ -12,6 +12,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.drawable.LevelListDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -73,6 +74,7 @@ import net.mobindustry.telegram.utils.Utils;
 import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -653,6 +655,15 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         }
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO && resultCode == getActivity().RESULT_OK) {
+            ExifInterface originalExifInfo = null;
+            try {
+                originalExifInfo =  new ExifInterface(holder.getTempPhotoFile().getAbsolutePath());
+            } catch (IOException e) {
+                Log.e("Tag", "ExifInterface error",e);
+            }
+
+            Utils.processImage(holder.getTempPhotoFile(), originalExifInfo);
+
             sendPhotoMessage(getShownChatId(), holder.getTempPhotoFile().getAbsolutePath());
         }
 
