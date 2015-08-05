@@ -8,6 +8,7 @@
         <item name="color">#fff</item>
         <item name="android:textCursorDrawable">@drawable/cursor</item>
         <item name="android:actionMenuTextColor">#fff</item>
+        <item name="navigationIcon">@drawable/ic_back</item>
     </style>
 
     <style name="MyDrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -20,6 +21,7 @@
         <item name="android:textCursorDrawable">@drawable/cursor</item>
         <item name="android:textColorPrimary">#fff</item>
         <item name="android:textColor">#fff</item>
+        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.Light.NoActionBar">
@@ -38,10 +40,12 @@
         <item name="android:textCursorDrawable">@drawable/cursor</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
         <item name="android:textColorPrimary">#fff</item>
         <item name="searchViewStyle">@style/AppTheme.SearchView</item>
-    </style>
+        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
 
+    </style>
 
     <style name="WhiteSearchView" parent="customAppTheme">
         <item name="colorControlNormal">?android:attr/textColorPrimary</item>
