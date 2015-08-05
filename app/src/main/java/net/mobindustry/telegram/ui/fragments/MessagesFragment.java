@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -102,6 +103,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private int toScrollLoadMessageId;
     private int selectedCount = 0;
     private List<TdApi.Message> selectedItemsList;
+
+    private ProgressDialog mProgressDialog;
 
     public boolean isMessagesLoading = false;
     public boolean needLoad = true;
@@ -655,16 +658,36 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         }
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO && resultCode == getActivity().RESULT_OK) {
-            ExifInterface originalExifInfo = null;
-            try {
-                originalExifInfo =  new ExifInterface(holder.getTempPhotoFile().getAbsolutePath());
-            } catch (IOException e) {
-                Log.e("Tag", "ExifInterface error",e);
-            }
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    mProgressDialog = ProgressDialog.show(getActivity(), "Image processing",
+                            "Please wait", true, false);
+                }
+                @Override
+                protected Void doInBackground(Void... params) {
 
-            Utils.processImage(holder.getTempPhotoFile(), originalExifInfo);
+                    ExifInterface originalExifInfo = null;
+                    try {
+                        originalExifInfo = new ExifInterface(holder.getTempPhotoFile().getAbsolutePath());
+                    } catch (IOException e) {
+                        Log.e("Tag", "ExifInterface error", e);
+                    }
+                    Utils.processImage(holder.getTempPhotoFile(), originalExifInfo);
 
-            sendPhotoMessage(getShownChatId(), holder.getTempPhotoFile().getAbsolutePath());
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    sendPhotoMessage(getShownChatId(), holder.getTempPhotoFile().getAbsolutePath());
+                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                        mProgressDialog.dismiss();
+                    }
+                }
+            }.execute();
         }
 
         if (requestCode == Const.REQUEST_CODE_TAKE_FILE && resultCode == getActivity().RESULT_OK) {
