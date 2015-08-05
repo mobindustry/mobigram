@@ -30,6 +30,9 @@ import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChatListFragment extends ListFragment{
 
     boolean dualPane;
@@ -141,7 +144,37 @@ public class ChatListFragment extends ListFragment{
     }
 
     public void setAdapterFilter(String filter) {
-        adapter.getFilter().filter(filter);
+        if (chats != null) {
+            if (filter.isEmpty()) {
+                adapter.clear();
+                adapter.addAll(chats.chats);
+            } else {
+                List<TdApi.Chat> list = new ArrayList<>();
+                for (int i = 0; i < chats.chats.length; i++) {
+                    String name = "";
+                    String messageText = "";
+                    TdApi.ChatInfo info = chats.chats[i].type;
+                    if (info.getConstructor() == TdApi.PrivateChatInfo.CONSTRUCTOR) {
+                        TdApi.PrivateChatInfo privateInfo = (TdApi.PrivateChatInfo) info;
+                        name = privateInfo.user.firstName + " " + privateInfo.user.lastName;
+                    } else {
+                        TdApi.GroupChatInfo groupInfo = (TdApi.GroupChatInfo) info;
+                        name = groupInfo.groupChat.title;
+                    }
+                    TdApi.MessageContent message = chats.chats[i].topMessage.message;
+                    if (message.getConstructor() == TdApi.MessageText.CONSTRUCTOR) {
+                        TdApi.MessageText textMessage = (TdApi.MessageText) message;
+                        messageText = textMessage.text;
+                    }
+                    if (name.toLowerCase().contains(filter.toLowerCase()) || messageText.toLowerCase().contains(filter.toLowerCase())) {
+                        list.add(chats.chats[i]);
+                    }
+                    adapter.clear();
+                    adapter.addAll(list);
+                }
+            }
+        }
+
         adapter.notifyDataSetChanged();
     }
 

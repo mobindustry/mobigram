@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_height"
     android:background="@color/background_action_bar"
-    android:theme="@style/WhiteSearchView"
+    android:theme="@style/Theme.AppCompat.Chat"
     android:id="@+id/toolbar_gif"
     >
 </android.support.v7.widget.Toolbar>

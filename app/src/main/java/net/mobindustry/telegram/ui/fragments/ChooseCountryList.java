@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.InfoRegistration;

@@ -288,11 +288,11 @@ public class Utils {
                 for (int i = 0; i < 50; i++) {
                     path = DownloadFileHolder.getUpdatedFilePath(id);
                     if (path != null) {
-                        iconImage.setVisibility(View.VISIBLE);
                         final String finalPath = path;
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                iconImage.setVisibility(View.VISIBLE);
                                 ImageLoaderHelper.displayImageWithoutFadeIn(Const.IMAGE_LOADER_PATH_PREFIX + finalPath, iconImage);
                             }
                         });
