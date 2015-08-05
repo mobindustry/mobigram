@@ -40,8 +40,6 @@
         <item name="windowNoTitle">true</item>
         <item name="android:textColorPrimary">#fff</item>
         <item name="searchViewStyle">@style/AppTheme.SearchView</item>
-        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
-        <item name="android:textColor">#fff</item>
     </style>
 
 
