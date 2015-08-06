@@ -103,6 +103,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private int toScrollLoadMessageId;
     private int selectedCount = 0;
     private List<TdApi.Message> selectedItemsList;
+    private long showedChatId;
 
     private ProgressDialog mProgressDialog;
 
@@ -133,14 +134,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
     private TdApi.Chat chat;
 
-    public static MessagesFragment newInstance(int index) {
-        MessagesFragment f = new MessagesFragment();
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-        return f;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -164,7 +157,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         activity = (ChatActivity) getActivity();
         progressBar = (ProgressBar) view.findViewById(R.id.messages_progress_bar);
         chatListFragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
-        chat = chatListFragment.getChat();
+        chat = chatListFragment.getChat(getShownChatId());
         adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), loader, chat.type);
         messageListView.setAdapter(adapter);
         return view;
@@ -330,7 +323,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                         Log.e("Log", "null");
                                     }
                                     destroyFragment(fragmentTransaction);
-                                    chatListFragment.deleteChat(chatListFragment.getChat());
+                                    chatListFragment.deleteChat(chatListFragment.getChat(getShownChatId()));
                                 }
                             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                             break;
@@ -397,6 +390,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     public void addNewMessage(final TdApi.Messages messages) {
+        MessagesFragmentHolder.addToMap(messages.messages[0].chatId, messages.messages[0].id);
         messageListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         adapter.add(parseEmojiMessages(messages.messages[0]));
     }
@@ -430,7 +424,11 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     public long getShownChatId() {
-        return chat.id;
+        if (chat != null) {
+            return chat.id;
+        } else {
+            return 0;
+        }
     }
 
     public void getChatHistory(final long id, final int messageId, final int offset, final int limit, final Enums.MessageAddType type) {

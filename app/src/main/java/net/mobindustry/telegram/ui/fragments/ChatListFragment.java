@@ -41,7 +41,6 @@ public class ChatListFragment extends ListFragment{
     private ChatListAdapter adapter;
     private ProgressBar progressBar;
     private static TdApi.Chats chats;
-    private MessagesFragmentHolder holder = MessagesFragmentHolder.getInstance();
     private LinearLayout layout;
 
     private long clickedId;
@@ -130,9 +129,13 @@ public class ChatListFragment extends ListFragment{
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
-    public TdApi.Chat getChat() {
+    public TdApi.Chat getChat(long id) {
         if (chats == null || chats.chats.length == 0) {
             chats = MessagesFragmentHolder.getChats();
+        }
+        if (id != 0) {
+            clickedId = id;
+            getListView().setSelection(getChatPosition(clickedId));
         }
         for (int i = 0; i < chats.chats.length; i++) {
             if (chats.chats[i].id == clickedId) {
@@ -207,7 +210,7 @@ public class ChatListFragment extends ListFragment{
         FragmentTransaction ft
                 = getFragmentManager().beginTransaction();
         getListView().setItemChecked(index, true);
-        MessagesFragment messagesFragment = MessagesFragment.newInstance(index);
+        MessagesFragment messagesFragment = new MessagesFragment();
         //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
         ft.replace(R.id.messages, messagesFragment);
         ft.commit();
