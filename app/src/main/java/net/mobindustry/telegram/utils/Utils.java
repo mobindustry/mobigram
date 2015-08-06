@@ -309,13 +309,26 @@ public class Utils {
         new Thread(runnable).start();
     }
 
-    public static void deleteRecursive(File fileOrDirectory) {
-        if (fileOrDirectory.isDirectory()) {
-            for (File child : fileOrDirectory.listFiles()) {
-                deleteRecursive(child);
+    public static File processImage(File tmpFile, ExifInterface originalExif) {
+        //fix orientation
+        int pictureOrientation = -1;
+        try {
+            ExifInterface exif;
+            if(originalExif != null){
+                exif = originalExif;
             }
+            else{
+                exif = new ExifInterface(tmpFile.getAbsolutePath());
+            }
+
+            pictureOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        } catch (IOException e) {
+            Log.e("Tag", "ExifInterface exception", e);
         }
-        fileOrDirectory.delete();
+
+        rotateFileImage(pictureOrientation, tmpFile.getAbsolutePath());
+
+        return tmpFile;
     }
 
     private static void rotateFileImage(int orientationFlag, String filePathFrom) {
@@ -362,27 +375,4 @@ public class Utils {
             Log.e("Tag", "rotateFileImage error " + e);
         }
     }
-
-    public static File processImage(File tmpFile, ExifInterface originalExif) {
-        //fix orientation
-        int pictureOrientation = -1;
-        try {
-            ExifInterface exif;
-            if(originalExif != null){
-                exif = originalExif;
-            }
-            else{
-                exif = new ExifInterface(tmpFile.getAbsolutePath());
-            }
-
-            pictureOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-        } catch (IOException e) {
-            Log.e("Tag", "ExifInterface exception", e);
-        }
-
-        rotateFileImage(pictureOrientation, tmpFile.getAbsolutePath());
-
-        return tmpFile;
-    }
-
 }

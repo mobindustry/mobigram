@@ -185,8 +185,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         emoji = holder.getEmoji();
         emojiParser = new EmojiParser(emoji);
 
-        if (MessagesFragmentHolder.getTopMessage(chat.id) != 0) {
-            topMessageId = MessagesFragmentHolder.getTopMessage(chat.id);
+        if (holder.getTopMessage(chat.id) != 0) {
+            topMessageId = holder.getTopMessage(chat.id);
         } else {
             topMessageId = chat.topMessage.id;
         }
@@ -410,14 +410,17 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     public void setChatHistory(final TdApi.Messages messages) {
-        noMessages.setVisibility(View.GONE);
+        if(messages.messages.length == 0) {
+            noMessages.setVisibility(View.VISIBLE);
+        } else {
+            noMessages.setVisibility(View.GONE);
+        }
         adapter.setNotifyOnChange(false);
         for (int i = 0; i < messages.messages.length; i++) {
             adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
         }
         adapter.setNotifyOnChange(true);
         adapter.notifyDataSetChanged();
-        noMessages.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         messageListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
     }
@@ -437,9 +440,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 if (output.getHandlerId() == ChatHistoryHandler.HANDLER_ID) {
                     TdApi.Messages messages = (TdApi.Messages) output.getResponse();
                     messageListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_DISABLED);
-                    if (messages == null || messages.messages.length == 0) {
-                        progressBar.setVisibility(View.GONE);
+                    if (messages == null) {
                         noMessages.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     } else if (messages.messages.length != 0 && chat.id == messages.messages[0].chatId) {
                         noMessages.setVisibility(View.GONE);
                         switch (type) {

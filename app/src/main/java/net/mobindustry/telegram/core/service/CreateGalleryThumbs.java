@@ -9,14 +9,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
-import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.ImagesFromMediaStore;
 
 import java.io.ByteArrayOutputStream;
@@ -36,7 +35,7 @@ public class CreateGalleryThumbs extends Service {
     private List<ImagesFromMediaStore> listImagesMediaStore = new ArrayList<>();
     private ExecutorService executorService;
     private Map<Long, String> map = new HashMap<>();
-
+    private String cachePath = DataHolder.getCachePath();
 
     public void onCreate() {
         super.onCreate();
@@ -111,7 +110,7 @@ public class CreateGalleryThumbs extends Service {
         }
 
         private void createThumbsFolder() {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "NeTelegram" + File.separator + "thumb";
+            String path = cachePath + File.separator + "thumb";
             File myDirectory = new File(path, "gallery");
             if (!myDirectory.exists()) {
                 myDirectory.mkdirs();
@@ -120,7 +119,7 @@ public class CreateGalleryThumbs extends Service {
 
         private File createThumb(String path, String name) {
             final int THUMBSIZE = 150;
-            String linkToFolder = Const.PATH_TO_THUMBS_GALLERY;
+            String linkToFolder = cachePath + File.separator + "thumb" + File.separator + "gallery";
             //create a file to write bitmap data
             File file = new File(linkToFolder, name);
             try {
@@ -168,7 +167,7 @@ public class CreateGalleryThumbs extends Service {
         }
 
         private void checkThumbsInFolder() {
-            String path = Const.PATH_TO_THUMBS_GALLERY;
+            String path = cachePath + File.separator + "thumb" + File.separator + "gallery";
             List<File> files = getListFiles(new File(path));
             if (files.size() > 0) {
                 for (int i = 0; i < files.size(); i++) {

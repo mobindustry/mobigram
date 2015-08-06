@@ -7,6 +7,7 @@ public class DataHolder {
     private static boolean isLoggedIn = false;
     private static Context context;
     private static boolean active = false;
+    private static String cachePath;
 
     public static Context getContext() {
         return context;
@@ -30,5 +31,13 @@ public class DataHolder {
 
     public static boolean isActive() {
         return active;
+    }
+
+    public static void setCachePath(String s) {
+        cachePath = s;
+    }
+
+    public static String getCachePath() {
+        return cachePath;
     }
 }

@@ -24,8 +24,9 @@ public class App extends Application {
 
         TG.setUpdatesHandler(new UpdatesHandler(this));
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            TG.setDir(Const.PATH_TO_NETELEGRAM);
-        } //TODO else!!!
+            TG.setDir(getCacheDir().getAbsolutePath());
+            DataHolder.setCachePath(getCacheDir().getAbsolutePath());
+        }
         DataHolder.setContext(this);
     }
 }

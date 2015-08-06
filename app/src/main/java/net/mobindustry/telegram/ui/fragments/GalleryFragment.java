@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.service.SendGif;
+import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
@@ -67,7 +68,7 @@ public class GalleryFragment extends Fragment {
     private Toolbar toolbar;
     private LinearLayout layoutFind;
     private LinearLayout layoutButtons;
-
+    private String pathToGallery = DataHolder.getCachePath();
 
     @Nullable
     @Override
@@ -304,7 +305,7 @@ public class GalleryFragment extends Fragment {
 
     private void checkThumbsInFolder() {
         mapForCustomThumbs = new HashMap<Long, String>();
-        String path = Const.PATH_TO_THUMBS_GALLERY;
+        String path = pathToGallery + File.separator + "thumb" + File.separator + "gallery";
         List<File> files = getListFiles(new File(path));
         if (files.size() > 0) {
             Log.e("Log", "SIZE " + files.size());
@@ -401,13 +402,10 @@ public class GalleryFragment extends Fragment {
                 } else {
                     cursor.moveToNext();
                 }
-
             }
             cursor.close();
         }
-
     }
-
 
     private List<FileWithIndicator> getPhotosFromFolder(List<ImagesFromMediaStore> list) {
         List<FileWithIndicator> listPhotos = new ArrayList<>();

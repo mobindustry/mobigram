@@ -80,7 +80,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private ChatListFragment chatListFragment;
 
     public void logOut() {
-        Utils.deleteRecursive(new File(Const.PATH_TO_NETELEGRAM));
         Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
         DataHolder.setIsLoggedIn(false);
         finish();

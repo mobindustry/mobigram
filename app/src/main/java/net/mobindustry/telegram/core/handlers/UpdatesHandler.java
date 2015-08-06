@@ -16,6 +16,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 
 public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
     private Context context;
+    private MessagesFragmentHolder holder = MessagesFragmentHolder.getInstance();
 
     public UpdatesHandler(Context context) {
         this.context = context;
@@ -45,7 +46,7 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
                     intent.putExtra("message", textMessage.text);
                 }
 
-                MessagesFragmentHolder.addToMap(message.message.chatId, message.message.id);
+                holder.addToMap(message.message.chatId, message.message.id);
                 context.sendBroadcast(intent);
                 break;
             }

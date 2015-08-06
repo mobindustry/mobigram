@@ -25,7 +25,7 @@ public class MessagesFragmentHolder {
     private File tempVideoFile;
     public static File tempPhoto;
     private TdApi.Chat chat;
-    private static TdApi.Chats chats;
+    private TdApi.Chats chats;
     private boolean isEmojiCreated = false;
 
     private static HashMap<Long, Integer> topMessageMap = new HashMap<>();
@@ -34,11 +34,11 @@ public class MessagesFragmentHolder {
 
     private static TdApi.Stickers stickers;
 
-    public static void addToMap(Long chatId, Integer topMessageId) {
+    public void addToMap(Long chatId, Integer topMessageId) {
         topMessageMap.put(chatId, topMessageId);
     }
 
-    public static int getTopMessage(Long chatId) {
+    public int getTopMessage(Long chatId) {
         if(topMessageMap.get(chatId) == null) {
             return 0;
         } else {
@@ -143,11 +143,11 @@ public class MessagesFragmentHolder {
         stickers = stickers1;
     }
 
-    public static TdApi.Chats getChats() {
+    public TdApi.Chats getChats() {
         return chats;
     }
 
-    public static void setChats(TdApi.Chats chats1) {
+    public void setChats(TdApi.Chats chats1) {
         chats = chats1;
     }
 }

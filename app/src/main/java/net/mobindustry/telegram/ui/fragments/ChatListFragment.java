@@ -40,6 +40,7 @@ public class ChatListFragment extends ListFragment{
     private ChatListAdapter adapter;
     private ProgressBar progressBar;
     private static TdApi.Chats chats;
+    private MessagesFragmentHolder holder = MessagesFragmentHolder.getInstance();
 
     private long clickedId;
 
@@ -112,7 +113,7 @@ public class ChatListFragment extends ListFragment{
                     if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
                         setChatsList((TdApi.Chats) output.getResponse());
                         UserInfoHolder.addUsersToMap(chats);
-                        MessagesFragmentHolder.setChats(chats);
+                        holder.setChats(chats);
                     }
                 }
             }
@@ -121,7 +122,7 @@ public class ChatListFragment extends ListFragment{
 
     public TdApi.Chat getChat() {
         if (chats == null || chats.chats.length == 0) {
-            chats = MessagesFragmentHolder.getChats();
+            chats = holder.getChats();
         }
         for (int i = 0; i < chats.chats.length; i++) {
             if (chats.chats[i].id == clickedId) {
@@ -133,7 +134,7 @@ public class ChatListFragment extends ListFragment{
 
     public int getChatPosition(long id) {
         if (chats == null) {
-            chats = MessagesFragmentHolder.getChats();
+            chats = holder.getChats();
         }
         for (int i = 0; i < chats.chats.length; i++) {
             if (chats.chats[i].id == id) {
@@ -174,7 +175,6 @@ public class ChatListFragment extends ListFragment{
                 }
             }
         }
-
         adapter.notifyDataSetChanged();
     }
 
@@ -203,7 +203,7 @@ public class ChatListFragment extends ListFragment{
         ft.commit();
 
         LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
-        layout.setVisibility(View.GONE);
+        layout.setVisibility(View.INVISIBLE);
     }
 
     public void openChat(long resultId) {

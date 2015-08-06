@@ -21,13 +21,8 @@ public class Const {
     public static final int REQUEST_CODE_TAKE_FILE = 104;
     public static final int REQUEST_CODE_MAKE_VIDEO = 105;
     public static final int REQUEST_CODE_NEW_MESSAGE = 110;
-    public static final int CROP_REQUEST_CODE = 111;
 
-    public static final String PATH_TO_NETELEGRAM = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "NeTelegram";
     public static final String PATH_TO_GALLERY = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "NeTelegram";
-    public static final String PATH_TO_THUMBS_GALLERY = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "NeTelegram"
-            + File.separator + "thumb" + File.separator + "gallery";
-    public static final String PATH_TO_VIDEO_GALLERY = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "NeTelegram";
 
 
     public static final String DATE_TIME_PHOTO_PATTERN = "yyyyMMdd_HHmmss";
@@ -41,7 +36,6 @@ public class Const {
     public static final int SEND_FOLDER_FRAGMENT = 206;
     public static final int USER_INFO_FRAGMENT = 207;
     public static final int SELECT_CHAT = 208;
-
 
     public static final int CHAT_NOT_FOUND = 1001;
 
