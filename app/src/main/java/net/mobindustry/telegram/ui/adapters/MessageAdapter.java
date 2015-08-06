@@ -48,8 +48,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         this.loader = loader;
         this.info = info;
 
-        //TODO receive audio...
-
         onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

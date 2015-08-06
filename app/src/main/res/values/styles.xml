@@ -4,10 +4,10 @@
         <item name="android:windowNoTitle">true</item>
         <item name="colorAccent">@color/background_action_bar</item>
         <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
-        <item name="searchViewStyle">@style/AppTheme.SearchView</item>
         <item name="color">#fff</item>
         <item name="android:actionMenuTextColor">#fff</item>
-        <item name="navigationIcon">@drawable/ic_back</item>
+        <item name="searchViewStyle">@style/AppTheme.SearchView</item>
+        <item name="android:autoCompleteTextViewStyle">@style/cursorColor</item>
     </style>
 
     <style name="MyDrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -17,9 +17,6 @@
     <style name="AppTheme.SearchView" parent="Widget.AppCompat.SearchView">
         <item name="closeIcon">@drawable/ic_close_white</item>
         <item name="navigationIcon">@drawable/ic_back</item>
-        <item name="android:textColorPrimary">#fff</item>
-        <item name="android:textColor">#fff</item>
-        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.Light.NoActionBar">
@@ -31,49 +28,19 @@
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
         <item name="android:textColorPrimary">#fff</item>
         <item name="searchViewStyle">@style/AppTheme.SearchView</item>
-
-        <item name="colorAccent">#fff</item>
+        <item name="color">#fff</item>
     </style>
 
-    <style name="Theme.AppCompat.Work" parent="Theme.AppCompat.Light.NoActionBar">
-         <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="ToolbarStyle" parent="customAppTheme">
         <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
         <item name="android:textColorPrimary">#fff</item>
-        <item name="searchViewStyle">@style/AppTheme.SearchView</item>
-
-    </style>
-
-    <style name="Theme.AppCompat.Chat" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
-        <item name="android:textColorPrimary">#fff</item>
-        <item name="searchViewStyle">@style/AppTheme.SearchView</item>
-        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
-
         <item name="colorAccent">#fff</item>
-
+        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
     </style>
 
-    <style name="WhiteSearchView" parent="customAppTheme">
-        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
-        <item name="android:textColorPrimary">#fff</item>
-        <item name="android:textColor">#fff</item>
-    </style>
-
-    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
-        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
-        <item name="closeIcon">@drawable/ic_close_white</item>
-        <item name="navigationIcon">@drawable/ic_back</item>
+    <style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">
         <item name="android:textCursorDrawable">@drawable/cursor</item>
-        <item name="android:textColorPrimary">#fff</item>
         <item name="android:textColor">#fff</item>
-        <item name="searchViewStyle">@style/AppTheme.SearchView</item>
     </style>
 
-    <style name="Theme.AppCompat.Translucent.TranslucentStatusBar" parent="Theme.AppCompat.Translucent">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>
 </resources>

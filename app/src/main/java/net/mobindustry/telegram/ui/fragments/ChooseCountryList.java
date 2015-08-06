@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.ui.adapters.CountriesListAdapter;
 import net.mobindustry.telegram.utils.CountryObject;
@@ -43,10 +45,10 @@ public class ChooseCountryList extends Fragment implements Serializable {
         super.onActivityCreated(savedInstanceState);
         infoRegistration = InfoRegistration.getInstance();
         countries = infoRegistration.getListCountryObject();
-        final CountriesListAdapter countriesListAdapter = new CountriesListAdapter(getActivity(),countries);
+        final CountriesListAdapter countriesListAdapter = new CountriesListAdapter(getActivity(), countries);
         final Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.chose_country_toolbar);
         toolbar.setTitle(R.string.choose_country);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
+        toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,31 +61,26 @@ public class ChooseCountryList extends Fragment implements Serializable {
             }
         });
         toolbar.inflateMenu(R.menu.search_country);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        SearchView sv = new SearchView(DataHolder.getThemedContext());
+        MenuItem item = toolbar.getMenu().findItem(R.id.action_search_country);
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        MenuItemCompat.setActionView(item, sv);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                SearchView sv = new SearchView(getActivity());
-                MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-                MenuItemCompat.setActionView(item, sv);
-                sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        Log.e("Log", "Submit " + query);
-                        return true;
-                    }
+            public boolean onQueryTextSubmit(String query) {
+                Log.e("Log", "Submit " + query);
+                return true;
+            }
 
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        if (!newText.isEmpty()) {
-                            Log.e("Log", "Change " + newText);
-                            countriesListAdapter.getFilter().filter(newText);
-                        } else {
-                            countriesListAdapter.getFilter().filter("");
-                        }
-                        return true;
-                    }
-                });
-                return false;
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.isEmpty()) {
+                    Log.e("Log", "Change " + newText);
+                    countriesListAdapter.getFilter().filter(newText);
+                } else {
+                    countriesListAdapter.getFilter().filter("");
+                }
+                return true;
             }
         });
         list.setAdapter(countriesListAdapter);
@@ -94,7 +91,7 @@ public class ChooseCountryList extends Fragment implements Serializable {
                 Log.e("Log", "Yes ");
                 fragmentTransaction = getFragmentManager().beginTransaction();
                 registrationMainFragment = new RegistrationMainFragment();
-                CountryObject countryObject =countries.getListTmp().get(position);
+                CountryObject countryObject = countries.getListTmp().get(position);
                 infoRegistration.setCountryObject(null);
                 infoRegistration.setCountryObject(countryObject);
                 infoRegistration.setCodeCountryLetters(countryObject.getCountryStringCode());

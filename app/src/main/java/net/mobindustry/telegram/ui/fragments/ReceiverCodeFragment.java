@@ -66,6 +66,14 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.your_code);
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
         toolbar.inflateMenu(R.menu.ok);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

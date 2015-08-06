@@ -1,11 +1,13 @@
 package net.mobindustry.telegram.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -19,7 +21,6 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.GetStateHandler;
 import net.mobindustry.telegram.core.service.CreateGalleryThumbs;
-import net.mobindustry.telegram.core.service.NotificationsService;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.holder.DataHolder;
 
@@ -27,7 +28,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends Activity implements ApiClient.OnApiResultHandler {
+public class MainActivity extends AppCompatActivity implements ApiClient.OnApiResultHandler {
 
     private SplashStart splashStart;
 
@@ -54,6 +55,11 @@ public class MainActivity extends Activity implements ApiClient.OnApiResultHandl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_menu_toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+        DataHolder.setThemedContext(getSupportActionBar().getThemedContext());
 
         Log.e("LOG", "##### Start program #####");
         startService(new Intent(this, CreateGalleryThumbs.class));

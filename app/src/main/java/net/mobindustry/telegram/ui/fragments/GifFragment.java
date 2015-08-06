@@ -33,6 +33,7 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.gif.Giphy;
 import net.mobindustry.telegram.model.gif.GiphyInfo;
+import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.activity.PhotoViewerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
@@ -261,7 +262,7 @@ public class GifFragment extends Fragment {
 
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.inflateMenu(R.menu.search_gif);
-        sv = new SearchView(getActivity());
+        sv = new SearchView(DataHolder.getThemedContext());
         final MenuItem menuItem = toolbar.getMenu().findItem(R.id.action_search_gif);
         MenuItemCompat.setShowAsAction(menuItem, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
         MenuItemCompat.setActionView(menuItem, sv);

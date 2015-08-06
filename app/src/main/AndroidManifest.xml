@@ -59,7 +59,6 @@
             />
         <activity
             android:name=".ui.activity.RegistrationActivity"
-            android:theme="@style/Theme.AppCompat.Work"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
             android:windowSoftInputMode="adjustUnspecified|adjustPan">
             <meta-data

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ public class ChatListFragment extends ListFragment{
     private ProgressBar progressBar;
     private static TdApi.Chats chats;
     private MessagesFragmentHolder holder = MessagesFragmentHolder.getInstance();
+    private LinearLayout layout;
 
     private long clickedId;
 
@@ -48,12 +50,20 @@ public class ChatListFragment extends ListFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         adapter = new ChatListAdapter(getActivity());
+        layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
         return inflater.inflate(R.layout.chat_list_fragment, null);
     }
 
     @Override
     public void onActivityCreated(Bundle savedState) {
         super.onActivityCreated(savedState);
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        manager.findFragmentById(R.id.messages);
+        if (manager.findFragmentById(R.id.messages) != null) {
+            layout.setVisibility(View.INVISIBLE);
+        } else {
+            layout.setVisibility(View.VISIBLE);
+        }
 
         progressBar = (ProgressBar) getActivity().findViewById(R.id.chat_list_progress_bar);
 
@@ -113,7 +123,7 @@ public class ChatListFragment extends ListFragment{
                     if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
                         setChatsList((TdApi.Chats) output.getResponse());
                         UserInfoHolder.addUsersToMap(chats);
-                        holder.setChats(chats);
+                        MessagesFragmentHolder.setChats(chats);
                     }
                 }
             }
@@ -122,7 +132,7 @@ public class ChatListFragment extends ListFragment{
 
     public TdApi.Chat getChat() {
         if (chats == null || chats.chats.length == 0) {
-            chats = holder.getChats();
+            chats = MessagesFragmentHolder.getChats();
         }
         for (int i = 0; i < chats.chats.length; i++) {
             if (chats.chats[i].id == clickedId) {
@@ -134,7 +144,7 @@ public class ChatListFragment extends ListFragment{
 
     public int getChatPosition(long id) {
         if (chats == null) {
-            chats = holder.getChats();
+            chats = MessagesFragmentHolder.getChats();
         }
         for (int i = 0; i < chats.chats.length; i++) {
             if (chats.chats[i].id == id) {
@@ -202,7 +212,6 @@ public class ChatListFragment extends ListFragment{
         ft.replace(R.id.messages, messagesFragment);
         ft.commit();
 
-        LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
         layout.setVisibility(View.INVISIBLE);
     }
 

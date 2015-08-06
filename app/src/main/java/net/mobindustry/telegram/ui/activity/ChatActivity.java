@@ -197,6 +197,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        DataHolder.setThemedContext(getSupportActionBar().getThemedContext());
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
                 toolbar, R.string.drawer_open, R.string.drawer_close) {

@@ -49,6 +49,15 @@ public class YourNameFragment extends Fragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.yor_name_toolbar);
         toolbar.inflateMenu(R.menu.ok);
         toolbar.setTitle(getActivity().getString(R.string.your_name_fragment_title));
+
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

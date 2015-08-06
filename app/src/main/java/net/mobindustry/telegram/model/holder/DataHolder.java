@@ -9,6 +9,8 @@ public class DataHolder {
     private static boolean active = false;
     private static String cachePath;
 
+    private static Context themedContext;
+
     public static Context getContext() {
         return context;
     }
@@ -39,5 +41,13 @@ public class DataHolder {
 
     public static String getCachePath() {
         return cachePath;
+    }
+
+    public static void setThemedContext(Context themedContext1) {
+        themedContext = themedContext1;
+    }
+
+    public static Context getThemedContext() {
+        return themedContext;
     }
 }

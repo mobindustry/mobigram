@@ -185,13 +185,13 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         emoji = holder.getEmoji();
         emojiParser = new EmojiParser(emoji);
 
-        if (holder.getTopMessage(chat.id) != 0) {
-            topMessageId = holder.getTopMessage(chat.id);
+        if (MessagesFragmentHolder.getTopMessage(chat.id) != 0) {
+            topMessageId = MessagesFragmentHolder.getTopMessage(chat.id);
         } else {
             topMessageId = chat.topMessage.id;
         }
 
-        holder.setChat(chat);
+        MessagesFragmentHolder.setChat(chat);
 
         userInfoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -687,7 +687,11 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     super.onPostExecute(aVoid);
                     sendPhotoMessage(getShownChatId(), holder.getTempPhotoFile().getAbsolutePath());
                     if (mProgressDialog != null && mProgressDialog.isShowing()) {
-                        mProgressDialog.dismiss();
+                        try {
+                            mProgressDialog.dismiss();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }.execute();
