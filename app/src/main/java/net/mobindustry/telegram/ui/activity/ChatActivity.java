@@ -87,7 +87,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         DownloadFileHolder.clear();
         Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
         DataHolder.setIsLoggedIn(false);
-        DataHolder.setLogOutClicked(true);
         finish();
         new ApiClient<>(new TdApi.AuthReset(), new OkHandler(), new ApiClient.OnApiResultHandler() {
             @Override
@@ -147,7 +146,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
         DataHolder.setIsLoggedIn(true);
-        DataHolder.setLogOutClicked(false);
 
         receiver = new BroadcastReceiver() {
             @Override

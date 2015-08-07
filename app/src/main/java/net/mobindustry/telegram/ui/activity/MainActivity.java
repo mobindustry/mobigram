@@ -69,17 +69,11 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
         textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
         if (Utils.isOnline()) {
-            if (DataHolder.isLogOutClicked()) {
-                new ApiClient<>(new TdApi.AuthReset(), new OkHandler(), new ApiClient.OnApiResultHandler() {
-                    @Override
-                    public void onApiResult(BaseHandler output) {
-
-                    }
-                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                DataHolder.setLogOutClicked(false);
-                getState();
+            if (DataHolder.isLoggedIn()) {
+                hasAnswer = true;
+                runStartActivity();
             } else {
-                getState();
+                startSplash();
             }
         } else {
             textCheckInternet.setVisibility(View.VISIBLE);
@@ -99,15 +93,6 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 }
             }
         });
-    }
-
-    public void getState() {
-        if (DataHolder.isLoggedIn()) {
-            hasAnswer = true;
-            runStartActivity();
-        } else {
-            startSplash();
-        }
     }
 
     public void startSplash() {

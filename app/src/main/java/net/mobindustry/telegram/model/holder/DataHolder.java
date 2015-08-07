@@ -5,7 +5,6 @@ import android.content.Context;
 public class DataHolder {
 
     private static boolean isLoggedIn = false;
-    private static boolean logOutClicked = false;
     private static Context context;
     private static boolean active = false;
     private static String cachePath;
@@ -65,11 +64,4 @@ public class DataHolder {
         countNoInternetToast = 5;
     }
 
-    public static boolean isLogOutClicked() {
-        return logOutClicked;
-    }
-
-    public static void setLogOutClicked(boolean logOutClicked) {
-        DataHolder.logOutClicked = logOutClicked;
-    }
 }
