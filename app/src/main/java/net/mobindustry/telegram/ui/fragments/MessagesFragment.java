@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -203,6 +204,10 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         });
 
         input = (EditText) getActivity().findViewById(R.id.message_edit_text);
+
+        InputMethodManager inputMethodManager =  (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInputFromWindow(input.getApplicationWindowToken(),     InputMethodManager.SHOW_FORCED, 0);
+        input.requestFocus();
         input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -323,9 +328,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                         Log.e("Log", "null");
                                     }
                                     destroyFragment(fragmentTransaction);
-                                    chatListFragment.getChatsList(0, 200);
                                 }
                             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                            chatListFragment.getChatsList(0, 200);
                             break;
 //                        case R.id.mute_notification:
 //                            Log.e("Log", "MuteNotification");
@@ -557,10 +562,12 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.take_photo:
+                        Utils.hideKeyboard(input);
                         makePhoto();
                         Log.e("LOG", "PHOTO " + holder.getTempPhotoFile().getAbsolutePath());
                         break;
                     case R.id.gallery:
+                        Utils.hideKeyboard(input);
                         Intent intentGallery = new Intent(getActivity(), TransparentActivity.class);
                         intentGallery.putExtra("choice", Const.GALLERY_FRAGMENT);
                         startActivityForResult(intentGallery, 1);
@@ -573,6 +580,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                         ListFoldersHolder.setChatID(getShownChatId());
                         break;
                     case R.id.video:
+                        Utils.hideKeyboard(input);
                         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                         File fileUri = holder.getNewTempVideoFile();
                         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
@@ -581,9 +589,11 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                         Log.e("LOG", "VIDEO " + holder.getTempVideoFile().getAbsolutePath());
                         break;
                     case R.id.file:
+                        Utils.hideKeyboard(input);
                         openFolder();
                         break;
                     case R.id.location:
+                        Utils.hideKeyboard(input);
                         Intent intentLoc = new Intent(getActivity(), TransparentActivity.class);
                         intentLoc.putExtra("choice", Const.MAP_FRAGMENT);
                         startActivityForResult(intentLoc, 1);
@@ -1001,5 +1011,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         }
     };
 
-
+    @Override
+    public void onDestroy() {
+        Utils.hideKeyboard(input);
+        super.onDestroy();
+    }
 }

@@ -1,7 +1,10 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -37,11 +40,13 @@ import java.util.List;
 public class ChatListFragment extends ListFragment{
 
     boolean dualPane;
-    int currentCheckPosition = 0;
+    private static int currentCheckPosition = 0;
     private ChatListAdapter adapter;
     private ProgressBar progressBar;
     private static TdApi.Chats chats;
     private LinearLayout layout;
+    private ProgressDialog mProgressDialog;
+    private boolean fragmentStopped = false;
 
     private long clickedId;
 
@@ -142,7 +147,11 @@ public class ChatListFragment extends ListFragment{
                 return chats.chats[i];
             }
         }
-        return chats.chats[currentCheckPosition];
+        if (chats.chats.length == 1) {
+            return chats.chats[0];
+        } else {
+            return chats.chats[currentCheckPosition];
+        }
     }
 
     public int getChatPosition(long id) {
@@ -212,8 +221,10 @@ public class ChatListFragment extends ListFragment{
             getListView().setItemChecked(index, true);
             MessagesFragment messagesFragment = new MessagesFragment();
             //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-            ft.replace(R.id.messages, messagesFragment);
-            ft.commit();
+            if (!fragmentStopped) {
+                ft.replace(R.id.messages, messagesFragment);
+                ft.commit();
+            }
 
             layout.setVisibility(View.INVISIBLE);
         }
@@ -230,6 +241,9 @@ public class ChatListFragment extends ListFragment{
     }
 
     private void newPrivateChat(final long userId) {
+        getActivity().setRequestedOrientation(getResources().getConfiguration().orientation);
+        mProgressDialog = ProgressDialog.show(getActivity(), "Loading",
+                "Please wait", true, false);
         new ApiClient<>(new TdApi.CreatePrivateChat((int) userId), new OkHandler(), new ApiClient.OnApiResultHandler() {
             @Override
             public void onApiResult(BaseHandler output) {
@@ -245,6 +259,14 @@ public class ChatListFragment extends ListFragment{
                     adapter.clear();
                     adapter.addAll(chats.chats);
                     showMessages(adapter.getPosition(chat));
+                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                        try {
+                            mProgressDialog.dismiss();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
                 }
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -277,4 +299,21 @@ public class ChatListFragment extends ListFragment{
             openChat(resultId);
         }
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        fragmentStopped = true;
+    }
+
+    @Override
+    public void onResume() {
+        fragmentStopped = false;
+        if (adapter.getCount() == 0) {
+            getChatsList(Const.CHATS_LIST_OFFSET, Const.CHATS_LIST_LIMIT);
+        }
+        super.onResume();
+
+    }
+
 }
