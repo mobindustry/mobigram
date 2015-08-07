@@ -152,7 +152,7 @@ public class CreateGalleryThumbs extends Service {
             ArrayList<File> inFiles = new ArrayList<File>();
             File[] files = parentDir.listFiles();
             for (File file : files) {
-                if (file.getName().endsWith(".png")) {
+                if (file.getName().endsWith(".jpg")) {
                     inFiles.add(file);
                 }
             }
@@ -182,10 +182,10 @@ public class CreateGalleryThumbs extends Service {
         private void fillFolder() {
             for (int i = 0; i < listImagesMediaStore.size(); i++) {
                 if (map.size() == 0) {
-                    createThumb(listImagesMediaStore.get(i).getData(), String.valueOf(listImagesMediaStore.get(i).getId()) + ".png");
+                    createThumb(listImagesMediaStore.get(i).getData(), String.valueOf(listImagesMediaStore.get(i).getId()) + ".jpg");
                 } else {
                     if (map.get(listImagesMediaStore.get(i).getId()) == null) {
-                        createThumb(listImagesMediaStore.get(i).getData(), String.valueOf(listImagesMediaStore.get(i).getId()) + ".png");
+                        createThumb(listImagesMediaStore.get(i).getData(), String.valueOf(listImagesMediaStore.get(i).getId()) + ".jpg");
                     } else {
                         continue;
                     }

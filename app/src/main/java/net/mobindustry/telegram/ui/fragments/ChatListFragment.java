@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,9 +126,10 @@ public class ChatListFragment extends ListFragment{
                     getChatsList(0, 200);
                 } else {
                     if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
-                        setChatsList((TdApi.Chats) output.getResponse());
-                        UserInfoHolder.addUsersToMap(chats);
-                        MessagesFragmentHolder.setChats(chats);
+                        TdApi.Chats receivedChats = (TdApi.Chats) output.getResponse();
+                        setChatsList(receivedChats);
+                        UserInfoHolder.addUsersToMap(receivedChats);
+                        MessagesFragmentHolder.setChats(receivedChats);
                     }
                 }
             }

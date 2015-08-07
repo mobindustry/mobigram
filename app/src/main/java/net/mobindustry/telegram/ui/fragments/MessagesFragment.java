@@ -157,16 +157,19 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         });
         activity = (ChatActivity) getActivity();
         progressBar = (ProgressBar) view.findViewById(R.id.messages_progress_bar);
-        chatListFragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
-        chat = chatListFragment.getChat(getShownChatId());
-        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), loader, chat.type);
-        messageListView.setAdapter(adapter);
+
         return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        chatListFragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
+        Log.e("Log", "ActivityCreated chatList");
+        chat = chatListFragment.getChat(getShownChatId());
+        adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), loader, chat.type);
+        messageListView.setAdapter(adapter);
 
         activity.clearSearch();
         registerForContextMenu(messageListView);
@@ -205,8 +208,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
         input = (EditText) getActivity().findViewById(R.id.message_edit_text);
 
-        InputMethodManager inputMethodManager =  (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInputFromWindow(input.getApplicationWindowToken(),     InputMethodManager.SHOW_FORCED, 0);
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInputFromWindow(input.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
         input.requestFocus();
         input.addTextChangedListener(new TextWatcher() {
             @Override
@@ -411,7 +414,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     public void setChatHistory(final TdApi.Messages messages) {
-        if(messages.messages.length == 0) {
+        if (messages.messages.length == 0) {
             noMessages.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
         } else {
@@ -471,7 +474,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 break;
                         }
                     } else if (messages.messages.length == 0) {
-                        if(type == Enums.MessageAddType.ALL) {
+                        if (type == Enums.MessageAddType.ALL) {
                             setChatHistory(messages);
                         }
                         needLoad = false;
@@ -673,6 +676,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
                 }
             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            holder.clearFiles();
         }
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO && resultCode == getActivity().RESULT_OK) {
             new AsyncTask<Void, Void, Void>() {
@@ -682,6 +686,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     mProgressDialog = ProgressDialog.show(getActivity(), "Image processing",
                             "Please wait", true, false);
                 }
+
                 @Override
                 protected Void doInBackground(Void... params) {
 
@@ -707,6 +712,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                             e.printStackTrace();
                         }
                     }
+                    holder.clearFiles();
                 }
             }.execute();
         }

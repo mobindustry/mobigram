@@ -28,6 +28,12 @@ public class MessagesFragmentHolder {
     private static TdApi.Chats chats;
     private boolean isEmojiCreated = false;
 
+    public void clearFiles() {
+        tempPhotoFile = null;
+        tempVideoFile = null;
+        System.gc();
+    }
+
     private static HashMap<Long, Integer> topMessageMap = new HashMap<>();
 
     private Emoji emoji;
