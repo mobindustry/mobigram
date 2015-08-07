@@ -3,6 +3,7 @@ package net.mobindustry.telegram;
 import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -21,7 +22,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
-
         TG.setUpdatesHandler(new UpdatesHandler(this));
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             TG.setDir(getCacheDir().getAbsolutePath());

@@ -18,6 +18,7 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.GetStateHandler;
+import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.core.service.CreateGalleryThumbs;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.holder.DataHolder;
@@ -38,7 +39,9 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     @Override
     public void onApiResult(BaseHandler output) {
-        if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
+        if (output.getHandlerId() == OkHandler.HANDLER_ID) {
+            Log.e("Log", "OkMain");
+        } else if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
             if (((GetStateHandler) output).getResponse() == Enums.StatesEnum.WaitSetPhoneNumber) {
                 stateWaitCode = true;
                 hasAnswer = true;
@@ -55,21 +58,28 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        Log.e("LOG", "##### Start program #####");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_menu_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         DataHolder.setThemedContext(getSupportActionBar().getThemedContext());
 
-        Log.e("LOG", "##### Start program #####");
         startService(new Intent(this, CreateGalleryThumbs.class));
         textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
         if (Utils.isOnline()) {
-            if (DataHolder.isLoggedIn()) {
-                hasAnswer = true;
-                runStartActivity();
+            if (DataHolder.isLogOutClicked()) {
+                new ApiClient<>(new TdApi.AuthReset(), new OkHandler(), new ApiClient.OnApiResultHandler() {
+                    @Override
+                    public void onApiResult(BaseHandler output) {
+
+                    }
+                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                DataHolder.setLogOutClicked(false);
+                getState();
             } else {
-                startSplash();
+                getState();
             }
         } else {
             textCheckInternet.setVisibility(View.VISIBLE);
@@ -89,6 +99,15 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 }
             }
         });
+    }
+
+    public void getState() {
+        if (DataHolder.isLoggedIn()) {
+            hasAnswer = true;
+            runStartActivity();
+        } else {
+            startSplash();
+        }
     }
 
     public void startSplash() {
@@ -120,10 +139,9 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
     @Override
     protected void onRestart() {
         super.onRestart();
-        if(splashStart.isCancelled()) {
+        if (splashStart.isCancelled()) {
             splashStart = new SplashStart();
             splashStart.execute();
-            runStartActivity();
         }
     }
 
@@ -131,10 +149,14 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
         while (true) {
             if (hasAnswer) {
                 if (stateWaitCode) {
+                    Log.e("Log", "Start Registration");
+
                     Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
+                    Log.e("Log", "Start Chat");
+
                     Intent intent = new Intent(MainActivity.this, ChatActivity.class);
                     startActivity(intent);
                     finish();

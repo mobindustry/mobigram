@@ -59,7 +59,9 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:layout_marginTop="@dimen/margin_3dp"
-                android:textSize="@dimen/chat_list_item_last_message_size" />
+                android:textSize="@dimen/chat_list_item_last_message_size"
+                android:paddingRight="40dp"
+                />
 
         </LinearLayout>
     </LinearLayout>

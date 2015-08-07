@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,12 +36,14 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
+import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.core.handlers.StickerHandler;
 import net.mobindustry.telegram.core.handlers.StickersHandler;
 import net.mobindustry.telegram.core.handlers.UserHandler;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.NavigationItem;
 import net.mobindustry.telegram.model.holder.DataHolder;
+import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.ui.adapters.NavigationDrawerAdapter;
@@ -80,10 +83,18 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private ChatListFragment chatListFragment;
 
     public void logOut() {
+        Utils.deleteRecursive(getCacheDir());
+        DownloadFileHolder.clear();
         Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
         DataHolder.setIsLoggedIn(false);
+        DataHolder.setLogOutClicked(true);
         finish();
-        new ApiClient<>(new TdApi.AuthReset(), new StickerHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        new ApiClient<>(new TdApi.AuthReset(), new OkHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public long getMyId() {
@@ -101,10 +112,12 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     }
 
     public void getUserMe() {
+        Log.e("Log", "UserMe");
         new ApiClient<>(new TdApi.GetMe(), new UserHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public void getStickers() {
+        Log.e("Log", "Sticker");
         new ApiClient<>(new TdApi.GetStickers(), new StickersHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
@@ -134,6 +147,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
         DataHolder.setIsLoggedIn(true);
+        DataHolder.setLogOutClicked(false);
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -150,6 +164,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                     getChatListFragment().getChatsList(Const.CHATS_LIST_OFFSET, Const.CHATS_LIST_LIMIT);
                 }
                 if (intent.getAction().equals(Const.READ_INBOX_ACTION)) {
+                    getChatListFragment().getChatsList(Const.CHATS_LIST_OFFSET, Const.CHATS_LIST_LIMIT);
                     long chatId = intent.getLongExtra("chat_id", 0);
                     int unread = intent.getIntExtra("unread_count", 0);
                     int lastRead = intent.getIntExtra("last_read", 0);

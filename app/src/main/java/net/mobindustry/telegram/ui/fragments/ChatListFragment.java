@@ -206,16 +206,17 @@ public class ChatListFragment extends ListFragment{
 
     void showMessages(int index) {
         currentCheckPosition = index;
+        if(getFragmentManager() != null) {
+            FragmentTransaction ft
+                    = getFragmentManager().beginTransaction();
+            getListView().setItemChecked(index, true);
+            MessagesFragment messagesFragment = new MessagesFragment();
+            //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+            ft.replace(R.id.messages, messagesFragment);
+            ft.commit();
 
-        FragmentTransaction ft
-                = getFragmentManager().beginTransaction();
-        getListView().setItemChecked(index, true);
-        MessagesFragment messagesFragment = new MessagesFragment();
-        //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-        ft.replace(R.id.messages, messagesFragment);
-        ft.commit();
-
-        layout.setVisibility(View.INVISIBLE);
+            layout.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void openChat(long resultId) {
@@ -228,7 +229,7 @@ public class ChatListFragment extends ListFragment{
         }
     }
 
-    private void newPrivateChat(long userId) {
+    private void newPrivateChat(final long userId) {
         new ApiClient<>(new TdApi.CreatePrivateChat((int) userId), new OkHandler(), new ApiClient.OnApiResultHandler() {
             @Override
             public void onApiResult(BaseHandler output) {
@@ -266,10 +267,6 @@ public class ChatListFragment extends ListFragment{
             }
         }
         adapter.notifyDataSetChanged();
-    }
-
-    public void deleteChat(TdApi.Chat chat) {
-        adapter.remove(chat);
     }
 
     @Override

@@ -24,5 +24,9 @@ public class DownloadFileHolder {
     public static TdApi.FileLocal getUpdatedFile(int id) {
         return map.get(id);
     }
+
+    public static void clear() {
+        map.clear();
+    }
 }
 
