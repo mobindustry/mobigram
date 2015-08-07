@@ -8,6 +8,7 @@ public class DataHolder {
     private static Context context;
     private static boolean active = false;
     private static String cachePath;
+    private static int countNoInternetToast = 5;
 
     private static Context themedContext;
 
@@ -49,5 +50,17 @@ public class DataHolder {
 
     public static Context getThemedContext() {
         return themedContext;
+    }
+
+    public static int getCountNoInternetToast() {
+        return countNoInternetToast;
+    }
+
+    public static void setCountNoInternetToast() {
+        countNoInternetToast++;
+    }
+
+    public static void clearCountNoInternetToast() {
+        countNoInternetToast = 5;
     }
 }

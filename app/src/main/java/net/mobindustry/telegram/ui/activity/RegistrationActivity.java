@@ -88,6 +88,7 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
             if (handler.getResponse() == Enums.StatesEnum.WaitSetName) {
                 YourNameFragment yourNameFragment = new YourNameFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, yourNameFragment);
+                fragmentTransaction.addToBackStack(null);
             }
             if (!activityClosed) {
                 fragmentTransaction.commit();
@@ -211,5 +212,13 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
         super.onRestart();
         activityClosed = false;
         new ApiClient<>(new TdApi.AuthGetState(), new GetStateHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) instanceof YourNameFragment) {
+            setAuthReset();
+        }
+        super.onBackPressed();
     }
 }

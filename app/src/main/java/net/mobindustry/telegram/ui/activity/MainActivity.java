@@ -2,8 +2,6 @@ package net.mobindustry.telegram.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +21,7 @@ import net.mobindustry.telegram.core.handlers.GetStateHandler;
 import net.mobindustry.telegram.core.service.CreateGalleryThumbs;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.holder.DataHolder;
+import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
         startService(new Intent(this, CreateGalleryThumbs.class));
         textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
-        if (isOnline()) {
+        if (Utils.isOnline()) {
             if (DataHolder.isLoggedIn()) {
                 hasAnswer = true;
                 runStartActivity();
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline() && hasAnswer) {
+                if (Utils.isOnline() && hasAnswer) {
                     if (splashStart != null && !splashStart.isCancelled()) {
                         splashStart.cancel(false);
                     }
@@ -168,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
         @Override
         protected Void doInBackground(Void... voids) {
-            while (!isOnline()) {
+            while (!Utils.isOnline()) {
                 try {
                     TimeUnit.MILLISECONDS.sleep(100);
                 } catch (InterruptedException e) {
@@ -184,12 +183,6 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
             textCheckInternet.setVisibility(View.GONE);
             startSplash();
         }
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 }
 

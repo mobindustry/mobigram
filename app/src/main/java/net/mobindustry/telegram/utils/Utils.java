@@ -10,6 +10,8 @@ import android.graphics.Matrix;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.media.ExifInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
@@ -375,4 +377,12 @@ public class Utils {
             Log.e("Tag", "rotateFileImage error " + e);
         }
     }
+
+
+    public static boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) DataHolder.getContext().getSystemService(DataHolder.getContext().CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    }
+
 }

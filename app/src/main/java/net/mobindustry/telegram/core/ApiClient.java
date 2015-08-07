@@ -1,15 +1,15 @@
 package net.mobindustry.telegram.core;
 
 import android.os.AsyncTask;
-import android.util.TimeUtils;
+import android.widget.Toast;
 
 import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.model.holder.DataHolder;
+import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.Client;
 import org.drinkless.td.libcore.telegram.TG;
 import org.drinkless.td.libcore.telegram.TdApi;
-
-import java.util.concurrent.TimeUnit;
 
 public class ApiClient<TFunction extends TdApi.TLFunction, THandler extends BaseHandler> extends AsyncTask<Void, Integer, THandler> {
 
@@ -28,20 +28,25 @@ public class ApiClient<TFunction extends TdApi.TLFunction, THandler extends Base
     @Override
     protected THandler doInBackground(Void... params) {
         Client client = TG.getClientInstance();
-        if (client != null) {
-            client.send(function, handler);
-            for (int i = 0; i < TIMEOUT; i++) {
-                if (handler.hasAnswer()) {
-                    return handler;
+        if (Utils.isOnline()) {
+            DataHolder.clearCountNoInternetToast();
+            if (client != null) {
+                client.send(function, handler);
+                for (int i = 0; i < TIMEOUT; i++) {
+                    if (handler.hasAnswer()) {
+                        return handler;
+                    }
+                    try {
+                        Thread.sleep(THREAD_SLEEP_TIME);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
                 }
-                try {
-                    Thread.sleep(THREAD_SLEEP_TIME);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return null;
-                }
+                return null;
             }
-            return null;
+        } else {
+            this.cancel(true);
         }
         return null;
     }
@@ -53,6 +58,15 @@ public class ApiClient<TFunction extends TdApi.TLFunction, THandler extends Base
         if (resultHandler != null) {
             resultHandler.onApiResult(tOutput);
         }
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        if(DataHolder.getCountNoInternetToast() % 5 == 0) {
+            Toast.makeText(DataHolder.getContext(), "No internet connection.\nPlease, check your internet connection and try again", Toast.LENGTH_SHORT).show();
+        }
+        DataHolder.setCountNoInternetToast();
     }
 
     public interface OnApiResultHandler {
