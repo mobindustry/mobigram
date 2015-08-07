@@ -323,7 +323,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                         Log.e("Log", "null");
                                     }
                                     destroyFragment(fragmentTransaction);
-                                    chatListFragment.deleteChat(chatListFragment.getChat(getShownChatId()));
+                                    chatListFragment.getChatsList(0, 200);
                                 }
                             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                             break;
@@ -390,6 +390,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     }
 
     public void addNewMessage(final TdApi.Messages messages) {
+        progressBar.setVisibility(View.GONE);
+        noMessages.setVisibility(View.GONE);
         MessagesFragmentHolder.addToMap(messages.messages[0].chatId, messages.messages[0].id);
         messageListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         adapter.add(parseEmojiMessages(messages.messages[0]));
@@ -406,6 +408,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void setChatHistory(final TdApi.Messages messages) {
         if(messages.messages.length == 0) {
             noMessages.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
         } else {
             noMessages.setVisibility(View.GONE);
         }
@@ -463,6 +466,9 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                                 break;
                         }
                     } else if (messages.messages.length == 0) {
+                        if(type == Enums.MessageAddType.ALL) {
+                            setChatHistory(messages);
+                        }
                         needLoad = false;
                     }
                 }
