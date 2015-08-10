@@ -5,14 +5,18 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.drawable.LevelListDrawable;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,6 +24,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -104,7 +109,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     private int toScrollLoadMessageId;
     private int selectedCount = 0;
     private List<TdApi.Message> selectedItemsList;
-    private long showedChatId;
 
     private ProgressDialog mProgressDialog;
 
@@ -597,9 +601,14 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                         break;
                     case R.id.location:
                         Utils.hideKeyboard(input);
-                        Intent intentLoc = new Intent(getActivity(), TransparentActivity.class);
-                        intentLoc.putExtra("choice", Const.MAP_FRAGMENT);
-                        startActivityForResult(intentLoc, 1);
+                        LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                        if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                            Intent intentLoc = new Intent(getActivity(), TransparentActivity.class);
+                            intentLoc.putExtra("choice", Const.MAP_FRAGMENT);
+                            startActivityForResult(intentLoc, 1);
+                        } else {
+                            displayPromptForEnablingGps(getActivity());
+                        }
                         break;
                 }
                 return true;
@@ -1021,5 +1030,27 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void onDestroy() {
         Utils.hideKeyboard(input);
         super.onDestroy();
+    }
+
+    public static void displayPromptForEnablingGps(final Activity activity) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
+
+        builder.setMessage(activity.getString(R.string.gpsDisabledDialogMessage))
+                .setPositiveButton(activity.getString(R.string.cancel_button),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface d, int id) {
+                                d.cancel();
+                            }
+
+                        })
+                .setNegativeButton(activity.getString(R.string.openSettings_button),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface d, int id) {
+                                activity.startActivity(new Intent(action));
+                                d.dismiss();
+                            }
+                        });
+        builder.create().show();
     }
 }

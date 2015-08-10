@@ -2,6 +2,8 @@ package net.mobindustry.telegram.model.holder;
 
 import android.content.Context;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class DataHolder {
 
     private static boolean isLoggedIn = false;
@@ -9,6 +11,7 @@ public class DataHolder {
     private static boolean active = false;
     private static String cachePath;
     private static int countNoInternetToast = 5;
+    private LatLng locationFromIp;
 
     private static Context themedContext;
 
@@ -64,4 +67,11 @@ public class DataHolder {
         countNoInternetToast = 5;
     }
 
+    public LatLng getLocationFromIp() {
+        return locationFromIp;
+    }
+
+    public void setLocationFromIp(LatLng locationFromIp) {
+        this.locationFromIp = locationFromIp;
+    }
 }

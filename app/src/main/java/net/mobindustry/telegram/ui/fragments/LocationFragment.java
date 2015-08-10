@@ -221,7 +221,7 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     }
 
     private void init(Location location) {
-        userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        userLocation = new LatLng(location.getLatitude(), location.getLongitude()); //TODO find why crash
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(userLocation)

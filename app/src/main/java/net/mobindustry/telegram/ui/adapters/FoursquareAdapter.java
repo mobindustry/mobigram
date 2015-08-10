@@ -44,7 +44,6 @@ public class FoursquareAdapter extends ArrayAdapter<FoursquareVenue> implements 
 
         FoursquareVenue foursquareVenue = getItem(position);
         if (foursquareVenue != null) {
-            Log.e("LOG", "CATEGORY SIZE " + foursquareVenue.getFoursquareCategories().size());
             if (foursquareVenue.getFoursquareCategories().size() > 0) {
                 ImageLoaderHelper.displayImage(foursquareVenue.getFoursquareCategories().get(0).getFoursquareCategoryIcon().getIconUrl(), iconPlace);
             }

@@ -15,6 +15,15 @@
             android:layout_gravity="center"
             />
 
+        <TextView
+            android:id="@+id/no_chats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_chats_message"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
         <ListView
             android:id="@id/android:list"
             android:layout_width="match_parent"

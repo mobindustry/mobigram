@@ -102,7 +102,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
             DialogCodeEmpty codeEmpty = new DialogCodeEmpty();
             codeEmpty.show(fm, "CONFIRM_CODE_EMPTY");
         } else {
-            activity.setCodeFromServer(codeFromUser.getText().toString());
+            activity.setCodeFromServer(codeFromUser.getText().toString().trim());
         }
     }
 }

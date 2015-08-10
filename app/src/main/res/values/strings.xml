@@ -72,5 +72,9 @@
     <string name="message_context_menu_forward">Forward</string>
     <string name="message_context_menu_delete">Delete</string>
     <string name="file_not_found">File not found</string>
+    <string name="no_chats_message">No chats here yet…</string>
 
+    <string name="gpsDisabledDialogMessage">Please enable location service on your device and try again</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="openSettings_button">Open settings</string>
 </resources>

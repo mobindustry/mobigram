@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -49,6 +50,8 @@ public class ChatListFragment extends ListFragment{
     private ProgressDialog mProgressDialog;
     private boolean fragmentStopped = false;
 
+    private TextView noChatsMessage;
+
     private long clickedId;
 
     @Override
@@ -56,12 +59,16 @@ public class ChatListFragment extends ListFragment{
                              Bundle savedInstanceState) {
         adapter = new ChatListAdapter(getActivity());
         layout = (LinearLayout) getActivity().findViewById(R.id.fragment_layout);
+        noChatsMessage = (TextView) getActivity().findViewById(R.id.no_chats);
         return inflater.inflate(R.layout.chat_list_fragment, null);
     }
 
     @Override
     public void onActivityCreated(Bundle savedState) {
         super.onActivityCreated(savedState);
+
+        noChatsMessage = (TextView) getActivity().findViewById(R.id.no_chats);
+        
         FragmentManager manager = getActivity().getSupportFragmentManager();
         manager.findFragmentById(R.id.messages);
         if (manager.findFragmentById(R.id.messages) != null) {
@@ -127,9 +134,14 @@ public class ChatListFragment extends ListFragment{
                 } else {
                     if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
                         TdApi.Chats receivedChats = (TdApi.Chats) output.getResponse();
-                        setChatsList(receivedChats);
-                        UserInfoHolder.addUsersToMap(receivedChats);
-                        MessagesFragmentHolder.setChats(receivedChats);
+                        if (receivedChats.chats.length == 0) {
+                            noChatsMessage.setVisibility(View.VISIBLE);
+                        } else {
+                            noChatsMessage.setVisibility(View.GONE);
+                            setChatsList(receivedChats);
+                            UserInfoHolder.addUsersToMap(receivedChats);
+                            MessagesFragmentHolder.setChats(receivedChats);
+                        }
                     }
                 }
             }
