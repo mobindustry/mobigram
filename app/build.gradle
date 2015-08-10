@@ -14,7 +14,6 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-
 android {
     compileSdkVersion 22
     buildToolsVersion "21.1.2"
@@ -25,6 +24,12 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "2"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('../keystore/debug.keystore')
+        }
     }
     buildTypes {
         release {
