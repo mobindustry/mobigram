@@ -66,12 +66,4 @@ public class DataHolder {
     public static void clearCountNoInternetToast() {
         countNoInternetToast = 5;
     }
-
-    public LatLng getLocationFromIp() {
-        return locationFromIp;
-    }
-
-    public void setLocationFromIp(LatLng locationFromIp) {
-        this.locationFromIp = locationFromIp;
-    }
 }

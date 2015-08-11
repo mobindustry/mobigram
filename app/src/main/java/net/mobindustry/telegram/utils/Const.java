@@ -22,8 +22,10 @@ public class Const {
     public static final int REQUEST_CODE_MAKE_VIDEO = 105;
     public static final int REQUEST_CODE_NEW_MESSAGE = 110;
 
-    public static final String PATH_TO_GALLERY = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "NeTelegram";
-
+    public static final String PATH_TO_SAVE_PHOTOS = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram" + File.separator + "photo";
+    public static final String PATH_TO_SAVE_VIDEO = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram" + File.separator + "video";
+    public static final String PATH_TO_SAVE_IMAGES = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram" + File.separator + "images";
+    public static final String PATH_TO_SAVE_GIFS = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram" + File.separator + "gif";
 
     public static final String DATE_TIME_PHOTO_PATTERN = "yyyyMMdd_HHmmss";
     public static final String TIME_PATTERN = "HH:mm";

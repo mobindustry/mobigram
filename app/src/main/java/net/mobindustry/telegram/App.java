@@ -24,8 +24,9 @@ public class App extends Application {
         Fabric.with(this, new Crashlytics());
         TG.setUpdatesHandler(new UpdatesHandler(this));
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            TG.setDir(getCacheDir().getAbsolutePath());
-            DataHolder.setCachePath(getCacheDir().getAbsolutePath());
+            String path = Environment.getExternalStorageDirectory() + File.separator + "Android" + File.separator + "data" + File.separator + getPackageName();
+            TG.setDir(path);
+            DataHolder.setCachePath(path);
         }
         DataHolder.setContext(this);
     }

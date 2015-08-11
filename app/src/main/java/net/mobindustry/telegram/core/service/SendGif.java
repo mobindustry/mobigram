@@ -11,6 +11,7 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
+import net.mobindustry.telegram.utils.Const;
 
 import org.apache.http.util.ByteArrayBuffer;
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -61,9 +62,8 @@ public class SendGif extends Service {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
             String fileName = "GIF_" + dateFormat.format(new Date()) + ".gif";
-            File root = android.os.Environment.getExternalStorageDirectory();
 
-            File dir = new File(root.getAbsolutePath() + "/NeTelegram");
+            File dir = new File(Const.PATH_TO_SAVE_GIFS);
             if (dir.exists() == false) {
                 dir.mkdirs();
             }
@@ -116,9 +116,8 @@ public class SendGif extends Service {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
             String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
-            File root = android.os.Environment.getExternalStorageDirectory();
 
-            File dir = new File(root.getAbsolutePath() + "/NeTelegram");
+            File dir = new File(Const.PATH_TO_SAVE_IMAGES);
             if (dir.exists() == false) {
                 dir.mkdirs();
             }

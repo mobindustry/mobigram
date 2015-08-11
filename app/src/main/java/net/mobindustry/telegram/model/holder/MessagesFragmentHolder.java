@@ -14,7 +14,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 public class MessagesFragmentHolder {
 
@@ -79,12 +78,12 @@ public class MessagesFragmentHolder {
         Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
         // Check if device has SD card I save photo on it, if no I save photo on internal memory
         if (isSDPresent) {
-            String dir = Const.PATH_TO_GALLERY;
+            String dir = Const.PATH_TO_SAVE_PHOTOS;
             File path = new File(dir);
             path.mkdirs();
             return path;
         } else {
-            String dir = Const.PATH_TO_GALLERY;
+            String dir = Const.PATH_TO_SAVE_PHOTOS;
             File path = new File(dir);
             path.mkdirs();
             return path;
@@ -92,15 +91,21 @@ public class MessagesFragmentHolder {
     }
 
     private File getOutputMediaFileVideo() {
+        String dir = Const.PATH_TO_SAVE_VIDEO;
+        File path = new File(dir);
+        path.mkdirs();
         SimpleDateFormat dateFormat = new SimpleDateFormat(Const.DATE_TIME_PHOTO_PATTERN);
         String fileName = "MOV_" + dateFormat.format(new Date()) + ".mp4";
-        return new File(neTelegramDirectory, fileName);
+        return new File(path.getAbsolutePath(), fileName);
     }
 
     private File getOutputMediaFile() {
+        String dir = Const.PATH_TO_SAVE_PHOTOS;
+        File path = new File(dir);
+        path.mkdirs();
         SimpleDateFormat dateFormat = new SimpleDateFormat(Const.DATE_TIME_PHOTO_PATTERN);
         String fileName = "IMG_" + dateFormat.format(new Date()) + ".jpg";
-        return new File(neTelegramDirectory, fileName);
+        return new File(path.getAbsolutePath(), fileName);
     }
 
     public File getTempVideoFile() {
