@@ -11,7 +11,6 @@ public class DataHolder {
     private static boolean active = false;
     private static String cachePath;
     private static int countNoInternetToast = 5;
-    private LatLng locationFromIp;
 
     private static Context themedContext;
 

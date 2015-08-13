@@ -1,14 +1,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/splash_background"
-    android:id="@+id/main_layout"
-    >
+    android:background="@color/splash_background">
 
     <include
         android:id="@+id/main_menu_toolbar"
-        layout="@layout/toolbar_main_menu"
-        />
+        layout="@layout/toolbar_main_menu" />
 
     <com.romainpiel.titanic.library.TitanicTextView
         android:id="@+id/titanic_tv"
@@ -16,17 +14,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/app_name"
-        android:textColor="#212121"
+        android:textColor="@color/titanic_background"
         android:textSize="@dimen/splash_screen_text_size" />
 
     <TextView
-        android:visibility="gone"
+        android:id="@+id/text_check_internet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Check your internet connection"
-        android:textColor="#ffa5a5a5"
         android:layout_gravity="center|bottom"
         android:layout_margin="@dimen/margin_20dp"
-        android:id="@+id/text_check_internet"/>
+        android:text="@string/check_internet_message"
+        android:textColor="@color/titanic_foreground"
+        android:visibility="gone" />
 
 </FrameLayout>

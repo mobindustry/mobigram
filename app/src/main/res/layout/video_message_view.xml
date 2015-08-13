@@ -13,31 +13,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:scaleType="fitCenter"
-            />
+            android:scaleType="fitCenter" />
 
         <FrameLayout
             android:id="@+id/video_blend"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#aa090909"
-            >
+            android:background="@color/video_message_background">
 
         </FrameLayout>
 
         <ImageView
-            android:src="@drawable/photoload"
-            android:scaleType="fitCenter"
             android:id="@+id/video_load_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/video_load_icon_size"
+            android:layout_height="@dimen/video_load_icon_size"
             android:layout_gravity="center"
-            />
+            android:scaleType="fitCenter"
+            android:src="@drawable/photoload" />
+
         <ProgressBar
             android:id="@+id/download_video_progress_bar"
             style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="68dp"
-            android:layout_height="68dp"
+            android:layout_width="@dimen/video_load_progress_bar_size"
+            android:layout_height="@dimen/video_load_progress_bar_size"
             android:layout_gravity="center"
             android:visibility="gone" />
 

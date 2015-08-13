@@ -9,8 +9,7 @@
     android:paddingBottom="@dimen/padding_2"
     android:paddingLeft="@dimen/padding_3"
     android:paddingTop="@dimen/padding_2"
-    android:textColor="#708090"
+    android:textColor="@color/country_list_header_text"
     android:textSize="@dimen/text_country_list_header_row"
     android:textStyle="bold"
-    tools:text="A"
-    />
+    tools:text="A" />

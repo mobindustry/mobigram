@@ -3,17 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/chat_list_progress_bar"
             style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_gravity="center"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/no_chats"
@@ -21,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/no_chats_message"
-            android:textSize="20sp"
+            android:textSize="@dimen/no_messages_text_size"
             android:visibility="gone" />
 
         <ListView
@@ -38,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/margin_16dp"
         android:background="@drawable/message_icon_bg"
         android:src="@drawable/floating_pencil" />
 </FrameLayout>

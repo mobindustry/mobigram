@@ -6,16 +6,17 @@
     android:orientation="horizontal">
 
     <FrameLayout
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/foursquare_item_icon_size"
+        android:layout_height="@dimen/foursquare_item_icon_size"
         android:layout_margin="@dimen/margin_10dp">
 
         <ImageView
+            android:id="@+id/iconPlace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:id="@+id/iconPlace"
             tools:src="@drawable/ic_for_attach_menu" />
+
     </FrameLayout>
 
     <LinearLayout
@@ -30,17 +31,15 @@
             android:layout_gravity="left"
             android:layout_margin="@dimen/margin_5dp"
             android:textColor="@color/text_color"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:text="Парк Лазаря Глобы" />
+            android:textSize="@dimen/foursquare_item_title_text_size"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textPlaceAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_margin="@dimen/margin_5dp"
-            tools:text="проспю Карла Маркса, 91" />
+            android:layout_margin="@dimen/margin_5dp" />
 
     </LinearLayout>
 

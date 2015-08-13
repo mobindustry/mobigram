@@ -42,4 +42,36 @@
     <color name="gray_1">#C0C0C0</color>
     <color name="black">#000000</color>
 
+    <color name="chat_layout_background">#EEE</color>
+    <color name="item_icon_text">#fff</color>
+    <color name="chat_item_notification_text">#fff</color>
+
+    <color name="country_list_header_text">#708090</color>
+    <color name="document_filesize_text">#ff0087ff</color>
+    <color name="drawer_text">#ff282828</color>
+    <color name="drawer_header_text">#fff</color>
+    <color name="drawer_icon_text">#fff</color>
+    <color name="gif_document_view_background">#aa090909</color>
+
+    <color name="message_content_time_background">#877c7c7c</color>
+    <color name="message_content_time_text">#FFD0D0D0</color>
+    <color name="message_time">#aaa</color>
+
+    <color name="titanic_background">#212121</color>
+    <color name="titanic_foreground">#ffa5a5a5</color>
+    <color name="hint">#aaa</color>
+    
+    <color name="toolbar_text">#fff</color>
+    <color name="video_message_background">#aa090909</color>
+
+    <color name="button_keyboard_tab">#ffcbcbcb</color>
+    <color name="circle_color_transparent">#00000000</color>
+    <color name="circle_color">#BEBEBE</color>
+    <color name="cursor">#fff</color>
+    <color name="rect_stroke">#fff</color>
+    <color name="rect_transparent">#00FFFFFF</color>
+    <color name="toolbar_selected_border">#ff808080</color>
+    <color name="toolbar_selected_background">#fff</color>
+    <color name="rect_bottom">#80000000</color>
+
 </resources>

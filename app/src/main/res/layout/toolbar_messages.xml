@@ -3,9 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_height"
     android:background="@color/background_action_bar"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    >
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
     <LinearLayout
         android:id="@+id/user_info_layout"
@@ -19,7 +18,7 @@
             android:layout_height="@dimen/toolbar_icon_size"
             android:layout_margin="@dimen/margin_5dp"
             android:gravity="center"
-            android:textColor="#fff"
+            android:textColor="@color/toolbar_text"
             android:textSize="@dimen/toolbar_icon_text_size"
             android:visibility="gone" />
 
@@ -28,23 +27,23 @@
             android:layout_width="@dimen/toolbar_icon_size"
             android:layout_height="@dimen/toolbar_icon_size"
             android:layout_margin="@dimen/margin_5dp"
-            app:riv_corner_radius="1dp"
-            app:riv_tile_mode="repeat"
+            android:visibility="gone"
+            app:riv_corner_radius="@dimen/radius"
             app:riv_oval="true"
-            android:visibility="gone" />
+            app:riv_tile_mode="repeat" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_3dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_3dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/toolbar_text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#fff"
+                android:textColor="@color/toolbar_text"
                 android:textSize="@dimen/toolbar_name_text_size"
                 android:textStyle="bold" />
 
@@ -52,10 +51,11 @@
                 android:id="@+id/toolbar_text_last_seen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#fff"
+                android:textColor="@color/toolbar_text"
                 android:textSize="@dimen/toolbar_last_seen_text_size" />
 
         </LinearLayout>
+
     </LinearLayout>
 
 </android.support.v7.widget.Toolbar>

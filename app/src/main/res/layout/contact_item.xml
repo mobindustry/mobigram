@@ -11,7 +11,7 @@
         android:layout_height="@dimen/contact_list_item_icon_size"
         android:layout_margin="@dimen/margin_5dp"
         android:gravity="center"
-        android:textColor="#fff"
+        android:textColor="@color/item_icon_text"
         android:textSize="@dimen/contact_list_icon_text_size" />
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:id="@+id/firstLastName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000"
+            android:textColor="@color/black"
             android:textSize="@dimen/contact_list_item_name_text_size"
             android:textStyle="bold" />
 
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="#000"
+            android:textColor="@color/black"
             android:textSize="@dimen/contact_list_item_last_seen_text_size" />
 
     </LinearLayout>

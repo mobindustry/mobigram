@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
  /*
  * Copyright (C) 2012 Fabian Leon Ortega <http://orleonsoft.blogspot.com/,
  *  http://yelamablog.blogspot.com/>
@@ -15,19 +14,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
+
 -->
 <rotate xmlns:android="http://schemas.android.com/apk/res/android"
     android:fromDegrees="0"
     android:pivotX="50%"
     android:pivotY="50%"
-    android:toDegrees="360" >
+    android:toDegrees="360">
 
     <shape
         android:innerRadiusRatio="3"
         android:shape="ring"
         android:thicknessRatio="8"
-        android:useLevel="false" >
+        android:useLevel="false">
         <gradient
             android:centerColor="@color/gray_1"
             android:centerY="0.50"

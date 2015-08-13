@@ -2,20 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background_activity"
-    >
+    android:orientation="vertical">
 
-    <include
-        layout="@layout/toolbar_choose_country"
-        />
+    <include layout="@layout/toolbar_choose_country" />
 
     <se.emilsjolander.stickylistheaders.StickyListHeadersListView
         android:id="@+id/countriesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
-        >
+        android:divider="@null">
 
     </se.emilsjolander.stickylistheaders.StickyListHeadersListView>
 

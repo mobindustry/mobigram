@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#EEE"
+        android:background="@color/chat_layout_background"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -16,7 +16,6 @@
             android:layout_height="match_parent"
             android:layout_weight="0.55"
             android:orientation="vertical">
-
 
             <include layout="@layout/toolbar"
                 android:id="@+id/chats_toolbar"/>
@@ -36,25 +35,28 @@
                 android:id="@+id/fragment_layout"
                 >
             </LinearLayout>
+
         </LinearLayout>
+
         <FrameLayout
             android:id="@+id/messages"
-            android:layout_width="0px"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
             <include layout="@layout/background" />
 
         </FrameLayout>
+
     </LinearLayout>
 
     <!-- The navigation drawer -->
     <ListView
         android:id="@+id/left_drawer"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#fff"
+        android:background="@color/background_activity"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp" />

@@ -23,11 +23,11 @@
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/layoutButtonsPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5"
-        android:orientation="horizontal"
-        android:id="@+id/layoutButtonsPager">
+        android:orientation="horizontal">
 
         <FrameLayout
             android:id="@+id/buttonCancelPhoto"
@@ -65,9 +65,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
-                android:textColor="@color/text_color_gallery_fragment"
-                tools:text="18" />
+                android:textColor="@color/text_color_gallery_fragment" />
+
         </FrameLayout>
 
     </LinearLayout>
+
 </LinearLayout>

@@ -4,28 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    >
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/country"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_60dp"
         android:layout_weight="5"
+        android:gravity="left"
         android:textColor="@color/text_country_list"
         android:textSize="@dimen/text_row"
-        tools:text="text"
-        android:gravity="left"
-        android:layout_marginLeft="@dimen/margin_60dp"/>
+        tools:text="text" />
 
     <TextView
         android:id="@+id/code_country"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10dp"
         android:layout_weight="1.5"
         android:textColor="@color/background_action_bar"
         android:textSize="@dimen/text_row"
-        android:layout_marginLeft="@dimen/margin_10dp"
         tools:text="text" />
 
 </LinearLayout>

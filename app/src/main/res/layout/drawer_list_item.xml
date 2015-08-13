@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/drawer_item_title_padding"
-        android:textColor="#ff282828"
+        android:textColor="@color/drawer_text"
         android:textSize="@dimen/drawer_item_text_size" />
 
 </LinearLayout>

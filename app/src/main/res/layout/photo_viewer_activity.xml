@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/transparent_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent_background"
-    android:id="@+id/transparent_frame_layout">
+    android:orientation="vertical">
 
     <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_gravity="center"
-        />
+        android:layout_gravity="center" />
 
     <ImageView
-        android:layout_gravity="center"
         android:id="@+id/photo_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        />
+        android:layout_gravity="center"
+        android:scaleType="fitCenter" />
 
     <ImageView
         android:id="@+id/photo_view_back"

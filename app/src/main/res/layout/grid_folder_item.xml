@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/dimension_grid_item"
     android:layout_height="@dimen/dimension_grid_item">
 
@@ -13,7 +11,7 @@
             android:id="@+id/imagePhoto"
             android:layout_width="@dimen/dimension_grid_item"
             android:layout_height="@dimen/dimension_grid_item"
-            android:padding="10dp"
+            android:padding="@dimen/padding_10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/photo_test" />
 
@@ -26,11 +24,12 @@
 
         <ImageView
             android:id="@+id/photoFolder"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/grid_check_size"
+            android:layout_height="@dimen/grid_check_size"
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/margin_15dp"
             android:src="@drawable/circle" />
+
     </RelativeLayout>
 
 </FrameLayout>

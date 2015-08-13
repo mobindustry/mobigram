@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -298,7 +297,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             View contactView = inflater.inflate(R.layout.contact_message, null);
             TextView name = (TextView) contactView.findViewById(R.id.contact_message_name);
             TextView phone = (TextView) contactView.findViewById(R.id.contact_message_phone);
-            TextView icon = (TextView) contactView.findViewById(R.id.contackt_message_icon);
+            TextView icon = (TextView) contactView.findViewById(R.id.contact_message_icon);
 
             int sdk = android.os.Build.VERSION.SDK_INT;
             if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {

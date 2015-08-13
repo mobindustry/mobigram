@@ -77,4 +77,12 @@
     <string name="gpsDisabledDialogMessage">Please enable location service on your device and try again</string>
     <string name="cancel_button">Cancel</string>
     <string name="openSettings_button">Open settings</string>
+    <string name="photos_number_text_size">14</string>
+    <string name="selected_gif_count_text_size">14</string>
+    <string name="check_internet_message">Check your internet connection</string>
+    <string name="wrong_number">Wrong number?</string>
+    <string name="code_digits">0123456789+</string>
+    <string name="code_plus">+</string>
+    <string name="username_title">Username</string>
+    <string name="mobile">Mobile</string>
 </resources>

@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background_activity">
+    android:background="@color/background_activity"
+    android:orientation="vertical">
 
     <include
         layout="@layout/toolbar_registration"
@@ -12,39 +12,39 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:id="@+id/text_with_user_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="@string/we_send_phone_number_test"
+        android:layout_margin="@dimen/margin_20dp"
+        android:textColor="@color/text_color"
         android:textSize="@dimen/info_text"
-        android:textColor="@color/text_color"
-        android:layout_margin="@dimen/margin_20dp"
-        android:id="@+id/text_with_user_phone"/>
+        tools:text="@string/we_send_phone_number_test" />
+
     <EditText
+        android:id="@+id/code_from_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_user"
         android:layout_margin="@dimen/margin_20dp"
-        android:id="@+id/code_from_user"
-        android:inputType="phone"
         android:imeOptions="actionDone"
+        android:inputType="phone"
         android:textColor="@color/text_color"
-        />
+        android:textSize="@dimen/text_user" />
+
     <TextView
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Wrong code"
-        android:layout_margin="@dimen/margin_20dp"
         android:id="@+id/wrongCode"
-        android:textColor="@color/wrong_code"
-        />
-    <TextView
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="@string/we_call_you_test"
         android:layout_margin="@dimen/margin_20dp"
-        android:id="@+id/countdown_timer"/>
+        android:textColor="@color/wrong_code"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/countdown_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_20dp"
+        android:visibility="gone"
+        tools:text="@string/we_call_you_test" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -52,15 +52,15 @@
         android:layout_weight="1">
 
         <TextView
+            android:id="@+id/wrong_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|bottom"
-            android:text="Wrong number?"
-            android:textColor="@color/background_action_bar"
             android:layout_margin="@dimen/margin_20dp"
-            android:textSize="@dimen/wrong_number_text_size"
-            android:id="@+id/wrong_number"
-            />
+            android:text="@string/wrong_number"
+            android:textColor="@color/background_action_bar"
+            android:textSize="@dimen/wrong_number_text_size" />
 
     </FrameLayout>
+
 </LinearLayout>

@@ -67,7 +67,7 @@ public class ImagesAdapter extends ArrayAdapter<PhotoFlickr> {
     public View getView(int position, View convertView, ViewGroup parent) {
         PhotoFlickr photoFlickr = getItem(position);
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.images_frickl_item, parent, false);
+            convertView = inflater.inflate(R.layout.images_flickr_item, parent, false);
 
         }
         ImageView check = (ImageView) convertView.findViewById(R.id.checkFlickr);

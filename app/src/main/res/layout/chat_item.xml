@@ -8,21 +8,21 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
+
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_5dp"
-            android:layout_marginRight="@dimen/margin_5dp"
-            >
+            android:layout_marginRight="@dimen/margin_5dp">
 
             <TextView
                 android:id="@+id/message_icon_text"
                 android:layout_width="@dimen/chat_list_item_icon_size"
                 android:layout_height="@dimen/chat_list_item_icon_size"
                 android:gravity="center_horizontal|center_vertical"
-                android:textColor="#fff"
+                android:textColor="@color/item_icon_text"
                 android:textSize="@dimen/chat_list_icon_text_size" />
 
             <com.makeramen.roundedimageview.RoundedImageView
@@ -30,9 +30,8 @@
                 android:layout_width="@dimen/chat_list_item_icon_size"
                 android:layout_height="@dimen/chat_list_item_icon_size"
                 app:riv_corner_radius="1dp"
-                app:riv_tile_mode="repeat"
                 app:riv_oval="true"
-                />
+                app:riv_tile_mode="repeat" />
 
         </FrameLayout>
 
@@ -40,8 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
             android:layout_marginLeft="@dimen/margin_5dp"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
@@ -56,44 +55,43 @@
                 android:id="@+id/lastMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true"
                 android:layout_marginTop="@dimen/margin_3dp"
-                android:textSize="@dimen/chat_list_item_last_message_size"
-                android:paddingRight="40dp"
-                />
+                android:ellipsize="end"
+                android:paddingRight="@dimen/padding_40dp"
+                android:singleLine="true"
+                android:textSize="@dimen/chat_list_item_last_message_size" />
 
         </LinearLayout>
+
     </LinearLayout>
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="end"
-    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/contactItemTime"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:layout_marginRight="@dimen/margin_10dp"
-        android:textColor="#ff6e6e6e"
-        android:textSize="12sp"
-        android:layout_gravity="top"
-        />
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/chat_notification"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="@dimen/margin_10dp"
-        android:textColor="#ffffffff"
-        android:textSize="12sp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:gravity="center"
-        />
+        <TextView
+            android:id="@+id/contactItemTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginRight="@dimen/margin_10dp"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:textColor="#ff6e6e6e"
+            android:textSize="@dimen/chat_item_time_text_size" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/chat_notification"
+            android:layout_width="@dimen/chat_item_notification_size"
+            android:layout_height="@dimen/chat_item_notification_size"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="@dimen/margin_10dp"
+            android:layout_marginTop="@dimen/margin_5dp"
+            android:gravity="center"
+            android:textColor="@color/chat_item_notification_text"
+            android:textSize="@dimen/chat_item_notification_text_size" />
+
+    </LinearLayout>
 
 </FrameLayout>

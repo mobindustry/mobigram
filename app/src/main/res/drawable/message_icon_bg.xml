@@ -4,6 +4,6 @@
 
     <solid android:color="@color/background_action_bar" />
     <size
-        android:width="80dp"
-        android:height="80dp" />
+        android:width="@dimen/message_icon_size"
+        android:height="@dimen/message_icon_size" />
 </shape>

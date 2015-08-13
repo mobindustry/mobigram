@@ -3,7 +3,7 @@
     android:id="@+id/chat_user_name_text_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:textColor="#000"
-    android:textSize="16sp"
+    android:layout_margin="@dimen/margin_5dp"
+    android:textColor="@color/black"
+    android:textSize="@dimen/user_name_text_size"
     android:textStyle="italic" />

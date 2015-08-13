@@ -6,9 +6,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@drawable/msg_in_photo"
-        >
+        android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/base_layout"
@@ -26,8 +25,7 @@
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:id="@+id/in_content"
@@ -47,12 +45,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_3dp"
-                    android:background="#877c7c7c"
+                    android:background="@color/message_content_time_background"
                     android:padding="@dimen/padding_3dp"
-                    android:textColor="#FFD0D0D0"
+                    android:textColor="@color/message_content_time_text"
                     android:textSize="@dimen/message_time_text_size" />
 
             </LinearLayout>
+
         </FrameLayout>
+
     </LinearLayout>
+
 </FrameLayout>

@@ -2,47 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background_activity"
-    >
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <include
             android:id="@+id/userInfoToolbar"
-            layout="@layout/toolbar_user_info"
-            />
+            layout="@layout/toolbar_user_info" />
 
         <ImageView
             android:id="@+id/write_message_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/write_message_icon"
-            android:background="@drawable/write_message_background"
-            android:padding="15dp"
+            android:layout_width="@dimen/write_message_button_size"
+            android:layout_height="@dimen/write_message_button_size"
             android:layout_gravity="end|bottom"
-            android:layout_marginRight="25dp"
-            />
+            android:layout_marginRight="@dimen/margin_25dp"
+            android:background="@drawable/write_message_background"
+            android:padding="@dimen/padding_15dp"
+            android:src="@drawable/write_message_icon" />
 
     </FrameLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/user_info_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
         </LinearLayout>
 
-
     </ScrollView>
-
 
 </LinearLayout>

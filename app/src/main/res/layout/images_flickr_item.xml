@@ -17,15 +17,15 @@
 
         <ImageView
             android:id="@+id/imageFlickr"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="@dimen/flickr_item_size"
+            android:layout_height="@dimen/flickr_item_size"
             android:layout_centerInParent="true"
-            android:padding="10dp"
+            android:padding="@dimen/padding_10dp"
             android:scaleType="centerCrop" />
 
         <View
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="@dimen/flickr_item_size"
+            android:layout_height="@dimen/flickr_item_size"
             android:layout_alignLeft="@+id/imageFlickr"
             android:layout_alignTop="@+id/imageFlickr"
             android:layout_centerInParent="true"
@@ -33,10 +33,12 @@
 
         <ImageView
             android:id="@+id/checkFlickr"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/flickr_item_check_size"
+            android:layout_height="@dimen/flickr_item_check_size"
             android:layout_alignRight="@+id/imageFlickr"
             android:layout_margin="@dimen/margin_15dp"
             android:src="@drawable/circle" />
+
     </RelativeLayout>
+
 </FrameLayout>

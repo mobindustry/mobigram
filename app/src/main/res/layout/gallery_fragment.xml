@@ -12,18 +12,18 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
+        android:id="@+id/layoutFind"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5"
         android:background="@color/background_search_gif"
-        android:orientation="horizontal"
-        android:id="@+id/layoutFind">
+        android:orientation="horizontal">
 
         <FrameLayout
+            android:id="@+id/findImages"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/findImages">
+            android:layout_weight="1">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -35,43 +35,43 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/padding_45dp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="@dimen/margin_2dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/padding_45dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center"
                     android:text="@string/text_find_images"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_color_gallery_fragment"/>
+                    android:textColor="@color/text_color_gallery_fragment"
+                    android:textSize="@dimen/find_images_text_size"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center"
                     android:text="@string/text_web_search"
-                    android:textColor="@color/text_color_gallery_fragment"/>
+                    android:textColor="@color/text_color_gallery_fragment" />
 
             </LinearLayout>
 
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/findGifs"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/findGifs">
+            android:layout_weight="1">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/search_gif"
-                android:layout_marginLeft="@dimen/margin_20dp"/>
+                android:layout_marginLeft="@dimen/margin_20dp"
+                android:src="@drawable/search_gif" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -85,16 +85,17 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center"
                     android:text="@string/text_find_gifs"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_color_gallery_fragment"/>
+                    android:textColor="@color/text_color_gallery_fragment"
+                    android:textSize="@dimen/find_gifs_text_size"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center"
                     android:text="@string/text_giphy"
-                    android:textColor="@color/text_color_gallery_fragment"/>/>
+                    android:textColor="@color/text_color_gallery_fragment" />
+
             </LinearLayout>
 
         </FrameLayout>
@@ -107,13 +108,12 @@
         android:layout_weight="9">
 
         <ProgressBar
-            android:visibility="visible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/gallery_progress_bar"
             style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            />
+            android:visibility="visible" />
 
         <GridView
             android:id="@+id/gridList"
@@ -122,45 +122,47 @@
             android:layout_marginLeft="@dimen/margin_10dp"
             android:layout_marginRight="@dimen/margin_10dp"
             android:gravity="center">
+
         </GridView>
 
     </FrameLayout>
+
     <LinearLayout
+        android:id="@+id/layoutButtons"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.6"
-        android:orientation="horizontal"
-        android:id="@+id/layoutButtons">
-
-       <FrameLayout
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:layout_weight="1"
-           android:layout_gravity="center"
-           android:background="@drawable/send_cancel_buttons_selector"
-           android:id="@+id/buttonCancelGallery">
-
-           <TextView
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:text="@string/text_cancel"
-               android:gravity="center"
-               android:textColor="@color/text_color_gallery_fragment"/>
-       </FrameLayout>
+        android:orientation="horizontal">
 
         <FrameLayout
+            android:id="@+id/buttonCancelGallery"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="0.5dp"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@drawable/send_cancel_buttons_selector"
-            android:id="@+id/buttonSendGallery">
+            android:background="@drawable/send_cancel_buttons_selector">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/text_cancel"
+                android:textColor="@color/text_color_gallery_fragment" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/buttonSendGallery"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_05dp"
+            android:layout_weight="1"
+            android:background="@drawable/send_cancel_buttons_selector">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:text="@string/text_send"
                 android:textColor="@color/text_color_gallery_fragment" />
 
@@ -174,8 +176,6 @@
                 tools:text="14" />
         </FrameLayout>
 
-
     </LinearLayout>
-
 
 </LinearLayout>

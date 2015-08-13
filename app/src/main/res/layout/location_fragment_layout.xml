@@ -3,51 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background_activity">
+    android:background="@color/background_activity"
+    android:orientation="vertical">
 
     <include
         layout="@layout/toolbar_map_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:orientation="vertical"
-    android:layout_weight="1">
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </fragment>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="bottom">
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <com.melnykov.fab.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
+        </fragment>
+
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_ab_location" />
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"
+            android:layout_marginTop="@dimen/margin_5dp">
+
+            <com.melnykov.fab.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="@dimen/margin_16dp"
+                android:src="@drawable/ic_ab_location" />
+
+        </FrameLayout>
 
     </FrameLayout>
-</FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        >
+        android:layout_gravity="bottom">
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/buttonSendLocation"
@@ -65,22 +66,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_send_selected_location"
-                android:textSize="@dimen/text_send_your_current_location"
-                android:textColor="@color/background_action_bar"
-                android:textStyle="bold"
                 android:layout_gravity="top|center"
                 android:layout_marginBottom="@dimen/margin_20dp"
-                />
+                android:text="@string/text_send_selected_location"
+                android:textColor="@color/background_action_bar"
+                android:textSize="@dimen/text_send_your_current_location"
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/textCurrentPosition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="(48,448270 : 35,031320)"
-                android:textSize="12sp"
                 android:layout_gravity="bottom|center"
-                android:id="@+id/textCurrentPosition"
-                android:layout_marginTop="@dimen/margin_25dp"/>
+                android:layout_marginTop="@dimen/margin_25dp"
+                android:textSize="@dimen/map_curent_position_text_size" />
 
         </FrameLayout>
 
@@ -91,6 +90,7 @@
             android:layout_gravity="center|right"
             android:layout_margin="@dimen/margin_10dp"
             android:src="@drawable/ic_foursquare" />
+
     </FrameLayout>
 
 </LinearLayout>

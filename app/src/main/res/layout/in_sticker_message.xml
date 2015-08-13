@@ -11,8 +11,7 @@
         <FrameLayout
             android:id="@+id/base_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
         </FrameLayout>
 
@@ -20,8 +19,7 @@
             android:id="@+id/forwarded_from_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
         </FrameLayout>
 
@@ -32,7 +30,9 @@
             <FrameLayout
                 android:id="@+id/in_sticker"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></FrameLayout>
+                android:layout_height="match_parent">
+
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -45,11 +45,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_3dp"
-                    android:background="#877c7c7c"
+                    android:background="@color/message_content_time_background"
                     android:padding="@dimen/padding_3dp"
-                    android:textColor="#FFD0D0D0"
+                    android:textColor="@color/message_content_time_text"
                     android:textSize="@dimen/message_time_text_size" />
+
             </LinearLayout>
+
         </FrameLayout>
+
     </LinearLayout>
+
 </FrameLayout>

@@ -3,58 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_header"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:background="@color/background_action_bar"
-    >
+    android:layout_height="@dimen/drawer_header_height"
+    android:background="@color/background_action_bar">
 
     <TextView
         android:id="@+id/header_text_icon"
         android:layout_width="@dimen/header_icon_size"
         android:layout_height="@dimen/header_icon_size"
+        android:layout_marginBottom="@dimen/margin_50dp"
+        android:layout_marginLeft="@dimen/margin_20dp"
+        android:layout_marginTop="@dimen/margin_30dp"
         android:gravity="center"
-        android:textColor="#fff"
+        android:textColor="@color/drawer_icon_text"
         android:textSize="@dimen/toolbar_icon_text_size"
-        android:visibility="gone"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="50dp"
-        />
+        android:visibility="gone" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/header_image_icon"
         android:layout_width="@dimen/header_icon_size"
         android:layout_height="@dimen/header_icon_size"
-        app:riv_corner_radius="1dp"
-        app:riv_tile_mode="repeat"
-        app:riv_oval="true"
+        android:layout_marginBottom="@dimen/margin_50dp"
+        android:layout_marginLeft="@dimen/margin_20dp"
+        android:layout_marginTop="@dimen/margin_30dp"
         android:visibility="gone"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="50dp"
-        />
+        app:riv_corner_radius="@dimen/radius"
+        app:riv_oval="true"
+        app:riv_tile_mode="repeat" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:layout_margin="@dimen/margin_10dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/drawer_header_first_last_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#fff"/>
+            android:textColor="@color/drawer_header_text"
+            android:textSize="@dimen/drawer_header_text_size"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/drawer_header_phone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="13sp"
-            android:textColor="#fff"
-            />
+            android:textColor="@color/drawer_header_text"
+            android:textSize="@dimen/drawer_header_phone_text_size" />
 
     </LinearLayout>
 

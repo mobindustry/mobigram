@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -24,25 +23,27 @@
             android:layout_marginLeft="@dimen/margin_10dp"
             android:layout_marginRight="@dimen/margin_10dp"
             android:background="@color/background_activity"
-            android:gravity="center"></GridView>
+            android:gravity="center">
+
+        </GridView>
 
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/layoutButtonsFolder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5"
-        android:orientation="horizontal"
-        android:id="@+id/layoutButtonsFolder">
+        android:orientation="horizontal">
 
         <FrameLayout
+            android:id="@+id/buttonCancelFolder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginRight="@dimen/margin_05dp"
             android:layout_weight="1"
-            android:layout_marginRight="0.5dp"
-            android:background="@drawable/send_cancel_buttons_selector"
-            android:id="@+id/buttonCancelFolder">
+            android:background="@drawable/send_cancel_buttons_selector">
 
             <TextView
                 android:layout_width="match_parent"
@@ -53,18 +54,18 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/buttonSendFolder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="0.5dp"
+            android:layout_marginLeft="@dimen/margin_05dp"
             android:layout_weight="1"
-            android:background="@drawable/send_cancel_buttons_selector"
-            android:id="@+id/buttonSendFolder">
+            android:background="@drawable/send_cancel_buttons_selector">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:text="@string/text_send"
                 android:textColor="@color/text_color_gallery_fragment" />
 
@@ -75,7 +76,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:textColor="@color/text_color_gallery_fragment"
-                tools:text="14" />
+                tools:text="@string/photos_number_text_size" />
         </FrameLayout>
 
     </LinearLayout>

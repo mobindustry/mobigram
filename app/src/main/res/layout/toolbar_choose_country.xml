@@ -3,7 +3,7 @@
     android:id="@+id/chose_country_toolbar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_height"
-    android:theme="@style/ToolbarStyle"
-    android:background="@color/background_action_bar">
+    android:background="@color/background_action_bar"
+    android:theme="@style/ToolbarStyle">
 
 </android.support.v7.widget.Toolbar>

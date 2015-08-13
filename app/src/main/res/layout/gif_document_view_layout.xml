@@ -13,26 +13,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:scaleType="fitCenter"
-            />
+            android:scaleType="fitCenter" />
 
         <FrameLayout
             android:id="@+id/gif_blend"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#aa090909"
-            >
+            android:background="@color/gif_document_view_background">
 
         </FrameLayout>
 
         <ImageView
-            android:src="@drawable/photogif"
-            android:scaleType="fitCenter"
             android:id="@+id/document_load_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/gif_document_icon_size"
+            android:layout_height="@dimen/gif_document_icon_size"
             android:layout_gravity="center"
-            />
+            android:scaleType="fitCenter"
+            android:src="@drawable/photogif" />
 
     </FrameLayout>
 

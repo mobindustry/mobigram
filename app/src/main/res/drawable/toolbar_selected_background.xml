@@ -3,9 +3,9 @@
     android:shape="rectangle" >
 
     <stroke
-        android:width="0.1dp"
-        android:color="#ff808080" />
+        android:width="@dimen/toolbar_selected_width"
+        android:color="@color/toolbar_selected_border" />
 
-    <solid android:color="#fff" />
+    <solid android:color="@color/toolbar_selected_background" />
 
 </shape>

@@ -6,10 +6,10 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/msg_out"
-        android:orientation="vertical"
         android:layout_gravity="end"
-        >
+        android:background="@drawable/msg_out"
+        android:orientation="vertical">
+
         <FrameLayout
             android:id="@+id/base_layout"
             android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|right"
                 android:maxWidth="@dimen/message_max_width"
-                android:textColor="#000"
+                android:textColor="@color/black"
                 android:textSize="@dimen/message_text_size" />
 
             <LinearLayout
@@ -49,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/padding_3dp"
-                    android:textColor="#aaa"
+                    android:textColor="@color/message_time"
                     android:textSize="@dimen/message_time_text_size" />
 
                 <ImageView
@@ -58,6 +58,9 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
+
         </LinearLayout>
+
     </LinearLayout>
+
 </FrameLayout>
