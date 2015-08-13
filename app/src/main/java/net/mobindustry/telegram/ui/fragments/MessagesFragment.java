@@ -323,15 +323,8 @@ public class MessagesFragment extends Fragment implements Serializable {
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.clear_history:
-                            new ApiClient<>(new TdApi.DeleteChatHistory(chat.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
-                                @Override
-                                public void onApiResult(BaseHandler output) {
-                                    if (output == null) {
-                                        Log.e("Log", "null");
-                                    }
-                                    destroyFragment(fragmentTransaction);
-                                }
-                            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                            ApiHelper.clearChatHistory(chat.id);
+                            destroyFragment(fragmentTransaction);
                             chatListFragment.getChatsList(0, 200);
                             break;
 //                        case R.id.mute_notification:
@@ -719,7 +712,9 @@ public class MessagesFragment extends Fragment implements Serializable {
         if (requestCode == Const.REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT && resultCode == Activity.RESULT_OK) {
             final long id = data.getLongExtra("id", 0);
             chatListFragment.openChat(id);
-            forwardMessages(id);
+            int[] toForwardMessagesId = getMessagesId();
+            ApiHelper.sendForwardMessage(id, getShownChatId(), toForwardMessagesId);
+            selectedItemsList.clear();
         }
     }
 
@@ -842,16 +837,6 @@ public class MessagesFragment extends Fragment implements Serializable {
                 break;
         }
         return super.onContextItemSelected(item);
-    }
-
-    private void forwardMessages(long id) {
-        int[] toForwardMessagesId = getMessagesId();
-        new ApiClient<>(new TdApi.ForwardMessages(id, getShownChatId(), toForwardMessagesId), new ChatHistoryHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-                selectedItemsList.clear();
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     private void deleteMessages() {

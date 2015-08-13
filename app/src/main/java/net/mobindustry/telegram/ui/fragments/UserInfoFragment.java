@@ -23,7 +23,6 @@ import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.GroupChatFullHandler;
-import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.core.handlers.UserFullHandler;
 import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;

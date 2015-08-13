@@ -3,19 +3,14 @@ package net.mobindustry.telegram.core.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 
-import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.ApiHelper;
-import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.utils.Const;
 
 import org.apache.http.util.ByteArrayBuffer;
-import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.BufferedInputStream;
 import java.io.File;

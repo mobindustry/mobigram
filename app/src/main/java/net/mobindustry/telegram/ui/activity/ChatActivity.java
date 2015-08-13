@@ -33,6 +33,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
@@ -353,11 +354,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
         DataHolder.setIsLoggedIn(false);
         finish();
-        new ApiClient<>(new TdApi.AuthReset(), new OkHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        ApiHelper.authReset();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

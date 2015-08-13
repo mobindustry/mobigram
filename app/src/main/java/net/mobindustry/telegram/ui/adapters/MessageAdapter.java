@@ -40,7 +40,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
 
     private Loader loader;
 
-    public MessageAdapter(final Context context, long myId, final Loader loader, TdApi.ChatInfo info) {
+    public MessageAdapter(final Activity context, long myId, final Loader loader, TdApi.ChatInfo info) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
         this.myId = myId;
@@ -80,7 +80,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                             TdApi.File documentFile = document.document.document;
                             ImageView icon = (ImageView) v.findViewById(R.id.document_icon);
                             icon.setImageBitmap(null);
-                            Utils.gifFileCheckerAndLoader(documentFile, icon);
+                            Utils.gifFileCheckerAndLoader(documentFile, context, icon);
                         } else {
                             ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.download_document_progress_bar);
                             progressBar.setVisibility(View.VISIBLE);

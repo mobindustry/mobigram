@@ -21,6 +21,7 @@ import com.melnykov.fab.FloatingActionButton;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatHandler;
 import net.mobindustry.telegram.core.handlers.ChatsHandler;
@@ -254,11 +255,7 @@ public class ChatListFragment extends ListFragment {
         getActivity().setRequestedOrientation(getResources().getConfiguration().orientation);
         mProgressDialog = ProgressDialog.show(getActivity(), "Loading",
                 "Please wait", true, false);
-        new ApiClient<>(new TdApi.CreatePrivateChat((int) userId), new OkHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        ApiHelper.createPrivateChat(userId);
         new ApiClient<>(new TdApi.GetChat(userId), new ChatHandler(), new ApiClient.OnApiResultHandler() {
             @Override
             public void onApiResult(BaseHandler output) {

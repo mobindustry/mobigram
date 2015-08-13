@@ -28,6 +28,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
@@ -159,7 +160,7 @@ public class Utils {
         return type;
     }
 
-    public static void gifFileCheckerAndLoader(final TdApi.File file, final ImageView view) {
+    public static void gifFileCheckerAndLoader(final TdApi.File file, Activity activity, final ImageView view) {
         if (file instanceof TdApi.FileLocal) {
             TdApi.FileLocal fileLocal = (TdApi.FileLocal) file;
             Glide.with(DataHolder.getContext()).load(fileLocal.path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
@@ -168,26 +169,8 @@ public class Utils {
             if (DownloadFileHolder.getUpdatedFilePath(fileEmpty.id) != null) {
                 Glide.with(DataHolder.getContext()).load(DownloadFileHolder.getUpdatedFilePath(fileEmpty.id)).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
             } else {
-                new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
-                    @Override
-                    public void onApiResult(BaseHandler output) {
-                        if (output.getHandlerId() == OkHandler.HANDLER_ID) {
-                            String path = null;
-                            for (int i = 0; i < 50; i++) {
-                                path = DownloadFileHolder.getUpdatedFilePath(fileEmpty.id);
-                                if (path != null) {
-                                    break;
-                                }
-                                try {
-                                    TimeUnit.MILLISECONDS.sleep(250);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            Glide.with(DataHolder.getContext()).load(path).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
-                        }
-                    }
-                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                ApiHelper.downloadFile(fileEmpty.id);
+                findLoop(fileEmpty.id, view, activity, false);
             }
         }
     }
@@ -199,29 +182,17 @@ public class Utils {
         } else if (file instanceof TdApi.FileEmpty) {
             final TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
             if (DownloadFileHolder.getUpdatedFilePath(fileEmpty.id) != null) {
-                findLoop(fileEmpty.id, view, activity);
+                findLoop(fileEmpty.id, view, activity, false);
             } else {
-                new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new OkHandler(), new ApiClient.OnApiResultHandler() {
-                    @Override
-                    public void onApiResult(BaseHandler output) {
-                        if (output.getHandlerId() == OkHandler.HANDLER_ID) {
-                            findLoop(fileEmpty.id, view, activity);
-                        }
-                    }
-                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                ApiHelper.downloadFile(fileEmpty.id);
+                findLoop(fileEmpty.id, view, activity, false);
             }
         }
     }
 
     public static void photoFileLoader(final int id, final ImageView view, final Activity activity) {
-        new ApiClient<>(new TdApi.DownloadFile(id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-                if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                    findLoop(id, view, activity);
-                }
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        ApiHelper.downloadFile(id);
+        findLoop(id, view, activity, false);
     }
 
     public static void setIcon(TdApi.File file, int chatId, String firstName, String lastName, final ImageView iconImage, final TextView icon, final Activity activity) {
@@ -238,14 +209,8 @@ public class Utils {
                         file = DownloadFileHolder.getUpdatedFile(fileEmpty.id);
                         ImageLoaderHelper.displayImageWithoutFadeIn(Const.IMAGE_LOADER_PATH_PREFIX + ((TdApi.FileLocal) file).path, iconImage);
                     } else {
-                        new ApiClient<>(new TdApi.DownloadFile(fileEmpty.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                            @Override
-                            public void onApiResult(BaseHandler output) {
-                                if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                                    findLoop(fileEmpty.id, iconImage, activity);
-                                }
-                            }
-                        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                        ApiHelper.downloadFile(fileEmpty.id);
+                        findLoop(fileEmpty.id, iconImage, activity, false);
                     }
                 } else {
                     iconImage.setImageDrawable(null);
@@ -282,7 +247,7 @@ public class Utils {
         }
     }
 
-    public static void findLoop(final int id, final ImageView iconImage, final Activity activity) {
+    public static void findLoop(final int id, final ImageView iconImage, final Activity activity, final boolean gif) {
         Runnable runnable = new Runnable() {
             public void run() {
                 String path;
@@ -293,8 +258,12 @@ public class Utils {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                iconImage.setVisibility(View.VISIBLE);
-                                ImageLoaderHelper.displayImageWithoutFadeIn(Const.IMAGE_LOADER_PATH_PREFIX + finalPath, iconImage);
+                                if (gif) {
+                                    Glide.with(DataHolder.getContext()).load(finalPath).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(iconImage);
+                                } else {
+                                    iconImage.setVisibility(View.VISIBLE);
+                                    ImageLoaderHelper.displayImageWithoutFadeIn(Const.IMAGE_LOADER_PATH_PREFIX + finalPath, iconImage);
+                                }
                             }
                         });
                         break;
