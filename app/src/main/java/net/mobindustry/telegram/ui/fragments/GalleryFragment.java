@@ -24,11 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
-import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
@@ -230,8 +230,7 @@ public class GalleryFragment extends Fragment {
                                 }
                                 ListFoldersHolder.getListImages().add(linkImage);
                             } else {
-                                ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(),
-                                        ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
+                                ApiHelper.sendPhotoMessage(ListFoldersHolder.getChatID(), ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
                             }
                         }
                         if (ListFoldersHolder.getListForSending().get(i) instanceof GiphyObject) {

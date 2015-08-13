@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,15 +13,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.core.ApiClient;
-import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.MessageHandler;
+import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.model.foursquare.FoursquareVenue;
 import net.mobindustry.telegram.model.holder.FoursquareHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.ui.adapters.FoursquareAdapter;
-
-import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,17 +44,6 @@ public class FoursquareListFragment extends Fragment implements Serializable {
         return inflater.inflate(R.layout.foursquare_list_fragment_layout, container, false);
     }
 
-    public void sendGeoPointMessage(double lat, double lng) {
-        getActivity().finish();
-        long id = MessagesFragmentHolder.getChat().id;
-        new ApiClient<>(new TdApi.SendMessage(id, new TdApi.InputMessageGeoPoint(lng, lat)),
-                new MessageHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -84,7 +68,8 @@ public class FoursquareListFragment extends Fragment implements Serializable {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 lat = foursquareVenueList.get(position).getFoursquareLocation().getLatitude();
                 lng = foursquareVenueList.get(position).getFoursquareLocation().getLongitude();
-                sendGeoPointMessage(lat, lng);
+                ApiHelper.sendGeoPointMessage(MessagesFragmentHolder.getChat().id, lng, lat);
+                getActivity().finish();
             }
         });
     }

@@ -23,13 +23,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.flickr.PhotosFlickr;
 import net.mobindustry.telegram.model.flickr.XmlReader;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
-import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.ImagesAdapter;
 import net.mobindustry.telegram.utils.GiphyObject;
 import net.mobindustry.telegram.utils.ImagesObject;
@@ -155,7 +155,7 @@ public class ImagesFragment extends Fragment {
                                 }
                                 ListFoldersHolder.getListImages().add(linkImage);
                             } else {
-                                ((TransparentActivity) getActivity()).sendPhotoMessage(ListFoldersHolder.getChatID(),
+                                ApiHelper.sendPhotoMessage(ListFoldersHolder.getChatID(),
                                         ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
                             }
                         }

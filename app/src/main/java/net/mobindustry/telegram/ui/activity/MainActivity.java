@@ -38,33 +38,14 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
     private TextView textCheckInternet;
 
     @Override
-    public void onApiResult(BaseHandler output) {
-        if (output.getHandlerId() == OkHandler.HANDLER_ID) {
-        } else if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
-            if (((GetStateHandler) output).getResponse() == Enums.StatesEnum.WaitSetPhoneNumber) {
-                stateWaitCode = true;
-                hasAnswer = true;
-            }
-            if (((GetStateHandler) output).getResponse() == Enums.StatesEnum.OK) {
-                stateWaitCode = false;
-                hasAnswer = true;
-            }
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        Log.e("LOG", "##### Start NeTelegram #####");
 
-        Log.e("LOG", "##### Start program #####");
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_menu_toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar);
-        DataHolder.setThemedContext(getSupportActionBar().getThemedContext());
-
+        saveThemedContext();
         startService(new Intent(this, CreateGalleryThumbs.class));
+
         textCheckInternet = (TextView) findViewById(R.id.text_check_internet);
 
         if (Utils.isOnline()) {
@@ -92,6 +73,28 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 }
             }
         });
+    }
+
+    private void saveThemedContext() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_menu_toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+        DataHolder.setThemedContext(getSupportActionBar().getThemedContext());
+    }
+
+    @Override
+    public void onApiResult(BaseHandler output) {
+        if (output.getHandlerId() == OkHandler.HANDLER_ID) {
+        } else if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
+            if (((GetStateHandler) output).getResponse() == Enums.StatesEnum.WaitSetPhoneNumber) {
+                stateWaitCode = true;
+                hasAnswer = true;
+            }
+            if (((GetStateHandler) output).getResponse() == Enums.StatesEnum.OK) {
+                stateWaitCode = false;
+                hasAnswer = true;
+            }
+        }
     }
 
     public void startSplash() {
@@ -146,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {
-                Log.e("Log", "SplashStart task interrupted");
+                Log.e("Log", "startActivity task interrupted");
             }
         }
     }

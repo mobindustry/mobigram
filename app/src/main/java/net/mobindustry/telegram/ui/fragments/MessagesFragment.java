@@ -55,11 +55,11 @@ import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatHistoryHandler;
-import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
@@ -89,7 +89,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MessagesFragment extends Fragment implements Serializable, ApiClient.OnApiResultHandler {
+public class MessagesFragment extends Fragment implements Serializable {
 
     public static final int LEVEL_SEND = 0;
     public static final int LEVEL_ATTACH = 1;
@@ -142,7 +142,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.message_fragment, container, false);
         linearLayout = (ObservableLinearLayout) view.findViewById(R.id.observable_layout);
         noMessages = (TextView) view.findViewById(R.id.no_messages_message);
@@ -250,7 +249,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                         }
                     }, 100L);
                 } else {
-                    sendTextMessage(chat.id, input.getText().toString().trim());
+                    ApiHelper.sendTextMessage(chat.id, input.getText().toString().trim());
                     input.setText("");
                 }
             }
@@ -261,7 +260,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             TextView icon = (TextView) getActivity().findViewById(R.id.toolbar_text_icon);
             TextView name = (TextView) getActivity().findViewById(R.id.toolbar_text_name);
             TextView lastSeenText = (TextView) getActivity().findViewById(R.id.toolbar_text_last_seen);
-
             final RoundedImageView imageIcon = (RoundedImageView) getActivity().findViewById(R.id.toolbar_image_icon);
 
             String title = "";
@@ -373,7 +371,8 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
                         @Override
                         public void stickerCLicked(String stickerFilePath) {
-                            sendStickerMessage(getShownChatId(), stickerFilePath);
+                            ApiHelper.sendStickerMessage(getShownChatId(), stickerFilePath);
+                            dissmissEmojiPopup();
                         }
                     });
                     emojiPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -421,11 +420,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         } else {
             noMessages.setVisibility(View.GONE);
         }
-        adapter.setNotifyOnChange(false);
-        for (int i = 0; i < messages.messages.length; i++) {
-            adapter.insert(parseEmojiMessages(messages.messages[i]), 0);
-        }
-        adapter.setNotifyOnChange(true);
+        addLatestMessages(messages);
         adapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
         messageListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
@@ -491,23 +486,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             emojiParser.parse(text);
         }
         return message1;
-    }
-
-    public void sendTextMessage(long chatId, String message) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageText(message)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public void sendPhotoMessage(long chatId, String path) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public void sendStickerMessage(long chatId, String path) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageSticker(path)), new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        dissmissEmojiPopup();
-    }
-
-    @Override
-    public void onApiResult(BaseHandler output) {
     }
 
     private void animateSendAttachButton(final int level) {
@@ -674,12 +652,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.REQUEST_CODE_MAKE_VIDEO && resultCode == getActivity().RESULT_OK) {
-            Log.e("LOG", "YES");
-            new ApiClient<>(new TdApi.SendMessage(getShownChatId(), new TdApi.InputMessageVideo(holder.getTempVideoFile().getAbsolutePath())), new MessageHandler(), new ApiClient.OnApiResultHandler() {
-                @Override
-                public void onApiResult(BaseHandler output) {
-                }
-            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            ApiHelper.sendVideoMessage(getShownChatId(), holder.getTempVideoFile().getAbsolutePath());
             holder.clearFiles();
         }
         if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO && resultCode == getActivity().RESULT_OK) {
@@ -707,7 +680,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 @Override
                 protected void onPostExecute(Void aVoid) {
                     super.onPostExecute(aVoid);
-                    sendPhotoMessage(getShownChatId(), holder.getTempPhotoFile().getAbsolutePath());
+                    ApiHelper.sendPhotoMessage(getShownChatId(), holder.getTempPhotoFile().getAbsolutePath());
                     if (mProgressDialog != null && mProgressDialog.isShowing()) {
                         try {
                             mProgressDialog.dismiss();
@@ -723,12 +696,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         if (requestCode == Const.REQUEST_CODE_TAKE_FILE && resultCode == getActivity().RESULT_OK) {
             Uri uri = data.getData();
             String path = FilePathUtil.getPath(getActivity(), uri);
-            Log.e("LOG", "PATH " + path);
-            new ApiClient<>(new TdApi.SendMessage(getShownChatId(), new TdApi.InputMessageDocument(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
-                @Override
-                public void onApiResult(BaseHandler output) {
-                }
-            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            ApiHelper.sendDocumentMessage(getShownChatId(), path);
         }
 
         if (requestCode == Const.REQUEST_CODE_SELECT_IMAGE && resultCode == getActivity().RESULT_OK) {
@@ -736,7 +704,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 Uri uriImage = data.getData();
                 String path = getPathFromURI(uriImage, getActivity());
                 if (!TextUtils.isEmpty(path)) {
-                    sendPhotoMessage(getShownChatId(), path);
+                    ApiHelper.sendPhotoMessage(getShownChatId(), path);
                 } else {
                     Toast.makeText(getActivity(), activity.getString(R.string.file_not_found), Toast.LENGTH_LONG).show();
                 }

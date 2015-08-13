@@ -43,24 +43,26 @@ import java.io.Writer;
 public class RegistrationActivity extends AppCompatActivity implements ApiClient.OnApiResultHandler {
 
     private ListCountryObject listCountryObject;
-    private LocationFromIP location;
-    private String code;
     private InfoRegistration holder;
     boolean activityClosed = false;
     private LocationAsync locationAsync;
 
     @Override
-    public void onApiResult(BaseHandler output) {
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.registration_activity);
+        new ApiClient<>(new TdApi.AuthGetState(), new GetStateHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
 
+    @Override
+    public void onApiResult(BaseHandler output) {
         if (output.hasErrors()) {
             new ErrorHandler(getSupportFragmentManager(), output.getError());
         }
-
         if (output.getHandlerId() == UserHandler.HANDLER_ID) {
             UserInfoHolder holder = UserInfoHolder.getInstance();
             holder.setUser((TdApi.User) output.getResponse());
         }
-
         if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
             GetStateHandler handler = (GetStateHandler) output;
             FragmentTransaction fragmentTransaction;
@@ -124,17 +126,9 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
         new ApiClient<>(new TdApi.AuthReset(), new GetStateHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.registration_activity);
-        new ApiClient<>(new TdApi.AuthGetState(), new GetStateHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
     public static String convertStreamToString(InputStream is)
             throws IOException {
         Writer writer = new StringWriter();
-
         char[] buffer = new char[2048];
         try {
             Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
@@ -178,8 +172,8 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Gson gson = new GsonBuilder().create();
-            location = gson.fromJson(s, LocationFromIP.class);
-            code = location.getCountryCode();
+            LocationFromIP location = gson.fromJson(s, LocationFromIP.class);
+            String code = location.getCountryCode();
             holder = InfoRegistration.getInstance();
             if (code != null) {
                 holder.setCodeCountryLetters(code);

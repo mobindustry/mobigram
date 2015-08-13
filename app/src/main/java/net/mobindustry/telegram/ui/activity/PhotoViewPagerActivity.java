@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.core.service.SendGif;
@@ -48,38 +49,6 @@ public class PhotoViewPagerActivity extends FragmentActivity {
     private FrameLayout send;
     private FrameLayout cancel;
     private LinearLayout layoutButtons;
-
-    public int getPhotoNumber() {
-        return photoNumber;
-    }
-
-    public void setPhotoNumber(int photoNumber) {
-        this.photoNumber = photoNumber;
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(PhotoViewPagerActivity.this, TransparentActivity.class);
-        intent.putExtra("choice", Const.SELECTED_FOLDER_FRAGMENT);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(this)) {
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 2.5f);
-            layoutButtons.setLayoutParams(param);
-        } else {
-            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 1.5f);
-            layoutButtons.setLayoutParams(paramButtons);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +102,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                                 }
                                 ListFoldersHolder.getListImages().add(linkImage);
                             } else {
-                                sendPhotoMessage(ListFoldersHolder.getChatID(),
+                                ApiHelper.sendPhotoMessage(ListFoldersHolder.getChatID(),
                                         ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
                             }
                         }
@@ -337,6 +306,38 @@ public class PhotoViewPagerActivity extends FragmentActivity {
         });
     }
 
+    public int getPhotoNumber() {
+        return photoNumber;
+    }
+
+    public void setPhotoNumber(int photoNumber) {
+        this.photoNumber = photoNumber;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(PhotoViewPagerActivity.this, TransparentActivity.class);
+        intent.putExtra("choice", Const.SELECTED_FOLDER_FRAGMENT);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(this)) {
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 2.5f);
+            layoutButtons.setLayoutParams(param);
+        } else {
+            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 1.5f);
+            layoutButtons.setLayoutParams(paramButtons);
+        }
+    }
+
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
         public MyFragmentPagerAdapter(FragmentManager fm) {
@@ -352,14 +353,5 @@ public class PhotoViewPagerActivity extends FragmentActivity {
         public int getCount() {
             return ListFoldersHolder.getList().size();
         }
-    }
-
-    public void sendPhotoMessage(long chatId, String path) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 }

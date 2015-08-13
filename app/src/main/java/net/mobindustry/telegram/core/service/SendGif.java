@@ -8,6 +8,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
@@ -173,25 +174,6 @@ public class SendGif extends Service {
         return null;
     }
 
-    public void sendGifMessage(long chatId, String path) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessageDocument(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public void sendPhotoMessage(long chatId, String path) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-
     class CreateGifAndImages implements Runnable {
 
         public void run() {
@@ -199,14 +181,14 @@ public class SendGif extends Service {
                 for (int i = 0; i < ListFoldersHolder.getListGif().size(); i++) {
                     String link = downloadFromUrlGif(ListFoldersHolder.getListGif().get(i));
                     Log.e("Log", "Link Gif " + link);
-                    sendGifMessage(id, link);
+                    ApiHelper.sendDocumentMessage(id, link);
                 }
             }
             if (ListFoldersHolder.getListImages() != null) {
                 for (int i = 0; i < ListFoldersHolder.getListImages().size(); i++) {
                     String link = downloadFromUrlImages(ListFoldersHolder.getListImages().get(i));
                     Log.e("Log", "Link send " + link);
-                    sendPhotoMessage(id, link);
+                    ApiHelper.sendPhotoMessage(id, link);
                 }
             }
             stopSelf();

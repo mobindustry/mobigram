@@ -34,6 +34,7 @@ import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.foursquare.FoursquareObj;
@@ -50,7 +51,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationFragment extends Fragment implements ApiClient.OnApiResultHandler {
+public class LocationFragment extends Fragment{
 
     private GoogleMap map;
     private Marker myMarker;
@@ -59,17 +60,6 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
     private LocationManager service;
     private List<FoursquareVenue> foursquareVenueList;
     private InfoLocation infoLocation;
-
-    @Override
-    public void onApiResult(BaseHandler output) {
-    }
-
-    public void sendGeoPointMessage(double lat, double lng) {
-        getActivity().finish();
-        long id = MessagesFragmentHolder.getChat().id;
-        new ApiClient<>(new TdApi.SendMessage(id, new TdApi.InputMessageGeoPoint(lng, lat)),
-                new MessageHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,7 +87,8 @@ public class LocationFragment extends Fragment implements ApiClient.OnApiResultH
         buttonSendLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendGeoPointMessage(myMarker.getPosition().latitude, myMarker.getPosition().longitude);
+                ApiHelper.sendGeoPointMessage(MessagesFragmentHolder.getChat().id, myMarker.getPosition().latitude, myMarker.getPosition().longitude);
+                getActivity().finish();
             }
         });
 

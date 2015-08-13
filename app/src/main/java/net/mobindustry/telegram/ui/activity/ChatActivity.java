@@ -75,72 +75,15 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     private NavigationDrawerAdapter adapter;
 
-    private UserInfoHolder holder = UserInfoHolder.getInstance();
-    private UserInfoHolder userInfoHolder;
+    private UserInfoHolder holder;
     private ChatListFragment chatListFragment;
-
-    public void logOut() {
-        Utils.deleteRecursive(getCacheDir());
-        DownloadFileHolder.clear();
-        Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
-        DataHolder.setIsLoggedIn(false);
-        finish();
-        new ApiClient<>(new TdApi.AuthReset(), new OkHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public long getMyId() {
-        return holder.getUser().id;
-    }
-
-    public MessagesFragment getMessageFragment() {
-        fragmentManager = getSupportFragmentManager();
-        return (MessagesFragment) fragmentManager.findFragmentById(R.id.messages);
-    }
-
-    public ChatListFragment getChatListFragment() {
-        fragmentManager = getSupportFragmentManager();
-        return (ChatListFragment) fragmentManager.findFragmentById(R.id.chat_list);
-    }
-
-    public void getUserMe() {
-        new ApiClient<>(new TdApi.GetMe(), new UserHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    public void getStickers() {
-        new ApiClient<>(new TdApi.GetStickers(), new StickersHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
-    @Override
-    public void onApiResult(BaseHandler output) {
-        if (output == null) {
-            getUserMe();
-        } else {
-            if (output.getHandlerId() == UserHandler.HANDLER_ID) {
-                userInfoHolder.setUser((TdApi.User) output.getResponse());
-                setHeader(userInfoHolder.getUser());
-            }
-        }
-
-        if (output.getHandlerId() == StickersHandler.HANDLER_ID) {
-            TdApi.Stickers stickers = (TdApi.Stickers) output.getResponse();
-            if (stickers.stickers.length == 0) {
-                getStickers();
-            } else {
-                MessagesFragmentHolder.setStickers((TdApi.Stickers) output.getResponse());
-            }
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
         DataHolder.setIsLoggedIn(true);
+        holder = UserInfoHolder.getInstance();
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -177,7 +120,7 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         ft.replace(R.id.chat_list, chatListFragment);
         ft.commit();
 
-        adapter = new NavigationDrawerAdapter(ChatActivity.this);
+        adapter = new NavigationDrawerAdapter(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.chats_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -190,11 +133,10 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         List<NavigationItem> drawerItemsList = new ArrayList<>();
         drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
 
-        userInfoHolder = UserInfoHolder.getInstance();
-        if (userInfoHolder.getUser() == null) {
+        if (holder.getUser() == null) {
             getUserMe();
         } else {
-            setHeader(userInfoHolder.getUser());
+            setHeader(holder.getUser());
         }
 
         getStickers();
@@ -220,11 +162,47 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 supportInvalidateOptionsMenu();
             }
         };
-
         drawerLayout.setDrawerListener(drawerToggle);
-
         if (savedInstanceState == null) {
             selectItem(0);
+        }
+    }
+
+    public MessagesFragment getMessageFragment() {
+        fragmentManager = getSupportFragmentManager();
+        return (MessagesFragment) fragmentManager.findFragmentById(R.id.messages);
+    }
+
+    public ChatListFragment getChatListFragment() {
+        fragmentManager = getSupportFragmentManager();
+        return (ChatListFragment) fragmentManager.findFragmentById(R.id.chat_list);
+    }
+
+    public void getUserMe() {
+        new ApiClient<>(new TdApi.GetMe(), new UserHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public void getStickers() {
+        new ApiClient<>(new TdApi.GetStickers(), new StickersHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    public long getMyId() {
+        return holder.getUser().id;
+    }
+
+    @Override
+    public void onApiResult(BaseHandler output) {
+        if (output.getHandlerId() == UserHandler.HANDLER_ID) {
+            holder.setUser((TdApi.User) output.getResponse());
+            setHeader(holder.getUser());
+        }
+        if (output.getHandlerId() == StickersHandler.HANDLER_ID) {
+            TdApi.Stickers stickers = (TdApi.Stickers) output.getResponse();
+            if (stickers.stickers.length == 0) {
+                getStickers();
+            } else {
+                MessagesFragmentHolder.setStickers((TdApi.Stickers) output.getResponse());
+            }
         }
     }
 
@@ -237,41 +215,12 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.navigation_drawer_header, drawerList, false);
         TextView firstLastNameView = (TextView) header.findViewById(R.id.drawer_header_first_last_name);
         TextView phoneView = (TextView) header.findViewById(R.id.drawer_header_phone);
-        firstLastNameView.setText(userMe.firstName + " " + userMe.lastName);
-        phoneView.setText(userMe.phoneNumber);
-
         TextView icon = (TextView) header.findViewById(R.id.header_text_icon);
-        final RoundedImageView imageIcon = (RoundedImageView) header.findViewById(R.id.header_image_icon);
+        RoundedImageView imageIcon = (RoundedImageView) header.findViewById(R.id.header_image_icon);
 
-        if (userMe.photoBig instanceof TdApi.FileEmpty) {
-            final TdApi.FileEmpty file = (TdApi.FileEmpty) userMe.photoBig;
-            if (file.id != 0) {
-                new ApiClient<>(new TdApi.DownloadFile(file.id), new DownloadFileHandler(), new ApiClient.OnApiResultHandler() {
-                    @Override
-                    public void onApiResult(BaseHandler output) {
-                        if (output.getHandlerId() == DownloadFileHandler.HANDLER_ID) {
-                            imageIcon.setVisibility(View.VISIBLE);
-                            ImageLoaderHelper.displayImage(String.valueOf(file.id), imageIcon);
-                        }
-                    }
-                }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-            } else {
-                icon.setVisibility(View.VISIBLE);
-
-                int sdk = android.os.Build.VERSION.SDK_INT;
-                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.header_icon_size, -userMe.id));
-                } else {
-                    icon.setBackground(Utils.getShapeDrawable(R.dimen.header_icon_size, -userMe.id));
-                }
-                icon.setText(Utils.getInitials(userMe.firstName, userMe.lastName));
-            }
-        }
-        if (userMe.photoBig instanceof TdApi.FileLocal) {
-            imageIcon.setVisibility(View.VISIBLE);
-            TdApi.FileLocal file = (TdApi.FileLocal) userMe.photoBig;
-            ImageLoaderHelper.displayImage(Const.IMAGE_LOADER_PATH_PREFIX + file.path, imageIcon);
-        }
+        Utils.setIcon(userMe.photoBig, userMe.id, userMe.firstName, userMe.lastName, imageIcon, icon, this);
+        phoneView.setText(userMe.phoneNumber);
+        firstLastNameView.setText(userMe.firstName + " " + userMe.lastName);
 
         drawerList.addHeaderView(header, null, false);
         drawerList.setAdapter(adapter);
@@ -296,7 +245,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
         switch (item.getItemId()) {
             case R.id.action_search:
                 final SearchView sv = new SearchView(getSupportActionBar().getThemedContext());
@@ -330,13 +278,6 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
         if (itemToCollapse != null) {
             chatListFragment.setAdapterFilter("");
             MenuItemCompat.collapseActionView(itemToCollapse);
-        }
-    }
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
         }
     }
 
@@ -404,5 +345,25 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     protected void onPause() {
         super.onPause();
         DataHolder.setActive(false);
+    }
+
+    public void logOut() {
+        Utils.deleteRecursive(getCacheDir());
+        DownloadFileHolder.clear();
+        Toast.makeText(ChatActivity.this, R.string.logout_navigation_item, Toast.LENGTH_LONG).show();
+        DataHolder.setIsLoggedIn(false);
+        finish();
+        new ApiClient<>(new TdApi.AuthReset(), new OkHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
     }
 }

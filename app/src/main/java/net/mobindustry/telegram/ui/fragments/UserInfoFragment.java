@@ -20,6 +20,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
+import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.GroupChatFullHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
@@ -210,14 +211,8 @@ public class UserInfoFragment extends Fragment {
 
         if (requestCode == Const.REQUEST_CODE_NEW_MESSAGE && resultCode == Activity.RESULT_OK) {
             long id = data.getLongExtra("id", 0);
-
-            new ApiClient<>(new TdApi.SendMessage(id, new TdApi.InputMessageContact(user.phoneNumber, user.firstName, user.lastName)),
-                    new OkHandler(), new ApiClient.OnApiResultHandler() {
-                @Override
-                public void onApiResult(BaseHandler output) {
-                    getActivity().finish();
-                }
-            }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            ApiHelper.sendContactMessage(id, user.phoneNumber, user.firstName, user.lastName);
+            getActivity().finish();
         }
     }
 }

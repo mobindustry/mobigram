@@ -95,18 +95,9 @@ public class TransparentActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void sendPhotoMessage(long chatId, String path) {
-        new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
-
     @Override
     public void onBackPressed() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         if (getSupportFragmentManager().findFragmentById(R.id.transparent_content) instanceof FoursquareListFragment) {
             LocationFragment locationFragment = new LocationFragment();
             fragmentTransaction.replace(R.id.transparent_content, locationFragment);
