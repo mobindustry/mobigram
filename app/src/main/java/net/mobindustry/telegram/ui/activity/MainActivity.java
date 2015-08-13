@@ -143,6 +143,11 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
                 }
                 return;
             }
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {
+                Log.e("Log", "SplashStart task interrupted");
+            }
         }
     }
 
