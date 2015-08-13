@@ -54,7 +54,6 @@ public class FoursquareVenue implements Parcelable {
         dest.writeList(foursquareCategories);
     }
 
-
     protected FoursquareVenue(Parcel in) {
         this.id = in.readString();
         this.name = in.readString();
@@ -75,5 +74,4 @@ public class FoursquareVenue implements Parcelable {
         }
 
     };
-
 }

@@ -71,14 +71,12 @@ public class FoursquareCategory implements Parcelable {
         dest.writeParcelable(this.foursquareCategoryIcon, flags);
     }
 
-
     protected FoursquareCategory(Parcel parcel) {
         this.id = parcel.readString();
         this.name = parcel.readString();
         this.pluralName = parcel.readString();
         this.shortName = parcel.readString();
         this.foursquareCategoryIcon = parcel.readParcelable(FoursquareCategoryIcon.class.getClassLoader());
-
     }
 
     public static Creator<FoursquareCategory> CREATOR = new Creator<FoursquareCategory>() {
@@ -92,7 +90,5 @@ public class FoursquareCategory implements Parcelable {
         public FoursquareCategory[] newArray(int size) {
             return new FoursquareCategory[size];
         }
-
     };
-
 }

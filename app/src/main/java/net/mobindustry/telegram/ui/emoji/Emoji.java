@@ -30,12 +30,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.WeakHashMap;
 
-
 public class Emoji {
     private final HashMap<Long, DrawableInfo> rects = new HashMap<>();
     private final DpCalculator dpCalculator;
     private int drawImgSize, bigImgSize;
-    //    private  boolean inited = false;
     private final Paint placeholderPaint;
     private final Bitmap emojiBmp[] = new Bitmap[5];
     private final boolean loadingEmoji[] = new boolean[5];
@@ -62,7 +60,6 @@ public class Emoji {
         }
         drawImgSize = this.dpCalculator.dp(20);
         bigImgSize = this.dpCalculator.dp(30);
-        //        }
 
         for (int j = 1; j < data.length; j++) {
             for (int i = 0; i < data[j].length; i++) {
@@ -72,18 +69,15 @@ public class Emoji {
         }
         placeholderPaint = new Paint();
         placeholderPaint.setColor(0x00000000);
-
-
     }
 
-    public void makeEmoji () {
-        loadEmoji(0);
-        loadEmoji(1);
-        loadEmoji(2);
-        loadEmoji(3);
-        loadEmoji(4);
+    public void makeEmoji() {
+        loadEmojiAsync(0);
+        loadEmojiAsync(1);
+        loadEmojiAsync(2);
+        loadEmojiAsync(3);
+        loadEmojiAsync(4);
     }
-
 
     private void loadEmoji(final int page) {
         File maskedFile = getMaskedFile(page);
@@ -122,7 +116,6 @@ public class Emoji {
 
             final Bitmap bitmap = compositeDrawableWithMask(colors, alpha);
             System.gc();
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(new File("/mnt/sdcard/foo")));
 
             dispatchPageLoaded(page, bitmap);
 
@@ -181,7 +174,6 @@ public class Emoji {
         if (width != alphaBitmap.getWidth() || height != alphaBitmap.getHeight()) {
             throw new IllegalStateException("image size mismatch!");
         }
-
         Bitmap destBitmap = Bitmap.createBitmap(width, height,
                 Bitmap.Config.ARGB_8888);
 
@@ -196,8 +188,6 @@ public class Emoji {
             }
             destBitmap.setPixels(pixels, 0, width, 0, y, width, 1);
         }
-
-
         return destBitmap;
     }
 
@@ -260,7 +250,6 @@ public class Emoji {
             } else {
                 b = getBounds();
             }
-
             if (!canvas.quickReject(b.left, b.top, b.right, b.bottom, Canvas.EdgeType.AA)) {
                 canvas.drawBitmap(emojiBmp[info.page], info.rect, b, paint);
             }
@@ -273,12 +262,10 @@ public class Emoji {
 
         @Override
         public void setAlpha(int alpha) {
-
         }
 
         @Override
         public void setColorFilter(ColorFilter cf) {
-
         }
     }
 
@@ -372,7 +359,6 @@ public class Emoji {
     public class EmojiSpan extends ImageSpan {
         public EmojiSpan(EmojiDrawable d) {
             super(d, DynamicDrawableSpan.ALIGN_BOTTOM);
-
         }
     }
 

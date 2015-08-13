@@ -15,7 +15,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,7 +30,6 @@ import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
-import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
 import net.mobindustry.telegram.utils.GiphyObject;
@@ -47,7 +45,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 
 public class GalleryFragment extends Fragment {
 
@@ -132,7 +129,7 @@ public class GalleryFragment extends Fragment {
 
         if (Utils.isTablet(getActivity())) {
             Log.e("Log", "Зашель");
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                 buttonSend.setEnabled(true);
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
@@ -152,7 +149,7 @@ public class GalleryFragment extends Fragment {
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                 buttonSend.setEnabled(true);
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
@@ -223,7 +220,7 @@ public class GalleryFragment extends Fragment {
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size()!=0) {
+                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() != 0) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
                         if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
                             if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
@@ -299,8 +296,6 @@ public class GalleryFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-
-
     }
 
     private void checkThumbsInFolder() {
@@ -316,7 +311,6 @@ public class GalleryFragment extends Fragment {
             }
             Log.e("Log", "SIZE MAP" + mapForCustomThumbs.size());
         }
-
     }
 
     private List<File> getListFiles(File parentDir) {
@@ -425,7 +419,6 @@ public class GalleryFragment extends Fragment {
                             fileWithIndicator.setThumbPhoto("");
                         }
                     }
-
                 }
                 fileWithIndicator.setFile(file);
                 fileWithIndicator.setCheck(false);
@@ -451,7 +444,6 @@ public class GalleryFragment extends Fragment {
                 folderCustomGallery.setFirstThumb(folderCustomGallery.getPhotosInFolder().get(0).getThumbPhoto());
                 listFolders.add(folderCustomGallery);
             }
-
         }
     }
 
@@ -491,7 +483,6 @@ public class GalleryFragment extends Fragment {
     }
 
     private class AsyncMediaStore extends AsyncTask<Void, Void, Void> {
-
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -542,8 +533,6 @@ public class GalleryFragment extends Fragment {
             }
         }
     }
-
-
 }
 
 

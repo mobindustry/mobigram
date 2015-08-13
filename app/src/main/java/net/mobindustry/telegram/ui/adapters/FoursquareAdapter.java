@@ -2,7 +2,6 @@ package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import net.mobindustry.telegram.utils.Utils;
 import java.io.Serializable;
 
 public class FoursquareAdapter extends ArrayAdapter<FoursquareVenue> implements Serializable {
+
     private LayoutInflater inflater;
 
     public FoursquareAdapter(Context context) {
@@ -36,7 +36,7 @@ public class FoursquareAdapter extends ArrayAdapter<FoursquareVenue> implements 
         TextView textPlaceAddress = (TextView) convertView.findViewById(R.id.textPlaceAddress);
 
         int sdk = android.os.Build.VERSION.SDK_INT;
-        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
             iconPlace.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.foursquare_icon_size, Color.GRAY));
         } else {
             iconPlace.setBackground(Utils.getShapeDrawable(R.dimen.foursquare_icon_size, Color.GRAY));
@@ -50,7 +50,6 @@ public class FoursquareAdapter extends ArrayAdapter<FoursquareVenue> implements 
             textPlaceName.setText(foursquareVenue.getName());
             textPlaceAddress.setText(foursquareVenue.getFoursquareLocation().getAddress());
         }
-
         return convertView;
     }
 }

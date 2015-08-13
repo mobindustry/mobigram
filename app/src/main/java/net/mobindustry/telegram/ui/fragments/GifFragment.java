@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class GifFragment extends Fragment {
+
     private LoadMoreListView gifsList;
     private List<GiphyObject> giphyObjectList;
     private GifAdapter gifAdapter;
@@ -95,7 +96,6 @@ public class GifFragment extends Fragment {
                     0, 0.15f);
             layoutButtons.setLayoutParams(paramButtons);
         }
-
     }
 
     @Override
@@ -116,7 +116,6 @@ public class GifFragment extends Fragment {
                 } else {
                     number.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 }
-
                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 send.setEnabled(false);
@@ -139,13 +138,11 @@ public class GifFragment extends Fragment {
                 } else {
                     number.setBackground(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                 }
-
                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 send.setEnabled(false);
                 number.setVisibility(View.GONE);
             }
-
         }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
@@ -190,7 +187,6 @@ public class GifFragment extends Fragment {
                             if (httpResponse.getBodyAsString() != null) {
                                 return httpResponse.getBodyAsString();
                             }
-
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         } catch (Exception e) {
@@ -248,7 +244,6 @@ public class GifFragment extends Fragment {
                     getActivity().startService(new Intent(getActivity(), SendGif.class));
                     getActivity().finish();
                 }
-
             }
         });
 
@@ -288,7 +283,6 @@ public class GifFragment extends Fragment {
             }
         });
 
-
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -301,9 +295,7 @@ public class GifFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-
     }
-
 
     public class LoadGifs extends AsyncTask<Void, Void, String> implements Serializable {
 
@@ -373,7 +365,6 @@ public class GifFragment extends Fragment {
                                 } else {
                                     number.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                                 }
-
                                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                             } else {
                                 send.setEnabled(false);
@@ -404,13 +395,11 @@ public class GifFragment extends Fragment {
                                         number.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                                     }
                                 }
-
                                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                             } else {
                                 send.setEnabled(false);
                                 number.setVisibility(View.GONE);
                             }
-
                         }
                     }
                 });

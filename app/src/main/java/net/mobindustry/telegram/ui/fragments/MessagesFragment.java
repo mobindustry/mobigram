@@ -151,7 +151,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         messageListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-
             }
 
             @Override
@@ -218,12 +217,10 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
         input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -602,7 +599,7 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                     case R.id.location:
                         Utils.hideKeyboard(input);
                         LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-                        if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                             Intent intentLoc = new Intent(getActivity(), TransparentActivity.class);
                             intentLoc.putExtra("choice", Const.MAP_FRAGMENT);
                             startActivityForResult(intentLoc, 1);
@@ -650,7 +647,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
                 startActivityForResult(intentGallery, Const.REQUEST_CODE_TAKE_FILE);
                 return;
             }
-
         }
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         DialogDoNotHaveFileManager dialogDoNotHaveFileManager = new DialogDoNotHaveFileManager();
@@ -682,7 +678,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             new ApiClient<>(new TdApi.SendMessage(getShownChatId(), new TdApi.InputMessageVideo(holder.getTempVideoFile().getAbsolutePath())), new MessageHandler(), new ApiClient.OnApiResultHandler() {
                 @Override
                 public void onApiResult(BaseHandler output) {
-
                 }
             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
             holder.clearFiles();
@@ -698,7 +693,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
 
                 @Override
                 protected Void doInBackground(Void... params) {
-
                     ExifInterface originalExifInfo = null;
                     try {
                         originalExifInfo = new ExifInterface(holder.getTempPhotoFile().getAbsolutePath());
@@ -733,7 +727,6 @@ public class MessagesFragment extends Fragment implements Serializable, ApiClien
             new ApiClient<>(new TdApi.SendMessage(getShownChatId(), new TdApi.InputMessageDocument(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
                 @Override
                 public void onApiResult(BaseHandler output) {
-
                 }
             }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         }

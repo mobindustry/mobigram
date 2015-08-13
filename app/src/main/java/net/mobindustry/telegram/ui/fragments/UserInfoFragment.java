@@ -24,7 +24,6 @@ import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.GroupChatFullHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.core.handlers.UserFullHandler;
-import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.Const;
@@ -103,7 +102,6 @@ public class UserInfoFragment extends Fragment {
             writeMessage.setVisibility(View.GONE);
             getChatFull();
         }
-
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +154,6 @@ public class UserInfoFragment extends Fragment {
         for (int i = 0; i < groupChatFull.participants.length; i++) {
             list.add(groupChatFull.participants[i].user);
         }
-
         for (int i = 0; i < list.size(); i++) {
             final TdApi.User user = list.get(i);
             View itemView = View.inflate(getActivity(), R.layout.user_info_card, null);

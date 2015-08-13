@@ -99,7 +99,6 @@ public class TransparentActivity extends AppCompatActivity {
         new ApiClient<>(new TdApi.SendMessage(chatId, new TdApi.InputMessagePhoto(path)), new MessageHandler(), new ApiClient.OnApiResultHandler() {
             @Override
             public void onApiResult(BaseHandler output) {
-
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }

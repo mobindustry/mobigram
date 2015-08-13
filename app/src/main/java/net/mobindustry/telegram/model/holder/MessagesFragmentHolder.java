@@ -3,10 +3,10 @@ package net.mobindustry.telegram.model.holder;
 import android.content.Context;
 import android.util.Log;
 
-import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.Utils;
 import net.mobindustry.telegram.ui.emoji.DpCalculator;
 import net.mobindustry.telegram.ui.emoji.Emoji;
+import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -44,7 +44,7 @@ public class MessagesFragmentHolder {
     }
 
     public static int getTopMessage(Long chatId) {
-        if(topMessageMap.get(chatId) == null) {
+        if (topMessageMap.get(chatId) == null) {
             return 0;
         } else {
             return topMessageMap.get(chatId);

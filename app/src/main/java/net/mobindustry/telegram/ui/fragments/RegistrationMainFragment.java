@@ -1,7 +1,6 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,9 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -31,17 +28,7 @@ import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.ui.activity.RegistrationActivity;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneCodeEmpty;
 import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneCodeInvalid;
-import net.mobindustry.telegram.ui.fragments.fragmentDialogs.DialogPhoneNumberInvalid;
-import net.mobindustry.telegram.utils.CountryObject;
-import net.mobindustry.telegram.utils.ListCountryObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +69,6 @@ public class RegistrationMainFragment extends Fragment {
         phone = (EditText) getActivity().findViewById(R.id.phone);
         textInfo = (TextView) getActivity().findViewById(R.id.textUserInfo);
         progressBar = (ProgressBar) getActivity().findViewById(R.id.registration_progress_bar);
-        //phone.setText("");
 
         //Check country object from ChooseCountryFragment
 
@@ -111,7 +97,6 @@ public class RegistrationMainFragment extends Fragment {
         });
 
         //Create toolbar
-
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.your_phone);
         toolbar.inflateMenu(R.menu.ok);
@@ -126,7 +111,6 @@ public class RegistrationMainFragment extends Fragment {
         });
 
         // If the user fills country code manually
-
         final List<String> codeList = new ArrayList<>();
         codeList.clear();
         final TextWatcher watcherCode = new TextWatcher() {
@@ -160,7 +144,6 @@ public class RegistrationMainFragment extends Fragment {
                     chooseCountry.setHint(R.string.choose_country);
                     holder.setCountryObject(null);
                 }
-
                 if (s.length() == 5) {
                     phone.requestFocus();
                 }
@@ -178,7 +161,6 @@ public class RegistrationMainFragment extends Fragment {
         code.addTextChangedListener(watcherCode);
 
         // The user enters the phone number
-
         final TextWatcher watcher = new TextWatcher() {
             List<String> phoneList = new ArrayList<>();
             String phoneNum = "";

@@ -51,7 +51,6 @@ public class ApiClient<TFunction extends TdApi.TLFunction, THandler extends Base
         return null;
     }
 
-
     @Override
     protected void onPostExecute(THandler tOutput) {
         super.onPostExecute(tOutput);
@@ -63,7 +62,7 @@ public class ApiClient<TFunction extends TdApi.TLFunction, THandler extends Base
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        if(DataHolder.getCountNoInternetToast() % 5 == 0) {
+        if (DataHolder.getCountNoInternetToast() % 5 == 0) {
             Toast.makeText(DataHolder.getContext(), "No internet connection.\nPlease, check your internet connection and try again", Toast.LENGTH_SHORT).show();
         }
         DataHolder.setCountNoInternetToast();

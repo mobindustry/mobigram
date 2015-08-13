@@ -2,7 +2,7 @@ package net.mobindustry.telegram.model.gif;
 
 import java.io.Serializable;
 
-public class GiphyImage implements Serializable{
+public class GiphyImage implements Serializable {
 
     private GiphyImageInfo fixed_height;
     private GiphyImageInfo fixed_width;
@@ -26,6 +26,5 @@ public class GiphyImage implements Serializable{
     }
 
     public GiphyImage() {
-
     }
 }

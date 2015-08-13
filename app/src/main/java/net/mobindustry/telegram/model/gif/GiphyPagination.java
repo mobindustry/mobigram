@@ -2,7 +2,7 @@ package net.mobindustry.telegram.model.gif;
 
 import java.io.Serializable;
 
-public class GiphyPagination implements Serializable{
+public class GiphyPagination implements Serializable {
 
     private int total_count;
 

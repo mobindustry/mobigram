@@ -1,13 +1,11 @@
 package net.mobindustry.telegram.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -24,7 +22,6 @@ import net.mobindustry.telegram.core.handlers.GetStateHandler;
 import net.mobindustry.telegram.core.handlers.UserHandler;
 import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.LocationFromIP;
-import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.model.holder.UserInfoHolder;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;

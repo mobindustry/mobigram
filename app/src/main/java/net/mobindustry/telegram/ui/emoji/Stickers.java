@@ -14,7 +14,6 @@ public class Stickers {
     //TODO find a way to show stickers on Android <4.2
 
     public Stickers() {
-
         TdApi.Stickers stickers = MessagesFragmentHolder.getStickers();
         for (int i = 0; i < stickers.stickers.length; i++) {
             ss.add(stickers.stickers[i]);

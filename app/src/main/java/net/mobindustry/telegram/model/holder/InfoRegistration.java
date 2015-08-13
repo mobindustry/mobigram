@@ -3,22 +3,19 @@ package net.mobindustry.telegram.model.holder;
 import net.mobindustry.telegram.utils.CountryObject;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
-import java.util.List;
-
 public class InfoRegistration {
 
     private static InfoRegistration instance;
     private String codeCountryLetters = "";
     private String phone = "";
-    private String codePlusPhone="";
-    private String firstName="";
-    private String lastName="";
+    private String codePlusPhone = "";
+    private String firstName = "";
+    private String lastName = "";
     private CountryObject countryObject;
     private ListCountryObject listCountryObject;
-    private String phoneForServer="";
-    private String textFileFromAssets="";
-    private int cursorPosition=0;
-
+    private String phoneForServer = "";
+    private String textFileFromAssets = "";
+    private int cursorPosition = 0;
 
     public static synchronized InfoRegistration getInstance() {
         if (instance == null) {
@@ -29,8 +26,6 @@ public class InfoRegistration {
 
     private InfoRegistration() {
     }
-
-
 
     public String getTextFileFromAssets() {
         return textFileFromAssets;

@@ -92,13 +92,12 @@ public class SelectedMapFragment extends Fragment {
                 map = googleMap;
                 map.setMyLocationEnabled(true);
                 map.getUiSettings().setMyLocationButtonEnabled(true);
-                    init();
+                init();
             }
         });
     }
 
     private void init() {
-
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(userLocation)
                 .zoom(14)

@@ -14,7 +14,6 @@ public class PhotosFlickr implements Parcelable {
     private String perpage;
     private String total;
 
-
     public String getPage() {
         return page;
     }

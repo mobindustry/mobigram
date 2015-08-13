@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
     @Override
     public void onApiResult(BaseHandler output) {
         if (output.getHandlerId() == OkHandler.HANDLER_ID) {
-            Log.e("Log", "OkMain");
         } else if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
             if (((GetStateHandler) output).getResponse() == Enums.StatesEnum.WaitSetPhoneNumber) {
                 stateWaitCode = true;
@@ -134,14 +133,10 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
         while (true) {
             if (hasAnswer) {
                 if (stateWaitCode) {
-                    Log.e("Log", "Start Registration");
-
                     Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    Log.e("Log", "Start Chat");
-
                     Intent intent = new Intent(MainActivity.this, ChatActivity.class);
                     startActivity(intent);
                     finish();

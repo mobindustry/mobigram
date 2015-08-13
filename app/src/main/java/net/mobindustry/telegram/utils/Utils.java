@@ -22,7 +22,6 @@ import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -316,10 +315,9 @@ public class Utils {
         int pictureOrientation = -1;
         try {
             ExifInterface exif;
-            if(originalExif != null){
+            if (originalExif != null) {
                 exif = originalExif;
-            }
-            else{
+            } else {
                 exif = new ExifInterface(tmpFile.getAbsolutePath());
             }
 
@@ -377,7 +375,6 @@ public class Utils {
             Log.e("Tag", "rotateFileImage error " + e);
         }
     }
-
 
     public static boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) DataHolder.getContext().getSystemService(DataHolder.getContext().CONNECTIVITY_SERVICE);

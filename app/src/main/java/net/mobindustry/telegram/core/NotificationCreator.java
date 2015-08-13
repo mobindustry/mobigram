@@ -20,10 +20,10 @@ public class NotificationCreator extends BroadcastReceiver {
         Notification.Builder builder = new Notification.Builder(context);
         //TODO delete notifications
         if (!DataHolder.isActive() && intent.getAction().equals(Const.NEW_MESSAGE_ACTION)) {
-                int id = intent.getIntExtra("message_id", 0);
+            int id = intent.getIntExtra("message_id", 0);
             Log.e("Log", "Notification creator id " + id);
-                long chat_id = intent.getLongExtra("chatId", 0);
-                String message = intent.getStringExtra("message");
+            long chat_id = intent.getLongExtra("chatId", 0);
+            String message = intent.getStringExtra("message");
             Intent messageIntent = new Intent(context, ChatActivity.class);
             messageIntent.putExtra("chatId", chat_id);
             messageIntent.putExtra("message_id", id);
@@ -43,7 +43,7 @@ public class NotificationCreator extends BroadcastReceiver {
                     .setAutoCancel(true);
             Notification notification = builder.build();
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify((int)chat_id, notification);
+            notificationManager.notify((int) chat_id, notification);
         }
     }
 }

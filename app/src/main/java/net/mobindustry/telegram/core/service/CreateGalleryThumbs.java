@@ -94,10 +94,10 @@ public class CreateGalleryThumbs extends Service {
                     if (images.getData() != null) {
                         final BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inJustDecodeBounds = true;
-                        BitmapFactory.decodeFile(images.getData(),options);
-                        int height=options.outHeight;
-                        int width=options.outWidth;
-                        if (height >0 && width>0) {
+                        BitmapFactory.decodeFile(images.getData(), options);
+                        int height = options.outHeight;
+                        int width = options.outWidth;
+                        if (height > 0 && width > 0) {
                             listImagesMediaStore.add(images);
                         }
                     } else {

@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImagesAdapter extends ArrayAdapter<PhotoFlickr> {
+
     private LayoutInflater inflater;
     private View.OnClickListener clickListener;
-
 
     public ImagesAdapter(Context context, List<PhotoFlickr> list, final LoadPhotos loadPhotos) {
         super(context, 0, list);
@@ -57,10 +57,8 @@ public class ImagesAdapter extends ArrayAdapter<PhotoFlickr> {
                     }
                 }
                 notifyDataSetChanged();
-
             }
         };
-
     }
 
     @Override
@@ -68,7 +66,6 @@ public class ImagesAdapter extends ArrayAdapter<PhotoFlickr> {
         PhotoFlickr photoFlickr = getItem(position);
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.images_flickr_item, parent, false);
-
         }
         ImageView check = (ImageView) convertView.findViewById(R.id.checkFlickr);
         ImageView photo = (ImageView) convertView.findViewById(R.id.imageFlickr);
@@ -96,6 +93,5 @@ public class ImagesAdapter extends ArrayAdapter<PhotoFlickr> {
     public interface LoadPhotos {
         void load();
     }
-
 }
 

@@ -1,16 +1,12 @@
 package net.mobindustry.telegram.utils;
 
-import android.graphics.Bitmap;
-
 import java.io.File;
-import java.util.List;
 
 public class FileWithIndicator {
 
     private File file;
     private boolean check;
-    private String thumbPhoto="";
-
+    private String thumbPhoto = "";
 
     public String getThumbPhoto() {
         return thumbPhoto;

@@ -43,7 +43,6 @@ public class FoursquareCategoryIcon implements Parcelable {
         dest.writeString(this.suffix);
     }
 
-
     protected FoursquareCategoryIcon(Parcel parcel) {
         this.prefix = parcel.readString();
         this.suffix = parcel.readString();
@@ -60,6 +59,5 @@ public class FoursquareCategoryIcon implements Parcelable {
         public FoursquareCategoryIcon[] newArray(int size) {
             return new FoursquareCategoryIcon[size];
         }
-
     };
 }

@@ -8,6 +8,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 
 public class StickerHandler extends BaseHandler<TdApi.Stickers> {
     public static final int HANDLER_ID = Const.STICKER_HANDLER_ID;
+
     @Override
     public TdApi.Stickers resultHandler(TdApi.TLObject object) {
         Log.i("Log", "Log handler: " + object);

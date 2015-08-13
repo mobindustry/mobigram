@@ -22,7 +22,6 @@ public class FoursquareLocation implements Parcelable {
     private String country;
     private String address;
 
-
     private ArrayList<String> formattedAddress;
 
     public double getLatitude() {
@@ -51,9 +50,7 @@ public class FoursquareLocation implements Parcelable {
         dest.writeString(this.country);
         dest.writeString(this.address);
         dest.writeList(this.formattedAddress);
-
     }
-
 
     protected FoursquareLocation(Parcel parcel) {
         this.latitude = parcel.readDouble();
@@ -76,7 +73,6 @@ public class FoursquareLocation implements Parcelable {
         public FoursquareLocation[] newArray(int size) {
             return new FoursquareLocation[size];
         }
-
     };
 }
 

@@ -8,7 +8,6 @@ import net.mobindustry.telegram.core.handlers.UserHandler;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
-
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -34,18 +33,18 @@ public class UserInfoHolder {
         return user;
     }
 
-    public static  void setUser(TdApi.User user1) {
+    public static void setUser(TdApi.User user1) {
         user = user1;
         map.put(user1.id, user1);
     }
 
     public static void addUsersToMap(TdApi.Chats chats) {
         for (int i = 0; i < chats.chats.length; i++) {
-            if(chats.chats[i].type.getConstructor() != TdApi.GroupChatInfo.CONSTRUCTOR) {
+            if (chats.chats[i].type.getConstructor() != TdApi.GroupChatInfo.CONSTRUCTOR) {
                 new ApiClient<>(new TdApi.GetUser((int) chats.chats[i].id), new UserHandler(), new ApiClient.OnApiResultHandler() {
                     @Override
                     public void onApiResult(BaseHandler output) {
-                        if(output.getHandlerId() == UserHandler.HANDLER_ID){
+                        if (output.getHandlerId() == UserHandler.HANDLER_ID) {
                             TdApi.User user = (TdApi.User) output.getResponse();
                             map.put(user.id, user);
                         }

@@ -6,6 +6,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 
 public class ChatHandler extends BaseHandler<TdApi.Chat> {
     public static final int HANDLER_ID = Const.CHAT_HANDLER_ID;
+
     @Override
     public TdApi.Chat resultHandler(TdApi.TLObject object) {
         if (object.getConstructor() == TdApi.Chat.CONSTRUCTOR) {

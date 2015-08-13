@@ -134,5 +134,4 @@ public class FilePathUtil {
         return "com.google.android.apps.photos.content".equals(uri
                 .getAuthority());
     }
-
 }

@@ -11,7 +11,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.utils.CountryObject;
 import net.mobindustry.telegram.utils.ListCountryObject;
 
@@ -30,7 +29,7 @@ public class CountriesListAdapter extends BaseAdapter implements StickyListHeade
 
     public CountriesListAdapter(Activity activity, ListCountryObject listCountryObject) {
         inflater = LayoutInflater.from(activity);
-        this.countryObject=listCountryObject;
+        this.countryObject = listCountryObject;
         listCountryObjectConst = listCountryObject.getListConst();
         listCountryObjectListTmp = listCountryObject.getListTmp();
     }
@@ -46,11 +45,9 @@ public class CountriesListAdapter extends BaseAdapter implements StickyListHeade
         } else {
             holder = (HeaderViewHolderCountriesList) convertView.getTag();
         }
-
         holder.titleLetter.setText(listCountryObjectListTmp.get(position).getInitialLetter());
         return convertView;
     }
-
 
     @Override
     public long getHeaderId(int i) {
@@ -99,7 +96,7 @@ public class CountriesListAdapter extends BaseAdapter implements StickyListHeade
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                listCountryObjectListTmp=((List<CountryObject>) results.values);
+                listCountryObjectListTmp = ((List<CountryObject>) results.values);
                 countryObject.setListTmp(listCountryObjectListTmp);
                 notifyDataSetChanged();
             }

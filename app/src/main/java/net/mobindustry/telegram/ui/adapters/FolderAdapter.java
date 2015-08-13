@@ -1,7 +1,6 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +16,12 @@ import net.mobindustry.telegram.utils.ImagesObject;
 import net.mobindustry.telegram.utils.MediaGallery;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
-    //TODO create a simple animation for button check
+public class FolderAdapter extends ArrayAdapter<FileWithIndicator> {
+
     private LayoutInflater inflater;
     private ImageView photo;
     private View.OnClickListener clickListener;
-
 
     public FolderAdapter(Context context, final LoadPhotos loadPhotos) {
         super(context, 0);
@@ -36,8 +33,8 @@ public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
                 if (galleryFolder.isCheck()) {
                     galleryFolder.setCheck(false);
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
-                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject){
-                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().equals(galleryFolder.getFile().getAbsolutePath())){
+                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
+                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().equals(galleryFolder.getFile().getAbsolutePath())) {
                                 ListFoldersHolder.getListForSending().remove(ListFoldersHolder.getListForSending().get(i));
                             }
                         }
@@ -45,11 +42,11 @@ public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
                     ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getCheckQuantity() - 1);
                     loadPhotos.load();
                 } else {
-                    if (ListFoldersHolder.getCheckQuantity()<10){
+                    if (ListFoldersHolder.getCheckQuantity() < 10) {
                         galleryFolder.setCheck(true);
-                        ImagesObject imagesObject=new ImagesObject();
+                        ImagesObject imagesObject = new ImagesObject();
                         imagesObject.setPath(galleryFolder.getFile().getAbsolutePath());
-                        if (ListFoldersHolder.getListForSending()==null){
+                        if (ListFoldersHolder.getListForSending() == null) {
                             ListFoldersHolder.setListForSending(new ArrayList<MediaGallery>());
                         }
                         ListFoldersHolder.getListForSending().add(imagesObject);
@@ -58,10 +55,8 @@ public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
                     }
                 }
                 notifyDataSetChanged();
-
             }
         };
-
     }
 
     @Override
@@ -83,7 +78,7 @@ public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
         }
 
         if (galleryFolder != null) {
-            if (!galleryFolder.getThumbPhoto().equals("")){
+            if (!galleryFolder.getThumbPhoto().equals("")) {
                 ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + galleryFolder.getThumbPhoto(), photo);
             } else {
                 ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + galleryFolder.getFile().getAbsolutePath(), photo);
@@ -92,9 +87,9 @@ public class FolderAdapter extends ArrayAdapter<FileWithIndicator>  {
         }
         return convertView;
     }
+
     public interface LoadPhotos {
         void load();
     }
-
 }
 

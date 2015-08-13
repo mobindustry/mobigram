@@ -17,11 +17,8 @@ public class PhotoFlickr implements Parcelable {
     private String link;
     private String sendLinkLarge;
 
-
-
     public PhotoFlickr() {
     }
-
 
     public PhotoFlickr(Parcel source) {
 
@@ -98,7 +95,6 @@ public class PhotoFlickr implements Parcelable {
         this.farm = farm;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -113,8 +109,6 @@ public class PhotoFlickr implements Parcelable {
         server = data.getString("server");
         farm = data.getString("farm");
         dest.writeBundle(data);
-
-
     }
 
     public static final Creator<PhotoFlickr> CREATOR = new Creator<PhotoFlickr>() {

@@ -2,8 +2,6 @@ package net.mobindustry.telegram.utils;
 
 import android.os.Environment;
 
-import net.mobindustry.telegram.model.holder.DataHolder;
-
 import java.io.File;
 
 public class Const {
@@ -22,10 +20,11 @@ public class Const {
     public static final int REQUEST_CODE_MAKE_VIDEO = 105;
     public static final int REQUEST_CODE_NEW_MESSAGE = 110;
 
-    public static final String PATH_TO_SAVE_PHOTOS = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram" + File.separator + "photo";
-    public static final String PATH_TO_SAVE_VIDEO = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram" + File.separator + "video";
-    public static final String PATH_TO_SAVE_IMAGES = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram" + File.separator + "images";
-    public static final String PATH_TO_SAVE_GIFS = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram" + File.separator + "gif";
+    public static final String PATH_TO_SAVE = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram";
+    public static final String PATH_TO_SAVE_PHOTOS = PATH_TO_SAVE + File.separator + "photo";
+    public static final String PATH_TO_SAVE_VIDEO = PATH_TO_SAVE + File.separator + "video";
+    public static final String PATH_TO_SAVE_IMAGES = PATH_TO_SAVE + File.separator + "images";
+    public static final String PATH_TO_SAVE_GIFS = PATH_TO_SAVE + File.separator + "gif";
 
     public static final String DATE_TIME_PHOTO_PATTERN = "yyyyMMdd_HHmmss";
     public static final String TIME_PATTERN = "HH:mm";
@@ -54,7 +53,6 @@ public class Const {
     public static final int OK_HANDLER_ID = 710;
     public static final int CHAT_HANDLER_ID = 711;
     public static final int GROUP_CHAT_FULL_HANDLER_ID = 712;
-
     public static final int STICKER_HANDLER_ID = 710;
 
     public static final int LIST_PRELOAD_POSITION = 30;
@@ -76,5 +74,4 @@ public class Const {
     public static final String NEW_MESSAGE_ACTION = "net.mobindustry.telegram.new_message_action";
 
     public static final String IMAGE_LOADER_PATH_PREFIX = "file://";
-
 }

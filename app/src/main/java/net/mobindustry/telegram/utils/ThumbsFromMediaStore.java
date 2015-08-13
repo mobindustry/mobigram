@@ -1,6 +1,7 @@
 package net.mobindustry.telegram.utils;
 
 public class ThumbsFromMediaStore {
+
     private String id;
     private String path;
 

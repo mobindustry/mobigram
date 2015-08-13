@@ -34,7 +34,7 @@ public abstract class BaseHandler<T> implements Client.ResultHandler {
 
     @Override
     public void onResult(TdApi.TLObject object) {
-        if (object  instanceof TdApi.Error) {
+        if (object instanceof TdApi.Error) {
             hasErrors = true;
             error = (TdApi.Error) object;
             hasAnswer = true;

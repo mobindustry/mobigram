@@ -2,14 +2,9 @@ package net.mobindustry.telegram.core.handlers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 
-import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
-import net.mobindustry.telegram.model.holder.UserInfoHolder;
-import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 import net.mobindustry.telegram.utils.Const;
 
 import org.drinkless.td.libcore.telegram.TdApi;

@@ -176,7 +176,6 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         if (position == Const.LIST_PRELOAD_POSITION) {
             loader.loadMore();
         }
-
         if (convertView == null) {
             switch (getItemViewType(position)) {
                 case Const.IN_MESSAGE:
@@ -200,7 +199,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             }
         }
         TdApi.Message item = getItem(position);
-        if(item.selected) {
+        if (item.selected) {
             convertView.setBackgroundResource(R.drawable.msg_selected);
         } else {
             int sdk = android.os.Build.VERSION.SDK_INT;
@@ -389,7 +388,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 icon.setImageURI(Uri.parse(fileLocal.path));
             } else {
                 TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
-                if(fileEmpty.id == 0) {
+                if (fileEmpty.id == 0) {
                     icon.setImageResource(R.drawable.ic_netelegram_placeholder);
                 } else {
                     Utils.photoFileCheckerAndLoader(fileEmpty, icon, (Activity) getContext());
@@ -489,9 +488,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         return false;
     }
 
-    private TdApi.File findCorrectSizeImageFile (TdApi.MessagePhoto photo) {
+    private TdApi.File findCorrectSizeImageFile(TdApi.MessagePhoto photo) {
         for (int i = photo.photo.photos.length - 1; i > 0; i--) {
-            if(photo.photo.photos[i].height > 2048 || photo.photo.photos[i].height > 2048) {
+            if (photo.photo.photos[i].height > 2048 || photo.photo.photos[i].height > 2048) {
                 continue;
             } else {
                 return photo.photo.photos[i].photo;

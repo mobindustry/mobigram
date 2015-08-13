@@ -7,9 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,15 +22,11 @@ import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.activity.PhotoViewPagerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.FolderAdapter;
-import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.GiphyObject;
 import net.mobindustry.telegram.utils.ImagesObject;
 import net.mobindustry.telegram.utils.Utils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class FolderFragment extends Fragment {
 
@@ -46,7 +40,6 @@ public class FolderFragment extends Fragment {
     private FragmentTransaction ft;
     private LinearLayout layoutButtons;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +50,7 @@ public class FolderFragment extends Fragment {
         gridView = (GridView) view.findViewById(R.id.gridPhotos);
         numberPhotos = (TextView) view.findViewById(R.id.numberPhotosAll);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_folder);
-        layoutButtons=(LinearLayout)view.findViewById(R.id.layoutButtonsFolder);
+        layoutButtons = (LinearLayout) view.findViewById(R.id.layoutButtonsFolder);
         return view;
     }
 
@@ -65,7 +58,7 @@ public class FolderFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (Utils.isTablet(getActivity())) {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                 buttonSend.setEnabled(true);
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
@@ -77,14 +70,13 @@ public class FolderFragment extends Fragment {
                 } else {
                     numberPhotos.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 }
-
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 buttonSend.setEnabled(false);
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                 buttonSend.setEnabled(true);
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
@@ -106,14 +98,13 @@ public class FolderFragment extends Fragment {
                 buttonSend.setEnabled(false);
                 numberPhotos.setVisibility(View.GONE);
             }
-
         }
 
         folderAdapter = new FolderAdapter(getActivity(), new FolderAdapter.LoadPhotos() {
             @Override
             public void load() {
                 if (Utils.isTablet(getActivity())) {
-                    if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+                    if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                         buttonSend.setEnabled(true);
                         numberPhotos.setVisibility(View.VISIBLE);
                         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
@@ -125,14 +116,13 @@ public class FolderFragment extends Fragment {
                         } else {
                             numberPhotos.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                         }
-
                         numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                     } else {
                         buttonSend.setEnabled(false);
                         numberPhotos.setVisibility(View.GONE);
                     }
                 } else {
-                    if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+                    if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                         buttonSend.setEnabled(true);
                         numberPhotos.setVisibility(View.VISIBLE);
                         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
@@ -148,7 +138,6 @@ public class FolderFragment extends Fragment {
                         } else {
                             numberPhotos.setBackground(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                         }
-
                         numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                     } else {
                         buttonSend.setEnabled(false);
@@ -197,7 +186,7 @@ public class FolderFragment extends Fragment {
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size()!=0) {
+                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() != 0) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
                         if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
                             if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
@@ -246,7 +235,6 @@ public class FolderFragment extends Fragment {
                 ft.commit();
             }
         });
-
     }
 
     private void adjustGridViewPort() {
@@ -260,7 +248,6 @@ public class FolderFragment extends Fragment {
         gridView.setNumColumns(3);
         gridView.setHorizontalSpacing(15);
     }
-
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -287,8 +274,5 @@ public class FolderFragment extends Fragment {
             folderAdapter.clear();
             folderAdapter.addAll(ListFoldersHolder.getList());
         }
-
     }
-
-
 }

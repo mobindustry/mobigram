@@ -4,11 +4,12 @@ package net.mobindustry.telegram.utils;
 import java.io.Serializable;
 import java.util.List;
 
-public class FolderCustomGallery implements Serializable{
+public class FolderCustomGallery implements Serializable {
+
     private String name;
     private String path;
     private String photosQuantity;
-    private List<FileWithIndicator>photosInFolder;
+    private List<FileWithIndicator> photosInFolder;
     private String firstPhoto;
     private String firstThumb;
 
@@ -54,7 +55,6 @@ public class FolderCustomGallery implements Serializable{
     public void setPhotosQuantity(String photosQuantity) {
         this.photosQuantity = photosQuantity;
     }
-
 
     public List<FileWithIndicator> getPhotosInFolder() {
         return photosInFolder;

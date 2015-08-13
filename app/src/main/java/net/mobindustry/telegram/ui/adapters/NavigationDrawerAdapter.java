@@ -28,10 +28,8 @@ public class NavigationDrawerAdapter extends ArrayAdapter<NavigationItem> {
         }
 
         NavigationItem item = getItem(position);
-
         ImageView icon = (ImageView) convertView.findViewById(R.id.navigation_item_icon);
         TextView title = (TextView) convertView.findViewById(R.id.navigation_item_title);
-
         icon.setImageResource(item.getImage());
         title.setText(item.getTitle());
 

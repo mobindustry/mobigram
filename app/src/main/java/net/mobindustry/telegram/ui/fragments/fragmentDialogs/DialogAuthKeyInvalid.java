@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
+//TODO set string res for all dialogs
+
 public class DialogAuthKeyInvalid extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

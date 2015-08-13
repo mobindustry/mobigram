@@ -39,6 +39,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class ImagesFragment extends Fragment {
+
     private ListView imagesList;
     private ImagesAdapter imagesAdapter;
     private ProgressBar progressBar;
@@ -53,7 +54,6 @@ public class ImagesFragment extends Fragment {
     private SearchView sv;
     private LinearLayout layoutButtons;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class ImagesFragment extends Fragment {
         send = (FrameLayout) view.findViewById(R.id.buttonSendImages);
         number = (TextView) view.findViewById(R.id.numberImages);
         cancel = (FrameLayout) view.findViewById(R.id.buttonCancelImages);
-        layoutButtons=(LinearLayout)view.findViewById(R.id.layoutButtonsImages);
+        layoutButtons = (LinearLayout) view.findViewById(R.id.layoutButtonsImages);
         return view;
     }
 
@@ -83,14 +83,13 @@ public class ImagesFragment extends Fragment {
                     0, 0.15f);
             layoutButtons.setLayoutParams(paramButtons);
         }
-
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (Utils.isTablet(getActivity())) {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                 send.setEnabled(true);
                 Log.e("Log", "TABLET");
                 number.setVisibility(View.VISIBLE);
@@ -103,14 +102,13 @@ public class ImagesFragment extends Fragment {
                 } else {
                     number.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 }
-
                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 send.setEnabled(false);
                 number.setVisibility(View.GONE);
             }
         } else {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                 send.setEnabled(true);
                 number.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
@@ -126,7 +124,6 @@ public class ImagesFragment extends Fragment {
                 } else {
                     number.setBackground(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                 }
-
                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 send.setEnabled(false);
@@ -148,7 +145,7 @@ public class ImagesFragment extends Fragment {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size()!=0) {
+                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() != 0) {
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
                         if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
                             if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
@@ -223,8 +220,6 @@ public class ImagesFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-
-
     }
 
     private void doXmlParse() {
@@ -238,7 +233,6 @@ public class ImagesFragment extends Fragment {
 
             @Override
             protected PhotosFlickr doInBackground(Void... params) {
-
                 try {
                     URL url = new URL(FLICKR_URL);
                     PhotosFlickr feed = XmlReader.read(url);
@@ -262,7 +256,7 @@ public class ImagesFragment extends Fragment {
                             InputMethodManager imm = (InputMethodManager) getActivity()
                                     .getSystemService(getActivity().INPUT_METHOD_SERVICE);
                             if (Utils.isTablet(getActivity())) {
-                                if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+                                if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                                     send.setEnabled(true);
                                     Log.e("Log", "TABLET");
                                     number.setVisibility(View.VISIBLE);
@@ -275,14 +269,13 @@ public class ImagesFragment extends Fragment {
                                     } else {
                                         number.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                                     }
-
                                     number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                                 } else {
                                     send.setEnabled(false);
                                     number.setVisibility(View.GONE);
                                 }
                             } else {
-                                if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() !=null && ListFoldersHolder.getListForSending().size()>0) {
+                                if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                                     send.setEnabled(true);
                                     number.setVisibility(View.VISIBLE);
                                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
@@ -306,13 +299,11 @@ public class ImagesFragment extends Fragment {
                                             number.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                                         }
                                     }
-
                                     number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                                 } else {
                                     send.setEnabled(false);
                                     number.setVisibility(View.GONE);
                                 }
-
                             }
                         }
                     });
@@ -323,5 +314,4 @@ public class ImagesFragment extends Fragment {
             }
         }.execute();
     }
-
 }

@@ -50,6 +50,7 @@ public class RecentSmiles {
         }
         return ids;
     }
+
     public List<Entry> getSortedRecentEmoji() {
         ArrayList<Entry> res = new ArrayList<>(recent);
         Collections.sort(res, new Comparator<Entry>() {
@@ -58,7 +59,6 @@ public class RecentSmiles {
                 return Utils.compare(rhs.time, lhs.time);
             }
         });
-
         return res;
     }
 
@@ -96,9 +96,7 @@ public class RecentSmiles {
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-
             Entry entry = (Entry) o;
-
             return code == entry.code;
         }
 

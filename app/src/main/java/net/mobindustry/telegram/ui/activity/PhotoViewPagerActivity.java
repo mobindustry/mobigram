@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -25,8 +24,6 @@ import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
-import net.mobindustry.telegram.ui.fragments.FolderFragment;
-import net.mobindustry.telegram.ui.fragments.MessagesFragment;
 import net.mobindustry.telegram.ui.fragments.PageFragment;
 import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.GiphyObject;
@@ -165,8 +162,6 @@ public class PhotoViewPagerActivity extends FragmentActivity {
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-
             }
 
             @Override
@@ -180,12 +175,10 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                 } else {
                     image.setImageResource(R.drawable.ic_attach_check);
                 }
-
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
 
         });
@@ -342,7 +335,6 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                 }
             }
         });
-
     }
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -350,7 +342,6 @@ public class PhotoViewPagerActivity extends FragmentActivity {
         public MyFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
 
         @Override
         public Fragment getItem(int position) {
@@ -371,6 +362,4 @@ public class PhotoViewPagerActivity extends FragmentActivity {
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
-
-
 }

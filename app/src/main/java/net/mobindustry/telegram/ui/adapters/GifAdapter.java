@@ -55,12 +55,9 @@ public class GifAdapter extends ArrayAdapter<GiphyObject> implements Serializabl
                     }
                 }
                 notifyDataSetChanged();
-
             }
         };
     }
-
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -81,7 +78,6 @@ public class GifAdapter extends ArrayAdapter<GiphyObject> implements Serializabl
         }
 
         Glide.with(getContext()).load(giphyObject.getPath()).asBitmap().into(image);
-        //ImageLoaderHelper.displayImageList(giphyObject.getPath(), image);
         return convertView;
     }
 

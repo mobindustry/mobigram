@@ -67,12 +67,13 @@ public class EmojiPopup extends PopupWindow implements ObservableLinearLayout.Ca
         return prefs.getInt(prefKey, calc.dp(portrait ? 240 : 150));
     }
 
-    private String getKeyForConfiguration(boolean portrait){
+    private String getKeyForConfiguration(boolean portrait) {
         String prefKey;
         prefKey = "keyboard_height_" + portrait;
         return prefKey;
     }
-    private boolean isPortrait(){
+
+    private boolean isPortrait() {
         int orientation = ctx.getResources().getConfiguration().orientation;
         boolean portrait = orientation == Configuration.ORIENTATION_PORTRAIT;
         return portrait;
@@ -88,9 +89,8 @@ public class EmojiPopup extends PopupWindow implements ObservableLinearLayout.Ca
 
     public static EmojiPopup create(Activity ctx, ObservableLinearLayout parent, EmojiKeyboardView.CallBack cb) {
         LayoutInflater viewFactory = LayoutInflater.from(ctx);
-        EmojiKeyboardView view = (EmojiKeyboardView)  viewFactory.inflate(R.layout.view_emoji_keyboard, null, false);
+        EmojiKeyboardView view = (EmojiKeyboardView) viewFactory.inflate(R.layout.view_emoji_keyboard, null, false);
         view.setCallback(cb);
-
         EmojiPopup res = new EmojiPopup(view, parent);
         res.showAtLocation(ctx.getWindow().getDecorView(), Gravity.BOTTOM | Gravity.LEFT, 0, 0);
 
@@ -104,7 +104,7 @@ public class EmojiPopup extends PopupWindow implements ObservableLinearLayout.Ca
     @Override
     public void onLayout(int keyboardHeight, boolean landscape) {
         boolean newKeyboardVisible = keyboardHeight > 0;
-        if (keyboardVisible == newKeyboardVisible){
+        if (keyboardVisible == newKeyboardVisible) {
             return;
         }
         //keyboard shown or hidden
@@ -119,6 +119,4 @@ public class EmojiPopup extends PopupWindow implements ObservableLinearLayout.Ca
         });
         parentView.setPadding(0, 0, 0, 0);
     }
-
-
 }

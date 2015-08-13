@@ -35,9 +35,7 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
-import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.core.handlers.OkHandler;
-import net.mobindustry.telegram.core.handlers.StickerHandler;
 import net.mobindustry.telegram.core.handlers.StickersHandler;
 import net.mobindustry.telegram.core.handlers.UserHandler;
 import net.mobindustry.telegram.model.Enums;
@@ -55,7 +53,6 @@ import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,12 +108,10 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     }
 
     public void getUserMe() {
-        Log.e("Log", "UserMe");
         new ApiClient<>(new TdApi.GetMe(), new UserHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public void getStickers() {
-        Log.e("Log", "Sticker");
         new ApiClient<>(new TdApi.GetStickers(), new StickersHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
@@ -409,6 +404,5 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     protected void onPause() {
         super.onPause();
         DataHolder.setActive(false);
-
     }
 }

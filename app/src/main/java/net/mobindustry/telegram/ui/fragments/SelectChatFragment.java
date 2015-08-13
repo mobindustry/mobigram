@@ -16,7 +16,6 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatsHandler;
-import net.mobindustry.telegram.core.handlers.ContactsHandler;
 import net.mobindustry.telegram.ui.adapters.ChatListAdapter;
 import net.mobindustry.telegram.utils.Const;
 

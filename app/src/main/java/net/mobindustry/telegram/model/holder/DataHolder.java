@@ -2,8 +2,6 @@ package net.mobindustry.telegram.model.holder;
 
 import android.content.Context;
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class DataHolder {
 
     private static boolean isLoggedIn = false;

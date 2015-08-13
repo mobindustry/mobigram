@@ -8,7 +8,6 @@ public class InfoLocation {
 
     private LatLng lng = null;
 
-
     public static synchronized InfoLocation getInstance() {
         if (instance == null) {
             instance = new InfoLocation();

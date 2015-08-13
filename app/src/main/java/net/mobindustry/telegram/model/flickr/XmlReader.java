@@ -15,15 +15,11 @@ import javax.xml.parsers.SAXParserFactory;
 
 public class XmlReader {
     public static PhotosFlickr read(URL url) throws SAXException, IOException {
-
         return read(url.openStream());
-
     }
 
     public static PhotosFlickr read(InputStream stream) throws SAXException, IOException {
-
         try {
-
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser parser = factory.newSAXParser();
             XMLReader reader = parser.getXMLReader();
@@ -34,15 +30,12 @@ public class XmlReader {
             reader.parse(input);
 
             return handler.getResult();
-
         } catch (ParserConfigurationException e) {
             throw new SAXException();
         }
-
     }
 
     public static PhotosFlickr read(String source) throws SAXException, IOException {
         return read(new ByteArrayInputStream(source.getBytes()));
     }
-
 }

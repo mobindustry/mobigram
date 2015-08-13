@@ -19,7 +19,7 @@ public class FoursquareHolder implements Serializable {
         this.object = object;
     }
 
-    private Object object=new Object();
+    private Object object = new Object();
 
     public static synchronized FoursquareHolder getInstance() {
         if (instance == null) {

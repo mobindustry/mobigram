@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,7 +102,6 @@ public class EmojiKeyboardView extends LinearLayout {
         @Override
         public GridView instantiateItem(ViewGroup container, int position) {
             if (position == 0) {
-
                 final long[] longs = recentIds;
                 GridView gridPage = createGridPage(container, position, new EmojiPageAdapter(longs), R.dimen.emoji_size);
                 return gridPage;
@@ -120,7 +118,6 @@ public class EmojiKeyboardView extends LinearLayout {
                 GridView gridPage = createGridPage(container, position, new EmojiPageAdapter(data), R.dimen.emoji_size);
                 return gridPage;
             }
-
         }
 
         private GridView createGridPage(ViewGroup container, int position1, BaseAdapter adapter, int columnSizeResId) {
@@ -221,7 +218,7 @@ public class EmojiKeyboardView extends LinearLayout {
     }
 
     private void stickerClicked(TdApi.Sticker sticker) {
-        if(sticker.sticker.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
+        if (sticker.sticker.getConstructor() == TdApi.FileLocal.CONSTRUCTOR) {
             TdApi.FileLocal file = (TdApi.FileLocal) sticker.sticker;
             callback.stickerCLicked(file.path);
         } else {

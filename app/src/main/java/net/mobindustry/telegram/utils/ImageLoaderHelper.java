@@ -2,8 +2,6 @@ package net.mobindustry.telegram.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -15,12 +13,9 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.DataHolder;
-import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
 
 public class ImageLoaderHelper {
 
@@ -47,11 +42,8 @@ public class ImageLoaderHelper {
             .displayer(new FadeInBitmapDisplayer(500))
             .build();
 
-
     private static ImageLoader initImageLoader() {
         ImageLoader imageLoader = ImageLoader.getInstance();
-
-
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(DataHolder.getContext())
                 .diskCacheSize(50 * 1024 * 1024)
                 .defaultDisplayImageOptions(defaultOptionsFadeIn)

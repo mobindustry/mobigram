@@ -69,7 +69,6 @@ public class YourNameFragment extends Fragment {
                 return true;
             }
         });
-
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

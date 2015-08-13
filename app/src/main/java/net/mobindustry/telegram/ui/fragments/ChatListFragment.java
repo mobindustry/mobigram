@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +37,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatListFragment extends ListFragment{
+public class ChatListFragment extends ListFragment {
 
     boolean dualPane;
     private static int currentCheckPosition = 0;
@@ -68,7 +66,7 @@ public class ChatListFragment extends ListFragment{
         super.onActivityCreated(savedState);
 
         noChatsMessage = (TextView) getActivity().findViewById(R.id.no_chats);
-        
+
         FragmentManager manager = getActivity().getSupportFragmentManager();
         manager.findFragmentById(R.id.messages);
         if (manager.findFragmentById(R.id.messages) != null) {
@@ -229,17 +227,15 @@ public class ChatListFragment extends ListFragment{
 
     void showMessages(int index) {
         currentCheckPosition = index;
-        if(getFragmentManager() != null) {
+        if (getFragmentManager() != null) {
             FragmentTransaction ft
                     = getFragmentManager().beginTransaction();
             getListView().setItemChecked(index, true);
             MessagesFragment messagesFragment = new MessagesFragment();
-            //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
             if (!fragmentStopped) {
                 ft.replace(R.id.messages, messagesFragment);
                 ft.commit();
             }
-
             layout.setVisibility(View.INVISIBLE);
         }
     }
@@ -266,7 +262,7 @@ public class ChatListFragment extends ListFragment{
         new ApiClient<>(new TdApi.GetChat(userId), new ChatHandler(), new ApiClient.OnApiResultHandler() {
             @Override
             public void onApiResult(BaseHandler output) {
-                if(output.getHandlerId() == ChatHandler.HANDLER_ID) {
+                if (output.getHandlerId() == ChatHandler.HANDLER_ID) {
                     TdApi.Chat chat = (TdApi.Chat) output.getResponse();
                     clickedId = chat.id;
                     addChatToChatsArray(chat);
@@ -327,7 +323,5 @@ public class ChatListFragment extends ListFragment{
             getChatsList(Const.CHATS_LIST_OFFSET, Const.CHATS_LIST_LIMIT);
         }
         super.onResume();
-
     }
-
 }

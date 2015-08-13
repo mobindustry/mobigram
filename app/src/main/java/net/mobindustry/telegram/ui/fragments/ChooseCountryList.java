@@ -100,6 +100,4 @@ public class ChooseCountryList extends Fragment implements Serializable {
             }
         });
     }
-
-
 }

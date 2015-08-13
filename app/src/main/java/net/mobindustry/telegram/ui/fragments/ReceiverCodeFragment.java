@@ -27,7 +27,6 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
 
     private EditText codeFromUser;
     private RegistrationActivity activity;
-    private TextView countDownTimer;
 
     @Nullable
     @Override
@@ -46,7 +45,6 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
 
         codeFromUser = (EditText) getActivity().findViewById(R.id.code_from_user);
         codeFromUser.requestFocus();
-        countDownTimer = (TextView) getActivity().findViewById(R.id.countdown_timer);
         TextView textForUser = (TextView) getActivity().findViewById(R.id.text_with_user_phone);
         TextView wrongNumber = (TextView) getActivity().findViewById(R.id.wrong_number);
 

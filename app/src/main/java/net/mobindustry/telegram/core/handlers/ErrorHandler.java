@@ -29,17 +29,17 @@ import org.drinkless.td.libcore.telegram.TdApi;
 
 public class ErrorHandler {
 
-    private  FragmentManager fm;
+    private FragmentManager fm;
     private TdApi.Error error;
 
     public ErrorHandler(FragmentManager fm, TdApi.Error error) {
         this.fm = fm;
         this.error = error;
-        handle ();
+        handle();
     }
 
-    private void handle () {
-        Log.wtf("Log", "UpdateHandler: " + error.toString());
+    private void handle() {
+        Log.e("Log", "ErrorHandler: " + error.toString());
 
         if ((error.code == 8 && error.text.contains("UNEXPECTED"))) {
             DialogCodeUnexpected dialogCodeUnexpected = new DialogCodeUnexpected();

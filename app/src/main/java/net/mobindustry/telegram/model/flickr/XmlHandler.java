@@ -66,7 +66,6 @@ public class XmlHandler extends DefaultHandler {
 
         } else if (photoFlickr != null) {
             // Parse item properties
-
             try {
                 if (qName.equals("content:encoded"))
                     qName = "content";
@@ -80,6 +79,5 @@ public class XmlHandler extends DefaultHandler {
             } catch (InvocationTargetException e) {
             }
         }
-
     }
 }

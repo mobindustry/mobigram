@@ -155,7 +155,7 @@ public class SendGif extends Service {
             fos.flush();
             fos.close();
             Log.e("DownloadManager", "download ready in" + ((System.currentTimeMillis() - startTime) / 1000) + " sec");
-            if (file.canRead()){
+            if (file.canRead()) {
                 Log.e("Log", "CAN READ ");
             }
             link = file.getAbsolutePath();
@@ -198,14 +198,14 @@ public class SendGif extends Service {
             if (ListFoldersHolder.getListGif() != null) {
                 for (int i = 0; i < ListFoldersHolder.getListGif().size(); i++) {
                     String link = downloadFromUrlGif(ListFoldersHolder.getListGif().get(i));
-                    Log.e("Log", "Link Gif "+link);
+                    Log.e("Log", "Link Gif " + link);
                     sendGifMessage(id, link);
                 }
             }
             if (ListFoldersHolder.getListImages() != null) {
                 for (int i = 0; i < ListFoldersHolder.getListImages().size(); i++) {
                     String link = downloadFromUrlImages(ListFoldersHolder.getListImages().get(i));
-                    Log.e("Log", "Link send "+link);
+                    Log.e("Log", "Link send " + link);
                     sendPhotoMessage(id, link);
                 }
             }

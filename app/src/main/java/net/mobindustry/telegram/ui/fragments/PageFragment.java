@@ -30,5 +30,4 @@ public class PageFragment extends Fragment {
         ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + path, tvPage);
         return view;
     }
-
 }

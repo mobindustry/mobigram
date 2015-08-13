@@ -12,9 +12,8 @@ public class ListCountryObject implements Serializable {
     private List<CountryObject> listCountries = new ArrayList<>();
     private List<Integer> listHeaderPositions = new ArrayList<>();
     private List<Integer> listRowsQuantity = new ArrayList<>();
-    private List<CountryObject>listConst= new ArrayList<>();
-    private List<CountryObject>listTmp= new ArrayList<>();
-
+    private List<CountryObject> listConst = new ArrayList<>();
+    private List<CountryObject> listTmp = new ArrayList<>();
 
     public List<CountryObject> getListCountries() {
         return listCountries;
@@ -56,7 +55,7 @@ public class ListCountryObject implements Serializable {
         quantityCountriesInSections();
     }
 
-    public void updateListTmp(String text){
+    public void updateListTmp(String text) {
         List<String> listSplitRow = splitRow(text);
         for (int i = 0; i < listSplitRow.size(); i++) {
             String[] parts = listSplitRow.get(i).split(";");

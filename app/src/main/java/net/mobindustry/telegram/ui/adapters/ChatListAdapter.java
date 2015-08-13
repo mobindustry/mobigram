@@ -3,8 +3,6 @@ package net.mobindustry.telegram.ui.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.core.ApiClient;
-import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
-import net.mobindustry.telegram.model.holder.UserInfoHolder;
-import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.ImageLoaderHelper;
-import net.mobindustry.telegram.utils.Utils;
 import net.mobindustry.telegram.ui.emoji.Emoji;
 import net.mobindustry.telegram.ui.emoji.EmojiParser;
+import net.mobindustry.telegram.utils.Const;
+import net.mobindustry.telegram.utils.Utils;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
