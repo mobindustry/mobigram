@@ -1,7 +1,7 @@
 package net.mobindustry.telegram.model.holder;
 
-import net.mobindustry.telegram.utils.CountryObject;
-import net.mobindustry.telegram.utils.ListCountryObject;
+import net.mobindustry.telegram.model.CountryObject;
+import net.mobindustry.telegram.model.ListCountryObject;
 
 public class InfoRegistration {
 

@@ -10,10 +10,10 @@ import android.widget.ImageView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.FileWithIndicator;
+import net.mobindustry.telegram.model.FileWithIndicator;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
-import net.mobindustry.telegram.utils.ImagesObject;
-import net.mobindustry.telegram.utils.MediaGallery;
+import net.mobindustry.telegram.model.ImagesObject;
+import net.mobindustry.telegram.model.MediaGallery;
 
 import java.util.ArrayList;
 

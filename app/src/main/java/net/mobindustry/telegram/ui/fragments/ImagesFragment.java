@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -30,8 +31,8 @@ import net.mobindustry.telegram.model.flickr.XmlReader;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.adapters.ImagesAdapter;
-import net.mobindustry.telegram.utils.GiphyObject;
-import net.mobindustry.telegram.utils.ImagesObject;
+import net.mobindustry.telegram.model.GiphyObject;
+import net.mobindustry.telegram.model.ImagesObject;
 import net.mobindustry.telegram.utils.Utils;
 
 import java.net.URL;
@@ -236,13 +237,13 @@ public class ImagesFragment extends Fragment {
                 super.onPostExecute(photosFlickr);
                 progressBar.setVisibility(View.GONE);
                 if (photosFlickr != null && photosFlickr.getPhotos().size() > 0) {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                     imagesAdapter = new ImagesAdapter(getActivity(), photosFlickr.getPhotos(), new ImagesAdapter.LoadPhotos() {
                         @Override
                         public void load() {
                             InputMethodManager imm = (InputMethodManager) getActivity()
-                                    .getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                                    .getSystemService(Context.INPUT_METHOD_SERVICE);
                             if (Utils.isTablet(getActivity())) {
                                 if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                                     send.setEnabled(true);

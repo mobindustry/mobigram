@@ -1,4 +1,6 @@
-package net.mobindustry.telegram.utils;
+package net.mobindustry.telegram.model;
+
+import net.mobindustry.telegram.model.CountryObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;

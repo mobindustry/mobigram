@@ -23,9 +23,9 @@ import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.fragments.PageFragment;
 import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.GiphyObject;
-import net.mobindustry.telegram.utils.ImagesObject;
-import net.mobindustry.telegram.utils.MediaGallery;
+import net.mobindustry.telegram.model.GiphyObject;
+import net.mobindustry.telegram.model.ImagesObject;
+import net.mobindustry.telegram.model.MediaGallery;
 import net.mobindustry.telegram.utils.Utils;
 
 import java.util.ArrayList;

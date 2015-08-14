@@ -24,9 +24,9 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
-import net.mobindustry.telegram.utils.FileWithIndicator;
-import net.mobindustry.telegram.utils.FolderCustomGallery;
-import net.mobindustry.telegram.utils.ImagesFromMediaStore;
+import net.mobindustry.telegram.model.FileWithIndicator;
+import net.mobindustry.telegram.model.FolderCustomGallery;
+import net.mobindustry.telegram.model.ImagesFromMediaStore;
 import net.mobindustry.telegram.utils.Utils;
 
 import java.io.File;

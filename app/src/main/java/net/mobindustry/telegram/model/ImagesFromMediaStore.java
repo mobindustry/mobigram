@@ -1,4 +1,4 @@
-package net.mobindustry.telegram.utils;
+package net.mobindustry.telegram.model;
 
 public class ImagesFromMediaStore {
 

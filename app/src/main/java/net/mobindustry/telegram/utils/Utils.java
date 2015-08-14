@@ -21,9 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
@@ -36,10 +34,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiHelper;
-import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
-import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.core.service.SendGif;
+import net.mobindustry.telegram.model.GiphyObject;
+import net.mobindustry.telegram.model.ImagesObject;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
@@ -479,7 +476,7 @@ public class Utils {
     }
 
     public static boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) DataHolder.getContext().getSystemService(DataHolder.getContext().CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) DataHolder.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }

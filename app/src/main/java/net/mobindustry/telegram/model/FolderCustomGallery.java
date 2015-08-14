@@ -1,5 +1,7 @@
-package net.mobindustry.telegram.utils;
+package net.mobindustry.telegram.model;
 
+
+import net.mobindustry.telegram.model.FileWithIndicator;
 
 import java.io.Serializable;
 import java.util.List;

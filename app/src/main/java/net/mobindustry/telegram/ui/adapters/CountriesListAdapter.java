@@ -1,7 +1,6 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,8 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.utils.CountryObject;
-import net.mobindustry.telegram.utils.ListCountryObject;
+import net.mobindustry.telegram.model.CountryObject;
+import net.mobindustry.telegram.model.ListCountryObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;

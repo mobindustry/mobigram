@@ -11,8 +11,8 @@ import com.bumptech.glide.Glide;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
-import net.mobindustry.telegram.utils.GiphyObject;
-import net.mobindustry.telegram.utils.MediaGallery;
+import net.mobindustry.telegram.model.GiphyObject;
+import net.mobindustry.telegram.model.MediaGallery;
 
 import java.io.Serializable;
 import java.util.ArrayList;

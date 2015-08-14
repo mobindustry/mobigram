@@ -16,7 +16,7 @@ import android.util.Log;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
-import net.mobindustry.telegram.utils.ImagesFromMediaStore;
+import net.mobindustry.telegram.model.ImagesFromMediaStore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

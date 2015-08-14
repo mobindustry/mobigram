@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,7 +27,7 @@ import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.YourNameFragment;
 import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.ListCountryObject;
+import net.mobindustry.telegram.model.ListCountryObject;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -61,7 +60,7 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
         }
         if (output.getHandlerId() == UserHandler.HANDLER_ID) {
             UserInfoHolder holder = UserInfoHolder.getInstance();
-            holder.setUser((TdApi.User) output.getResponse());
+            UserInfoHolder.setUser((TdApi.User) output.getResponse());
         }
         if (output.getHandlerId() == GetStateHandler.HANDLER_ID) {
             GetStateHandler handler = (GetStateHandler) output;

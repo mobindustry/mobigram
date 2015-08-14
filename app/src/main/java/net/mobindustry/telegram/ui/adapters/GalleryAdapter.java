@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.FolderCustomGallery;
+import net.mobindustry.telegram.model.FolderCustomGallery;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 
 public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {

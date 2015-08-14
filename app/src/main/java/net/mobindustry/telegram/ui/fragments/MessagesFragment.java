@@ -352,7 +352,7 @@ public class MessagesFragment extends Fragment implements Serializable {
 
                         @Override
                         public void emojiClicked(long code) {
-                            String strEmoji = emoji.toString(code);
+                            String strEmoji = Emoji.toString(code);
                             Editable text = input.getText();
                             text.append(emoji.replaceEmoji(strEmoji));
                         }
@@ -631,11 +631,11 @@ public class MessagesFragment extends Fragment implements Serializable {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Const.REQUEST_CODE_MAKE_VIDEO && resultCode == getActivity().RESULT_OK) {
+        if (requestCode == Const.REQUEST_CODE_MAKE_VIDEO && resultCode == Activity.RESULT_OK) {
             ApiHelper.sendVideoMessage(getShownChatId(), holder.getTempVideoFile().getAbsolutePath());
             holder.clearFiles();
         }
-        if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO && resultCode == getActivity().RESULT_OK) {
+        if (requestCode == Const.REQUEST_CODE_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected void onPreExecute() {
@@ -671,12 +671,12 @@ public class MessagesFragment extends Fragment implements Serializable {
                 }
             }.execute();
         }
-        if (requestCode == Const.REQUEST_CODE_TAKE_FILE && resultCode == getActivity().RESULT_OK) {
+        if (requestCode == Const.REQUEST_CODE_TAKE_FILE && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             String path = FilePathUtil.getPath(getActivity(), uri);
             ApiHelper.sendDocumentMessage(getShownChatId(), path);
         }
-        if (requestCode == Const.REQUEST_CODE_SELECT_IMAGE && resultCode == getActivity().RESULT_OK) {
+        if (requestCode == Const.REQUEST_CODE_SELECT_IMAGE && resultCode == Activity.RESULT_OK) {
             try {
                 Uri uriImage = data.getData();
                 String path = getPathFromURI(uriImage, getActivity());
@@ -714,11 +714,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     }
 
     public boolean isEmojiAttached() {
-        if (emojiPopup == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return emojiPopup != null;
     }
 
     @Override

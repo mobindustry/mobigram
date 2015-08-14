@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +18,8 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.ui.adapters.CountriesListAdapter;
-import net.mobindustry.telegram.utils.CountryObject;
-import net.mobindustry.telegram.utils.ListCountryObject;
+import net.mobindustry.telegram.model.CountryObject;
+import net.mobindustry.telegram.model.ListCountryObject;
 
 import java.io.Serializable;
 

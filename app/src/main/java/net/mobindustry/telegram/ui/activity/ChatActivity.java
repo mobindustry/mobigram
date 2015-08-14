@@ -134,10 +134,10 @@ public class ChatActivity extends AppCompatActivity {
         List<NavigationItem> drawerItemsList = new ArrayList<>();
         drawerItemsList.add(new NavigationItem(getString(R.string.logout_navigation_item), R.drawable.ic_logout));
 
-        if (holder.getUser() == null) {
+        if (UserInfoHolder.getUser() == null) {
             getUserMe();
         } else {
-            setHeader(holder.getUser());
+            setHeader(UserInfoHolder.getUser());
         }
 
         if (MessagesFragmentHolder.getStickers() == null) {
@@ -188,8 +188,8 @@ public class ChatActivity extends AppCompatActivity {
                 if (output == null) {
                     getUserMe();
                 } else if (output.getHandlerId() == UserHandler.HANDLER_ID) {
-                    holder.setUser((TdApi.User) output.getResponse());
-                    setHeader(holder.getUser());
+                    UserInfoHolder.setUser((TdApi.User) output.getResponse());
+                    setHeader(UserInfoHolder.getUser());
                 }
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -214,7 +214,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public long getMyId() {
-        return holder.getUser().id;
+        return UserInfoHolder.getUser().id;
     }
 
     public long getIntentChatId() {

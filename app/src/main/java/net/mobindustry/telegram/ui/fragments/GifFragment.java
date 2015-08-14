@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -38,8 +39,8 @@ import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.activity.PhotoViewerActivity;
 import net.mobindustry.telegram.ui.adapters.GifAdapter;
 import net.mobindustry.telegram.utils.Const;
-import net.mobindustry.telegram.utils.GiphyObject;
-import net.mobindustry.telegram.utils.ImagesObject;
+import net.mobindustry.telegram.model.GiphyObject;
+import net.mobindustry.telegram.model.ImagesObject;
 import net.mobindustry.telegram.utils.Utils;
 import net.mobindustry.telegram.utils.loadmore.LoadMoreListView;
 
@@ -328,13 +329,13 @@ public class GifFragment extends Fragment {
                     giphyObject.setPath(info.getImages().getOriginal().getUrl());
                     giphyObjectList.add(giphyObject);
                 }
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 gifAdapter = new GifAdapter(getActivity(), giphyObjectList, new GifAdapter.LoadGif() {
                     @Override
                     public void load() {
                         InputMethodManager imm = (InputMethodManager) getActivity()
-                                .getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                                .getSystemService(Context.INPUT_METHOD_SERVICE);
                         if (Utils.isTablet(getActivity())) {
                             if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                                 send.setEnabled(true);

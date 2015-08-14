@@ -1,5 +1,6 @@
 package net.mobindustry.telegram.ui.fragments;
 
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -124,7 +125,7 @@ public class LocationFragment extends Fragment{
             }
         });
 
-        service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+        service = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
