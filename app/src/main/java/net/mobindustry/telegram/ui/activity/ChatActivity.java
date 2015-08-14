@@ -57,7 +57,7 @@ import org.drinkless.td.libcore.telegram.TdApi;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiResultHandler {
+public class ChatActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ListView drawerList;
@@ -140,7 +140,9 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
             setHeader(holder.getUser());
         }
 
-        getStickers();
+        if (MessagesFragmentHolder.getStickers() == null) {
+            getStickers();
+        }
 
         adapter.addAll(drawerItemsList);
 
@@ -180,35 +182,39 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
     }
 
     public void getUserMe() {
-        new ApiClient<>(new TdApi.GetMe(), new UserHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        new ApiClient<>(new TdApi.GetMe(), new UserHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+                if (output == null) {
+                    getUserMe();
+                } else if (output.getHandlerId() == UserHandler.HANDLER_ID) {
+                    holder.setUser((TdApi.User) output.getResponse());
+                    setHeader(holder.getUser());
+                }
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public void getStickers() {
-        new ApiClient<>(new TdApi.GetStickers(), new StickersHandler(), this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        new ApiClient<>(new TdApi.GetStickers(), new StickersHandler(), new ApiClient.OnApiResultHandler() {
+            @Override
+            public void onApiResult(BaseHandler output) {
+                if (output == null) {
+                    getStickers();
+                } else if (output.getHandlerId() == StickersHandler.HANDLER_ID) {
+                    TdApi.Stickers stickers = (TdApi.Stickers) output.getResponse();
+                    if (stickers.stickers.length == 0) {
+                        getStickers();
+                    } else {
+                        MessagesFragmentHolder.setStickers((TdApi.Stickers) output.getResponse());
+                    }
+                }
+            }
+        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     public long getMyId() {
         return holder.getUser().id;
-    }
-
-    @Override
-    public void onApiResult(BaseHandler output) {
-        if (output == null) {
-            getUserMe();
-        } else {
-            if (output.getHandlerId() == UserHandler.HANDLER_ID) {
-                holder.setUser((TdApi.User) output.getResponse());
-                setHeader(holder.getUser());
-            }
-        }
-        if (output.getHandlerId() == StickersHandler.HANDLER_ID) {
-            TdApi.Stickers stickers = (TdApi.Stickers) output.getResponse();
-            if (stickers.stickers.length == 0) {
-                getStickers();
-            } else {
-                MessagesFragmentHolder.setStickers((TdApi.Stickers) output.getResponse());
-            }
-        }
     }
 
     public long getIntentChatId() {

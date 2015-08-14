@@ -26,18 +26,15 @@ public class MessagesFragmentHolder {
     private static TdApi.Chat chat;
     private static TdApi.Chats chats;
     private boolean isEmojiCreated = false;
+    private static HashMap<Long, Integer> topMessageMap = new HashMap<>();
+    private Emoji emoji;
+    private static TdApi.Stickers stickers;
 
     public void clearFiles() {
         tempPhotoFile = null;
         tempVideoFile = null;
         System.gc();
     }
-
-    private static HashMap<Long, Integer> topMessageMap = new HashMap<>();
-
-    private Emoji emoji;
-
-    private static TdApi.Stickers stickers;
 
     public static void addToMap(Long chatId, Integer topMessageId) {
         topMessageMap.put(chatId, topMessageId);
