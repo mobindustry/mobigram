@@ -52,12 +52,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         lastMessage.setText("");
         icon.setText("");
 
-        int sdk = android.os.Build.VERSION.SDK_INT;
-        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            icon.setBackgroundDrawable(null);
-        } else {
-            icon.setBackground(null);
-        }
+        Utils.veryfiSetBackground(icon, null);
 
         TdApi.Chat item = getItem(position);
         TdApi.ChatInfo info = item.type;
@@ -123,17 +118,9 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         if (item.unreadCount != 0) {
             notify.setText(String.valueOf(item.unreadCount));
-            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                notify.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.chat_list_item_notification_size, getContext().getResources().getColor(R.color.message_notify)));
-            } else {
-                notify.setBackground(Utils.getShapeDrawable(R.dimen.chat_list_item_notification_size, getContext().getResources().getColor(R.color.message_notify)));
-            }
+            Utils.veryfiSetBackground(notify, Utils.getShapeDrawable(R.dimen.chat_list_item_notification_size, getContext().getResources().getColor(R.color.message_notify)));
         } else {
-            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                notify.setBackgroundDrawable(null);
-            } else {
-                notify.setBackground(null);
-            }
+            Utils.veryfiSetBackground(notify, null);
             notify.setText("");
         }
 

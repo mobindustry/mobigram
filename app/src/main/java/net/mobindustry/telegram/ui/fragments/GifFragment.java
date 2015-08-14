@@ -109,12 +109,7 @@ public class GifFragment extends Fragment {
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                 params.leftMargin = 50;
                 number.setLayoutParams(params);
-                int sdk = Build.VERSION.SDK_INT;
-                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
-                    number.setBackgroundDrawable(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
-                } else {
-                    number.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
-                }
+                Utils.veryfiSetBackground(number, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 send.setEnabled(false);
@@ -131,12 +126,7 @@ public class GifFragment extends Fragment {
                     params.leftMargin = 60;
                 }
                 number.setLayoutParams(params);
-                int sdk = Build.VERSION.SDK_INT;
-                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
-                    number.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
-                } else {
-                    number.setBackground(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
-                }
+                Utils.veryfiSetBackground(number, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 send.setEnabled(false);
@@ -353,12 +343,7 @@ public class GifFragment extends Fragment {
                                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                                 params.leftMargin = 50;
                                 number.setLayoutParams(params);
-                                int sdk = Build.VERSION.SDK_INT;
-                                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
-                                    number.setBackgroundDrawable(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
-                                } else {
-                                    number.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
-                                }
+                                Utils.veryfiSetBackground(number, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                             } else {
                                 send.setEnabled(false);
@@ -375,19 +360,10 @@ public class GifFragment extends Fragment {
                                     params.leftMargin = 60;
                                 }
                                 number.setLayoutParams(params);
-                                int sdk = Build.VERSION.SDK_INT;
-                                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
-                                    if (imm.isAcceptingText()) {
-                                        number.setBackgroundDrawable(Utils.getShapeDrawable(50, getActivity().getResources().getColor(R.color.message_notify)));
-                                    } else {
-                                        number.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
-                                    }
+                                if (imm.isAcceptingText()) {
+                                    Utils.veryfiSetBackground(number, Utils.getShapeDrawable(50, getActivity().getResources().getColor(R.color.message_notify)));
                                 } else {
-                                    if (imm.isAcceptingText()) {
-                                        number.setBackgroundDrawable(Utils.getShapeDrawable(50, getActivity().getResources().getColor(R.color.message_notify)));
-                                    } else {
-                                        number.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
-                                    }
+                                    Utils.veryfiSetBackground(number, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                                 }
                                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                             } else {

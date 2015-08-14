@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.media.ExifInterface;
@@ -215,23 +216,23 @@ public class Utils {
                 } else {
                     iconImage.setImageDrawable(null);
                     icon.setVisibility(View.VISIBLE);
-                    int sdk = android.os.Build.VERSION.SDK_INT;
-                    if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        if (chatId < 0) {
-                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, chatId));
-                        } else {
-                            icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatId));
-                        }
+                    if (chatId < 0) {
+                        veryfiSetBackground(icon, Utils.getShapeDrawable(R.dimen.toolbar_icon_size, chatId));
                     } else {
-                        if (chatId < 0) {
-                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, chatId));
-                        } else {
-                            icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatId));
-                        }
+                        veryfiSetBackground(icon, Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatId));
                     }
                     icon.setText(Utils.getInitials(firstName, lastName));
                 }
             }
+        }
+    }
+
+    public static void veryfiSetBackground(View view, Drawable drawable) {
+        int sdk = android.os.Build.VERSION.SDK_INT;
+        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            view.setBackgroundDrawable(drawable);
+        } else {
+            view.setBackground(drawable);
         }
     }
 

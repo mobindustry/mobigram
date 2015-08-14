@@ -202,12 +202,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         if (item.selected) {
             convertView.setBackgroundResource(R.drawable.msg_selected);
         } else {
-            int sdk = android.os.Build.VERSION.SDK_INT;
-            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                convertView.setBackgroundDrawable(null);
-            } else {
-                convertView.setBackground(null);
-            }
+            Utils.veryfiSetBackground(convertView, null);
         }
 
         FrameLayout layout = new FrameLayout(getContext());
@@ -297,17 +292,10 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             TextView name = (TextView) contactView.findViewById(R.id.contact_message_name);
             TextView phone = (TextView) contactView.findViewById(R.id.contact_message_phone);
             TextView icon = (TextView) contactView.findViewById(R.id.contact_message_icon);
-
-            int sdk = android.os.Build.VERSION.SDK_INT;
-            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                icon.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -contact.userId));
-            } else {
-                icon.setBackground(Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -contact.userId));
-            }
+            Utils.veryfiSetBackground(icon, Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -contact.userId));
             icon.setText(Utils.getInitials(contact.firstName, contact.lastName));
             phone.setText(contact.phoneNumber);
             name.setText(contact.firstName + " " + contact.lastName);
-
             layout.addView(contactView);
         }
         if (item.message instanceof TdApi.MessageDocument) {

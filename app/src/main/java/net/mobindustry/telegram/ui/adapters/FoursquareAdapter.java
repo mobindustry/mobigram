@@ -34,14 +34,7 @@ public class FoursquareAdapter extends ArrayAdapter<FoursquareVenue> implements 
         ImageView iconPlace = (ImageView) convertView.findViewById(R.id.iconPlace);
         TextView textPlaceName = (TextView) convertView.findViewById(R.id.textPlaceName);
         TextView textPlaceAddress = (TextView) convertView.findViewById(R.id.textPlaceAddress);
-
-        int sdk = android.os.Build.VERSION.SDK_INT;
-        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            iconPlace.setBackgroundDrawable(Utils.getShapeDrawable(R.dimen.foursquare_icon_size, Color.GRAY));
-        } else {
-            iconPlace.setBackground(Utils.getShapeDrawable(R.dimen.foursquare_icon_size, Color.GRAY));
-        }
-
+        Utils.veryfiSetBackground(iconPlace, Utils.getShapeDrawable(R.dimen.foursquare_icon_size, Color.GRAY));
         FoursquareVenue foursquareVenue = getItem(position);
         if (foursquareVenue != null) {
             if (foursquareVenue.getFoursquareCategories().size() > 0) {

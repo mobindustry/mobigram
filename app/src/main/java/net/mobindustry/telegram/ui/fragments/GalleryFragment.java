@@ -134,13 +134,7 @@ public class GalleryFragment extends Fragment {
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                 params.leftMargin = 50;
                 numberPhotos.setLayoutParams(params);
-                int sdk = android.os.Build.VERSION.SDK_INT;
-                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
-                } else {
-                    numberPhotos.setBackground(Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
-                }
-
+                Utils.veryfiSetBackground(numberPhotos, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 buttonSend.setEnabled(false);
@@ -157,13 +151,7 @@ public class GalleryFragment extends Fragment {
                     params.leftMargin = 60;
                 }
                 numberPhotos.setLayoutParams(params);
-                int sdk = android.os.Build.VERSION.SDK_INT;
-                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    numberPhotos.setBackgroundDrawable(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
-                } else {
-                    numberPhotos.setBackground(Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
-                }
-
+                Utils.veryfiSetBackground(numberPhotos, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 buttonSend.setEnabled(false);
