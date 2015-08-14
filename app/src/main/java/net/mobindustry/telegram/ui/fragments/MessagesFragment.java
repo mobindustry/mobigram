@@ -536,13 +536,8 @@ public class MessagesFragment extends Fragment implements Serializable {
                         Intent intentGallery = new Intent(getActivity(), TransparentActivity.class);
                         intentGallery.putExtra("choice", Const.GALLERY_FRAGMENT);
                         startActivityForResult(intentGallery, 1);
-                        ListFoldersHolder.setCheckQuantity(0);
-                        ListFoldersHolder.setListFolders(null);
-                        ListFoldersHolder.setList(null);
-                        ListFoldersHolder.setListForSending(null);
-                        ListFoldersHolder.setListGif(null);
-                        ListFoldersHolder.setListImages(null);
                         ListFoldersHolder.setChatID(getShownChatId());
+                        ListFoldersHolder.clearParams();
                         break;
                     case R.id.video:
                         Utils.hideKeyboard(input);

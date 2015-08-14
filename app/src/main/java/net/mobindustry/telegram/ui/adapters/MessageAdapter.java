@@ -216,11 +216,9 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             TextView forwardedFromName = ((TextView) textView.findViewById(R.id.chat_user_name_text_view));
             forwardedFromName.setTextColor(getContext().getResources().getColor(R.color.content_text_color));
             if (user != null) {
-                String name = getContext().getString(R.string.forwarded_message_from) + user.firstName + " " + user.lastName;
-                forwardedFromName.setText(name);
+                forwardedFromName.setText(getContext().getString(R.string.forwarded_message_from) + user.firstName + " " + user.lastName);
             } else {
-                String name = getContext().getString(R.string.forwarded_message_from_id) + item.forwardFromId;
-                forwardedFromName.setText(name);
+                forwardedFromName.setText(getContext().getString(R.string.forwarded_message_from_id) + item.forwardFromId);
             }
             forwarded_from.addView(textView);
         }
@@ -234,9 +232,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             View textView = View.inflate(getContext(), R.layout.chat_user_name_layout, null);
             TdApi.User user = UserInfoHolder.getUser(item.fromId);
             if (user != null) {
-                String name = user.firstName + " " + user.lastName;
-                ((TextView) textView.findViewById(R.id.chat_user_name_text_view)).setText(name);
-
+                ((TextView) textView.findViewById(R.id.chat_user_name_text_view)).setText(user.firstName + " " + user.lastName);
             } else {
                 ((TextView) textView.findViewById(R.id.chat_user_name_text_view)).setText("ID: " + item.fromId);
             }

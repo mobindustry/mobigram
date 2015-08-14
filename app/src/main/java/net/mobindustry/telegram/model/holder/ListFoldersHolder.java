@@ -89,4 +89,13 @@ public class ListFoldersHolder {
     public static void setList(List<FileWithIndicator> list) {
         ListFoldersHolder.list = list;
     }
+
+    public static void clearParams() {
+        setCheckQuantity(0);
+        setListFolders(null);
+        setList(null);
+        setListForSending(null);
+        setListGif(null);
+        setListImages(null);
+    }
 }
