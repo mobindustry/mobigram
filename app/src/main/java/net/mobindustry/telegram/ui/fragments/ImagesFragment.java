@@ -1,7 +1,6 @@
 package net.mobindustry.telegram.ui.fragments;
 
-import android.content.Context;
-import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,8 +28,6 @@ import net.mobindustry.telegram.model.flickr.XmlReader;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.adapters.ImagesAdapter;
-import net.mobindustry.telegram.model.GiphyObject;
-import net.mobindustry.telegram.model.ImagesObject;
 import net.mobindustry.telegram.utils.Utils;
 
 import java.net.URL;
@@ -135,6 +132,7 @@ public class ImagesFragment extends Fragment {
     }
 
     private void doXmlParse() {
+        getActivity().setRequestedOrientation(getResources().getConfiguration().orientation);
         new AsyncTask<Void, Void, PhotosFlickr>() {
 
             @Override
@@ -174,6 +172,7 @@ public class ImagesFragment extends Fragment {
                 } else {
                     textNoResult.setVisibility(View.VISIBLE);
                 }
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
             }
         }.execute();
     }

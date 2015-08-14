@@ -2,6 +2,7 @@ package net.mobindustry.telegram.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -104,6 +105,7 @@ public class GifFragment extends Fragment {
         gifsList.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
+                getActivity().setRequestedOrientation(getResources().getConfiguration().orientation);
                 new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... params) {
@@ -134,7 +136,6 @@ public class GifFragment extends Fragment {
                     protected void onPostExecute(String s) {
                         super.onPostExecute(s);
                         Gson gson = new GsonBuilder().create();
-
                         Giphy giphy = gson.fromJson(s, Giphy.class);
 
                         for (GiphyInfo info : giphy.getData()) {
@@ -145,6 +146,7 @@ public class GifFragment extends Fragment {
                         }
                         gifsList.deferNotifyDataSetChanged();
                         gifsList.onLoadMoreComplete();
+                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
                     }
                 }.execute();
             }
@@ -180,6 +182,7 @@ public class GifFragment extends Fragment {
                 }
                 search = query;
                 loadGifs = new LoadGifs();
+                getActivity().setRequestedOrientation(getResources().getConfiguration().orientation);
                 loadGifs.execute();
                 return true;
             }
@@ -265,6 +268,7 @@ public class GifFragment extends Fragment {
             } else {
                 textNoResult.setVisibility(View.VISIBLE);
             }
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
         }
     }
 
