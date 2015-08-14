@@ -95,7 +95,7 @@ public class Utils {
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                 params.leftMargin = 50;
                 numberPhotos.setLayoutParams(params);
-                Utils.veryfiSetBackground(numberPhotos, Utils.getShapeDrawable(35, activity.getResources().getColor(R.color.message_notify)));
+                verifySetBackground(numberPhotos, Utils.getShapeDrawable(35, activity.getResources().getColor(R.color.message_notify)));
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 buttonSend.setEnabled(false);
@@ -112,7 +112,7 @@ public class Utils {
                     params.leftMargin = 60;
                 }
                 numberPhotos.setLayoutParams(params);
-                Utils.veryfiSetBackground(numberPhotos, Utils.getShapeDrawable(60, activity.getResources().getColor(R.color.message_notify)));
+                verifySetBackground(numberPhotos, Utils.getShapeDrawable(60, activity.getResources().getColor(R.color.message_notify)));
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 buttonSend.setEnabled(false);
