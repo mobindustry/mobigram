@@ -106,16 +106,16 @@ public class Utils {
                 buttonSend.setEnabled(true);
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                if (Utils.getSmallestScreenSize(activity) <= 480) {
+                if (getSmallestScreenSize(activity) <= 480) {
                     params.leftMargin = 10;
                 } else {
                     params.leftMargin = 60;
                 }
                 numberPhotos.setLayoutParams(params);
                 if (imm != null && imm.isAcceptingText()) {
-                    Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(50, activity.getResources().getColor(R.color.message_notify)));
+                    verifySetBackground(numberPhotos, Utils.getShapeDrawable(50, activity.getResources().getColor(R.color.message_notify)));
                 } else {
-                    Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(60, activity.getResources().getColor(R.color.message_notify)));
+                    verifySetBackground(numberPhotos, Utils.getShapeDrawable(60, activity.getResources().getColor(R.color.message_notify)));
                 }
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
