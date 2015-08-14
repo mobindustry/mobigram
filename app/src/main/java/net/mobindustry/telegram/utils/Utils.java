@@ -88,14 +88,14 @@ public class Utils {
     }
 
     public static void drawBackgroundForCheckedPhoto(TextView numberPhotos, FrameLayout buttonSend, Activity activity, InputMethodManager imm) {
-        if (Utils.isTablet(activity)) {
+        if (isTablet(activity)) {
             if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                 buttonSend.setEnabled(true);
                 numberPhotos.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                 params.leftMargin = 50;
                 numberPhotos.setLayoutParams(params);
-                verifySetBackground(numberPhotos, Utils.getShapeDrawable(35, activity.getResources().getColor(R.color.message_notify)));
+                verifySetBackground(numberPhotos, getShapeDrawable(35, activity.getResources().getColor(R.color.message_notify)));
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 buttonSend.setEnabled(false);
@@ -113,9 +113,9 @@ public class Utils {
                 }
                 numberPhotos.setLayoutParams(params);
                 if (imm != null && imm.isAcceptingText()) {
-                    verifySetBackground(numberPhotos, Utils.getShapeDrawable(50, activity.getResources().getColor(R.color.message_notify)));
+                    verifySetBackground(numberPhotos, getShapeDrawable(50, activity.getResources().getColor(R.color.message_notify)));
                 } else {
-                    verifySetBackground(numberPhotos, Utils.getShapeDrawable(60, activity.getResources().getColor(R.color.message_notify)));
+                    verifySetBackground(numberPhotos, getShapeDrawable(60, activity.getResources().getColor(R.color.message_notify)));
                 }
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
@@ -126,7 +126,7 @@ public class Utils {
     }
 
     public static void setParamsForLayoutButtonsFigImages(Activity activity, LinearLayout layoutButtons, Configuration newConfig) {
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(activity)) {
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !isTablet(activity)) {
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     0, 0.25f);
@@ -192,7 +192,7 @@ public class Utils {
     }
 
     public static void changeButtonsWhenRotate(LinearLayout layoutButtons, LinearLayout layoutFind, ArrayAdapter adapter, Activity activity, GridView gridList) {
-        if (Utils.isTablet(activity)) {
+        if (isTablet(activity)) {
             ((TransparentActivity) activity).progressBarGone();
             adjustGridViewPort(gridList);
             adapter.clear();
@@ -203,7 +203,7 @@ public class Utils {
                 adapter.addAll(ListFoldersHolder.getListFolders());
             }
         } else {
-            if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(activity)) {
+            if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !isTablet(activity)) {
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0, 2.5f);
@@ -384,11 +384,11 @@ public class Utils {
                     iconImage.setImageDrawable(null);
                     icon.setVisibility(View.VISIBLE);
                     if (chatId < 0) {
-                        verifySetBackground(icon, Utils.getShapeDrawable(R.dimen.toolbar_icon_size, chatId));
+                        verifySetBackground(icon, getShapeDrawable(R.dimen.toolbar_icon_size, chatId));
                     } else {
-                        verifySetBackground(icon, Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatId));
+                        verifySetBackground(icon, getShapeDrawable(R.dimen.toolbar_icon_size, -chatId));
                     }
-                    icon.setText(Utils.getInitials(firstName, lastName));
+                    icon.setText(getInitials(firstName, lastName));
                 }
             }
         }
