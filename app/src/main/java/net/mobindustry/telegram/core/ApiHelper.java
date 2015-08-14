@@ -19,6 +19,10 @@ public class ApiHelper {
         new ApiClient<>(new TdApi.DeleteChatHistory(chatId), new OkHandler(), handler).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
+    public static void deleteMessages(long shownChatId, int[] toDeleteMessagesId) {
+        new ApiClient<>(new TdApi.DeleteMessages(shownChatId, toDeleteMessagesId), new OkHandler(), handler).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    }
+
     public static void createPrivateChat(long userId) {
         new ApiClient<>(new TdApi.CreatePrivateChat((int) userId), new OkHandler(), handler).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
@@ -65,4 +69,6 @@ public class ApiHelper {
         public void onApiResult(BaseHandler output) {
         }
     };
+
+
 }

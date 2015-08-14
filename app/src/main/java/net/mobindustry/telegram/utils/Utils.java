@@ -276,7 +276,6 @@ public class Utils {
     }
 
     public static File processImage(File tmpFile, ExifInterface originalExif) {
-        //fix orientation
         int pictureOrientation = -1;
         try {
             ExifInterface exif;
@@ -290,9 +289,7 @@ public class Utils {
         } catch (IOException e) {
             Log.e("Tag", "ExifInterface exception", e);
         }
-
         rotateFileImage(pictureOrientation, tmpFile.getAbsolutePath());
-
         return tmpFile;
     }
 
@@ -323,9 +320,7 @@ public class Utils {
 
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
-
         try {
-
             FileOutputStream fileOutputStream = new FileOutputStream(filePathFrom);
             Bitmap bitmap = Bitmap.createBitmap(originalBitmap, 0, 0, originalBitmap.getWidth(), originalBitmap.getHeight(), matrix, true);
             originalBitmap.recycle();

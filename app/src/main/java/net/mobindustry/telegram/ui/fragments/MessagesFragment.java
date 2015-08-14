@@ -420,11 +420,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     }
 
     public long getShownChatId() {
-        if (chat != null) {
-            return chat.id;
-        } else {
-            return 0;
-        }
+        return chat != null ? chat.id : 0;
     }
 
     public void getChatHistory(final long id, final int messageId, final int offset, final int limit, final Enums.MessageAddType type) {
@@ -658,7 +654,6 @@ public class MessagesFragment extends Fragment implements Serializable {
                         Log.e("Tag", "ExifInterface error", e);
                     }
                     Utils.processImage(holder.getTempPhotoFile(), originalExifInfo);
-
                     return null;
                 }
 
@@ -820,9 +815,7 @@ public class MessagesFragment extends Fragment implements Serializable {
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case FORWARD_CONTEXT_ITEM:
-                Intent intent = new Intent(getActivity(), TransparentActivity.class);
-                intent.putExtra("choice", Const.SELECT_CHAT);
-                startActivityForResult(intent, Const.REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT);
+                forwardMessage();
                 break;
             case DELETE_CONTEXT_ITEM:
                 deleteMessages();
@@ -831,17 +824,19 @@ public class MessagesFragment extends Fragment implements Serializable {
         return super.onContextItemSelected(item);
     }
 
+    private void forwardMessage() {
+        Intent intent = new Intent(getActivity(), TransparentActivity.class);
+        intent.putExtra("choice", Const.SELECT_CHAT);
+        startActivityForResult(intent, Const.REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT);
+    }
+
     private void deleteMessages() {
         int[] toDeleteMessagesId = getMessagesId();
-        new ApiClient<>(new TdApi.DeleteMessages(getShownChatId(), toDeleteMessagesId), new OkHandler(), new ApiClient.OnApiResultHandler() {
-            @Override
-            public void onApiResult(BaseHandler output) {
-                for (int i = 0; i < selectedItemsList.size(); i++) {
-                    adapter.remove(selectedItemsList.get(i));
-                    selectedItemsList.clear();
-                }
-            }
-        }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        ApiHelper.deleteMessages(getShownChatId(), toDeleteMessagesId);
+        for (int i = 0; i < selectedItemsList.size(); i++) {
+            adapter.remove(selectedItemsList.get(i));
+            selectedItemsList.clear();
+        }
     }
 
     private int[] getMessagesId() {
@@ -911,50 +906,13 @@ public class MessagesFragment extends Fragment implements Serializable {
                 forward.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (selectedCount != 0) {
-                            toolbar.setVisibility(View.GONE);
-                            itemLongClicked = false;
-                            itemClicked = true;
-                            adapter.getCount();
-                            for (int i = 0; i < adapter.getCount(); i++) {
-                                if (adapter.getItem(i).selected) {
-                                    selectedItemsList.add(adapter.getItem(i));
-                                    adapter.getItem(i).selected = false;
-                                }
-                            }
-                            Intent intent = new Intent(getActivity(), TransparentActivity.class);
-                            intent.putExtra("choice", Const.SELECT_CHAT);
-                            startActivityForResult(intent, Const.REQUEST_CODE_FORWARD_MESSAGE_TO_CHAT);
-                            adapter.notifyDataSetChanged();
-                            selectedCount = 0;
-                        } else {
-                            toolbar.setVisibility(View.GONE);
-                            itemLongClicked = false;
-                            itemClicked = true;
-                        }
+                        selectedMessagesAction("forward", toolbar);
                     }
                 });
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (selectedCount != 0) {
-                            toolbar.setVisibility(View.GONE);
-                            itemLongClicked = false;
-                            itemClicked = true;
-                            for (int i = 0; i < adapter.getCount(); i++) {
-                                if (adapter.getItem(i).selected) {
-                                    selectedItemsList.add(adapter.getItem(i));
-                                    adapter.getItem(i).selected = false;
-                                }
-                            }
-                            deleteMessages();
-                            adapter.notifyDataSetChanged();
-                            selectedCount = 0;
-                        } else {
-                            toolbar.setVisibility(View.GONE);
-                            itemLongClicked = false;
-                            itemClicked = true;
-                        }
+                        selectedMessagesAction("delete", toolbar);
                     }
                 });
                 selectionCount.setText(String.valueOf(selectedCount));
@@ -963,6 +921,27 @@ public class MessagesFragment extends Fragment implements Serializable {
             return false;
         }
     };
+
+    public void selectedMessagesAction(String action, Toolbar toolbar) {
+        toolbar.setVisibility(View.GONE);
+        itemLongClicked = false;
+        itemClicked = true;
+        if (selectedCount != 0) {
+            for (int i = 0; i < adapter.getCount(); i++) {
+                if (adapter.getItem(i).selected) {
+                    selectedItemsList.add(adapter.getItem(i));
+                    adapter.getItem(i).selected = false;
+                }
+            }
+            if (action.equals("delete")) {
+                deleteMessages();
+            } else if (action.equals("forward")){
+                forwardMessage();
+            }
+            adapter.notifyDataSetChanged();
+            selectedCount = 0;
+        }
+    }
 
     @Override
     public void onDestroy() {
@@ -973,7 +952,6 @@ public class MessagesFragment extends Fragment implements Serializable {
     public static void displayPromptForEnablingGps(final Activity activity) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
-
         builder.setMessage(activity.getString(R.string.gpsDisabledDialogMessage))
                 .setPositiveButton(activity.getString(R.string.cancel_button),
                         new DialogInterface.OnClickListener() {
