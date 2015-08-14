@@ -1,6 +1,5 @@
 package net.mobindustry.telegram.model.holder;
 
-import net.mobindustry.telegram.model.flickr.PhotosFlickr;
 import net.mobindustry.telegram.model.FileWithIndicator;
 import net.mobindustry.telegram.model.FolderCustomGallery;
 import net.mobindustry.telegram.model.MediaGallery;
@@ -18,15 +17,6 @@ public class ListFoldersHolder {
     private static long chatID;
     private static List<String> listGif;
     private static List<String> listImages;
-    private static PhotosFlickr holderPhotosFlickr;
-
-    public static PhotosFlickr getHolderPhotosFlickr() {
-        return holderPhotosFlickr;
-    }
-
-    public static void setHolderPhotosFlickr(PhotosFlickr holderPhotosFlickr) {
-        ListFoldersHolder.holderPhotosFlickr = holderPhotosFlickr;
-    }
 
     public static List<String> getListImages() {
         return listImages;

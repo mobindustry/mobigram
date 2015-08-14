@@ -88,68 +88,53 @@ public class Utils {
     }
 
     public static void drawBackgroundForCheckedPhoto(TextView numberPhotos, FrameLayout buttonSend, Activity activity, InputMethodManager imm) {
-        if (isTablet(activity)) {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                buttonSend.setEnabled(true);
-                numberPhotos.setVisibility(View.VISIBLE);
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
+        if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
+            buttonSend.setEnabled(true);
+            numberPhotos.setVisibility(View.VISIBLE);
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
+            if (isTablet(activity)) {
                 params.leftMargin = 50;
-                numberPhotos.setLayoutParams(params);
                 verifySetBackground(numberPhotos, getShapeDrawable(35, activity.getResources().getColor(R.color.message_notify)));
-                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
-                buttonSend.setEnabled(false);
-                numberPhotos.setVisibility(View.GONE);
-            }
-        } else {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                buttonSend.setEnabled(true);
-                numberPhotos.setVisibility(View.VISIBLE);
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                 if (getSmallestScreenSize(activity) <= 480) {
                     params.leftMargin = 10;
                 } else {
                     params.leftMargin = 60;
+                    if (imm != null && imm.isAcceptingText()) {
+                        verifySetBackground(numberPhotos, getShapeDrawable(50, activity.getResources().getColor(R.color.message_notify)));
+                    } else {
+                        verifySetBackground(numberPhotos, getShapeDrawable(60, activity.getResources().getColor(R.color.message_notify)));
+                    }
                 }
-                numberPhotos.setLayoutParams(params);
-                if (imm != null && imm.isAcceptingText()) {
-                    verifySetBackground(numberPhotos, getShapeDrawable(50, activity.getResources().getColor(R.color.message_notify)));
-                } else {
-                    verifySetBackground(numberPhotos, getShapeDrawable(60, activity.getResources().getColor(R.color.message_notify)));
-                }
-                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
-            } else {
-                buttonSend.setEnabled(false);
-                numberPhotos.setVisibility(View.GONE);
             }
+            numberPhotos.setLayoutParams(params);
+            numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+        } else {
+            buttonSend.setEnabled(false);
+            numberPhotos.setVisibility(View.GONE);
         }
     }
 
     public static void setParamsForLayoutButtonsFigImages(Activity activity, LinearLayout layoutButtons, Configuration newConfig) {
+        float weightParam;
+        float weightParamPager;
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !isTablet(activity)) {
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 0.25f);
-            LinearLayout.LayoutParams paramPager = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 2.5f);
-            if (activity instanceof PhotoViewPagerActivity) {
-                layoutButtons.setLayoutParams(paramPager);
-            } else {
-                layoutButtons.setLayoutParams(param);
-            }
+            weightParam = 0.25f;
+            weightParamPager = 2.5f;
         } else {
-            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 0.15f);
-            LinearLayout.LayoutParams paramPager = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 1.5f);
-            if (activity instanceof PhotoViewPagerActivity) {
-                layoutButtons.setLayoutParams(paramPager);
-            } else {
-                layoutButtons.setLayoutParams(paramButtons);
-            }
+            weightParam = 0.15f;
+            weightParamPager = 1.5f;
+        }
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0, weightParam);
+        LinearLayout.LayoutParams paramPager = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0, weightParamPager);
+        if (activity instanceof PhotoViewPagerActivity) {
+            layoutButtons.setLayoutParams(paramPager);
+        } else {
+            layoutButtons.setLayoutParams(param);
         }
     }
 
@@ -195,13 +180,6 @@ public class Utils {
         if (isTablet(activity)) {
             ((TransparentActivity) activity).progressBarGone();
             adjustGridViewPort(gridList);
-            adapter.clear();
-            if (adapter instanceof FolderAdapter) {
-                adapter.addAll(ListFoldersHolder.getList());
-            }
-            if (adapter instanceof GalleryAdapter) {
-                adapter.addAll(ListFoldersHolder.getListFolders());
-            }
         } else {
             if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !isTablet(activity)) {
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
@@ -213,13 +191,6 @@ public class Utils {
                 layoutButtons.setLayoutParams(param);
                 ((TransparentActivity) activity).progressBarGone();
                 adjustGridViewLand(gridList);
-                adapter.clear();
-                if (adapter instanceof FolderAdapter) {
-                    adapter.addAll(ListFoldersHolder.getList());
-                }
-                if (adapter instanceof GalleryAdapter) {
-                    adapter.addAll(ListFoldersHolder.getListFolders());
-                }
             } else {
                 LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -233,14 +204,14 @@ public class Utils {
                 layoutButtons.setLayoutParams(paramButtons);
                 ((TransparentActivity) activity).progressBarGone();
                 adjustGridViewPort(gridList);
-                adapter.clear();
-                if (adapter instanceof FolderAdapter) {
-                    adapter.addAll(ListFoldersHolder.getList());
-                }
-                if (adapter instanceof GalleryAdapter) {
-                    adapter.addAll(ListFoldersHolder.getListFolders());
-                }
             }
+        }
+        adapter.clear();
+        if (adapter instanceof FolderAdapter) {
+            adapter.addAll(ListFoldersHolder.getList());
+        }
+        if (adapter instanceof GalleryAdapter) {
+            adapter.addAll(ListFoldersHolder.getListFolders());
         }
     }
 
@@ -269,7 +240,6 @@ public class Utils {
         Context context = DataHolder.getContext();
         Locale.setDefault(Locale.US);
         String lastSeenString = "";
-
         switch (status.getConstructor()) {
             case TdApi.UserStatusOnline.CONSTRUCTOR:
                 lastSeenString = context.getString(R.string.online);
