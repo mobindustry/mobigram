@@ -97,7 +97,9 @@ public class CreateGalleryThumbs extends Service {
                         BitmapFactory.decodeFile(images.getData(), options);
                         int height = options.outHeight;
                         int width = options.outWidth;
-                        if (height > 0 && width > 0) {
+                        File file = new File(images.getData());
+                        long size = checkSizeInKB(file);
+                        if (height > 0 && width > 0 && size > 50) {
                             listImagesMediaStore.add(images);
                         }
                     } else {
@@ -109,6 +111,12 @@ public class CreateGalleryThumbs extends Service {
 
         }
 
+        private long checkSizeInKB(File file) {
+            long fileSizeInBytes = file.length();
+            long fileSizeInKB = fileSizeInBytes / 1024;
+            return fileSizeInKB;
+        }
+
         private void createThumbsFolder() {
             String path = cachePath + File.separator + "thumb";
             File myDirectory = new File(path, "gallery");
@@ -116,36 +124,44 @@ public class CreateGalleryThumbs extends Service {
                 myDirectory.mkdirs();
             }
         }
-
         private File createThumb(String path, String name) {
             final int THUMBSIZE = 150;
-            String linkToFolder = cachePath + File.separator + "thumb" + File.separator + "gallery";
             //create a file to write bitmap data
-            File file = new File(linkToFolder, name);
+            File file = new File(cachePath + File.separator + "thumb" + File.separator + "gallery", name);
             try {
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             //Convert bitmap to byte array
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
-            Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, THUMBSIZE, THUMBSIZE);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            thumbImage.compress(Bitmap.CompressFormat.PNG, 0, stream);
-            byte[] bitMapData = stream.toByteArray();
 
-            //write the bytes in file
+            Bitmap bitmap;
             try {
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                fileOutputStream.write(bitMapData);
-                fileOutputStream.flush();
-                fileOutputStream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("Log", "Patch " + path);
+                bitmap = BitmapFactory.decodeFile(path);
+                Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, THUMBSIZE, THUMBSIZE);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byte[] bitMapData = stream.toByteArray();
+
+                //write the bytes in file
+                try {
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    fileOutputStream.write(bitMapData);
+                    fileOutputStream.flush();
+                    fileOutputStream.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                bitmap = null;
+                System.gc();
+                return file;
+            } catch (Exception e) {
+                Log.e("Log", "Error create thumb");
             }
-            return file;
+            return null;
         }
 
         private List<File> getListFiles(File parentDir) {

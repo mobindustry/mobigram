@@ -2,6 +2,7 @@ package net.mobindustry.telegram.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -17,10 +18,17 @@ import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -28,8 +36,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiHelper;
+import net.mobindustry.telegram.core.handlers.BaseHandler;
+import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
+import net.mobindustry.telegram.core.handlers.OkHandler;
+import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
+import net.mobindustry.telegram.model.holder.ListFoldersHolder;
+import net.mobindustry.telegram.ui.adapters.FolderAdapter;
 
 import org.drinkless.td.libcore.telegram.TdApi;
 
@@ -38,6 +52,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -70,6 +85,104 @@ public class Utils {
         circle.setIntrinsicWidth(size);
         circle.getPaint().setColor(color);
         return circle;
+    }
+
+    public static void drawBackgroundForCheckedPhoto(TextView numberPhotos, FrameLayout buttonSend, Activity activity){
+        if (Utils.isTablet(activity)) {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
+                buttonSend.setEnabled(true);
+                numberPhotos.setVisibility(View.VISIBLE);
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
+                params.leftMargin = 50;
+                numberPhotos.setLayoutParams(params);
+                Utils.veryfiSetBackground(numberPhotos, Utils.getShapeDrawable(35, activity.getResources().getColor(R.color.message_notify)));
+                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+            } else {
+                buttonSend.setEnabled(false);
+                numberPhotos.setVisibility(View.GONE);
+            }
+        } else {
+            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
+                buttonSend.setEnabled(true);
+                numberPhotos.setVisibility(View.VISIBLE);
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
+                if (Utils.getSmallestScreenSize(activity) <= 480) {
+                    params.leftMargin = 10;
+                } else {
+                    params.leftMargin = 60;
+                }
+                numberPhotos.setLayoutParams(params);
+                Utils.veryfiSetBackground(numberPhotos, Utils.getShapeDrawable(60, activity.getResources().getColor(R.color.message_notify)));
+                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
+            } else {
+                buttonSend.setEnabled(false);
+                numberPhotos.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public static void adjustGridViewPort(GridView gridList){
+        gridList.setNumColumns(2);
+        gridList.setHorizontalSpacing(15);
+    }
+
+    public static void adjustGridViewLand(GridView gridList) {
+        gridList.setNumColumns(3);
+        gridList.setHorizontalSpacing(15);
+    }
+
+    public static void sendMessageFromGallery(Activity activity){
+        if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() != 0) {
+            for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
+                if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
+                    if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
+                        String linkImage = ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath();
+                        if (ListFoldersHolder.getListImages() == null) {
+                            ListFoldersHolder.setListImages(new ArrayList<String>());
+                        }
+                        ListFoldersHolder.getListImages().add(linkImage);
+                    } else {
+                        ApiHelper.sendPhotoMessage(ListFoldersHolder.getChatID(),
+                                ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
+                    }
+                }
+                if (ListFoldersHolder.getListForSending().get(i) instanceof GiphyObject) {
+                    if (ListFoldersHolder.getListGif() == null) {
+                        ListFoldersHolder.setListGif(new ArrayList<String>());
+                    }
+                    String link = ((GiphyObject) ListFoldersHolder.getListForSending().get(i)).getPath();
+                    ListFoldersHolder.getListGif().add(link);
+                }
+            }
+            activity.startService(new Intent(activity, SendGif.class));
+            activity.finish();
+        }
+    }
+
+    public static void changeButtonsWhenRotate(LinearLayout layoutButtons, FolderAdapter adapter,Activity activity,GridView gridList){
+        if (Utils.isTablet(activity)) {
+            adjustGridViewPort(gridList);
+            adapter.clear();
+            adapter.addAll(ListFoldersHolder.getList());
+        } else {
+            if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(activity)) {
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0, 2.5f);
+                layoutButtons.setLayoutParams(param);
+                adjustGridViewLand(gridList);
+                adapter.clear();
+                adapter.addAll(ListFoldersHolder.getList());
+            } else {
+                LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0, 1.6f);
+                layoutButtons.setLayoutParams(paramButtons);
+                adjustGridViewPort(gridList);
+                adapter.clear();
+                adapter.addAll(ListFoldersHolder.getList());
+            }
+        }
     }
 
     public static boolean isTablet(Context context) {

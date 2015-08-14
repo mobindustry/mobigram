@@ -2,6 +2,7 @@ package net.mobindustry.telegram.core.handlers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
@@ -18,7 +19,7 @@ public class UpdatesHandler extends BaseHandler<UpdatesHandler> {
 
     @Override
     public UpdatesHandler resultHandler(TdApi.TLObject object) {
-        Log.wtf("Log", "UpdateHandler: " + object.toString());
+        //Log.wtf("Log", "UpdateHandler: " + object.toString());
         switch (object.getConstructor()) {
             case TdApi.UpdateMessageId.CONSTRUCTOR: {
                 TdApi.UpdateMessageId message = (TdApi.UpdateMessageId) object;

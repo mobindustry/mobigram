@@ -83,6 +83,12 @@ public class GalleryFragment extends Fragment {
         return view;
     }
 
+    private long checkSizeInKB(File file) {
+        long fileSizeInBytes = file.length();
+        long fileSizeInKB = fileSizeInBytes / 1024;
+        return fileSizeInKB;
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -125,38 +131,7 @@ public class GalleryFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         galleryAdapter = new GalleryAdapter(getActivity());
         gridList.setAdapter(galleryAdapter);
-
-        if (Utils.isTablet(getActivity())) {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                buttonSend.setEnabled(true);
-                numberPhotos.setVisibility(View.VISIBLE);
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                params.leftMargin = 50;
-                numberPhotos.setLayoutParams(params);
-                Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
-                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
-            } else {
-                buttonSend.setEnabled(false);
-                numberPhotos.setVisibility(View.GONE);
-            }
-        } else {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                buttonSend.setEnabled(true);
-                numberPhotos.setVisibility(View.VISIBLE);
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                if (Utils.getSmallestScreenSize(getActivity()) <= 480) {
-                    params.leftMargin = 10;
-                } else {
-                    params.leftMargin = 60;
-                }
-                numberPhotos.setLayoutParams(params);
-                Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
-                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
-            } else {
-                buttonSend.setEnabled(false);
-                numberPhotos.setVisibility(View.GONE);
-            }
-        }
+        Utils.drawBackgroundForCheckedPhoto(numberPhotos, buttonSend, getActivity());
         if (ListFoldersHolder.getListFolders() == null) {
             AsyncMediaStore asyncMediaStore = new AsyncMediaStore();
             asyncMediaStore.execute();
@@ -276,7 +251,6 @@ public class GalleryFragment extends Fragment {
                 FolderFragment folderFragment = new FolderFragment();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
                 fragmentTransaction.replace(R.id.transparent_content, folderFragment);
-                //fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -299,7 +273,7 @@ public class GalleryFragment extends Fragment {
         ArrayList<File> inFiles = new ArrayList<File>();
         File[] files = parentDir.listFiles();
         for (File file : files) {
-            if (file.getName().endsWith(".png")) {
+            if (file.getName().endsWith(".jpg")) {
                 inFiles.add(file);
             }
         }
@@ -330,7 +304,7 @@ public class GalleryFragment extends Fragment {
         map = new HashMap<Long, String>();
         String[] projection = {MediaStore.Images.Thumbnails.DATA, MediaStore.Images.Thumbnails.IMAGE_ID};
         Cursor cursor = MediaStore.Images.Thumbnails.queryMiniThumbnails(getActivity().getContentResolver(), uri,
-                MediaStore.Images.Thumbnails.MINI_KIND, projection);
+                MediaStore.Images.Thumbnails.MICRO_KIND, projection);
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
@@ -374,7 +348,11 @@ public class GalleryFragment extends Fragment {
                 int idxIsPrivate = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.IS_PRIVATE);
                 images.setIsPrivate(cursor.getString(idxIsPrivate));
                 if (images.getData() != null) {
-                    listImagesMediaStore.add(images);
+                    File file = new File(images.getData());
+                    long size = checkSizeInKB(file);
+                    if (size > 50) {
+                        listImagesMediaStore.add(images);
+                    }
                 } else {
                     cursor.moveToNext();
                 }
@@ -386,7 +364,7 @@ public class GalleryFragment extends Fragment {
     private List<FileWithIndicator> getPhotosFromFolder(List<ImagesFromMediaStore> list) {
         List<FileWithIndicator> listPhotos = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getData().contains((".png")) || list.get(i).getData().contains(".jpeg") || list.get(i).getData().contains(".jpg")) {
+            if (list.get(i).getData().contains((".jpg")) || list.get(i).getData().contains(".jpeg") || list.get(i).getData().contains(".png")) {
                 FileWithIndicator fileWithIndicator = new FileWithIndicator();
                 File file = new File(list.get(i).getData());
                 if (mapForCustomThumbs.get(list.get(i).getId()) != null) {
