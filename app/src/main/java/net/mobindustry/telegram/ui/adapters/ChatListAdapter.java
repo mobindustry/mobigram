@@ -24,13 +24,12 @@ import java.util.Date;
 public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
     private final LayoutInflater inflater;
-    private Emoji emoji;
     private EmojiParser emojiParser;
 
     public ChatListAdapter(Context context) {
         super(context, 0);
         inflater = LayoutInflater.from(context);
-        emoji = MessagesFragmentHolder.getInstance().getEmoji();
+        Emoji emoji = MessagesFragmentHolder.getInstance().getEmoji();
         emojiParser = new EmojiParser(emoji);
     }
 
@@ -78,28 +77,28 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         } else {
             lastMessage.setTextColor(getContext().getResources().getColor(R.color.content_text_color));
             if (message.message instanceof TdApi.MessagePhoto) {
-                lastMessage.setText("Photo");
+                lastMessage.setText(R.string.message_photo);
             }
             if (message.message instanceof TdApi.MessageAudio) {
-                lastMessage.setText("Audio");
+                lastMessage.setText(R.string.message_audio);
             }
             if (message.message instanceof TdApi.MessageContact) {
-                lastMessage.setText("Contact");
+                lastMessage.setText(R.string.message_contact);
             }
             if (message.message instanceof TdApi.MessageDocument) {
-                lastMessage.setText("Document");
+                lastMessage.setText(R.string.message_document);
             }
             if (message.message instanceof TdApi.MessageGeoPoint) {
-                lastMessage.setText("GeoPoint");
+                lastMessage.setText(R.string.message_geopoint);
             }
             if (message.message instanceof TdApi.MessageSticker) {
-                lastMessage.setText("Sticker");
+                lastMessage.setText(R.string.message_sticker);
             }
             if (message.message instanceof TdApi.MessageVideo) {
-                lastMessage.setText("Video");
+                lastMessage.setText(R.string.message_video);
             }
             if (message.message instanceof TdApi.MessageUnsupported) {
-                lastMessage.setText("Unknown");
+                lastMessage.setText(R.string.message_unknown);
             }
         }
 

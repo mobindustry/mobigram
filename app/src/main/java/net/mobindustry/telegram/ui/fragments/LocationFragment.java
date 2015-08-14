@@ -33,18 +33,13 @@ import com.turbomanage.httpclient.ParameterMap;
 import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.ApiHelper;
-import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.MessageHandler;
 import net.mobindustry.telegram.model.foursquare.FoursquareObj;
 import net.mobindustry.telegram.model.foursquare.FoursquareVenue;
 import net.mobindustry.telegram.model.holder.FoursquareHolder;
 import net.mobindustry.telegram.model.holder.InfoLocation;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.utils.Const;
-
-import org.drinkless.td.libcore.telegram.TdApi;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -87,7 +82,7 @@ public class LocationFragment extends Fragment{
         buttonSendLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiHelper.sendGeoPointMessage(MessagesFragmentHolder.getChat().id, myMarker.getPosition().latitude, myMarker.getPosition().longitude);
+                ApiHelper.sendGeoPointMessage(MessagesFragmentHolder.getChat().id, myMarker.getPosition().longitude, myMarker.getPosition().latitude);
                 getActivity().finish();
             }
         });
@@ -210,8 +205,7 @@ public class LocationFragment extends Fragment{
     }
 
     private void init(Location location) {
-        userLocation = new LatLng(location.getLatitude(), location.getLongitude()); //TODO find why crash
-
+        userLocation = new LatLng(location.getLatitude(), location.getLongitude());
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(userLocation)
                 .zoom(14)
@@ -265,7 +259,6 @@ public class LocationFragment extends Fragment{
                 FoursquareObj obj = gson.fromJson(httpResponse.getBodyAsString(), frsqObject);
                 foursquareVenueList = obj.getResponse().getVenues();
                 List<FoursquareVenue> list = foursquareVenueList;
-                Log.e("LOG", "Quantity of object = " + list.size());
                 return list;
             }
             return null;
@@ -274,7 +267,6 @@ public class LocationFragment extends Fragment{
         @Override
         protected void onPostExecute(List<FoursquareVenue> aVoid) {
             super.onPostExecute(aVoid);
-            Log.e("Log", "POST");
             FoursquareHolder foursquareHolder = FoursquareHolder.getInstance();
             foursquareHolder.setFoursquareVenueList(aVoid);
             FoursquareListFragment foursquareListFragment;

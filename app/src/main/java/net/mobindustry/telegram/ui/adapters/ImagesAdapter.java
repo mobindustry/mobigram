@@ -34,10 +34,8 @@ public class ImagesAdapter extends ArrayAdapter<PhotoFlickr> {
                     photoFlickr.setCheck(false);
                     for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
                         if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
-                            Log.e("Log", "Yes 1");
                             if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().equals(photoFlickr.getSendLinkLarge())) {
                                 ListFoldersHolder.getListForSending().remove(ListFoldersHolder.getListForSending().get(i));
-                                Log.e("Log", "SIZE Images adapter " + ListFoldersHolder.getListForSending().size());
                             }
                         }
                     }

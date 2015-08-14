@@ -120,7 +120,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                             intent.putExtra("file_path", fileLocal.path);
                         }
                         context.startActivity(intent);
-                        ((ChatActivity) context).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        context.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;
                     }
                     case TdApi.MessageVideo.CONSTRUCTOR: {
@@ -223,10 +223,10 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             TextView forwardedFromName = ((TextView) textView.findViewById(R.id.chat_user_name_text_view));
             forwardedFromName.setTextColor(getContext().getResources().getColor(R.color.content_text_color));
             if (user != null) {
-                String name = "Forwarded message \nFrom " + user.firstName + " " + user.lastName;
+                String name = getContext().getString(R.string.forwarded_message_from) + user.firstName + " " + user.lastName;
                 forwardedFromName.setText(name);
             } else {
-                String name = "Forwarded message \nFrom ID: " + item.forwardFromId;
+                String name = getContext().getString(R.string.forwarded_message_from_id) + item.forwardFromId;
                 forwardedFromName.setText(name);
             }
             forwarded_from.addView(textView);
@@ -286,7 +286,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
                 size.setText(Utils.formatFileSize(fileEmpty.size));
                 icon.setImageResource(R.drawable.photoload);
             }
-            name.setText(file.mimeType + ", duration: " + Utils.getDateFormat(Const.TIME_PATTERN).format(file.duration));
+            name.setText(file.mimeType + getContext().getString(R.string.duration) + Utils.getDateFormat(Const.TIME_PATTERN).format(file.duration));
             layout.addView(view);
         }
         if (item.message instanceof TdApi.MessageContact) {
@@ -404,7 +404,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         if (item.message instanceof TdApi.MessageUnsupported) {
             //Log.i("Message", "Unsupported " + item.message);
             TextView unsupported = new TextView(getContext());
-            unsupported.setText("Unsupported");
+            unsupported.setText(R.string.unsupported);
 
             layout.addView(unsupported);
         }

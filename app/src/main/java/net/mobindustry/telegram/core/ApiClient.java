@@ -3,6 +3,7 @@ package net.mobindustry.telegram.core;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.utils.Utils;
@@ -63,7 +64,7 @@ public class ApiClient<TFunction extends TdApi.TLFunction, THandler extends Base
     protected void onCancelled() {
         super.onCancelled();
         if (DataHolder.getCountNoInternetToast() % 5 == 0) {
-            Toast.makeText(DataHolder.getContext(), "No internet connection.\nPlease, check your internet connection and try again", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DataHolder.getContext(), R.string.no_internet_toast, Toast.LENGTH_SHORT).show();
         }
         DataHolder.setCountNoInternetToast();
     }

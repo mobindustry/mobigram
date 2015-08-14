@@ -73,7 +73,6 @@ public class RegistrationMainFragment extends Fragment {
         //Check country object from ChooseCountryFragment
 
         if (holder.getCountryObject() != null) {
-            Log.e("log", "Name " + holder.getCountryObject().getCountryName());
             chooseCountry.setText(holder.getCountryObject().getCountryName());
             code.setText(holder.getCountryObject().getCountryCode());
             code.setSelection(holder.getCountryObject().getCountryCode().length());
@@ -152,7 +151,7 @@ public class RegistrationMainFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (code.getText().toString().equals("+")) {
-                    textInfo.setText("Please confirm your country code and enter your phone number.");
+                    textInfo.setText(R.string.psease_confirm_phone);
                 } else {
                     textInfo.setText(R.string.text_user_info);
                 }
@@ -192,8 +191,6 @@ public class RegistrationMainFragment extends Fragment {
                 String formattedNumber = PhoneNumberUtils.formatNumber(phoneNum, lettersCode);
                 if (formattedNumber != null) {
                     int result = formattedNumber.length() - phoneNum.length();
-                    Log.e("log", "cursor pos " + phone.getSelectionStart());
-                    Log.e("log", "formattedNumber.length() " + formattedNumber.length());
                     holder.setCursorPosition(phone.getSelectionStart() + result);
                 } else {
                     holder.setCursorPosition(phone.getSelectionStart());
@@ -239,7 +236,6 @@ public class RegistrationMainFragment extends Fragment {
             String number = phone.getText().toString().replaceAll("\\s", "");
             phoneNumberForServer = lettersCode + number;
             holder.setCodePlusPhone(phoneNumberForServer);
-            Log.e("Log", "PHONE " + phoneNumberForServer);
             holder.setPhoneForServer(phoneNumberForServer);
             ((RegistrationActivity) getActivity()).setPhoneForServer(holder.getPhoneForServer());
             progressBar.setVisibility(View.GONE);

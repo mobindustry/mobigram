@@ -68,9 +68,6 @@ public class SendGif extends Service {
             File file = new File(dir, fileName);
 
             long startTime = System.currentTimeMillis();
-            Log.e("DownloadManager", "download begining");
-            Log.e("DownloadManager", "download url:" + url);
-            Log.e("DownloadManager", "downloaded file name:" + fileName);
 
            /* Open a connection to that URL. */
             URLConnection ucon = url.openConnection();
@@ -96,7 +93,6 @@ public class SendGif extends Service {
             fos.write(baf.toByteArray());
             fos.flush();
             fos.close();
-            Log.e("DownloadManager", "download ready in" + ((System.currentTimeMillis() - startTime) / 1000) + " sec");
             link = file.getAbsolutePath();
 
 
@@ -122,9 +118,6 @@ public class SendGif extends Service {
             File file = new File(dir, fileName);
 
             long startTime = System.currentTimeMillis();
-            Log.e("DownloadManager", "download begining");
-            Log.e("DownloadManager", "download url:" + url);
-            Log.e("DownloadManager", "downloaded file name:" + fileName);
 
            /* Open a connection to that URL. */
             URLConnection ucon = url.openConnection();
@@ -150,7 +143,6 @@ public class SendGif extends Service {
             fos.write(baf.toByteArray());
             fos.flush();
             fos.close();
-            Log.e("DownloadManager", "download ready in" + ((System.currentTimeMillis() - startTime) / 1000) + " sec");
             if (file.canRead()) {
                 Log.e("Log", "CAN READ ");
             }

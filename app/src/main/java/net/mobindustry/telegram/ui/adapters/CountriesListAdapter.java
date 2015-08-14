@@ -120,7 +120,6 @@ public class CountriesListAdapter extends BaseAdapter implements StickyListHeade
                 }
                 results.count = list.size();
                 results.values = list;
-                Log.e("VALUES", results.values.toString());
                 return results;
             }
         };

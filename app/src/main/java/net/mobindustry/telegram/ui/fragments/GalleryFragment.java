@@ -128,7 +128,6 @@ public class GalleryFragment extends Fragment {
         gridList.setAdapter(galleryAdapter);
 
         if (Utils.isTablet(getActivity())) {
-            Log.e("Log", "Зашель");
             if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                 buttonSend.setEnabled(true);
                 numberPhotos.setVisibility(View.VISIBLE);
@@ -145,7 +144,6 @@ public class GalleryFragment extends Fragment {
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 buttonSend.setEnabled(false);
-                Log.e("log", "buttonSend.setClickable(false)");
                 numberPhotos.setVisibility(View.GONE);
             }
         } else {
@@ -302,13 +300,11 @@ public class GalleryFragment extends Fragment {
         String path = pathToGallery + File.separator + "thumb" + File.separator + "gallery";
         List<File> files = getListFiles(new File(path));
         if (files.size() > 0) {
-            Log.e("Log", "SIZE " + files.size());
             for (int i = 0; i < files.size(); i++) {
                 Long idForMap = Long.valueOf(separateName(files.get(i).getAbsolutePath()));
                 String pathForMap = files.get(i).getAbsolutePath();
                 mapForCustomThumbs.put(idForMap, pathForMap);
             }
-            Log.e("Log", "SIZE MAP" + mapForCustomThumbs.size());
         }
     }
 
@@ -461,7 +457,7 @@ public class GalleryFragment extends Fragment {
         }
         String[] dirLink = new String[listDirLink.size()];
         listDirLink.toArray(dirLink);
-        dirLinkFolders = new ArrayList<String>(Arrays.asList(dirLink));
+        dirLinkFolders = new ArrayList<>(Arrays.asList(dirLink));
     }
 
 

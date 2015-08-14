@@ -38,8 +38,6 @@ public class FoursquareListFragment extends Fragment implements Serializable {
         foursquareAdapter.clear();
         FoursquareHolder foursquareHolder = FoursquareHolder.getInstance();
         foursquareVenueList = foursquareHolder.getFoursquareVenueList();
-        Log.e("LOG", "LIST " + foursquareVenueList.size());
-        Log.e("LOG", "ADAPTER " + foursquareAdapter);
         foursquareAdapter.addAll(foursquareVenueList);
         return inflater.inflate(R.layout.foursquare_list_fragment_layout, container, false);
     }

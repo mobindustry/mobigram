@@ -59,7 +59,7 @@ public class ReceiverCodeFragment extends Fragment implements Serializable {
             }
         });
 
-        textForUser.setText("We send on SMS with an activation code to your phone " + infoRegistration.getCodePlusPhone());
+        textForUser.setText(activity.getString(R.string.we_send_sms_message) + infoRegistration.getCodePlusPhone());
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.your_code);

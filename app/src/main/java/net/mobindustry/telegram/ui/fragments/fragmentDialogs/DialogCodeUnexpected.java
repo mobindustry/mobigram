@@ -6,13 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
+import net.mobindustry.telegram.R;
+
 public class DialogCodeUnexpected extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-                .setTitle("Error")
-                .setMessage("The code is unexpected")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setTitle(getActivity().getString(R.string.error_dialog_title))
+                .setMessage(getActivity().getString(R.string.unexpected_code))
+                .setPositiveButton(getActivity().getString(R.string.ok_button), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }

@@ -6,14 +6,16 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
+import net.mobindustry.telegram.R;
+
 public class DialogSessionRevoked extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-                .setTitle("Error")
-                .setMessage("The authorization has been invalidated \n" +
+                .setTitle(getActivity().getString(R.string.error_dialog_title))
+                .setMessage(getActivity().getString(R.string.authorization_invalidate) +
                         " because of the user terminating all sessions")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getActivity().getString(R.string.ok_button), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }

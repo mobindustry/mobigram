@@ -145,7 +145,7 @@ public class UserInfoFragment extends Fragment {
 
         name.setText(groupChatFull.groupChat.title);
 
-        lastSeenText.setText(groupChatFull.groupChat.participantsCount + " members");
+        lastSeenText.setText(groupChatFull.groupChat.participantsCount + getActivity().getString(R.string.members));
         TdApi.File file = groupChatFull.groupChat.photoBig;
 
         Utils.setIcon(file, (int) chatId, groupChatFull.groupChat.title, "", imageIcon, icon, getActivity());
@@ -174,7 +174,7 @@ public class UserInfoFragment extends Fragment {
                         UserInfoFragment userInfoFragment = new UserInfoFragment();
                         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.transparent_content, userInfoFragment);
-                        userInfoFragment.setInfo((long) user.id, "private");
+                        userInfoFragment.setInfo((long) user.id, getActivity().getString(R.string.private_chat));
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                     }

@@ -70,7 +70,7 @@ public class ContactListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent;
-                if (destination.equals("chatList")) {
+                if (destination.equals(getActivity().getString(R.string.chat_list))) {
                     intent = new Intent(getActivity(), ChatListFragment.class);
                 } else {
                     intent = new Intent(getActivity(), UserInfoFragment.class);

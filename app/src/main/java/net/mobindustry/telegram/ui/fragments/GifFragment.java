@@ -105,7 +105,6 @@ public class GifFragment extends Fragment {
         if (Utils.isTablet(getActivity())) {
             if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                 send.setEnabled(true);
-                Log.e("Log", "TABLET");
                 number.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                 params.leftMargin = 50;
@@ -238,7 +237,6 @@ public class GifFragment extends Fragment {
                             }
                             String link = ((GiphyObject) ListFoldersHolder.getListForSending().get(i)).getPath();
                             ListFoldersHolder.getListGif().add(link);
-                            Log.e("Log", "Gif " + ListFoldersHolder.getListGif().size());
                         }
                     }
                     getActivity().startService(new Intent(getActivity(), SendGif.class));
@@ -268,8 +266,6 @@ public class GifFragment extends Fragment {
                 if (gifAdapter != null) {
                     gifAdapter.clear();
                 }
-                Log.e("Log", "onQueryTextChange " + query);
-
                 search = query;
                 loadGifs = new LoadGifs();
                 loadGifs.execute();
@@ -278,7 +274,6 @@ public class GifFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.e("Log", "onQueryTextChange " + newText);
                 return false;
             }
         });
@@ -354,7 +349,6 @@ public class GifFragment extends Fragment {
                         if (Utils.isTablet(getActivity())) {
                             if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                                 send.setEnabled(true);
-                                Log.e("Log", "TABLET");
                                 number.setVisibility(View.VISIBLE);
                                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                                 params.leftMargin = 50;

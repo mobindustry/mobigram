@@ -132,7 +132,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                 //Todo
                 int positionForUser = position + 1;
                 setPhotoNumber(position);
-                toolbar.setTitle(positionForUser + " of " + photos);
+                toolbar.setTitle(positionForUser + getString(R.string.of) + photos);
                 if (!ListFoldersHolder.getList().get(getPhotoNumber()).isCheck()) {
                     image.setImageResource(R.drawable.circle);
                 } else {
@@ -191,7 +191,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
 
         toolbar.setNavigationIcon(R.drawable.ic_back);
         int positionForUser = ListFoldersHolder.getCurrentSelectedPhoto() + 1;
-        toolbar.setTitle(positionForUser + " of " + photos);
+        toolbar.setTitle(positionForUser + getString(R.string.of) + photos);
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -53,7 +53,6 @@ public class Const {
     public static final int OK_HANDLER_ID = 710;
     public static final int CHAT_HANDLER_ID = 711;
     public static final int GROUP_CHAT_FULL_HANDLER_ID = 712;
-    public static final int STICKER_HANDLER_ID = 710;
 
     public static final int LIST_PRELOAD_POSITION = 30;
 
@@ -65,8 +64,6 @@ public class Const {
     public static final String URL_FOR_FOURSQUARE = "https://api.foursquare.com";
     public static final String API_KEY_GIF = "dc6zaTOxFJmzC";
     public static final String URL_GIF = "http://api.giphy.com";
-    public static final String API_KEY_IMAGES = "c8d349e8bc5be538e22c275a9600de25";
-    public static final String SECRET_IMAGES = "ca961b34e289d221";
     public static final String IP_API = "http://ip-api.com/json/";
 
     public static final String READ_INBOX_ACTION = "net.mobindustry.telegram.message_read_action";

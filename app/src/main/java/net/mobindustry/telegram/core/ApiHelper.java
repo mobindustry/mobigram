@@ -65,7 +65,4 @@ public class ApiHelper {
         public void onApiResult(BaseHandler output) {
         }
     };
-
-
-
 }

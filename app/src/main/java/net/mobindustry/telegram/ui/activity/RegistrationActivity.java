@@ -177,7 +177,6 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
             holder = InfoRegistration.getInstance();
             if (code != null) {
                 holder.setCodeCountryLetters(code);
-                Log.e("log", "Code Letters " + holder.getCodeCountryLetters());
             }
             String textFileFromAssets = null;
             try {

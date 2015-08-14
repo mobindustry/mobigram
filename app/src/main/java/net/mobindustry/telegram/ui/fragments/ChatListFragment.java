@@ -91,7 +91,7 @@ public class ChatListFragment extends ListFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), TransparentActivity.class);
                 intent.putExtra("choice", Const.CONTACT_LIST_FRAGMENT);
-                intent.putExtra("destination", "chatList");
+                intent.putExtra("destination", getActivity().getString(R.string.chat_list));
                 startActivityForResult(intent, Const.REQUEST_CODE_NEW_MESSAGE);
             }
         });
@@ -187,7 +187,7 @@ public class ChatListFragment extends ListFragment {
             } else {
                 List<TdApi.Chat> list = new ArrayList<>();
                 for (int i = 0; i < chats.chats.length; i++) {
-                    String name = "";
+                    String name;
                     String messageText = "";
                     TdApi.ChatInfo info = chats.chats[i].type;
                     if (info.getConstructor() == TdApi.PrivateChatInfo.CONSTRUCTOR) {
@@ -253,8 +253,8 @@ public class ChatListFragment extends ListFragment {
 
     private void newPrivateChat(final long userId) {
         getActivity().setRequestedOrientation(getResources().getConfiguration().orientation);
-        mProgressDialog = ProgressDialog.show(getActivity(), "Loading",
-                "Please wait", true, false);
+        mProgressDialog = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loading),
+                getActivity().getString(R.string.please_wait), true, false);
         ApiHelper.createPrivateChat(userId);
         new ApiClient<>(new TdApi.GetChat(userId), new ChatHandler(), new ApiClient.OnApiResultHandler() {
             @Override

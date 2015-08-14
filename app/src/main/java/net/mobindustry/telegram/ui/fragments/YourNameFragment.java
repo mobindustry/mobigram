@@ -64,8 +64,6 @@ public class YourNameFragment extends Fragment {
                 infoRegistration.setFirstName(firstName.getText().toString().trim());
                 infoRegistration.setLastName(lastName.getText().toString().trim());
                 activity.setFirstLastName(infoRegistration.getFirstName(), infoRegistration.getLastName());
-                Log.e("Log", "SET NAME " + infoRegistration.getFirstName());
-                Log.e("Log", "SET NAME " + infoRegistration.getLastName());
                 return true;
             }
         });

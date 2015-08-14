@@ -168,7 +168,6 @@ public class MessagesFragment extends Fragment implements Serializable {
         super.onActivityCreated(savedInstanceState);
 
         chatListFragment = (ChatListFragment) activity.getSupportFragmentManager().findFragmentById(R.id.chat_list);
-        Log.e("Log", "ActivityCreated chatList");
         chat = chatListFragment.getChat(getShownChatId());
         adapter = new MessageAdapter(getActivity(), ((ChatActivity) getActivity()).getMyId(), loader, chat.type);
         messageListView.setAdapter(adapter);
@@ -199,10 +198,10 @@ public class MessagesFragment extends Fragment implements Serializable {
                 intent.putExtra("choice", Const.USER_INFO_FRAGMENT);
                 intent.putExtra("chat_id", getShownChatId());
                 if (chat.type.getConstructor() == TdApi.PrivateChatInfo.CONSTRUCTOR) {
-                    intent.putExtra("type", "private");
+                    intent.putExtra("type", activity.getString(R.string.private_chat));
                 }
                 if (chat.type.getConstructor() == TdApi.GroupChatInfo.CONSTRUCTOR) {
-                    intent.putExtra("type", "group");
+                    intent.putExtra("type", activity.getString(R.string.goup_chat));
                 }
                 startActivityForResult(intent, Const.REQUEST_CODE_NEW_MESSAGE);
             }
@@ -283,7 +282,7 @@ public class MessagesFragment extends Fragment implements Serializable {
                 TdApi.GroupChatInfo groupChatInfo = (TdApi.GroupChatInfo) chat.type;
                 title = groupChatInfo.groupChat.title;
                 file = groupChatInfo.groupChat.photoBig;
-                lastSeenText.setText(groupChatInfo.groupChat.participantsCount + " members");
+                lastSeenText.setText(groupChatInfo.groupChat.participantsCount + activity.getString(R.string.members));
                 userFirstName = groupChatInfo.groupChat.title;
                 userLastName = "";
             }
@@ -293,7 +292,7 @@ public class MessagesFragment extends Fragment implements Serializable {
             if (title != null) {
                 name.setText(title);
             } else {
-                name.setText("Title error");
+                name.setText(R.string.title_error);
             }
 
             toolbar.inflateMenu(R.menu.message_menu);
@@ -539,7 +538,6 @@ public class MessagesFragment extends Fragment implements Serializable {
                     case R.id.take_photo:
                         Utils.hideKeyboard(input);
                         makePhoto();
-                        Log.e("LOG", "PHOTO " + holder.getTempPhotoFile().getAbsolutePath());
                         break;
                     case R.id.gallery:
                         Utils.hideKeyboard(input);
@@ -561,7 +559,6 @@ public class MessagesFragment extends Fragment implements Serializable {
                         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(fileUri));
                         startActivityForResult(intent, Const.REQUEST_CODE_MAKE_VIDEO);
-                        Log.e("LOG", "VIDEO " + holder.getTempVideoFile().getAbsolutePath());
                         break;
                     case R.id.file:
                         Utils.hideKeyboard(input);
@@ -629,8 +626,6 @@ public class MessagesFragment extends Fragment implements Serializable {
         File tempTakePhotoFile = holder.getNewTempPhotoFile();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempTakePhotoFile));
         startActivityForResult(intent, Const.REQUEST_CODE_TAKE_PHOTO);
-        Log.e("LOG", "ACTIVITY " + activity);
-        Log.e("LOG", "FILE" + tempTakePhotoFile);
     }
 
     public static String getPathFromURI(Uri contentUri, Activity activity) {
@@ -653,8 +648,8 @@ public class MessagesFragment extends Fragment implements Serializable {
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
-                    mProgressDialog = ProgressDialog.show(getActivity(), "Image processing",
-                            "Please wait", true, false);
+                    mProgressDialog = ProgressDialog.show(getActivity(), activity.getString(R.string.image_processing),
+                            activity.getString(R.string.please_wait), true, false);
                 }
 
                 @Override

@@ -68,14 +68,12 @@ public class ChooseCountryList extends Fragment implements Serializable {
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.e("Log", "Submit " + query);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.isEmpty()) {
-                    Log.e("Log", "Change " + newText);
                     countriesListAdapter.getFilter().filter(newText);
                 } else {
                     countriesListAdapter.getFilter().filter("");
@@ -88,7 +86,6 @@ public class ChooseCountryList extends Fragment implements Serializable {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("Log", "Yes ");
                 fragmentTransaction = getFragmentManager().beginTransaction();
                 registrationMainFragment = new RegistrationMainFragment();
                 CountryObject countryObject = countries.getListTmp().get(position);

@@ -91,7 +91,6 @@ public class ImagesFragment extends Fragment {
         if (Utils.isTablet(getActivity())) {
             if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                 send.setEnabled(true);
-                Log.e("Log", "TABLET");
                 number.setVisibility(View.VISIBLE);
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                 params.leftMargin = 50;
@@ -258,7 +257,6 @@ public class ImagesFragment extends Fragment {
                             if (Utils.isTablet(getActivity())) {
                                 if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                                     send.setEnabled(true);
-                                    Log.e("Log", "TABLET");
                                     number.setVisibility(View.VISIBLE);
                                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                                     params.leftMargin = 50;

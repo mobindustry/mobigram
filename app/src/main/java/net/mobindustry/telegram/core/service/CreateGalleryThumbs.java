@@ -197,11 +197,8 @@ public class CreateGalleryThumbs extends Service {
         public void run() {
             MessagesFragmentHolder.getInstance().makeEmoji(getApplicationContext());
             getAllImages();
-            Log.e("Log", "ALL IMAGES");
             createThumbsFolder();
-            Log.e("Log", "CREATE FOLDER");
             checkThumbsInFolder();
-            Log.e("Log", "CHECK THUMBS");
             fillFolder();
             stopSelf();
         }

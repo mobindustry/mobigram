@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
+import net.mobindustry.telegram.utils.Const;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
 import net.mobindustry.telegram.utils.ImageLoaderHelper;
 
@@ -35,14 +36,14 @@ public class GalleryAdapter extends ArrayAdapter<FolderCustomGallery> {
 
         if (galleryFolder != null) {
             if (galleryFolder.getFirstThumb().equals("")) {
-                ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstPhoto(), firstPhoto);
+                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + galleryFolder.getFirstPhoto(), firstPhoto);
             } else {
-                ImageLoaderHelper.displayImageList("file://" + galleryFolder.getFirstThumb(), firstPhoto);
+                ImageLoaderHelper.displayImageList(Const.IMAGE_LOADER_PATH_PREFIX + galleryFolder.getFirstThumb(), firstPhoto);
             }
             nameFolder.setText(galleryFolder.getName());
-            if (Integer.valueOf(galleryFolder.getPhotosQuantity()) > 1000) {
+            if (Integer.valueOf(galleryFolder.getPhotosQuantity()) > 1000)
                 photosFolder.setText("> 1k");
-            } else {
+            else {
                 photosFolder.setText(galleryFolder.getPhotosQuantity());
             }
         }
