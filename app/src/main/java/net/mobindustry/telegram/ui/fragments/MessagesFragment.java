@@ -110,13 +110,12 @@ public class MessagesFragment extends Fragment implements Serializable {
     private int selectedCount = 0;
     private List<TdApi.Message> selectedItemsList;
 
-    private ProgressDialog mProgressDialog;
-
     public boolean isMessagesLoading = false;
     public boolean needLoad = true;
     private boolean itemClicked = true;
     private boolean itemLongClicked = false;
 
+    private ProgressDialog mProgressDialog;
     private ChatActivity activity;
     private ChatListFragment chatListFragment;
     private MessageAdapter adapter;
@@ -672,13 +671,11 @@ public class MessagesFragment extends Fragment implements Serializable {
                 }
             }.execute();
         }
-
         if (requestCode == Const.REQUEST_CODE_TAKE_FILE && resultCode == getActivity().RESULT_OK) {
             Uri uri = data.getData();
             String path = FilePathUtil.getPath(getActivity(), uri);
             ApiHelper.sendDocumentMessage(getShownChatId(), path);
         }
-
         if (requestCode == Const.REQUEST_CODE_SELECT_IMAGE && resultCode == getActivity().RESULT_OK) {
             try {
                 Uri uriImage = data.getData();
