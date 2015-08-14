@@ -40,6 +40,7 @@ import net.mobindustry.telegram.model.ImagesObject;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
+import net.mobindustry.telegram.ui.activity.PhotoViewPagerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.FolderAdapter;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
@@ -86,7 +87,7 @@ public class Utils {
         return circle;
     }
 
-    public static void drawBackgroundForCheckedPhoto(TextView numberPhotos, FrameLayout buttonSend, Activity activity) {
+    public static void drawBackgroundForCheckedPhoto(TextView numberPhotos, FrameLayout buttonSend, Activity activity, InputMethodManager imm) {
         if (Utils.isTablet(activity)) {
             if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
                 buttonSend.setEnabled(true);
@@ -111,11 +112,43 @@ public class Utils {
                     params.leftMargin = 60;
                 }
                 numberPhotos.setLayoutParams(params);
-                verifySetBackground(numberPhotos, Utils.getShapeDrawable(60, activity.getResources().getColor(R.color.message_notify)));
+                if (imm != null && imm.isAcceptingText()) {
+                    Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(50, activity.getResources().getColor(R.color.message_notify)));
+                } else {
+                    Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(60, activity.getResources().getColor(R.color.message_notify)));
+                }
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 buttonSend.setEnabled(false);
                 numberPhotos.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public static void setParamsForLayoutButtonsFigImages(Activity activity, LinearLayout layoutButtons, Configuration newConfig) {
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(activity)) {
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 0.25f);
+            LinearLayout.LayoutParams paramPager = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 2.5f);
+            if (activity instanceof PhotoViewPagerActivity) {
+                layoutButtons.setLayoutParams(paramPager);
+            } else {
+                layoutButtons.setLayoutParams(param);
+            }
+        } else {
+            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 0.15f);
+            LinearLayout.LayoutParams paramPager = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0, 1.5f);
+            if (activity instanceof PhotoViewPagerActivity) {
+                layoutButtons.setLayoutParams(paramPager);
+            } else {
+                layoutButtons.setLayoutParams(paramButtons);
             }
         }
     }
@@ -158,15 +191,15 @@ public class Utils {
         }
     }
 
-    public static void changeButtonsWhenRotate(LinearLayout layoutButtons,LinearLayout layoutFind, ArrayAdapter adapter, Activity activity, GridView gridList) {
+    public static void changeButtonsWhenRotate(LinearLayout layoutButtons, LinearLayout layoutFind, ArrayAdapter adapter, Activity activity, GridView gridList) {
         if (Utils.isTablet(activity)) {
-            ((TransparentActivity)activity).progressBarGone();
+            ((TransparentActivity) activity).progressBarGone();
             adjustGridViewPort(gridList);
             adapter.clear();
-            if (adapter instanceof FolderAdapter){
+            if (adapter instanceof FolderAdapter) {
                 adapter.addAll(ListFoldersHolder.getList());
             }
-            if (adapter instanceof GalleryAdapter){
+            if (adapter instanceof GalleryAdapter) {
                 adapter.addAll(ListFoldersHolder.getListFolders());
             }
         } else {
@@ -174,37 +207,37 @@ public class Utils {
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0, 2.5f);
-                if (layoutFind!=null){
+                if (layoutFind != null) {
                     layoutFind.setLayoutParams(param);
                 }
                 layoutButtons.setLayoutParams(param);
-                ((TransparentActivity)activity).progressBarGone();
+                ((TransparentActivity) activity).progressBarGone();
                 adjustGridViewLand(gridList);
                 adapter.clear();
-                if (adapter instanceof FolderAdapter){
+                if (adapter instanceof FolderAdapter) {
                     adapter.addAll(ListFoldersHolder.getList());
                 }
-                if (adapter instanceof GalleryAdapter){
+                if (adapter instanceof GalleryAdapter) {
                     adapter.addAll(ListFoldersHolder.getListFolders());
                 }
             } else {
                 LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0, 1.6f);
-                if (layoutFind!=null){
+                if (layoutFind != null) {
                     LinearLayout.LayoutParams paramFind = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             0, 1.5f);
                     layoutFind.setLayoutParams(paramFind);
                 }
                 layoutButtons.setLayoutParams(paramButtons);
-                ((TransparentActivity)activity).progressBarGone();
+                ((TransparentActivity) activity).progressBarGone();
                 adjustGridViewPort(gridList);
                 adapter.clear();
-                if (adapter instanceof FolderAdapter){
+                if (adapter instanceof FolderAdapter) {
                     adapter.addAll(ListFoldersHolder.getList());
                 }
-                if (adapter instanceof GalleryAdapter){
+                if (adapter instanceof GalleryAdapter) {
                     adapter.addAll(ListFoldersHolder.getListFolders());
                 }
             }

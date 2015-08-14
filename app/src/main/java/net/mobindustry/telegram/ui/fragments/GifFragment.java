@@ -28,10 +28,7 @@ import com.google.gson.GsonBuilder;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;
 import com.turbomanage.httpclient.android.AndroidHttpClient;
-
-import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.gif.Giphy;
 import net.mobindustry.telegram.model.gif.GiphyInfo;
 import net.mobindustry.telegram.model.holder.DataHolder;
@@ -85,65 +82,14 @@ public class GifFragment extends Fragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 0.25f);
-            layoutButtons.setLayoutParams(param);
-        } else {
-            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 0.15f);
-            layoutButtons.setLayoutParams(paramButtons);
-        }
+        Utils.setParamsForLayoutButtonsFigImages(getActivity(), layoutButtons, newConfig);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        if (Utils.isTablet(getActivity())) {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                send.setEnabled(true);
-                number.setVisibility(View.VISIBLE);
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
-                params.leftMargin = 50;
-                number.setLayoutParams(params);
-                Utils.verifySetBackground(number, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
-                number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
-            } else {
-                send.setEnabled(false);
-                number.setVisibility(View.GONE);
-            }
-        } else {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                send.setEnabled(true);
-                number.setVisibility(View.VISIBLE);
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
-                if (Utils.getSmallestScreenSize(getActivity()) <= 480) {
-                    params.leftMargin = 10;
-                } else {
-                    params.leftMargin = 60;
-                }
-                number.setLayoutParams(params);
-                Utils.verifySetBackground(number, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
-                number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
-            } else {
-                send.setEnabled(false);
-                number.setVisibility(View.GONE);
-            }
-        }
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 0.25f);
-            layoutButtons.setLayoutParams(param);
-        } else {
-            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 0.15f);
-            layoutButtons.setLayoutParams(paramButtons);
-        }
+        Utils.drawBackgroundForCheckedPhoto(number, send, getActivity(), null);
+        Utils.setParamsForLayoutButtonsFigImages(getActivity(), layoutButtons, getResources().getConfiguration());
 
         gifsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -207,31 +153,7 @@ public class GifFragment extends Fragment {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() != 0) {
-                    for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
-                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
-                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
-                                String linkImage = ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath();
-                                if (ListFoldersHolder.getListImages() == null) {
-                                    ListFoldersHolder.setListImages(new ArrayList<String>());
-                                }
-                                ListFoldersHolder.getListImages().add(linkImage);
-                            } else {
-                                ApiHelper.sendPhotoMessage(ListFoldersHolder.getChatID(),
-                                        ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
-                            }
-                        }
-                        if (ListFoldersHolder.getListForSending().get(i) instanceof GiphyObject) {
-                            if (ListFoldersHolder.getListGif() == null) {
-                                ListFoldersHolder.setListGif(new ArrayList<String>());
-                            }
-                            String link = ((GiphyObject) ListFoldersHolder.getListForSending().get(i)).getPath();
-                            ListFoldersHolder.getListGif().add(link);
-                        }
-                    }
-                    getActivity().startService(new Intent(getActivity(), SendGif.class));
-                    getActivity().finish();
-                }
+                Utils.sendMessageFromGallery(getActivity());
             }
         });
 
@@ -329,48 +251,14 @@ public class GifFragment extends Fragment {
                     giphyObject.setPath(info.getImages().getOriginal().getUrl());
                     giphyObjectList.add(giphyObject);
                 }
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 gifAdapter = new GifAdapter(getActivity(), giphyObjectList, new GifAdapter.LoadGif() {
                     @Override
                     public void load() {
                         InputMethodManager imm = (InputMethodManager) getActivity()
-                                .getSystemService(Context.INPUT_METHOD_SERVICE);
-                        if (Utils.isTablet(getActivity())) {
-                            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                                send.setEnabled(true);
-                                number.setVisibility(View.VISIBLE);
-                                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
-                                params.leftMargin = 50;
-                                number.setLayoutParams(params);
-                                Utils.verifySetBackground(number, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
-                                number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
-                            } else {
-                                send.setEnabled(false);
-                                number.setVisibility(View.GONE);
-                            }
-                        } else {
-                            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                                send.setEnabled(true);
-                                number.setVisibility(View.VISIBLE);
-                                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
-                                if (Utils.getSmallestScreenSize(getActivity()) <= 480) {
-                                    params.leftMargin = 10;
-                                } else {
-                                    params.leftMargin = 60;
-                                }
-                                number.setLayoutParams(params);
-                                if (imm.isAcceptingText()) {
-                                    Utils.verifySetBackground(number, Utils.getShapeDrawable(50, getActivity().getResources().getColor(R.color.message_notify)));
-                                } else {
-                                    Utils.verifySetBackground(number, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
-                                }
-                                number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
-                            } else {
-                                send.setEnabled(false);
-                                number.setVisibility(View.GONE);
-                            }
-                        }
+                                .getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                        Utils.drawBackgroundForCheckedPhoto(number, send, getActivity(), imm);
                     }
                 });
                 gifsList.setAdapter(gifAdapter);

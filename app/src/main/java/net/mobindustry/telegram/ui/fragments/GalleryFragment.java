@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
@@ -91,7 +92,7 @@ public class GalleryFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         galleryAdapter = new GalleryAdapter(getActivity());
         gridList.setAdapter(galleryAdapter);
-        Utils.drawBackgroundForCheckedPhoto(numberPhotos, buttonSend, getActivity());
+        Utils.drawBackgroundForCheckedPhoto(numberPhotos, buttonSend, getActivity(), null);
         if (ListFoldersHolder.getListFolders() == null) {
             AsyncMediaStore asyncMediaStore = new AsyncMediaStore();
             asyncMediaStore.execute();

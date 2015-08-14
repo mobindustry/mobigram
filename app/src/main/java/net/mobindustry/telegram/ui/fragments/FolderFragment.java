@@ -51,11 +51,11 @@ public class FolderFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Utils.drawBackgroundForCheckedPhoto(numberPhotos, buttonSend, getActivity());
+        Utils.drawBackgroundForCheckedPhoto(numberPhotos, buttonSend, getActivity(), null);
         folderAdapter = new FolderAdapter(getActivity(), new FolderAdapter.LoadPhotos() {
             @Override
             public void load() {
-                Utils.drawBackgroundForCheckedPhoto(numberPhotos, buttonSend, getActivity());
+                Utils.drawBackgroundForCheckedPhoto(numberPhotos, buttonSend, getActivity(), null);
             }
         });
         Utils.changeButtonsWhenRotate(layoutButtons, null, folderAdapter, getActivity(), gridList);

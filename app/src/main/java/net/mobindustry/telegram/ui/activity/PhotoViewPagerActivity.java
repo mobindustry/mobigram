@@ -11,15 +11,12 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.core.ApiHelper;
-import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.fragments.PageFragment;
 import net.mobindustry.telegram.utils.Const;
@@ -60,19 +57,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
         pager.setCurrentItem(ListFoldersHolder.getCurrentSelectedPhoto());
         pager.setOffscreenPageLimit(4);
         setPhotoNumber(ListFoldersHolder.getCurrentSelectedPhoto());
-
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(this)) {
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 2.5f);
-            layoutButtons.setLayoutParams(param);
-        } else {
-            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 1.5f);
-            layoutButtons.setLayoutParams(paramButtons);
-        }
-
+        Utils.setParamsForLayoutButtonsFigImages(PhotoViewPagerActivity.this, layoutButtons, getResources().getConfiguration());
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,35 +71,10 @@ public class PhotoViewPagerActivity extends FragmentActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                    for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
-                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
-                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
-                                String linkImage = ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath();
-                                if (ListFoldersHolder.getListImages() == null) {
-                                    ListFoldersHolder.setListImages(new ArrayList<String>());
-                                }
-                                ListFoldersHolder.getListImages().add(linkImage);
-                            } else {
-                                ApiHelper.sendPhotoMessage(ListFoldersHolder.getChatID(),
-                                        ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
-                            }
-                        }
-                        if (ListFoldersHolder.getListForSending().get(i) instanceof GiphyObject) {
-                            if (ListFoldersHolder.getListGif() == null) {
-                                ListFoldersHolder.setListGif(new ArrayList<String>());
-                            }
-                            String link = ((GiphyObject) ListFoldersHolder.getListForSending().get(i)).getPath();
-                            ListFoldersHolder.getListGif().add(link);
-                        }
-
-                    }
-                    Intent intent = new Intent();
-                    intent.putExtra("choice", Const.SEND_FOLDER_FRAGMENT);
-                    setResult(RESULT_OK, intent);
-                    startService(new Intent(PhotoViewPagerActivity.this, SendGif.class));
-                    finish();
-                }
+                Utils.sendMessageFromGallery(PhotoViewPagerActivity.this);
+                Intent intent = new Intent();
+                intent.putExtra("choice", Const.SEND_FOLDER_FRAGMENT);
+                setResult(RESULT_OK, intent);
             }
         });
         if (!ListFoldersHolder.getList().get(getPhotoNumber()).isCheck()) {
@@ -145,38 +105,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
             }
 
         });
-        if (Utils.isTablet(this)) {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                send.setEnabled(true);
-                numberPhotos.setVisibility(View.VISIBLE);
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                params.leftMargin = 50;
-                numberPhotos.setLayoutParams(params);
-                Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(35, getResources().getColor(R.color.message_notify)));
-                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
-            } else {
-                send.setEnabled(false);
-                numberPhotos.setVisibility(View.GONE);
-            }
-        } else {
-            if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                send.setEnabled(true);
-                numberPhotos.setVisibility(View.VISIBLE);
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                if (Utils.getSmallestScreenSize(this) <= 480) {
-                    params.leftMargin = 10;
-                } else {
-                    params.leftMargin = 60;
-                }
-                numberPhotos.setLayoutParams(params);
-                Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(60, getResources().getColor(R.color.message_notify)));
-                numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
-            } else {
-                send.setEnabled(false);
-                numberPhotos.setVisibility(View.GONE);
-            }
-        }
-
+        Utils.drawBackgroundForCheckedPhoto(numberPhotos, send, PhotoViewPagerActivity.this, null);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         int positionForUser = ListFoldersHolder.getCurrentSelectedPhoto() + 1;
         toolbar.setTitle(positionForUser + getString(R.string.of) + photos);
@@ -240,38 +169,7 @@ public class PhotoViewPagerActivity extends FragmentActivity {
                         ListFoldersHolder.setCheckQuantity(ListFoldersHolder.getListForSending().size());
                     }
                 }
-
-                if (Utils.isTablet(PhotoViewPagerActivity.this)) {
-                    if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                        send.setEnabled(true);
-                        numberPhotos.setVisibility(View.VISIBLE);
-                        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                        params.leftMargin = 50;
-                        numberPhotos.setLayoutParams(params);
-                        Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(35, getResources().getColor(R.color.message_notify)));
-                        numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
-                    } else {
-                        send.setEnabled(false);
-                        numberPhotos.setVisibility(View.GONE);
-                    }
-                } else {
-                    if (ListFoldersHolder.getCheckQuantity() > 0 && ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() > 0) {
-                        send.setEnabled(true);
-                        numberPhotos.setVisibility(View.VISIBLE);
-                        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
-                        if (Utils.getSmallestScreenSize(PhotoViewPagerActivity.this) <= 480) {
-                            params.leftMargin = 10;
-                        } else {
-                            params.leftMargin = 60;
-                        }
-                        numberPhotos.setLayoutParams(params);
-                        Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(60, getResources().getColor(R.color.message_notify)));
-                        numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
-                    } else {
-                        send.setEnabled(false);
-                        numberPhotos.setVisibility(View.GONE);
-                    }
-                }
+                Utils.drawBackgroundForCheckedPhoto(numberPhotos, send, PhotoViewPagerActivity.this, null);
             }
         });
     }
@@ -295,17 +193,8 @@ public class PhotoViewPagerActivity extends FragmentActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(this)) {
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 2.5f);
-            layoutButtons.setLayoutParams(param);
-        } else {
-            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 1.5f);
-            layoutButtons.setLayoutParams(paramButtons);
-        }
+        Utils.setParamsForLayoutButtonsFigImages(PhotoViewPagerActivity.this, layoutButtons, newConfig);
+
     }
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
