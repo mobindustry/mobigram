@@ -34,7 +34,7 @@ public class ContactListAdapter extends ArrayAdapter<TdApi.User> {
 
         TdApi.User item = getItem(position);
         TdApi.UserStatus status = item.status;
-        Utils.veryfiSetBackground(icon, Utils.getShapeDrawable(R.dimen.contact_list_item_icon_size, -item.id));
+        Utils.verifySetBackground(icon, Utils.getShapeDrawable(R.dimen.contact_list_item_icon_size, -item.id));
 
         icon.setText(Utils.getInitials(item.firstName, item.lastName));
         firstLastName.setText(item.firstName + " " + item.lastName);

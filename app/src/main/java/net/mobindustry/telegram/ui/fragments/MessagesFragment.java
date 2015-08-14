@@ -208,10 +208,7 @@ public class MessagesFragment extends Fragment implements Serializable {
         });
 
         input = (EditText) getActivity().findViewById(R.id.message_edit_text);
-
-        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInputFromWindow(input.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
-        input.requestFocus();
+        Utils.hideKeyboard(input);
         input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

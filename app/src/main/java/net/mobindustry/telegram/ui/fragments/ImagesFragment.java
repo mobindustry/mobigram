@@ -3,7 +3,6 @@ package net.mobindustry.telegram.ui.fragments;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -95,7 +94,7 @@ public class ImagesFragment extends Fragment {
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                 params.leftMargin = 50;
                 number.setLayoutParams(params);
-                Utils.veryfiSetBackground(number, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
+                Utils.verifySetBackground(number, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 send.setEnabled(false);
@@ -112,7 +111,7 @@ public class ImagesFragment extends Fragment {
                     params.leftMargin = 60;
                 }
                 number.setLayoutParams(params);
-                Utils.veryfiSetBackground(number, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
+                Utils.verifySetBackground(number, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                 number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 send.setEnabled(false);
@@ -251,7 +250,7 @@ public class ImagesFragment extends Fragment {
                                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) number.getLayoutParams();
                                     params.leftMargin = 50;
                                     number.setLayoutParams(params);
-                                    Utils.veryfiSetBackground(number, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
+                                    Utils.verifySetBackground(number, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                                     number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                                 } else {
                                     send.setEnabled(false);
@@ -269,9 +268,9 @@ public class ImagesFragment extends Fragment {
                                     }
                                     number.setLayoutParams(params);
                                     if (imm.isAcceptingText()) {
-                                        Utils.veryfiSetBackground(number, Utils.getShapeDrawable(50, getActivity().getResources().getColor(R.color.message_notify)));
+                                        Utils.verifySetBackground(number, Utils.getShapeDrawable(50, getActivity().getResources().getColor(R.color.message_notify)));
                                     } else {
-                                        Utils.veryfiSetBackground(number, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
+                                        Utils.verifySetBackground(number, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                                     }
                                     number.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
                                 } else {

@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,7 +133,7 @@ public class GalleryFragment extends Fragment {
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) numberPhotos.getLayoutParams();
                 params.leftMargin = 50;
                 numberPhotos.setLayoutParams(params);
-                Utils.veryfiSetBackground(numberPhotos, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
+                Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(35, getActivity().getResources().getColor(R.color.message_notify)));
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 buttonSend.setEnabled(false);
@@ -151,7 +150,7 @@ public class GalleryFragment extends Fragment {
                     params.leftMargin = 60;
                 }
                 numberPhotos.setLayoutParams(params);
-                Utils.veryfiSetBackground(numberPhotos, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
+                Utils.verifySetBackground(numberPhotos, Utils.getShapeDrawable(60, getActivity().getResources().getColor(R.color.message_notify)));
                 numberPhotos.setText(String.valueOf(ListFoldersHolder.getCheckQuantity()));
             } else {
                 buttonSend.setEnabled(false);

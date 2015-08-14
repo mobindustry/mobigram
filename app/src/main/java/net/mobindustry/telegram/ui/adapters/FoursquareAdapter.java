@@ -34,7 +34,7 @@ public class FoursquareAdapter extends ArrayAdapter<FoursquareVenue> implements 
         ImageView iconPlace = (ImageView) convertView.findViewById(R.id.iconPlace);
         TextView textPlaceName = (TextView) convertView.findViewById(R.id.textPlaceName);
         TextView textPlaceAddress = (TextView) convertView.findViewById(R.id.textPlaceAddress);
-        Utils.veryfiSetBackground(iconPlace, Utils.getShapeDrawable(R.dimen.foursquare_icon_size, Color.GRAY));
+        Utils.verifySetBackground(iconPlace, Utils.getShapeDrawable(R.dimen.foursquare_icon_size, Color.GRAY));
         FoursquareVenue foursquareVenue = getItem(position);
         if (foursquareVenue != null) {
             if (foursquareVenue.getFoursquareCategories().size() > 0) {

@@ -1,7 +1,6 @@
 package net.mobindustry.telegram.ui.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.util.Linkify;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
 import net.mobindustry.telegram.model.holder.UserInfoHolder;
-import net.mobindustry.telegram.ui.activity.ChatActivity;
 import net.mobindustry.telegram.ui.activity.PhotoViewerActivity;
 import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.Const;
@@ -202,7 +200,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
         if (item.selected) {
             convertView.setBackgroundResource(R.drawable.msg_selected);
         } else {
-            Utils.veryfiSetBackground(convertView, null);
+            Utils.verifySetBackground(convertView, null);
         }
 
         FrameLayout layout = new FrameLayout(getContext());
@@ -292,7 +290,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             TextView name = (TextView) contactView.findViewById(R.id.contact_message_name);
             TextView phone = (TextView) contactView.findViewById(R.id.contact_message_phone);
             TextView icon = (TextView) contactView.findViewById(R.id.contact_message_icon);
-            Utils.veryfiSetBackground(icon, Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -contact.userId));
+            Utils.verifySetBackground(icon, Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -contact.userId));
             icon.setText(Utils.getInitials(contact.firstName, contact.lastName));
             phone.setText(contact.phoneNumber);
             name.setText(contact.firstName + " " + contact.lastName);

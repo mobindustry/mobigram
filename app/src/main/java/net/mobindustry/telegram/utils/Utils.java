@@ -13,7 +13,6 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -28,11 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.ApiHelper;
-import net.mobindustry.telegram.core.handlers.BaseHandler;
-import net.mobindustry.telegram.core.handlers.DownloadFileHandler;
-import net.mobindustry.telegram.core.handlers.OkHandler;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.DownloadFileHolder;
 
@@ -217,9 +212,9 @@ public class Utils {
                     iconImage.setImageDrawable(null);
                     icon.setVisibility(View.VISIBLE);
                     if (chatId < 0) {
-                        veryfiSetBackground(icon, Utils.getShapeDrawable(R.dimen.toolbar_icon_size, chatId));
+                        verifySetBackground(icon, Utils.getShapeDrawable(R.dimen.toolbar_icon_size, chatId));
                     } else {
-                        veryfiSetBackground(icon, Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatId));
+                        verifySetBackground(icon, Utils.getShapeDrawable(R.dimen.toolbar_icon_size, -chatId));
                     }
                     icon.setText(Utils.getInitials(firstName, lastName));
                 }
@@ -227,7 +222,7 @@ public class Utils {
         }
     }
 
-    public static void veryfiSetBackground(View view, Drawable drawable) {
+    public static void verifySetBackground(View view, Drawable drawable) {
         int sdk = android.os.Build.VERSION.SDK_INT;
         if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
             view.setBackgroundDrawable(drawable);

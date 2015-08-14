@@ -52,7 +52,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
         lastMessage.setText("");
         icon.setText("");
 
-        Utils.veryfiSetBackground(icon, null);
+        Utils.verifySetBackground(icon, null);
 
         TdApi.Chat item = getItem(position);
         TdApi.ChatInfo info = item.type;
@@ -118,9 +118,9 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         if (item.unreadCount != 0) {
             notify.setText(String.valueOf(item.unreadCount));
-            Utils.veryfiSetBackground(notify, Utils.getShapeDrawable(R.dimen.chat_list_item_notification_size, getContext().getResources().getColor(R.color.message_notify)));
+            Utils.verifySetBackground(notify, Utils.getShapeDrawable(R.dimen.chat_list_item_notification_size, getContext().getResources().getColor(R.color.message_notify)));
         } else {
-            Utils.veryfiSetBackground(notify, null);
+            Utils.verifySetBackground(notify, null);
             notify.setText("");
         }
 
