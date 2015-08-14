@@ -193,9 +193,13 @@ public class ChatActivity extends AppCompatActivity implements ApiClient.OnApiRe
 
     @Override
     public void onApiResult(BaseHandler output) {
-        if (output.getHandlerId() == UserHandler.HANDLER_ID) {
-            holder.setUser((TdApi.User) output.getResponse());
-            setHeader(holder.getUser());
+        if (output == null) {
+            getUserMe();
+        } else {
+            if (output.getHandlerId() == UserHandler.HANDLER_ID) {
+                holder.setUser((TdApi.User) output.getResponse());
+                setHeader(holder.getUser());
+            }
         }
         if (output.getHandlerId() == StickersHandler.HANDLER_ID) {
             TdApi.Stickers stickers = (TdApi.Stickers) output.getResponse();

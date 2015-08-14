@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.activity.PhotoViewPagerActivity;
@@ -23,7 +24,7 @@ import net.mobindustry.telegram.utils.Utils;
 
 public class FolderFragment extends Fragment {
 
-    private GridView gridView;
+    private GridView gridList;
     private FolderAdapter folderAdapter;
     private TextView numberPhotos;
     private FrameLayout buttonSend;
@@ -40,7 +41,7 @@ public class FolderFragment extends Fragment {
         nameHolder = ListFoldersHolder.getNameHolder();
         buttonSend = (FrameLayout) view.findViewById(R.id.buttonSendFolder);
         buttonCancel = (FrameLayout) view.findViewById(R.id.buttonCancelFolder);
-        gridView = (GridView) view.findViewById(R.id.gridPhotos);
+        gridList = (GridView) view.findViewById(R.id.gridPhotos);
         numberPhotos = (TextView) view.findViewById(R.id.numberPhotosAll);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_folder);
         layoutButtons = (LinearLayout) view.findViewById(R.id.layoutButtonsFolder);
@@ -57,11 +58,11 @@ public class FolderFragment extends Fragment {
                 Utils.drawBackgroundForCheckedPhoto(numberPhotos, buttonSend, getActivity());
             }
         });
-        Utils.changeButtonsWhenRotate(layoutButtons, folderAdapter, getActivity(), gridView);
+        Utils.changeButtonsWhenRotate(layoutButtons, null, folderAdapter, getActivity(), gridList);
         folderAdapter.clear();
         folderAdapter.addAll(ListFoldersHolder.getList());
-        gridView.setAdapter(folderAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridList.setAdapter(folderAdapter);
+        gridList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListFoldersHolder.setCurrentSelectedPhoto(position);
@@ -104,6 +105,6 @@ public class FolderFragment extends Fragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Utils.changeButtonsWhenRotate(layoutButtons, folderAdapter, getActivity(), gridView);
+        Utils.changeButtonsWhenRotate(layoutButtons, null, folderAdapter, getActivity(), gridList);
     }
 }

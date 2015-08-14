@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
@@ -23,11 +24,13 @@ import net.mobindustry.telegram.utils.Const;
 public class TransparentActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transparent_activity);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         int choice = getIntent().getIntExtra("choice", 0);
 
@@ -87,6 +90,10 @@ public class TransparentActivity extends AppCompatActivity {
             }
         }
         fragmentTransaction.commit();
+    }
+
+    public void progressBarGone() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

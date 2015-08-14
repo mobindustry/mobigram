@@ -1,7 +1,6 @@
 package net.mobindustry.telegram.ui.fragments;
 
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
@@ -20,20 +19,14 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import net.mobindustry.telegram.core.ApiHelper;
 import net.mobindustry.telegram.R;
-import net.mobindustry.telegram.core.service.SendGif;
 import net.mobindustry.telegram.model.holder.DataHolder;
 import net.mobindustry.telegram.model.holder.ListFoldersHolder;
 import net.mobindustry.telegram.ui.adapters.GalleryAdapter;
 import net.mobindustry.telegram.utils.FileWithIndicator;
 import net.mobindustry.telegram.utils.FolderCustomGallery;
-import net.mobindustry.telegram.utils.GiphyObject;
 import net.mobindustry.telegram.utils.ImagesFromMediaStore;
-import net.mobindustry.telegram.utils.ImagesObject;
 import net.mobindustry.telegram.utils.Utils;
 
 import java.io.File;
@@ -59,7 +52,6 @@ public class GalleryFragment extends Fragment {
     private FrameLayout buttonSend;
     private Map<Long, String> map;
     private Map<Long, String> mapForCustomThumbs;
-    private ProgressBar progressBar;
     private TextView numberPhotos;
     private Toolbar toolbar;
     private LinearLayout layoutFind;
@@ -76,7 +68,6 @@ public class GalleryFragment extends Fragment {
         findImages = (FrameLayout) view.findViewById(R.id.findImages);
         buttonCancel = (FrameLayout) view.findViewById(R.id.buttonCancelGallery);
         buttonSend = (FrameLayout) view.findViewById(R.id.buttonSendGallery);
-        progressBar = (ProgressBar) view.findViewById(R.id.gallery_progress_bar);
         numberPhotos = (TextView) view.findViewById(R.id.numberPhotos);
         layoutButtons = (LinearLayout) view.findViewById(R.id.layoutButtons);
         layoutFind = (LinearLayout) view.findViewById(R.id.layoutFind);
@@ -92,38 +83,7 @@ public class GalleryFragment extends Fragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (Utils.isTablet(getActivity())) {
-            progressBar.setVisibility(View.GONE);
-            adjustGridViewPort();
-            galleryAdapter.clear();
-            galleryAdapter.addAll(ListFoldersHolder.getListFolders());
-        }
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 2.6f);
-            layoutFind.setLayoutParams(param);
-            layoutButtons.setLayoutParams(param);
-            progressBar.setVisibility(View.GONE);
-            progressBar.setVisibility(View.GONE);
-            adjustGridViewLand();
-            galleryAdapter.clear();
-            galleryAdapter.addAll(ListFoldersHolder.getListFolders());
-        } else {
-            LinearLayout.LayoutParams paramFind = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 1.5f);
-            LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0, 1.6f);
-            layoutFind.setLayoutParams(paramFind);
-            layoutButtons.setLayoutParams(paramButtons);
-            progressBar.setVisibility(View.GONE);
-            progressBar.setVisibility(View.GONE);
-            adjustGridViewPort();
-            galleryAdapter.clear();
-            galleryAdapter.addAll(ListFoldersHolder.getListFolders());
-        }
+        Utils.changeButtonsWhenRotate(layoutButtons, layoutFind, galleryAdapter, getActivity(), gridList);
     }
 
     @Override
@@ -136,36 +96,8 @@ public class GalleryFragment extends Fragment {
             AsyncMediaStore asyncMediaStore = new AsyncMediaStore();
             asyncMediaStore.execute();
         } else {
-            if (Utils.isTablet(getActivity())) {
-                progressBar.setVisibility(View.GONE);
-                adjustGridViewPort();
-                galleryAdapter.clear();
-                galleryAdapter.addAll(ListFoldersHolder.getListFolders());
-            }
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
-                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0, 2.5f);
-                layoutFind.setLayoutParams(param);
-                layoutButtons.setLayoutParams(param);
-                progressBar.setVisibility(View.GONE);
-                adjustGridViewLand();
-                galleryAdapter.clear();
-                galleryAdapter.addAll(ListFoldersHolder.getListFolders());
-            } else {
-                LinearLayout.LayoutParams paramFind = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0, 1.5f);
-                LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0, 1.6f);
-                layoutFind.setLayoutParams(paramFind);
-                layoutButtons.setLayoutParams(paramButtons);
-                progressBar.setVisibility(View.GONE);
-                adjustGridViewPort();
-                galleryAdapter.clear();
-                galleryAdapter.addAll(ListFoldersHolder.getListFolders());
-            }
+            Utils.changeButtonsWhenRotate(layoutButtons, layoutFind, galleryAdapter, getActivity(), gridList);
+
         }
         toolbar.setTitle(R.string.photos);
         toolbar.setNavigationIcon(R.drawable.ic_back);
@@ -180,30 +112,7 @@ public class GalleryFragment extends Fragment {
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ListFoldersHolder.getListForSending() != null && ListFoldersHolder.getListForSending().size() != 0) {
-                    for (int i = 0; i < ListFoldersHolder.getListForSending().size(); i++) {
-                        if (ListFoldersHolder.getListForSending().get(i) instanceof ImagesObject) {
-                            if (((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath().contains("http")) {
-                                String linkImage = ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath();
-                                if (ListFoldersHolder.getListImages() == null) {
-                                    ListFoldersHolder.setListImages(new ArrayList<String>());
-                                }
-                                ListFoldersHolder.getListImages().add(linkImage);
-                            } else {
-                                ApiHelper.sendPhotoMessage(ListFoldersHolder.getChatID(), ((ImagesObject) ListFoldersHolder.getListForSending().get(i)).getPath());
-                            }
-                        }
-                        if (ListFoldersHolder.getListForSending().get(i) instanceof GiphyObject) {
-                            if (ListFoldersHolder.getListGif() == null) {
-                                ListFoldersHolder.setListGif(new ArrayList<String>());
-                            }
-                            String link = ((GiphyObject) ListFoldersHolder.getListForSending().get(i)).getPath();
-                            ListFoldersHolder.getListGif().add(link);
-                        }
-                    }
-                    getActivity().startService(new Intent(getActivity(), SendGif.class));
-                    getActivity().finish();
-                }
+                Utils.sendMessageFromGallery(getActivity());
             }
         });
 
@@ -287,18 +196,6 @@ public class GalleryFragment extends Fragment {
         return name;
     }
 
-    private void adjustGridViewPort() {
-        gridList.setNumColumns(GridView.AUTO_FIT);
-        gridList.setNumColumns(2);
-        gridList.setHorizontalSpacing(15);
-    }
-
-    private void adjustGridViewLand() {
-        gridList.setNumColumns(GridView.AUTO_FIT);
-        gridList.setNumColumns(3);
-        gridList.setHorizontalSpacing(15);
-    }
-
     public Map<Long, String> getThumbAll() {
         Uri uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
         map = new HashMap<Long, String>();
@@ -325,7 +222,6 @@ public class GalleryFragment extends Fragment {
         String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.SIZE, MediaStore.MediaColumns.DISPLAY_NAME,
                 MediaStore.MediaColumns.TITLE, MediaStore.MediaColumns.MIME_TYPE, MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
                 MediaStore.Images.ImageColumns.IS_PRIVATE, MediaStore.Images.Media._ID};
-        //Todo
         ContentResolver contentResolver = getActivity().getContentResolver();
         Cursor cursor = contentResolver.query(uri, projection, null, null, null);
         if (cursor != null) {
@@ -451,7 +347,6 @@ public class GalleryFragment extends Fragment {
             checkThumbsInFolder();
             getFoldersPath();
             completeListFolders();
-
             return null;
         }
 
@@ -459,38 +354,7 @@ public class GalleryFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             ListFoldersHolder.setListFolders(listFolders);
-            if (getActivity() != null) {
-                if (Utils.isTablet(getActivity())) {
-                    progressBar.setVisibility(View.GONE);
-                    adjustGridViewPort();
-                    galleryAdapter.clear();
-                    galleryAdapter.addAll(ListFoldersHolder.getListFolders());
-                }
-                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !Utils.isTablet(getActivity())) {
-                    LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            0, 2.5f);
-                    layoutFind.setLayoutParams(param);
-                    layoutButtons.setLayoutParams(param);
-                    progressBar.setVisibility(View.GONE);
-                    adjustGridViewLand();
-                    galleryAdapter.clear();
-                    galleryAdapter.addAll(ListFoldersHolder.getListFolders());
-                } else {
-                    LinearLayout.LayoutParams paramFind = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            0, 1.5f);
-                    LinearLayout.LayoutParams paramButtons = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            0, 1.6f);
-                    layoutFind.setLayoutParams(paramFind);
-                    layoutButtons.setLayoutParams(paramButtons);
-                    progressBar.setVisibility(View.GONE);
-                    adjustGridViewPort();
-                    galleryAdapter.clear();
-                    galleryAdapter.addAll(ListFoldersHolder.getListFolders());
-                }
-            }
+            Utils.changeButtonsWhenRotate(layoutButtons, layoutFind, galleryAdapter, getActivity(), gridList);
         }
     }
 }
