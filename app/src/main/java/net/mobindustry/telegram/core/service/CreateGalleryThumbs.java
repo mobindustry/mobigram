@@ -137,7 +137,6 @@ public class CreateGalleryThumbs extends Service {
 
             Bitmap bitmap;
             try {
-                Log.e("Log", "Patch " + path);
                 bitmap = BitmapFactory.decodeFile(path);
                 Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, THUMBSIZE, THUMBSIZE);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();

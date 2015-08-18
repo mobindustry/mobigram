@@ -40,6 +40,7 @@ import net.mobindustry.telegram.model.foursquare.FoursquareVenue;
 import net.mobindustry.telegram.model.holder.FoursquareHolder;
 import net.mobindustry.telegram.model.holder.InfoLocation;
 import net.mobindustry.telegram.model.holder.MessagesFragmentHolder;
+import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.utils.Const;
 
 import java.io.Serializable;
@@ -206,6 +207,7 @@ public class LocationFragment extends Fragment{
     }
 
     private void init(Location location) {
+        ((TransparentActivity)getActivity()).progressBarGone();
         userLocation = new LatLng(location.getLatitude(), location.getLongitude());
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(userLocation)

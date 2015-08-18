@@ -16,6 +16,7 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ContactsHandler;
+import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.ContactListAdapter;
 
 import org.drinkless.td.libcore.telegram.TdApi;
@@ -39,8 +40,8 @@ public class ContactListFragment extends Fragment {
                 if (output.getHandlerId() == ContactsHandler.HANDLER_ID) {
                     contacts = (TdApi.Contacts) output.getResponse();
                     adapter.addAll(contacts.users);
+                    ((TransparentActivity)getActivity()).progressBarGone();
                 }
-
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }

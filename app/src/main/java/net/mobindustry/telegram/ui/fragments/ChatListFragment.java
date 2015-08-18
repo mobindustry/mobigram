@@ -273,7 +273,7 @@ public class ChatListFragment extends ListFragment {
                             e.printStackTrace();
                         }
                     }
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
                 }
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -287,13 +287,17 @@ public class ChatListFragment extends ListFragment {
     }
 
     public void updateChat(long chatId, int unread, int lastRead) {
-        int count = adapter.getCount();
-        for (int i = 0; i < count; i++) {
+        boolean updated = false;
+        for (int i = 0; i < adapter.getCount(); i++) {
             TdApi.Chat chat = adapter.getItem(i);
             if (chat.id == chatId) {
                 adapter.getItem(i).unreadCount = unread;
                 adapter.getItem(i).lastReadInboxMessageId = lastRead;
+                updated = true;
             }
+        }
+        if (!updated) {
+            getChatsList(Const.CHATS_LIST_OFFSET, Const.CHATS_LIST_LIMIT);
         }
         adapter.notifyDataSetChanged();
     }

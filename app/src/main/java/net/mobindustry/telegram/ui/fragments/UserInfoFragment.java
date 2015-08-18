@@ -65,7 +65,6 @@ public class UserInfoFragment extends Fragment {
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.userInfoToolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.background_activity));
-
         if (type.equals("private")) {
             toolbar.inflateMenu(R.menu.user_info);
             toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -78,12 +77,12 @@ public class UserInfoFragment extends Fragment {
                             intent.putExtra("destination", "userInfo");
                             startActivityForResult(intent, Const.REQUEST_CODE_NEW_MESSAGE);
                             break;
-                        case R.id.block_user:
-                            Log.e("Log", "Block user");
-                            break;
-                        case R.id.delete_user:
-                            Log.e("Log", "Delete user");
-                            break;
+//                        case R.id.block_user:
+//                            Log.e("Log", "Block user");
+//                            break;
+//                        case R.id.delete_user:
+//                            Log.e("Log", "Delete user");
+//                            break;
                     }
                     return false;
                 }
@@ -123,6 +122,7 @@ public class UserInfoFragment extends Fragment {
                 if (output.getHandlerId() == UserFullHandler.HANDLER_ID) {
                     TdApi.UserFull userFull = (TdApi.UserFull) output.getResponse();
                     setUserFullInfo(userFull);
+                    ((TransparentActivity)getActivity()).progressBarGone();
                 }
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -135,6 +135,7 @@ public class UserInfoFragment extends Fragment {
                 if (output.getHandlerId() == GroupChatFullHandler.HANDLER_ID) {
                     TdApi.GroupChatFull groupChatFull = (TdApi.GroupChatFull) output.getResponse();
                     setGroupChatFullInfo(groupChatFull);
+                    ((TransparentActivity)getActivity()).progressBarGone();
                 }
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);

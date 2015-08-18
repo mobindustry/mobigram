@@ -16,6 +16,7 @@ import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.core.ApiClient;
 import net.mobindustry.telegram.core.handlers.BaseHandler;
 import net.mobindustry.telegram.core.handlers.ChatsHandler;
+import net.mobindustry.telegram.ui.activity.TransparentActivity;
 import net.mobindustry.telegram.ui.adapters.ChatListAdapter;
 import net.mobindustry.telegram.utils.Const;
 
@@ -39,6 +40,7 @@ public class SelectChatFragment extends Fragment {
                 if (output.getHandlerId() == ChatsHandler.HANDLER_ID) {
                     chats = (TdApi.Chats) output.getResponse();
                     adapter.addAll(chats.chats);
+                    ((TransparentActivity) getActivity()).progressBarGone();
                 }
             }
         }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);

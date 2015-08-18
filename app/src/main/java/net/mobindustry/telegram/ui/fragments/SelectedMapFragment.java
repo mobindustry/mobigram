@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import net.mobindustry.telegram.R;
 import net.mobindustry.telegram.model.holder.InfoLocation;
+import net.mobindustry.telegram.ui.activity.TransparentActivity;
 
 public class SelectedMapFragment extends Fragment {
 
@@ -98,6 +99,7 @@ public class SelectedMapFragment extends Fragment {
     }
 
     private void init() {
+        ((TransparentActivity)getActivity()).progressBarGone();
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(userLocation)
                 .zoom(14)
