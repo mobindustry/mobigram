@@ -19,11 +19,11 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "net.mobindustry.telegram"
-        minSdkVersion 14
+        applicationId "net.mobindustry.mobigram"
+        minSdkVersion 17
         targetSdkVersion 22
         versionCode 1
-        versionName "2"
+        versionName "1"
     }
 
     signingConfigs {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NeTelegram</string>
+    <string name="app_name">MobiGram</string>
     <string name="action_search">Search</string>
 
     <string name="drawer_open">Open navigation drawer</string>

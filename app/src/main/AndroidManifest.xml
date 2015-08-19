@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="net.mobindustry.telegram">
+    package="net.mobindustry.mobigram">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -21,22 +21,22 @@
 
 
     <application
-        android:name=".App"
+        android:name="net.mobindustry.mobigram.App"
         android:allowBackup="true"
-        android:icon="@mipmap/launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/customAppTheme"
         tools:replace="android:icon">
 
         <service
-            android:name=".core.service.CreateGalleryThumbs"
+            android:name="net.mobindustry.mobigram.core.service.CreateGalleryThumbs"
             android:exported="false" />
         <service
-            android:name=".core.service.SendGif"
+            android:name="net.mobindustry.mobigram.core.service.SendGif"
             android:exported="false" />
         <service
-            android:name=".core.service.NotificationsService"
+            android:name="net.mobindustry.mobigram.core.service.NotificationsService"
             android:exported="false" />
 
         <meta-data
@@ -45,20 +45,22 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="84181b70bf7c752771df70f1bbf274b88e8cdde0" />
 
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name="net.mobindustry.mobigram.ui.activity.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.ChatActivity"
+        <activity android:name="net.mobindustry.mobigram.ui.activity.ChatActivity"
             />
         <activity
-            android:name=".ui.activity.RegistrationActivity"
+            android:name="net.mobindustry.mobigram.ui.activity.RegistrationActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
             android:windowSoftInputMode="adjustUnspecified|adjustPan">
             <meta-data
@@ -66,7 +68,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".ui.activity.PhotoViewPagerActivity"
+            android:name="net.mobindustry.mobigram.ui.activity.PhotoViewPagerActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
             android:theme="@style/Theme.AppCompat.Translucent" />
 
@@ -75,7 +77,7 @@
             android:value="com.apkgetter.SearchResultsActivity" />
 
         <activity
-            android:name=".ui.activity.TransparentActivity"
+            android:name="net.mobindustry.mobigram.ui.activity.TransparentActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
             android:theme="@style/Theme.AppCompat.Translucent"
             android:windowSoftInputMode="adjustUnspecified|adjustPan">
@@ -94,12 +96,9 @@
 
 
         <activity
-            android:name=".ui.activity.PhotoViewerActivity"
+            android:name="net.mobindustry.mobigram.ui.activity.PhotoViewerActivity"
             android:configChanges="keyboardHidden"
             android:theme="@style/Theme.AppCompat.Translucent" />
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="84181b70bf7c752771df70f1bbf274b88e8cdde0" />
     </application>
 </manifest>

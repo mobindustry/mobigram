@@ -16,14 +16,14 @@
         android:layout_weight="1"
         android:background="@color/background_activity">
 
-        <net.mobindustry.telegram.utils.loadmore.LoadMoreListView
+        <net.mobindustry.mobigram.utils.loadmore.LoadMoreListView
             android:id="@+id/loadMoreList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/background_activity"
             android:gravity="center">
 
-        </net.mobindustry.telegram.utils.loadmore.LoadMoreListView>
+        </net.mobindustry.mobigram.utils.loadmore.LoadMoreListView>
 
         <ProgressBar
             android:id="@+id/gif_progress_bar"
