@@ -5,15 +5,19 @@
 ![Screenshot](https://github.com/Alytar/customGallery/blob/master/page_screen.png)
 ## Usage
  MobiGram
- We present to you our little project MobiGram!!!This is sample of chat application which based on Telegram API.
- Short description of the functional:
+ We present to you our project MobiGram!!!This is sample of chat application which based on Telegram API.
  Application requires is not less Android 4.2 and it work with portrait and landscape orientation.
- The purpose of this app make your communication pleasant and interesting. You can exchange text messages
+ The purpose of this app make your communication pleasant and interesting.
+ Of course, there are in the application and multimedia features. MobiGram offers to send photos, videos, gif and your location.
+ You can send photos from your gallery, or select it on the Internet, also you will find a great selection of emoticons.
+ It is very convenient.
+ Short description of the functional:
  * Authorization
    Carried with help your mobile number.First one you choose your country and write your mobile phone.
    Activation code for application will come in the SMS.
  * Chat list
  * Message screen
+ * Attach menu
 
 
 
