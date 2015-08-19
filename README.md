@@ -1,6 +1,6 @@
 ### MobiGram
-![Screenshot](https://github.com/Alytar/customGallery/blob/master/gallery_screen.png)
-![Screenshot](https://github.com/Alytar/customGallery/blob/master/folder_screen_unchecked.png)
+![Screenshot](http://gitlab.mobindustry.net/android-projects/telegram/blob/7b081f6a5dadd2c8c4e4479e9d966673e594793b/registration_main.png)
+![Screenshot](http://gitlab.mobindustry.net/android-projects/telegram/blob/7b081f6a5dadd2c8c4e4479e9d966673e594793b/registration_code.png)
 ![Screenshot](https://github.com/Alytar/customGallery/blob/master/folder_screen_checked.png)
 ![Screenshot](https://github.com/Alytar/customGallery/blob/master/page_screen.png)
 ## Description
