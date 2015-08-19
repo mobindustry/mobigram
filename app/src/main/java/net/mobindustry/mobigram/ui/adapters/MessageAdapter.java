@@ -371,7 +371,7 @@ public class MessageAdapter extends ArrayAdapter<TdApi.Message> {
             } else {
                 TdApi.FileEmpty fileEmpty = (TdApi.FileEmpty) file;
                 if (fileEmpty.id == 0) {
-                    icon.setImageResource(R.drawable.ic_netelegram_placeholder);
+                    icon.setImageResource(R.drawable.ic_mobigram_placeholder);
                 } else {
                     Utils.photoFileCheckerAndLoader(fileEmpty, icon, (Activity) getContext());
                 }

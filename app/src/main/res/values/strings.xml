@@ -32,14 +32,14 @@
     <string name="text_internal_storage">Internal Storage</string>
     <string name="text_root">/</string>
     <string name="text_system_root">System Root</string>
-    <string name="text_ne_telegram">NeTelegram</string>
+    <string name="text_mobigram">MobiGram</string>
     <string name="text_to_send_images_without_compression">To send images without compression</string>
     <string name="text_nearest_checkpoints">Nearest checkpoints</string>
     <string name="text_map">Map</string>
     <string name="text_satellite">Satellite</string>
     <string name="text_hybrid">Hybrid</string>
     <string name="text_send_selected_location">Send your current location</string>
-    <string name="text_test_netelegram">NeTelegram - jkdksafkfsmskjsa</string>
+    <string name="text_test_mobigram">MobiGram - jkdksafkfsmskjsa</string>
     <string name="text_test_number">100000</string>
     <string name="new_message_fragment_title">New message</string>
     <string name="select_chat_fragment_title">Select chat</string>

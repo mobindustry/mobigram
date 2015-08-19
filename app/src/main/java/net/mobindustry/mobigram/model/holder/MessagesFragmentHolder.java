@@ -19,7 +19,7 @@ public class MessagesFragmentHolder {
 
     private static MessagesFragmentHolder instance;
     private static boolean isMapCalled = false;
-    private static File neTelegramDirectory;
+    private static File mobiGramDirectory;
     private File tempPhotoFile;
     private File tempVideoFile;
     private static TdApi.Chat chat;
@@ -51,8 +51,8 @@ public class MessagesFragmentHolder {
         if (instance == null) {
             instance = new MessagesFragmentHolder();
         }
-        if (neTelegramDirectory == null) {
-            neTelegramDirectory = getExternalStoragePublicPictureDir();
+        if (mobiGramDirectory == null) {
+            mobiGramDirectory = getExternalStoragePublicPictureDir();
         }
         return instance;
     }

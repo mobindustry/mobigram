@@ -48,7 +48,7 @@ public class ChatListAdapter extends ArrayAdapter<TdApi.Chat> {
 
         final ImageView imageIcon = (ImageView) convertView.findViewById(R.id.message_icon_image);
 
-        imageIcon.setImageResource(R.drawable.ic_netelegram_placeholder);
+        imageIcon.setImageResource(R.drawable.ic_mobigram_placeholder);
         lastMessage.setText("");
         icon.setText("");
 

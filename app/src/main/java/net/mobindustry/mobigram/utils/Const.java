@@ -20,7 +20,7 @@ public class Const {
     public static final int REQUEST_CODE_MAKE_VIDEO = 105;
     public static final int REQUEST_CODE_NEW_MESSAGE = 110;
 
-    public static final String PATH_TO_SAVE = Environment.getExternalStorageDirectory() + File.separator + "NeTelegram";
+    public static final String PATH_TO_SAVE = Environment.getExternalStorageDirectory() + File.separator + "MobiGram";
     public static final String PATH_TO_SAVE_PHOTOS = PATH_TO_SAVE + File.separator + "photo";
     public static final String PATH_TO_SAVE_VIDEO = PATH_TO_SAVE + File.separator + "video";
     public static final String PATH_TO_SAVE_IMAGES = PATH_TO_SAVE + File.separator + "images";
@@ -66,9 +66,9 @@ public class Const {
     public static final String URL_GIF = "http://api.giphy.com";
     public static final String IP_API = "http://ip-api.com/json/";
 
-    public static final String READ_INBOX_ACTION = "net.mobindustry.telegram.message_read_action";
-    public static final String NEW_MESSAGE_ACTION_ID = "net.mobindustry.telegram.new_message_action_id";
-    public static final String NEW_MESSAGE_ACTION = "net.mobindustry.telegram.new_message_action";
+    public static final String READ_INBOX_ACTION = "net.mobindustry.mobigram.message_read_action";
+    public static final String NEW_MESSAGE_ACTION_ID = "net.mobindustry.mobigram.new_message_action_id";
+    public static final String NEW_MESSAGE_ACTION = "net.mobindustry.mobigram.new_message_action";
 
     public static final String IMAGE_LOADER_PATH_PREFIX = "file://";
 }

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements ApiClient.OnApiRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Log.e("LOG", "##### Start NeTelegram #####");
+        Log.e("LOG", "##### Start MobiGram #####");
 
         saveThemedContext();
         startService(new Intent(this, CreateGalleryThumbs.class));
