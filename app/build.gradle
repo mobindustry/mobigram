@@ -20,7 +20,7 @@ android {
 
     defaultConfig {
         applicationId "net.mobindustry.mobigram"
-        minSdkVersion 17
+        minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
         versionName "1"
