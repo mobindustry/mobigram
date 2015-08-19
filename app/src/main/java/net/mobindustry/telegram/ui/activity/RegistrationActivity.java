@@ -23,6 +23,7 @@ import net.mobindustry.telegram.model.Enums;
 import net.mobindustry.telegram.model.LocationFromIP;
 import net.mobindustry.telegram.model.holder.InfoRegistration;
 import net.mobindustry.telegram.model.holder.UserInfoHolder;
+import net.mobindustry.telegram.ui.fragments.ChooseCountryList;
 import net.mobindustry.telegram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.telegram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.telegram.ui.fragments.YourNameFragment;
@@ -205,9 +206,18 @@ public class RegistrationActivity extends AppCompatActivity implements ApiClient
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) instanceof YourNameFragment) {
+        if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) instanceof ChooseCountryList) {
+            RegistrationMainFragment registrationMainFragment = new RegistrationMainFragment();
+            FragmentTransaction fragmentTransaction;
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragmentContainer, registrationMainFragment);
+            fragmentTransaction.commit();
+        } else if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) instanceof YourNameFragment) {
             setAuthReset();
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
+
+
     }
 }

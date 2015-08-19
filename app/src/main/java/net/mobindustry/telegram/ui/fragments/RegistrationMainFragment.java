@@ -44,6 +44,7 @@ public class RegistrationMainFragment extends Fragment {
     private TextView textInfo;
     private ProgressBar progressBar;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,13 +73,17 @@ public class RegistrationMainFragment extends Fragment {
 
         //Check country object from ChooseCountryFragment
 
+
         if (holder.getCountryObject() != null) {
             chooseCountry.setText(holder.getCountryObject().getCountryName());
+            Log.e("Log", "text " + chooseCountry.getText().toString());
             code.setText(holder.getCountryObject().getCountryCode());
             code.setSelection(holder.getCountryObject().getCountryCode().length());
             phone.setText(holder.getPhone());
             phone.requestFocus();
         }
+        getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
         chooseCountry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +92,6 @@ public class RegistrationMainFragment extends Fragment {
                 }
                 fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentContainer, chooseCountryList);
-                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(chooseCountry.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -127,10 +131,12 @@ public class RegistrationMainFragment extends Fragment {
                     if (holder.getListCountryObject().getListCountries().get(i).getCountryCode().equals(codeList.get(codeList.size() - 1))) {
                         holder.setCountryObject(holder.getListCountryObject().getListCountries().get(i));
                         chooseCountry.setText(holder.getCountryObject().getCountryName());
+                        Log.e("Log", "text " + chooseCountry.getText().toString());
                         codeList.clear();
                         break;
                     } else {
                         chooseCountry.setText("Wrong country code");
+                        Log.e("Log", "text " + chooseCountry.getText().toString());
                     }
                 }
                 String st = "+";
@@ -139,7 +145,9 @@ public class RegistrationMainFragment extends Fragment {
                     code.setSelection(1);
                 }
                 if (s.toString().equals(st)) {
+                    Log.e("Log","equals");
                     chooseCountry.setText("");
+                    Log.e("Log", "text " + chooseCountry.getText().toString());
                     chooseCountry.setHint(R.string.choose_country);
                     holder.setCountryObject(null);
                 }
@@ -208,6 +216,7 @@ public class RegistrationMainFragment extends Fragment {
                 }
                 phone.addTextChangedListener(this);
             }
+
         };
 
         phone.addTextChangedListener(watcher);

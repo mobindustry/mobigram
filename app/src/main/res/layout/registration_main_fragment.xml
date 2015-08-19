@@ -24,7 +24,6 @@
             android:layout_marginLeft="@dimen/margin_3dp"
             android:layout_marginRight="@dimen/margin_3dp"
             android:background="@drawable/tab_selector"
-            android:hint="@string/text_choose_country"
             android:textColor="@color/black"
             android:textSize="@dimen/chose_coutry_text_size" />
 
