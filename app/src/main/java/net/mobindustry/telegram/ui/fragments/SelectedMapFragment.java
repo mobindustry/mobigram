@@ -111,7 +111,6 @@ public class SelectedMapFragment extends Fragment {
             myMarker = map.addMarker(new MarkerOptions()
                     .position(new LatLng(userLocation.latitude, userLocation.longitude))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-
         }
     }
 }
