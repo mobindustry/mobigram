@@ -1,4 +1,5 @@
 ### MobiGram
+![image](logo.png)
 ![image](registration_main.png)
 ![image](registration_code.png)
 ![image](chat_list.png)
