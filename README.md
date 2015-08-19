@@ -5,7 +5,7 @@
 ![image](message_fragment.png)
 ![image](message_stickers.png)
 ![image](message_attach_menu.png)
-![image](message_gallery.png)
+![image](gallery.png)
 ![image](location.png)
 ## Description
  We present to you our project MobiGram!!! This is sample of chat application which based on Telegram API.<br>
