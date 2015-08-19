@@ -1,8 +1,12 @@
 ### MobiGram
-![Screenshot](http://gitlab.mobindustry.net/android-projects/telegram/blob/7b081f6a5dadd2c8c4e4479e9d966673e594793b/registration_main.png)
-![Screenshot](http://gitlab.mobindustry.net/android-projects/telegram/blob/7b081f6a5dadd2c8c4e4479e9d966673e594793b/registration_code.png)
-![Screenshot](https://github.com/Alytar/customGallery/blob/master/folder_screen_checked.png)
-![Screenshot](https://github.com/Alytar/customGallery/blob/master/page_screen.png)
+![image](registration_main.png)
+![image](registration_code.png)
+![image](chat_list.png)
+![image](message_fragment.png)
+![image](message_stickers.png)
+![image](message_attach_menu.png)
+![image](message_gallery.png)
+![image](location.png)
 ## Description
  We present to you our project MobiGram!!! This is sample of chat application which based on Telegram API.<br>
  Application requires is not less Android 4.0.3 and it work with portrait and landscape orientation.<br>
@@ -14,4 +18,3 @@
 ##### Developers:<br>
     * Alexandr Tsymbal  (alex.tsymbal@mobindustry.net)
     * Oleg Vovk  (oleg.vovk@mobindustry.net)
-
