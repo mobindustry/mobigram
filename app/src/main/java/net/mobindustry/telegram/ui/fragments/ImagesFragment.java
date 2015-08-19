@@ -145,6 +145,7 @@ public class ImagesFragment extends Fragment {
             protected PhotosFlickr doInBackground(Void... params) {
                 try {
                     URL url = new URL(FLICKR_URL);
+                    Log.e("Log", "URL" + FLICKR_URL);
                     PhotosFlickr feed = XmlReader.read(url);
                     return feed;
                 } catch (Exception e) {
