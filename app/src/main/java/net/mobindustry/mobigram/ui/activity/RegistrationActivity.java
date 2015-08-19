@@ -23,6 +23,7 @@ import net.mobindustry.mobigram.model.Enums;
 import net.mobindustry.mobigram.model.LocationFromIP;
 import net.mobindustry.mobigram.model.holder.InfoRegistration;
 import net.mobindustry.mobigram.model.holder.UserInfoHolder;
+import net.mobindustry.mobigram.ui.fragments.ChooseCountryList;
 import net.mobindustry.mobigram.ui.fragments.ReceiverCodeFragment;
 import net.mobindustry.mobigram.ui.fragments.RegistrationMainFragment;
 import net.mobindustry.mobigram.ui.fragments.YourNameFragment;
