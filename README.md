@@ -13,7 +13,7 @@
  Application work with Android 4.0.3+, it work with portrait and landscape orientation.<br>
  The purpose of this app make your communication pleasant and interesting.<br>
  Of course, there are in the application and multimedia features. MobiGram offers to send photos, videos, gif and your location to your friends.<br>
- You can send photos from your gallery or select it's from Internet. Also you will find a great selection of emoticons.<br>
+ You can send photos from your gallery or choice it's from Internet. Also you will find a great selection of emoticons.<br>
  It is very convenient. Enjoy!!
 
 ##### Developers:<br>
