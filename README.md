@@ -8,11 +8,11 @@
 ![image](message_attach_menu.png)
 ![image](gallery.png)
 ![image](location.png)
-## Description
+## Description (Android messenger app)
  We present for you our project MobiGram!!! This is sample of chat application which based on Telegram API.<br>
- Application work with Android 4.0.3+, it work with portrait and landscape orientation.<br>
+ The application works with Android 4.0.3+. It supports portrait and landscape orientation.<br>
  The purpose of this app make your communication pleasant and interesting.<br>
- Of course, there are in the application and multimedia features. MobiGram offers to send photos, videos, gif and your location to your friends.<br>
+ Of course, there are multimedia features in the app. MobiGram supported a lot of features like sending photos, videos, gif and your location to your friends.<br>
  You can send photos from your gallery or choice it's from Internet. Also you will find a great selection of emoticons.<br>
  It is very convenient. Enjoy!!
 
